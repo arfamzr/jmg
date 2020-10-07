@@ -1,0 +1,170 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="row">
+    <div class="col-lg-12">
+      {% comment %} <?= $this->session->flashdata('message'); ?> {% endcomment %}
+      {% comment %} <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">+
+        Pengguna</a> {% endcomment %}
+
+
+      <div class="row">
+        <div class="col-md-6">
+          <form action="." method="GET">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off" autofocus>
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search Username</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <table class="table table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Nama</th>
+            <th scope="col">Emel</th>
+            <th scope="col">Peranan</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for each_user in user_list %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ each_user.id }}</td>
+            <td>{{ each_user.username }}</td>
+            <td>{{ each_user.email }}</td>
+            <td>{{ each_user.group }}</td>
+            <td>
+
+              <a href="<?php echo base_url() . 'AdminUpdateUser/edit/' . $user['id']; ?>"
+                class="badge badge-success">Edit </a>
+              <!-- <a href="" class="btn btn-danger">Delete</a> -->
+
+
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6">Tidak di jumpai</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+
+      {% comment %} <?= $this->pagination->create_links(); ?> {% endcomment %}
+
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+{% comment %}
+<!-- Modal -->
+<div class="modal fade" id="newUserModal" tabindex="-1" aria-labelledby="newUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newUserModalLabel">Tambah Pengguna</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="<?= base_url('adminlistuser2/create'); ?>" method="post">
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Nama Penuh"
+              value="<?= set_value('name'); ?>">
+            <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="email" name="email" placeholder="Emel"
+              value="<?= set_value('email'); ?>">
+            <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="password1" name="password1" placeholder="Kata Laluan">
+            <?= form_error('password1', '<small class="text-danger pl-3">', '</small>'); ?>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="password2" name="password2" placeholder="Ulang Kata Laluan">
+          </div>
+          <div class="form-group">
+            <label for="role">Choose role: </label>
+            <select class="form-control" id="role" name="role">
+              <option id="1" value="1">Admin (Pegawai JMG HQ)</option>
+              <option id="2" value="2">User (Pegawai JMG HQ)</option>
+              <option id="3" value="3">Admin (Pegawai JMG Negeri)</option>
+              <option id="4" value="4">User (Pegawai JMG Negeri)</option>
+              <option id="5" value="5">Industri (Pelombong)</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Tambah</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div> {% endcomment %}
+
+{% comment %}
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action="<?= base_url() . 'adminlistuser/edit' . $user['id']; ?>" method="post">
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Full Name"
+              value="<?= set_value('name', $user['name']); ?>">
+            <?= form_error('name', '<small class="text-danger pl-3">', '</small>'); ?>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="email" name="email" placeholder="Email"
+              value="<?= set_value('email', $user['email']); ?>">
+            <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
+          </div>
+          <div class="form-group">
+            <label for="role">Choose role: </label>
+            <select class="form-control" id="role" name="role">
+              <option id="1" value="1">Admin (Pegawai JMG HQ)</option>
+              <option id="2" value="2">User (Pegawai JMG HQ)</option>
+              <option id="3" value="3">Admin (Pegawai JMG Negeri)</option>
+              <option id="4" value="4">User (Pegawai JMG Negeri)</option>
+              <option id="5" value="5">Industri (Pelombong)</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Edit</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div> {% endcomment %}
+{% endblock content %}
