@@ -53,7 +53,7 @@ class Statistic(models.Model):
         verbose_name_plural = "perangkaan"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"
 
 
 class LocalOperator(models.Model):
@@ -85,7 +85,7 @@ class LocalOperator(models.Model):
         verbose_name_plural = "operator tempatan"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"
 
 
 class ForeignOperator(models.Model):
@@ -117,7 +117,7 @@ class ForeignOperator(models.Model):
         verbose_name_plural = "operator asing"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"
 
 
 class LocalContractor(models.Model):
@@ -149,7 +149,7 @@ class LocalContractor(models.Model):
         verbose_name_plural = "kontraktor tempatan"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"
 
 
 class ForeignContractor(models.Model):
@@ -181,7 +181,7 @@ class ForeignContractor(models.Model):
         verbose_name_plural = "kontraktor asing"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"
 
 
 class InternalCombustionMachinery(models.Model):
@@ -238,7 +238,7 @@ class InternalCombustionMachinery(models.Model):
         verbose_name_plural = "jentera bakar dalam"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"
 
 
 class ElectricMachinery(models.Model):
@@ -295,7 +295,7 @@ class ElectricMachinery(models.Model):
         verbose_name_plural = "jentera elektrik"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"
 
 
 class EnergySupply(models.Model):
@@ -315,7 +315,7 @@ class EnergySupply(models.Model):
         verbose_name_plural = "bahan tenaga"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"
 
 
 class OperatingRecord(models.Model):
@@ -339,4 +339,4 @@ class OperatingRecord(models.Model):
         verbose_name_plural = "rekod operasi"
 
     def __str__(self):
-        return self.mine
+        return f"{self.mine}"

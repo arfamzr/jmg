@@ -1,0 +1,153 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": { "name": "Industry", "permissions": [] }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": { "name": "JMG State", "permissions": [] }
+  },
+  {
+    "model": "auth.group",
+    "pk": 3,
+    "fields": { "name": "JMG State Admin", "permissions": [] }
+  },
+  {
+    "model": "auth.group",
+    "pk": 4,
+    "fields": { "name": "JMG HQ", "permissions": [] }
+  },
+  {
+    "model": "auth.group",
+    "pk": 5,
+    "fields": { "name": "Super Admin", "permissions": [] }
+  },
+  {
+    "model": "account.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$1GSmL2kY0aQM$KzD2clzitMzN3Pd63akr6nsuOz71Uxy7kWqKW62zJKI=",
+      "last_login": "2020-10-07T08:52:06Z",
+      "is_superuser": true,
+      "username": "IjatAyam",
+      "first_name": "Ijat",
+      "last_name": "Ayam",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2020-10-07T03:07:52Z",
+      "email": "ijat191999@gmail.com",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$bELjhez4CFBc$MRWwEN9/6mUJvcpbQ9cRZkk9OijppBUfSbj9D172xXE=",
+      "last_login": "2020-10-08T04:50:29Z",
+      "is_superuser": false,
+      "username": "TestUser",
+      "first_name": "uwais",
+      "last_name": "uhuh",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-07T03:09:22Z",
+      "email": "teach@lms.com",
+      "groups": [1],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$TficSUJ3fMPT$EgADMJA55bGpyUAF7J1tsVVSSoUvVRrXJmLPZlXo3wU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "JMGState",
+      "first_name": "JMG",
+      "last_name": "State",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-08T05:40:18Z",
+      "email": "jmgstate@gmail.com",
+      "groups": [2],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$PN7UkYRoGRDI$70nc00+PfWsmasS94csrNewTo4JNr7TkqJtmNVnlpzM=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "JMGStateAdmin",
+      "first_name": "JMG",
+      "last_name": "State Admin",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-08T05:41:04Z",
+      "email": "jmgstateadmin@gmail.com",
+      "groups": [3],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 5,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$SM85DU3WmDfn$D729h0TEp/H0MuovqJxtvDFq/OzAgHJGKeiWN53nZJQ=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "JMGHQ",
+      "first_name": "JMG",
+      "last_name": "HQ",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-08T05:43:49Z",
+      "email": "jmghq@gmail.com",
+      "groups": [4],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$5UWTqWOsgM3h$XWnKHhzJBevMseFWilND4d63iwFP2pNyv3v+c3/Vt14=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "SuperAdmin",
+      "first_name": "Super",
+      "last_name": "Admin",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-08T05:44:36Z",
+      "email": "superadmin@gmail.com",
+      "groups": [5],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "account.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$xcRtxxK7X8dg$N8z7PICqcESghLmQ12O9b+xt8icuRSU9isO+O8jguiU=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "industri",
+      "first_name": "Industri",
+      "last_name": "Kuari",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2020-10-08T05:48:19Z",
+      "email": "industri@gmail.com",
+      "groups": [1],
+      "user_permissions": []
+    }
+  }
+]
