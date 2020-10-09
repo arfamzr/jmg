@@ -38,7 +38,7 @@
 
   <!-- Nav Item - Senarai Pengguna -->
   <li class="nav-item ">
-    <a class="nav-link" href="#jmg-state-admin-user-list">
+    <a class="nav-link" href="{% url 'account:user_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengguna</span></a>
   </li>
@@ -50,76 +50,20 @@
   {% if user.is_jmg_hq %}
 
   <li class="nav-item ">
-    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-      aria-controls="collapsePages">
-      <i class="fas fa-fw fa-folder"></i>
-      <span>Senarai Data</span>
-    </a>
-    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Senarai Data</h6>
-        <a class="collapse-item" href="#senarai lombong">RPLB</a>
-        <a class="collapse-item" href="#senarai kuari">PKB</a>
-        <a class="collapse-item" href="#">Lesen Mineral Bulanan</a>
-      </div>
-    </div>
-  </li>
-
-  <!-- Divider -->
-  <hr class="sidebar-divider">
-
-  <!-- Divider -->
-  <hr class="sidebar-divider">
-
-  <li class="nav-item">
-    <a class="nav-link" href="#report">
-      <i class="fas fa-fw fa-sign-out-alt"></i>
-      <span>Report</span></a>
-  </li>
-
-  <!-- Divider -->
-  <hr class="sidebar-divider">
-
-  <li class="nav-item">
-    <a class="nav-link" href="#graph">
-      <i class="fas fa-fw fa-sign-out-alt"></i>
-      <span>Graph</span></a>
-  </li>
-
-  <!-- Divider -->
-  <hr class="sidebar-divider">
-  {% endif %}
-
-  {% if user.is_jmg_state_admin %}
-  <!-- Heading User -->
-  <div class="sidebar-heading">
-    User
-  </div>
-
-  <!-- Nav Item - Senarai Pengguna -->
-  <li class="nav-item ">
-    <a class="nav-link" href="#jmg-state-admin-user-list">
-      <i class="fas fa-fw fa-user"></i>
-      <span>Senarai Pengguna</span></a>
-  </li>
-
-  <!-- Divider -->
-  <hr class="sidebar-divider">
-
-  <li class="nav-item ">
     <div class="sidebar-heading">
       Senarai Data
     </div>
+
     <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'quarry:list' %}">
+    <a class="nav-link" href="{% url 'quarry:listquarry' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'mine:list' %}">
+    <a class="nav-link" href="{% url 'mine:listmine' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
   </li>
@@ -136,22 +80,100 @@
   <hr class="sidebar-divider">
 
   <!-- Divider -->
-  <hr class="sidebar-divider">
+  <!-- <hr class="sidebar-divider"> -->
+
+  <div class="sidebar-heading">
+    Laporan
+  </div>
+
 
   <li class="nav-item">
     <a class="nav-link" href="#report">
       <i class="fas fa-fw fa-sign-out-alt"></i>
-      <span>Report</span></a>
+      <span>Laporan</span></a>
   </li>
 
   <!-- Divider -->
   <hr class="sidebar-divider">
 
+  <!-- <li class="nav-item">
+    <a class="nav-link" href="#graph">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Graph</span></a>
+  </li> -->
+
+  <!-- Divider -->
+  <!-- <hr class="sidebar-divider"> -->
+  {% endif %}
+
+  {% if user.is_jmg_state_admin %}
+  <!-- Heading User -->
+  <div class="sidebar-heading">
+    User
+  </div>
+
+  <!-- Nav Item - Senarai Pengguna -->
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'account:user_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Pengguna</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <li class="nav-item ">
+    <div class="sidebar-heading">
+      Senarai Data
+    </div>
+
+    <!-- Nav Item - Kuari -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'quarry:listquarry' %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Kuari</span></a>
+  </li>
+
+  <!-- Nav Item - Lombong -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'mine:listmine' %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Lombong</span></a>
+  </li>
+
+  <!-- Nav Item - Mineral -->
+  <li class="nav-item">
+    <a class="nav-link" href="<?= base_url('mineral'); ?>">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Mineral</span></a>
+  </li>
+  </li>
+
+  <!-- Divider -->
+  <!-- <hr class="sidebar-divider"> -->
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <div class="sidebar-heading">
+    Laporan
+  </div>
+
+
+  <li class="nav-item">
+    <a class="nav-link" href="#report">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Laporan</span></a>
+  </li>
+
+  <!-- Divider -->
+  <!-- <hr class="sidebar-divider">
+
   <li class="nav-item">
     <a class="nav-link" href="#graph">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Graph</span></a>
-  </li>
+  </li> -->
 
   <!-- Divider -->
   <hr class="sidebar-divider">
@@ -240,7 +262,7 @@
   <li class="nav-item">
     <a class="nav-link" href="{% url 'account:logout' %}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
-      <span>Logout</span></a>
+      <span>Keluar</span></a>
   </li>
 
 

@@ -53,7 +53,7 @@ class QuarryListView(ListView):
         context["title"] = 'Senarai Kuari'
         return context
 
-class QuarryListViewState(ListView):
+class QuarryListsView(ListView):
     template_name = 'quarry/listquarry.html'
     model = Quarry
     paginate_by = 10
@@ -63,7 +63,6 @@ class QuarryListViewState(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Senarai Kuari'
         return context
-
 
 class QuarryCreateView(CreateView):
     template_name = 'quarry/form.html'

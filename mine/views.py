@@ -39,6 +39,16 @@ class MineListView(ListView):
         context["title"] = 'Senarai Lombong'
         return context
 
+class MineListsView(ListView):
+    template_name = 'mine/listmine.html'
+    model = Mine
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Lombong'
+        return context
 
 class MineCreateView(CreateView):
     template_name = 'mine/form.html'
