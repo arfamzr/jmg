@@ -53,6 +53,17 @@ class QuarryListView(ListView):
         context["title"] = 'Senarai Kuari'
         return context
 
+class QuarryListViewState(ListView):
+    template_name = 'quarry/listquarry.html'
+    model = Quarry
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
+
 
 class QuarryCreateView(CreateView):
     template_name = 'quarry/form.html'

@@ -7,65 +7,72 @@
   <!-- Page Heading -->
   <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
 
-  <div class="row">
-    <div class="col-lg-12">
-      {% comment %} <?= $this->session->flashdata('message'); ?> {% endcomment %}
-      {% comment %} <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">+
-        Pengguna</a> {% endcomment %}
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Senarai Pengguna Sistem</h6>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12">
+            {% comment %} <?= $this->session->flashdata('message'); ?> {% endcomment %}
+            {% comment %} <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">+
+              Pengguna</a> {% endcomment %}
 
 
-      <div class="row">
-        <div class="col-md-6">
-          <form action="." method="GET">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off" autofocus>
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search Username</button>
+            <div class="row justify-content-end">
+              <div class="col-md-6">
+                <form action="." method="GET">
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off" autofocus>
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-primary">Search Username</button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
-          </form>
+
+            <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">ID</th>
+                  <th scope="col">Nama</th>
+                  <th scope="col">Emel</th>
+                  <th scope="col">Peranan</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for each_user in user_list %}
+                <tr>
+                  <th scope="row">{{ forloop.counter }}</th>
+                  <td>{{ each_user.id }}</td>
+                  <td>{{ each_user.username }}</td>
+                  <td>{{ each_user.email }}</td>
+                  <td>{{ each_user.group }}</td>
+                  <td>
+
+                    <a href="<?php echo base_url() . 'AdminUpdateUser/edit/' . $user['id']; ?>"
+                      class="badge badge-success">Edit </a>
+                    <!-- <a href="" class="btn btn-danger">Delete</a> -->
+
+
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6">Tidak di jumpai</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+
+            {% comment %} <?= $this->pagination->create_links(); ?> {% endcomment %}
+
+          </div>
         </div>
       </div>
-
-      <table class="table table-hover">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">ID</th>
-            <th scope="col">Nama</th>
-            <th scope="col">Emel</th>
-            <th scope="col">Peranan</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for each_user in user_list %}
-          <tr>
-            <th scope="row">{{ forloop.counter }}</th>
-            <td>{{ each_user.id }}</td>
-            <td>{{ each_user.username }}</td>
-            <td>{{ each_user.email }}</td>
-            <td>{{ each_user.group }}</td>
-            <td>
-
-              <a href="<?php echo base_url() . 'AdminUpdateUser/edit/' . $user['id']; ?>"
-                class="badge badge-success">Edit </a>
-              <!-- <a href="" class="btn btn-danger">Delete</a> -->
-
-
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="6">Tidak di jumpai</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-
-      {% comment %} <?= $this->pagination->create_links(); ?> {% endcomment %}
-
     </div>
   </div>
 
