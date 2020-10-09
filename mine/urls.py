@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     MineListView,
+    MineListsView,
     MineCreateView,
     MineUpdateView,
     statistic_edit,
@@ -16,6 +17,7 @@ app_name = 'mine'
 
 urlpatterns = [
     path('', MineListView.as_view(), name='list'),
+    path('list/', MineListsView.as_view(), name='listmine'),
     path('create/', MineCreateView.as_view(), name='create'),
     path('update/<int:pk>/', MineUpdateView.as_view(), name='update'),
     path(

@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     QuarryListView,
+    QuarryListsView,
     QuarryCreateView,
     QuarryUpdateView,
     production_statistic_edit,
@@ -21,6 +22,7 @@ app_name = 'quarry'
 
 urlpatterns = [
     path('', QuarryListView.as_view(), name='list'),
+    path('list/', QuarryListsView.as_view(), name='listquarry'),
     path('create/', QuarryCreateView.as_view(), name='create'),
     path('update/<int:pk>/', QuarryUpdateView.as_view(), name='update'),
     path(
