@@ -30,6 +30,16 @@
   <!-- Divider -->
   <hr class="sidebar-divider">
 
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>Super Admin</b>
+  </div>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
   {% if user.is_super_admin %}
   <!-- Heading User -->
   <div class="sidebar-heading">
@@ -42,6 +52,16 @@
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengguna</span></a>
   </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>JMG HQ</b>
+  </div>
 
   <!-- Divider -->
   <hr class="sidebar-divider">
@@ -68,9 +88,6 @@
   <!-- Divider -->
   <hr class="sidebar-divider">
 
-  <!-- Divider -->
-  <hr class="sidebar-divider">
-
   <li class="nav-item">
     <a class="nav-link" href="#report">
       <i class="fas fa-fw fa-sign-out-alt"></i>
@@ -85,6 +102,16 @@
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Graph</span></a>
   </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>JMG State Admin</b>
+  </div>
 
   <!-- Divider -->
   <hr class="sidebar-divider">
@@ -115,15 +142,12 @@
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Senarai Data</h6>
-        <a class="collapse-item" href="#senarai lombong">RPLB</a>
+        <a class="collapse-item" href="{% url 'quarry:list_state_admin' %}">RPLB</a>
         <a class="collapse-item" href="#senarai kuari">PKB</a>
         <a class="collapse-item" href="#">Lesen Mineral Bulanan</a>
       </div>
     </div>
   </li>
-
-  <!-- Divider -->
-  <hr class="sidebar-divider">
 
   <!-- Divider -->
   <hr class="sidebar-divider">
@@ -142,6 +166,16 @@
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Graph</span></a>
   </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>JMG State</b>
+  </div>
 
   <!-- Divider -->
   <hr class="sidebar-divider">
@@ -171,7 +205,7 @@
 
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'quarry:list' %}">
+    <a class="nav-link" href="{% url 'quarry:list_state' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Kuari</span></a>
   </li>
@@ -189,6 +223,16 @@
       <i class="fas fa-fw fa-gem"></i>
       <span>Mineral</span></a>
   </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>Industry</b>
+  </div>
 
   <!-- Divider -->
   <hr class="sidebar-divider">

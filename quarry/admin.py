@@ -17,6 +17,7 @@ from .models import (
     OperatingRecord,
     Royalties,
     Other,
+    QuarryApproval,
 )
 
 
@@ -84,6 +85,10 @@ class OtherAdmin(admin.ModelAdmin):
     pass
 
 
+class QuarryApprovalAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Quarry, QuarryAdmin)
 admin.site.register(ProductionStatistic, ProductionStatisticAdmin)
 admin.site.register(SalesSubmission, SalesSubmissionAdmin)
@@ -101,3 +106,4 @@ admin.site.register(EnergySupply, EnergySupplyAdmin)
 admin.site.register(OperatingRecord, OperatingRecordAdmin)
 admin.site.register(Royalties, RoyaltiesAdmin)
 admin.site.register(Other, OtherAdmin)
+admin.site.register(QuarryApproval, QuarryApprovalAdmin)
