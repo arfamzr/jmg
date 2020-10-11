@@ -80,7 +80,7 @@ class UserListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai Pengguna'
+        context["title"] = 'Pengguna'
         return context
 
 class ProfileView(TemplateView):
