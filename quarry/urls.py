@@ -6,6 +6,7 @@ app_name = 'quarry'
 
 urlpatterns = [
     path('', views.QuarryListView.as_view(), name='list'),
+    path('list/', views.QuarryListsView.as_view(), name='listquarry'),
     path('list-state/', views.QuarryStateListView.as_view(), name='list_state'),
     path('list-state-admin/', views.QuarryStateAdminListView.as_view(),
          name='list_state_admin'),

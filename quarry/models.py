@@ -26,9 +26,9 @@ class Quarry(models.Model):
     land_status = models.CharField(_("status tanah"), max_length=255)
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
-    company_category = models.IntegerField(_("kategori syarikat"))
-    main_rock_type = models.IntegerField(_("jenis batuan utama"))
-    side_rock_type = models.IntegerField(_("jenis batuan sampingan"))
+    company_category = models.CharField(_("kategori syarikat"), max_length=255)
+    main_rock_type = models.CharField(_("jenis batuan utama"), max_length=255)
+    side_rock_type = models.CharField(_("jenis batuan sampingan"), max_length=255)
     latitude = models.DecimalField(
         _("latitude"), max_digits=15, decimal_places=4)
     longitude = models.DecimalField(
