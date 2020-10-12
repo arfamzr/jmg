@@ -26,3 +26,6 @@ class Company(models.Model):
 
     def get_update_url(self):
         return reverse("company:update", kwargs={"pk": self.pk})
+    
+    def get_detail_url(self):
+        return reverse("company:detail", kwargs={"pk": self.pk})
