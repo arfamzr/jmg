@@ -1,0 +1,43 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <h1 class="h3 mb-4 text-gray-800">Maklumat</h1>
+    <div class="row">
+        <div class="col-lg-12">
+            <a href="{% url 'company:create' %}" class="btn btn-primary"><i class="fas fa-plus"></i>
+                Pengusaha</a>
+        </div>
+    </div>
+    <br>
+
+    <div class="card shadow col-lg-10 mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary"> Maklumat Syarikat {{ company.company_name }}</h6>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <dl class="row">
+                            <dt class="col-sm-3">Nama Syarikat</dt>
+                            <dd class="col-sm-9">{{ company.company_name }}</dd>
+                            <dt class="col-sm-3">Emel</dt>
+                            <dd class="col-sm-9">{{ company.company_email }}</dd>
+                            <dt class="col-sm-3">No. Telefon</dt>
+                            <dd class="col-sm-9">{{ company.company_phone }}</dd>
+                            <dt class="col-sm-3">No. Fax</dt>
+                            <dd class="col-sm-9">{{ company.company_fax }}</dd>
+                            <dt class="col-sm-3">Alamat</dt>
+                            <dd class="col-sm-9">{{ company.company_address }}</dd>
+                            <dt class="col-sm-3">Negeri</dt>
+                            <dd class="col-sm-9">{{ company.company_state }}</dd>
+                        </dl>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

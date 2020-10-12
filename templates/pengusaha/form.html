@@ -1,0 +1,23 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+    <form action="." method="post">
+        <div class="form-group row">
+            <div class="col-sm-10">
+                {% csrf_token %}
+                {{ form|crispy }}
+            </div>
+        </div>
+    </form>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
