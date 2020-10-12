@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, resolve_url
 from django.urls import reverse_lazy, reverse
-from django.views.generic import FormView, ListView, UpdateView
+from django.views.generic import FormView, ListView, UpdateView, TemplateView
 from django.contrib.auth.views import (
     LoginView as DjangoLoginView,
     LogoutView as DjangoLogoutView,
