@@ -26,7 +26,6 @@ class User(AbstractUser):
     def is_super_admin(self):
         return self.is_active and (self.is_superuser or self.groups.filter(name='Super Admin').exists())
 
-
 class Profile(models.Model):
     JOHOR = 'JHR'
     KEDAH = 'KDH'

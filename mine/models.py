@@ -28,6 +28,15 @@ class Mine(models.Model):
     def get_edit_url(self):
         return reverse("mine:statistic_edit", kwargs={"pk": self.pk})
 
+    def get_submit_url(self):
+        return reverse("mine:submit", kwargs={"pk": self.pk})
+
+    def get_last_approval(self):
+        return self.approvals.last()
+
+    def get_readonly_url(self):
+        return reverse("mine:readonly", kwargs={"pk": self.pk})
+
 
 class Statistic(models.Model):
     mine = models.OneToOneField(Mine, verbose_name=_(
@@ -340,3 +349,27 @@ class OperatingRecord(models.Model):
 
     def __str__(self):
         return f"{self.mine}"
+
+
+class MineApproval(models.Model):
+    mine = models.ForeignKey(Mine, verbose_name=_(
+        "mine"), related_name='approvals', on_delete=models.CASCADE)
+    requestor = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
+        "requestor"), on_delete=models.CASCADE, related_name='mine_requested')
+    state_inspector = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
+        "state inspector"), on_delete=models.SET_NULL, related_name='mine_state_inspected', null=True, blank=True)
+    state_comment = models.TextField(_("state comment"), blank=True)
+    state_approved = models.BooleanField(
+        _("state approved"), null=True, blank=True)
+    admin_inspector = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
+        "admin inspector"), on_delete=models.SET_NULL, related_name='mine_admin_inspected', null=True, blank=True)
+    admin_comment = models.TextField(_("admin comment"), blank=True)
+    admin_approved = models.BooleanField(
+        _("admin approved"), null=True, blank=True)
+    hq_inspector = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
+        "hq inspector"), on_delete=models.SET_NULL, related_name='mine_hq_inspected', null=True, blank=True)
+    hq_comment = models.TextField(_("hq comment"), blank=True)
+    hq_approved = models.BooleanField(_("hq approved"), null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.mine}({self.pk})'

@@ -1,9 +1,14 @@
+from django.contrib.auth.views import PasswordChangeView as DjangoPasswordChangeView
 from django.conf import settings
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, resolve_url
+<<<<<<< HEAD
 from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView, ListView, UpdateView
+=======
+from django.views.generic import FormView, ListView, TemplateView
+>>>>>>> e0a5aa610add30de4180f18886c48883fff312b6
 from django.contrib.auth.views import (
     LoginView as DjangoLoginView,
     LogoutView as DjangoLogoutView,
@@ -92,4 +97,44 @@ class UserUpdate(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Kemaskini Pengguna'
+        return context
+class UserListViews(ListView):
+    template_name = 'account/user_listView.html'
+    model = User
+    paginate_by = 8
+    ordering = ['id']
+
+    def get_queryset(self):
+        try:
+            name = self.request.GET['q']
+        except:
+            name = ''
+        if (name != ''):
+            object_list = self.model.objects.filter(username__icontains=name)
+        else:
+            object_list = self.model.objects.all()
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Pengguna'
+        return context
+
+class ProfileView(TemplateView):
+    template_name = 'account/profile/form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # print(self.request.user.is_industry)
+        context["title"] = 'Profile'
+        return context
+
+class PasswordChangeView(DjangoPasswordChangeView):
+    template_name = 'account/password/form.html'
+    success_url = '/dashboard/'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # print(self.request.user.is_industry)
+        context["title"] = 'Update Password'
         return context

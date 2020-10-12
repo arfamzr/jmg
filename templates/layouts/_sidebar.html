@@ -30,6 +30,16 @@
   <!-- Divider -->
   <hr class="sidebar-divider">
 
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>Super Admin</b>
+  </div>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
   {% if user.is_super_admin %}
   <!-- Heading User -->
   <div class="sidebar-heading">
@@ -47,6 +57,16 @@
   <hr class="sidebar-divider">
   {% endif %}
 
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>JMG HQ</b>
+  </div>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
   {% if user.is_jmg_hq %}
 
   <li class="nav-item ">
@@ -56,14 +76,14 @@
 
     <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'quarry:listquarry' %}">
+    <a class="nav-link" href="{% url 'quarry:list_hq' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'mine:listmine' %}">
+    <a class="nav-link" href="{% url 'mine:list_hq' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
   </li>
@@ -78,9 +98,6 @@
 
   <!-- Divider -->
   <hr class="sidebar-divider">
-
-  <!-- Divider -->
-  <!-- <hr class="sidebar-divider"> -->
 
   <div class="sidebar-heading">
     Laporan
@@ -106,6 +123,16 @@
   <!-- <hr class="sidebar-divider"> -->
   {% endif %}
 
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>JMG State Admin</b>
+  </div>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
   {% if user.is_jmg_state_admin %}
   <!-- Heading User -->
   <div class="sidebar-heading">
@@ -119,24 +146,42 @@
       <span>Senarai Pengguna</span></a>
   </li>
 
+  <li class="nav-item ">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Syarikat</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Lombong</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Kuari</span></a>
+  </li>
+
   <!-- Divider -->
   <hr class="sidebar-divider">
 
-  <li class="nav-item ">
-    <div class="sidebar-heading">
-      Senarai Data
-    </div>
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Senarai Data
+  </div>
 
-    <!-- Nav Item - Kuari -->
+  <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'quarry:listquarry' %}">
+    <a class="nav-link" href="{% url 'quarry:list_state_admin' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'mine:listmine' %}">
+    <a class="nav-link" href="{% url 'mine:list_state_admin' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
   </li>
@@ -150,15 +195,11 @@
   </li>
 
   <!-- Divider -->
-  <!-- <hr class="sidebar-divider"> -->
-
-  <!-- Divider -->
   <hr class="sidebar-divider">
 
   <div class="sidebar-heading">
     Laporan
   </div>
-
 
   <li class="nav-item">
     <a class="nav-link" href="#report">
@@ -167,13 +208,14 @@
   </li>
 
   <!-- Divider -->
-  <!-- <hr class="sidebar-divider">
+  <hr class="sidebar-divider">
+  {% endif %}
 
-  <li class="nav-item">
-    <a class="nav-link" href="#graph">
-      <i class="fas fa-fw fa-sign-out-alt"></i>
-      <span>Graph</span></a>
-  </li> -->
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>JMG State</b>
+  </div>
 
   <!-- Divider -->
   <hr class="sidebar-divider">
@@ -187,7 +229,7 @@
 
   <!-- Nav Item - Senarai Pengguna -->
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'account:user_list' %}">
+    <a class="nav-link" href="{% url 'account:user_listView' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengguna</span></a>
   </li>
@@ -195,6 +237,24 @@
     <a class="nav-link" href="{% url 'company:list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Syarikat</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Syarikat</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Lombong</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Kuari</span></a>
   </li>
 
   <!-- Divider -->
@@ -208,14 +268,15 @@
 
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'quarry:listquarry' %}">
-      <i class="fas fa-fw fa-gem"></i>
-      <span>Kuari</span></a>
+    {% comment %} <a class="nav-link" href="{% url 'quarry:listquarry' %}"> {% endcomment %}
+      <a class="nav-link" href="{% url 'quarry:list_state' %}">
+        <i class="fas fa-fw fa-gem"></i>
+        <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'mine:listmine' %}">
+    <a class="nav-link" href="{% url 'mine:list_state' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
   </li>
@@ -226,6 +287,16 @@
       <i class="fas fa-fw fa-gem"></i>
       <span>Mineral</span></a>
   </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+  {% endif %}
+
+  {% if user.is_superuser %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    <b>Industry</b>
+  </div>
 
   <!-- Divider -->
   <hr class="sidebar-divider">
