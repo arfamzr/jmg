@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'quarry.apps.QuarryConfig',
     'mine.apps.MineConfig',
+    'company.apps.CompanyConfig',
 
     'crispy_forms',
 ]

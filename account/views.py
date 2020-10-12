@@ -2,7 +2,8 @@ from django.conf import settings
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, resolve_url
-from django.views.generic import FormView, ListView
+from django.urls import reverse_lazy, reverse
+from django.views.generic import FormView, ListView, UpdateView
 from django.contrib.auth.views import (
     LoginView as DjangoLoginView,
     LogoutView as DjangoLogoutView,
@@ -80,4 +81,15 @@ class UserListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Pengguna'
+        return context
+
+class UserUpdate(UpdateView):
+    template_name = 'account/updateuser.html'
+    model = User
+    fields = ['username', 'first_name', 'last_name', 'email']
+    success_url = reverse_lazy('account:updateuser')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Kemaskini Pengguna'
         return context

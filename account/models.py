@@ -71,3 +71,22 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user}'
+
+class UserUpdate(models.Model):
+    user = models.OneToOneField(User, verbose_name=_(
+        "user"), on_delete=models.CASCADE, primary_key=True)
+    username = models.CharField(_("user name"), max_length=255)
+    first_name = models.CharField(
+        _("first name"), max_length=255)
+    last_name = models.CharField(_("last name"), max_length=255)
+    email = models.CharField(_("email"), max_length=15)
+
+    class Meta:
+        verbose_name = "user"
+        verbose_name_plural = "user"
+
+    def __str__(self):
+        return self.user
+
+    def get_update_url(self):
+        return reverse("account:update", kwargs={"pk": self.pk})
