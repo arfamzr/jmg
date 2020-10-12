@@ -3,12 +3,8 @@ from django.conf import settings
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, resolve_url
-<<<<<<< HEAD
 from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView, ListView, UpdateView
-=======
-from django.views.generic import FormView, ListView, TemplateView
->>>>>>> e0a5aa610add30de4180f18886c48883fff312b6
 from django.contrib.auth.views import (
     LoginView as DjangoLoginView,
     LogoutView as DjangoLogoutView,
