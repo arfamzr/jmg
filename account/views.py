@@ -83,6 +83,28 @@ class UserListView(ListView):
         context["title"] = 'Pengguna'
         return context
 
+class UserListViews(ListView):
+    template_name = 'account/user_listView.html'
+    model = User
+    paginate_by = 8
+    ordering = ['id']
+
+    def get_queryset(self):
+        try:
+            name = self.request.GET['q']
+        except:
+            name = ''
+        if (name != ''):
+            object_list = self.model.objects.filter(username__icontains=name)
+        else:
+            object_list = self.model.objects.all()
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Pengguna'
+        return context
+
 class ProfileView(TemplateView):
     template_name = 'account/profile/form.html'
 

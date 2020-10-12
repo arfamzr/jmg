@@ -13,6 +13,9 @@
       <div class="card-body">
         <div class="row">
           <div class="col-lg-12">
+            {% comment %} <?= $this->session->flashdata('message'); ?> {% endcomment %}
+            {% comment %} <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newUserModal">+
+              Pengguna</a> {% endcomment %}
 
 
             <div class="row justify-content-end">
@@ -49,7 +52,7 @@
                   <td>{{ each_user.group }}</td>
                   <td>
 
-                    <a href="" class="badge badge-success">Edit </a>
+                    <a href="" class="badge badge-success">View </a>
 
                   </td>
                 </tr>
