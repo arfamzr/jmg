@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, resolve_url
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 
 from .models import ( 
     Company 
@@ -60,3 +60,8 @@ class CompanyUpdate(UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Kemaskini Syarikat'
         return context
+
+class CompanyDetail(DetailView):
+    template_name = 'company/detail.html'
+    model = Company
+    context_object_name = 'company'
