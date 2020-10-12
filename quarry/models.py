@@ -28,7 +28,8 @@ class Quarry(models.Model):
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(_("kategori syarikat"), max_length=255)
     main_rock_type = models.CharField(_("jenis batuan utama"), max_length=255)
-    side_rock_type = models.CharField(_("jenis batuan sampingan"), max_length=255)
+    side_rock_type = models.CharField(
+        _("jenis batuan sampingan"), max_length=255)
     latitude = models.DecimalField(
         _("latitude"), max_digits=15, decimal_places=4)
     longitude = models.DecimalField(
@@ -48,6 +49,15 @@ class Quarry(models.Model):
 
     def get_edit_url(self):
         return reverse("quarry:production_statistic_edit", kwargs={"pk": self.pk})
+
+    def get_submit_url(self):
+        return reverse("quarry:submit", kwargs={"pk": self.pk})
+
+    def get_last_approval(self):
+        return self.approvals.last()
+
+    def get_readonly_url(self):
+        return reverse("quarry:readonly", kwargs={"pk": self.pk})
 
 
 class ProductionStatistic(models.Model):
@@ -619,6 +629,30 @@ class Other(models.Model):
     class Meta:
         verbose_name = "lain-lain"
         verbose_name_plural = "lain-lain"
+
+    def __str__(self):
+        return f'{self.quarry}({self.pk})'
+
+
+class QuarryApproval(models.Model):
+    quarry = models.ForeignKey(Quarry, verbose_name=_(
+        "quarry"), related_name='approvals', on_delete=models.CASCADE)
+    requestor = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
+        "requestor"), on_delete=models.CASCADE, related_name='quarry_requested')
+    state_inspector = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
+        "state inspector"), on_delete=models.SET_NULL, related_name='quarry_state_inspected', null=True, blank=True)
+    state_comment = models.TextField(_("state comment"), blank=True)
+    state_approved = models.BooleanField(
+        _("state approved"), null=True, blank=True)
+    admin_inspector = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
+        "admin inspector"), on_delete=models.SET_NULL, related_name='quarry_admin_inspected', null=True, blank=True)
+    admin_comment = models.TextField(_("admin comment"), blank=True)
+    admin_approved = models.BooleanField(
+        _("admin approved"), null=True, blank=True)
+    hq_inspector = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
+        "hq inspector"), on_delete=models.SET_NULL, related_name='quarry_hq_inspected', null=True, blank=True)
+    hq_comment = models.TextField(_("hq comment"), blank=True)
+    hq_approved = models.BooleanField(_("hq approved"), null=True, blank=True)
 
     def __str__(self):
         return f'{self.quarry}({self.pk})'

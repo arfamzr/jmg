@@ -1,3 +1,4 @@
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView
@@ -21,6 +22,7 @@ from .models import (
     OperatingRecord,
     Royalties,
     Other,
+    QuarryApproval,
 )
 from .forms import (
     QuarryForm,
@@ -39,6 +41,22 @@ from .forms import (
     OperatingRecordForm,
     RoyaltiesForm,
     OtherForm,
+    QuarryReadOnlyForm,
+    ProductionStatisticReadOnlyForm,
+    SalesSubmissionReadOnlyForm,
+    LocalFinalUsesReadOnlyForm,
+    ExportFinalUsesReadOnlyForm,
+    LocalOperatorReadOnlyForm,
+    LocalContractorReadOnlyForm,
+    ForeignOperatorReadOnlyForm,
+    ForeignContractorReadOnlyForm,
+    InternalCombustionMachineryReadOnlyForm,
+    ElectricMachineryReadOnlyForm,
+    DailyExplosiveReadOnlyForm,
+    EnergySupplyReadOnlyForm,
+    OperatingRecordReadOnlyForm,
+    RoyaltiesReadOnlyForm,
+    OtherReadOnlyForm,
 )
 
 
@@ -48,10 +66,86 @@ class QuarryListView(ListView):
     paginate_by = 10
     ordering = ['-created_at']
 
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Senarai Kuari'
         return context
+
+
+class QuarryStateListView(ListView):
+    template_name = 'quarry/list_jmg.html'
+    model = Quarry
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            user__profile__state=self.request.user.profile.state)
+        id_list = []
+        for quarry in queryset:
+            approval = quarry.get_last_approval()
+            if approval:
+                if approval.state_approved == None:
+                    id_list.append(quarry.id)
+        queryset = queryset.filter(id__in=id_list)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
+
+
+class QuarryStateAdminListView(ListView):
+    template_name = 'quarry/list_jmg.html'
+    model = Quarry
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            user__profile__state=self.request.user.profile.state)
+        id_list = []
+        for quarry in queryset:
+            approval = quarry.get_last_approval()
+            if approval:
+                if approval.state_approved == True and approval.admin_approved == None:
+                    id_list.append(quarry.id)
+        queryset = queryset.filter(id__in=id_list)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
+
+
+class QuarryHQListView(ListView):
+    template_name = 'quarry/list_jmg.html'
+    model = Quarry
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            user__profile__state=self.request.user.profile.state)
+        id_list = []
+        for quarry in queryset:
+            approval = quarry.get_last_approval()
+            if approval:
+                if approval.state_approved == True and approval.admin_approved == True:
+                    id_list.append(quarry.id)
+        queryset = queryset.filter(id__in=id_list)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
+
 
 class QuarryListsView(ListView):
     template_name = 'quarry/listquarry.html'
@@ -63,6 +157,7 @@ class QuarryListsView(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Senarai Kuari'
         return context
+
 
 class QuarryCreateView(CreateView):
     template_name = 'quarry/form.html'
@@ -532,3 +627,320 @@ def other_edit(request, pk):
     }
 
     return render(request, 'quarry/other/form.html', context=context)
+
+
+def quarry_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    next_link = reverse('quarry:production_statistic_readonly',
+                        kwargs={"pk": quarry.pk})
+    form = QuarryReadOnlyForm(instance=quarry)
+
+    context = {
+        'title': 'Data Kuari',
+        'form': form,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/readonly.html', context=context)
+
+
+def production_statistic_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:sales_submission_readonly',
+                        kwargs={"pk": quarry.pk})
+    production_statistic = get_object_or_404(
+        ProductionStatistic, quarry=quarry)
+    form = ProductionStatisticReadOnlyForm(instance=production_statistic)
+
+    context = {
+        'title': 'Perangkaan Pengeluaran',
+        'form': form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/production_statistic/readonly.html', context=context)
+
+
+def sales_submission_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:production_statistic_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:final_uses_readonly',
+                        kwargs={"pk": quarry.pk})
+    sales_submission = get_object_or_404(SalesSubmission, quarry=quarry)
+    form = SalesSubmissionReadOnlyForm(instance=sales_submission)
+
+    context = {
+        'title': 'Penyerahan Jualan',
+        'form': form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/sales_submission/readonly.html', context=context)
+
+
+def final_uses_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:sales_submission_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:local_worker_readonly',
+                        kwargs={"pk": quarry.pk})
+    local_final_uses = get_object_or_404(LocalFinalUses, quarry=quarry)
+    export_final_uses = get_object_or_404(ExportFinalUses, quarry=quarry)
+    local_form = LocalFinalUsesReadOnlyForm(instance=local_final_uses)
+    export_form = ExportFinalUsesReadOnlyForm(
+        instance=export_final_uses, prefix='second')
+
+    context = {
+        'title': 'Kegunaan Akhir',
+        'local_form': local_form,
+        'export_form': export_form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/final_uses/readonly.html', context=context)
+
+
+def local_worker_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:final_uses_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:foreign_worker_readonly',
+                        kwargs={"pk": quarry.pk})
+    local_operator = get_object_or_404(LocalOperator, quarry=quarry)
+    local_contractor = get_object_or_404(LocalContractor, quarry=quarry)
+    operator_form = LocalOperatorReadOnlyForm(instance=local_operator)
+    contractor_form = LocalContractorReadOnlyForm(
+        instance=local_contractor, prefix='second')
+
+    context = {
+        'title': 'Pekerjaan (Tempatan)',
+        'operator_form': operator_form,
+        'contractor_form': contractor_form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/worker/readonly.html', context=context)
+
+
+def foreign_worker_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:local_worker_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:machinery_readonly',
+                        kwargs={"pk": quarry.pk})
+    foreign_operator = get_object_or_404(ForeignOperator, quarry=quarry)
+    foreign_contractor = get_object_or_404(ForeignContractor, quarry=quarry)
+    operator_form = ForeignOperatorReadOnlyForm(instance=foreign_operator)
+    contractor_form = ForeignContractorReadOnlyForm(
+        instance=foreign_contractor, prefix='second')
+
+    context = {
+        'title': 'Pekerjaan (Asing)',
+        'operator_form': operator_form,
+        'contractor_form': contractor_form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/worker/readonly.html', context=context)
+
+
+def machinery_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:foreign_worker_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:daily_explosive_readonly',
+                        kwargs={"pk": quarry.pk})
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, quarry=quarry)
+    electric_machinery = get_object_or_404(ElectricMachinery, quarry=quarry)
+    combustion_form = InternalCombustionMachineryReadOnlyForm(
+        instance=combustion_machinery)
+    electric_form = ElectricMachineryReadOnlyForm(
+        instance=electric_machinery, prefix='second')
+
+    context = {
+        'title': 'Jentera',
+        'combustion_form': combustion_form,
+        'electric_form': electric_form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/machinery/readonly.html', context=context)
+
+
+def daily_explosive_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:machinery_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:energy_supply_readonly',
+                        kwargs={"pk": quarry.pk})
+    daily_explosive = get_object_or_404(DailyExplosive, quarry=quarry)
+    form = DailyExplosiveReadOnlyForm(instance=daily_explosive)
+
+    context = {
+        'title': 'Bahan Letupan Harian',
+        'form': form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/daily_explosive/readonly.html', context=context)
+
+
+def energy_supply_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:daily_explosive_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:operating_record_readonly',
+                        kwargs={"pk": quarry.pk})
+    energy_supply = get_object_or_404(EnergySupply, quarry=quarry)
+    form = EnergySupplyReadOnlyForm(instance=energy_supply)
+
+    context = {
+        'title': 'Bahan Tenaga',
+        'form': form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/energy_supply/readonly.html', context=context)
+
+
+def operating_record_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:energy_supply_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:royalties_readonly',
+                        kwargs={"pk": quarry.pk})
+    operating_record = get_object_or_404(OperatingRecord, quarry=quarry)
+    form = OperatingRecordReadOnlyForm(instance=operating_record)
+
+    context = {
+        'title': 'Rekod Operasi',
+        'form': form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/operating_record/readonly.html', context=context)
+
+
+def royalties_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:operating_record_readonly',
+                        kwargs={"pk": quarry.pk})
+    next_link = reverse('quarry:other_readonly',
+                        kwargs={"pk": quarry.pk})
+    royalties = get_object_or_404(Royalties, quarry=quarry)
+    form = RoyaltiesReadOnlyForm(instance=royalties)
+
+    context = {
+        'title': 'Royalti',
+        'form': form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'quarry/royalties/readonly.html', context=context)
+
+
+def other_readonly(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    prev_link = reverse('quarry:royalties_readonly',
+                        kwargs={"pk": quarry.pk})
+    other = get_object_or_404(Other, quarry=quarry)
+    form = OtherReadOnlyForm(instance=other)
+
+    context = {
+        'title': 'Lain-lain',
+        'form': form,
+        'prev_link': prev_link,
+        'quarry_id': quarry.id,
+    }
+
+    return render(request, 'quarry/other/readonly.html', context=context)
+
+
+def submit_quarry(request, pk):
+    if request.method == 'POST':
+        quarry = get_object_or_404(Quarry, pk=pk)
+        quarry_approval = QuarryApproval.objects.create(
+            quarry=quarry, requestor=request.user)
+        return redirect('quarry:list')
+
+    else:
+        raise Http404
+
+
+def state_approve_quarry(request, pk):
+    if request.method == 'POST':
+        quarry = get_object_or_404(Quarry, pk=pk)
+        quarry_approval = quarry.get_last_approval()
+        quarry_approval.state_inspector = request.user
+        quarry_approval.state_approved = True
+        quarry_approval.save()
+        return redirect('quarry:list_state')
+
+    else:
+        raise Http404
+
+
+def state_reject_quarry(request, pk):
+    if request.method == 'POST':
+        quarry = get_object_or_404(Quarry, pk=pk)
+        quarry_approval = quarry.get_last_approval()
+        quarry_approval.state_inspector = request.user
+        quarry_approval.state_comment = request.POST.get('comment')
+        quarry_approval.state_approved = False
+        quarry_approval.save()
+        return redirect('quarry:list_state')
+
+    else:
+        raise Http404
+
+
+def state_admin_approve_quarry(request, pk):
+    if request.method == 'POST':
+        quarry = get_object_or_404(Quarry, pk=pk)
+        quarry_approval = quarry.get_last_approval()
+        quarry_approval.admin_inspector = request.user
+        quarry_approval.admin_approved = True
+        quarry_approval.save()
+        return redirect('quarry:list_state_admin')
+
+    else:
+        raise Http404
+
+
+def state_admin_reject_quarry(request, pk):
+    if request.method == 'POST':
+        quarry = get_object_or_404(Quarry, pk=pk)
+        quarry_approval = quarry.get_last_approval()
+        quarry_approval.admin_inspector = request.user
+        quarry_approval.admin_comment = request.POST.get('comment')
+        quarry_approval.admin_approved = False
+        quarry_approval.save()
+        return redirect('quarry:list_state_admin')
+
+    else:
+        raise Http404
+
+
+def get_comment_quarry(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    quarry_approval = quarry.get_last_approval()
+    if quarry_approval.admin_comment:
+        return HttpResponse(quarry_approval.admin_comment)
+    elif quarry_approval.state_comment:
+        return HttpResponse(quarry_approval.state_comment)
+    else:
+        return HttpResponse('')

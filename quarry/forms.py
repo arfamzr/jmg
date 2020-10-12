@@ -227,3 +227,230 @@ class OtherForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.label = ''
+
+
+class QuarryReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = Quarry
+        exclude = ['user']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['readonly'] = True
+
+
+class ProductionStatisticReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = ProductionStatistic
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class SalesSubmissionReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = SalesSubmission
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class LocalFinalUsesReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = LocalFinalUses
+        exclude = ['quarry']
+        widgets = {
+            'state_other': forms.Textarea(attrs={'rows': 2})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class ExportFinalUsesReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = ExportFinalUses
+        exclude = ['quarry']
+        widgets = {
+            'state_other': forms.Textarea(attrs={'rows': 2})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class LocalOperatorReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = LocalOperator
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class LocalContractorReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = LocalContractor
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class ForeignOperatorReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = ForeignOperator
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class ForeignContractorReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = ForeignContractor
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class InternalCombustionMachineryReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = InternalCombustionMachinery
+        exclude = ['quarry']
+        widgets = {
+            'state_other': forms.Textarea(attrs={'rows': 2})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class ElectricMachineryReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = ElectricMachinery
+        exclude = ['quarry']
+        widgets = {
+            'state_other': forms.Textarea(attrs={'rows': 2})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class DailyExplosiveReadOnlyForm(forms.ModelForm):
+    date = forms.DateField(
+        input_formats=['%d/%m/%Y'],
+        widget=XDSoftDatePickerInput(format='%d/%m/%Y'),
+    )
+
+    class Meta:
+        model = DailyExplosive
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class EnergySupplyReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = EnergySupply
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class OperatingRecordReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = OperatingRecord
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class RoyaltiesReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = Royalties
+        exclude = ['quarry']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class OtherReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = Other
+        exclude = ['quarry']
+        widgets = {
+            'title': forms.Textarea(attrs={'rows': 1}),
+            'comment': forms.Textarea(attrs={'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
