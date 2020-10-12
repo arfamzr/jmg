@@ -122,6 +122,31 @@ class QuarryStateAdminListView(ListView):
         context["title"] = 'Senarai Kuari'
         return context
 
+
+class QuarryHQListView(ListView):
+    template_name = 'quarry/list_jmg.html'
+    model = Quarry
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            user__profile__state=self.request.user.profile.state)
+        id_list = []
+        for quarry in queryset:
+            approval = quarry.get_last_approval()
+            if approval:
+                if approval.state_approved == True and approval.admin_approved == True:
+                    id_list.append(quarry.id)
+        queryset = queryset.filter(id__in=id_list)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
+
+
 class QuarryListsView(ListView):
     template_name = 'quarry/listquarry.html'
     model = Quarry
@@ -132,6 +157,7 @@ class QuarryListsView(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Senarai Kuari'
         return context
+
 
 class QuarryCreateView(CreateView):
     template_name = 'quarry/form.html'
@@ -874,7 +900,6 @@ def state_reject_quarry(request, pk):
         quarry_approval = quarry.get_last_approval()
         quarry_approval.state_inspector = request.user
         quarry_approval.state_comment = request.POST.get('comment')
-        print(quarry_approval.state_comment)
         quarry_approval.state_approved = False
         quarry_approval.save()
         return redirect('quarry:list_state')
@@ -902,7 +927,6 @@ def state_admin_reject_quarry(request, pk):
         quarry_approval = quarry.get_last_approval()
         quarry_approval.admin_inspector = request.user
         quarry_approval.admin_comment = request.POST.get('comment')
-        print(quarry_approval.admin_comment)
         quarry_approval.admin_approved = False
         quarry_approval.save()
         return redirect('quarry:list_state_admin')
@@ -920,4 +944,3 @@ def get_comment_quarry(request, pk):
         return HttpResponse(quarry_approval.state_comment)
     else:
         return HttpResponse('')
-    return redirect('quarry:list_state')

@@ -1,0 +1,74 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="form-group row">
+        <label class="col-6"><b>Kuantiti Mineral</b></label>
+        <div class="col-6">
+          {{ form.minerals_quantity|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-6"><b>Stok Akhir Bulan Lalu</b></label>
+        <div class="col-6">
+          {{ form.final_stock_last_month|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-6"><b>Pengeluaran Lombong</b></label>
+        <div class="col-6">
+          {{ form.mine_production|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-6"><b>Jumlah Mineral</b></label>
+        <div class="col-6">
+          {{ form.total_minerals|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-6"><b>Penyerahan Kepada Pembeli</b></label>
+        <div class="col-6">
+          {{ form.submission_buyers|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-6"><b>Stok Akhir Bulan Ini</b></label>
+        <div class="col-6">
+          {{ form.final_stock_this_month|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-6"><b>Gred Hitung Panjang</b></label>
+        <div class="col-6">
+          {{ form.average_grade|as_crispy_field }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4 col-lg-3 mt-3 ml-auto">
+      <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+        Sebelumnya
+      </a>
+    </div>
+    <div class="col-4 col-lg-3 mt-3">
+      <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+        Seterusnya
+      </a>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

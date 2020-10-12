@@ -1,3 +1,4 @@
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView
@@ -13,6 +14,7 @@ from .models import (
     ElectricMachinery,
     EnergySupply,
     OperatingRecord,
+    MineApproval,
 )
 from .forms import (
     MineForm,
@@ -25,6 +27,16 @@ from .forms import (
     ElectricMachineryForm,
     EnergySupplyForm,
     OperatingRecordForm,
+    MineReadOnlyForm,
+    StatisticReadOnlyForm,
+    LocalOperatorReadOnlyForm,
+    LocalContractorReadOnlyForm,
+    ForeignOperatorReadOnlyForm,
+    ForeignContractorReadOnlyForm,
+    InternalCombustionMachineryReadOnlyForm,
+    ElectricMachineryReadOnlyForm,
+    EnergySupplyReadOnlyForm,
+    OperatingRecordReadOnlyForm,
 )
 
 
@@ -34,10 +46,86 @@ class MineListView(ListView):
     paginate_by = 10
     ordering = ['-created_at']
 
+    def get_queryset(self):
+        return super().get_queryset().filter(user=self.request.user)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Senarai Lombong'
         return context
+
+
+class MineStateListView(ListView):
+    template_name = 'mine/list_jmg.html'
+    model = Mine
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            user__profile__state=self.request.user.profile.state)
+        id_list = []
+        for mine in queryset:
+            approval = mine.get_last_approval()
+            if approval:
+                if approval.state_approved == None:
+                    id_list.append(mine.id)
+        queryset = queryset.filter(id__in=id_list)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
+
+
+class MineStateAdminListView(ListView):
+    template_name = 'mine/list_jmg.html'
+    model = Mine
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            user__profile__state=self.request.user.profile.state)
+        id_list = []
+        for mine in queryset:
+            approval = mine.get_last_approval()
+            if approval:
+                if approval.state_approved == True and approval.admin_approved == None:
+                    id_list.append(mine.id)
+        queryset = queryset.filter(id__in=id_list)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
+
+
+class MineHQListView(ListView):
+    template_name = 'mine/list_jmg.html'
+    model = Mine
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            user__profile__state=self.request.user.profile.state)
+        id_list = []
+        for mine in queryset:
+            approval = mine.get_last_approval()
+            if approval:
+                if approval.state_approved == True and approval.admin_approved == True:
+                    id_list.append(mine.id)
+        queryset = queryset.filter(id__in=id_list)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
+
 
 class MineListsView(ListView):
     template_name = 'mine/listmine.html'
@@ -49,6 +137,7 @@ class MineListsView(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Senarai Lombong'
         return context
+
 
 class MineCreateView(CreateView):
     template_name = 'mine/form.html'
@@ -327,3 +416,220 @@ def operating_record_edit(request, pk):
     }
 
     return render(request, 'mine/operating_record/form.html', context=context)
+
+
+def mine_readonly(request, pk):
+    mine = get_object_or_404(Mine, pk=pk)
+    next_link = reverse('mine:statistic_readonly',
+                        kwargs={"pk": mine.pk})
+    form = MineReadOnlyForm(instance=mine)
+
+    context = {
+        'title': 'Data Lombong',
+        'form': form,
+        'next_link': next_link,
+    }
+
+    return render(request, 'mine/readonly.html', context=context)
+
+
+def statistic_readonly(request, pk):
+    mine = get_object_or_404(Mine, pk=pk)
+    prev_link = reverse('mine:readonly',
+                        kwargs={"pk": mine.pk})
+    next_link = reverse('mine:local_worker_readonly',
+                        kwargs={"pk": mine.pk})
+    statistic = get_object_or_404(Statistic, mine=mine)
+    form = StatisticReadOnlyForm(instance=statistic)
+
+    context = {
+        'title': 'Perangkaan',
+        'form': form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'mine/statistic/readonly.html', context=context)
+
+
+def local_worker_readonly(request, pk):
+    mine = get_object_or_404(Mine, pk=pk)
+    prev_link = reverse('mine:statistic_readonly',
+                        kwargs={"pk": mine.pk})
+    next_link = reverse('mine:foreign_worker_readonly',
+                        kwargs={"pk": mine.pk})
+    local_operator = get_object_or_404(LocalOperator, mine=mine)
+    local_contractor = get_object_or_404(LocalContractor, mine=mine)
+    operator_form = LocalOperatorReadOnlyForm(instance=local_operator)
+    contractor_form = LocalContractorReadOnlyForm(
+        instance=local_contractor, prefix='second')
+
+    context = {
+        'title': 'Pekerjaan (Tempatan)',
+        'operator_form': operator_form,
+        'contractor_form': contractor_form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'mine/worker/readonly.html', context=context)
+
+
+def foreign_worker_readonly(request, pk):
+    mine = get_object_or_404(Mine, pk=pk)
+    prev_link = reverse('mine:local_worker_readonly',
+                        kwargs={"pk": mine.pk})
+    next_link = reverse('mine:machinery_readonly',
+                        kwargs={"pk": mine.pk})
+    foreign_operator = get_object_or_404(ForeignOperator, mine=mine)
+    foreign_contractor = get_object_or_404(ForeignContractor, mine=mine)
+    operator_form = ForeignOperatorReadOnlyForm(instance=foreign_operator)
+    contractor_form = ForeignContractorReadOnlyForm(
+        instance=foreign_contractor, prefix='second')
+
+    context = {
+        'title': 'Pekerjaan (Asing)',
+        'operator_form': operator_form,
+        'contractor_form': contractor_form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'mine/worker/readonly.html', context=context)
+
+
+def machinery_readonly(request, pk):
+    mine = get_object_or_404(Mine, pk=pk)
+    prev_link = reverse('mine:foreign_worker_readonly',
+                        kwargs={"pk": mine.pk})
+    next_link = reverse('mine:energy_supply_readonly',
+                        kwargs={"pk": mine.pk})
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, mine=mine)
+    electric_machinery = get_object_or_404(ElectricMachinery, mine=mine)
+    combustion_form = InternalCombustionMachineryReadOnlyForm(
+        instance=combustion_machinery)
+    electric_form = ElectricMachineryReadOnlyForm(
+        instance=electric_machinery, prefix='second')
+
+    context = {
+        'title': 'Jentera',
+        'combustion_form': combustion_form,
+        'electric_form': electric_form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'mine/machinery/readonly.html', context=context)
+
+
+def energy_supply_readonly(request, pk):
+    mine = get_object_or_404(Mine, pk=pk)
+    prev_link = reverse('mine:machinery_readonly',
+                        kwargs={"pk": mine.pk})
+    next_link = reverse('mine:operating_record_readonly',
+                        kwargs={"pk": mine.pk})
+    energy_supply = get_object_or_404(EnergySupply, mine=mine)
+    form = EnergySupplyReadOnlyForm(instance=energy_supply)
+
+    context = {
+        'title': 'Bahan Tenaga',
+        'form': form,
+        'prev_link': prev_link,
+        'next_link': next_link,
+    }
+
+    return render(request, 'mine/energy_supply/readonly.html', context=context)
+
+
+def operating_record_readonly(request, pk):
+    mine = get_object_or_404(Mine, pk=pk)
+    prev_link = reverse('mine:energy_supply_readonly',
+                        kwargs={"pk": mine.pk})
+    operating_record = get_object_or_404(OperatingRecord, mine=mine)
+    form = OperatingRecordReadOnlyForm(instance=operating_record)
+
+    context = {
+        'title': 'Rekod Operasi',
+        'form': form,
+        'prev_link': prev_link,
+        'mine_id': mine.id,
+    }
+
+    return render(request, 'mine/operating_record/readonly.html', context=context)
+
+
+def submit_mine(request, pk):
+    if request.method == 'POST':
+        mine = get_object_or_404(Mine, pk=pk)
+        mine_approval = MineApproval.objects.create(
+            mine=mine, requestor=request.user)
+        return redirect('mine:list')
+
+    else:
+        raise Http404
+
+
+def state_approve_mine(request, pk):
+    if request.method == 'POST':
+        mine = get_object_or_404(Mine, pk=pk)
+        mine_approval = mine.get_last_approval()
+        mine_approval.state_inspector = request.user
+        mine_approval.state_approved = True
+        mine_approval.save()
+        return redirect('mine:list_state')
+
+    else:
+        raise Http404
+
+
+def state_reject_mine(request, pk):
+    if request.method == 'POST':
+        mine = get_object_or_404(Mine, pk=pk)
+        mine_approval = mine.get_last_approval()
+        mine_approval.state_inspector = request.user
+        mine_approval.state_comment = request.POST.get('comment')
+        mine_approval.state_approved = False
+        mine_approval.save()
+        return redirect('mine:list_state')
+
+    else:
+        raise Http404
+
+
+def state_admin_approve_mine(request, pk):
+    if request.method == 'POST':
+        mine = get_object_or_404(Mine, pk=pk)
+        mine_approval = mine.get_last_approval()
+        mine_approval.admin_inspector = request.user
+        mine_approval.admin_approved = True
+        mine_approval.save()
+        return redirect('mine:list_state_admin')
+
+    else:
+        raise Http404
+
+
+def state_admin_reject_mine(request, pk):
+    if request.method == 'POST':
+        mine = get_object_or_404(Mine, pk=pk)
+        mine_approval = mine.get_last_approval()
+        mine_approval.admin_inspector = request.user
+        mine_approval.admin_comment = request.POST.get('comment')
+        mine_approval.admin_approved = False
+        mine_approval.save()
+        return redirect('mine:list_state_admin')
+
+    else:
+        raise Http404
+
+
+def get_comment_mine(request, pk):
+    mine = get_object_or_404(Mine, pk=pk)
+    mine_approval = mine.get_last_approval()
+    if mine_approval.admin_comment:
+        return HttpResponse(mine_approval.admin_comment)
+    elif mine_approval.state_comment:
+        return HttpResponse(mine_approval.state_comment)
+    else:
+        return HttpResponse('')

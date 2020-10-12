@@ -11,6 +11,7 @@ from .models import (
     ElectricMachinery,
     EnergySupply,
     OperatingRecord,
+    MineApproval,
 )
 
 
@@ -54,6 +55,10 @@ class OperatingRecordAdmin(admin.ModelAdmin):
     pass
 
 
+class MineApprovalAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Mine, MineAdmin)
 admin.site.register(Statistic, StatisticAdmin)
 admin.site.register(LocalOperator, LocalOperatorAdmin)
@@ -65,3 +70,4 @@ admin.site.register(InternalCombustionMachinery,
 admin.site.register(ElectricMachinery, ElectricMachineryAdmin)
 admin.site.register(EnergySupply, EnergySupplyAdmin)
 admin.site.register(OperatingRecord, OperatingRecordAdmin)
+admin.site.register(MineApproval, MineApprovalAdmin)
