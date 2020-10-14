@@ -2,6 +2,8 @@ from django.contrib import admin
 
 from .models import (
     Mine,
+    MineMiner,
+    MineMinerData,
     Statistic,
     LocalOperator,
     ForeignOperator,
@@ -11,11 +13,19 @@ from .models import (
     ElectricMachinery,
     EnergySupply,
     OperatingRecord,
-    MineApproval,
+    MineDataApproval,
 )
 
 
 class MineAdmin(admin.ModelAdmin):
+    pass
+
+
+class MineMinerAdmin(admin.ModelAdmin):
+    pass
+
+
+class MineMinerDataAdmin(admin.ModelAdmin):
     pass
 
 
@@ -55,11 +65,13 @@ class OperatingRecordAdmin(admin.ModelAdmin):
     pass
 
 
-class MineApprovalAdmin(admin.ModelAdmin):
+class MineDataApprovalAdmin(admin.ModelAdmin):
     pass
 
 
 admin.site.register(Mine, MineAdmin)
+admin.site.register(MineMiner, MineMinerAdmin)
+admin.site.register(MineMinerData, MineMinerDataAdmin)
 admin.site.register(Statistic, StatisticAdmin)
 admin.site.register(LocalOperator, LocalOperatorAdmin)
 admin.site.register(ForeignOperator, ForeignOperatorAdmin)
@@ -70,4 +82,4 @@ admin.site.register(InternalCombustionMachinery,
 admin.site.register(ElectricMachinery, ElectricMachineryAdmin)
 admin.site.register(EnergySupply, EnergySupplyAdmin)
 admin.site.register(OperatingRecord, OperatingRecordAdmin)
-admin.site.register(MineApproval, MineApprovalAdmin)
+admin.site.register(MineDataApproval, MineDataApprovalAdmin)
