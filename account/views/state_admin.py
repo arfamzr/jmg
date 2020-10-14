@@ -1,0 +1,119 @@
+from django.contrib.auth.models import Group
+from django.shortcuts import render, get_object_or_404, Http404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, FormView, DetailView, UpdateView
+
+from company.models import Company, Employee
+
+from ..models import User, Profile
+from ..forms.state_admin import UserCreationForm, UserForm
+
+
+class UserListView(ListView):
+    template_name = 'account/state_admin/user/list.html'
+    model = User
+    paginate_by = 8
+    ordering = ['-id']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            profile__state=self.request.user.profile.state,
+            groups__name__in=['Industry'])
+        try:
+            name = self.request.GET['q']
+        except:
+            name = ''
+        if (name != ''):
+            object_list = queryset.filter(username__icontains=name)
+        else:
+            object_list = queryset
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Pengguna Sistem'
+        return context
+
+
+class UserRegistrationView(FormView):
+    form_class = UserCreationForm
+    template_name = 'account/state_admin/user/registration.html'
+    success_url = reverse_lazy('account:state_admin:user_list')
+
+    def form_valid(self, form):
+        user = form.save()
+        group = Group.objects.get(name='Industry')
+        group.user_set.add(user)
+        profile = Profile(user=user, state=self.request.user.profile.state)
+        profile.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Daftar Pengguna'
+        return context
+
+
+def user_detail(request, pk):
+    each_user = get_object_or_404(User, pk=pk)
+
+    context = {
+        'each_user': each_user,
+        'title': 'Maklumat Pengguna',
+    }
+
+    return render(request, 'account/state_admin/user/detail.html', context)
+
+
+class UserUpdateView(UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'account/state_admin/user/update.html'
+    context_object_name = 'each_user'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Update Pengguna'
+        return context
+
+
+def user_toggle_active(request, pk):
+    each_user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        if each_user.is_active == True:
+            each_user.is_active = False
+        else:
+            each_user.is_active = True
+        each_user.save()
+        return redirect('account:state_admin:user_list')
+
+    context = {
+        'each_user': each_user,
+    }
+
+    return render(request, 'account/state_admin/user/toggle_active.html', context)
+
+
+def add_company(request, user_pk, company_pk):
+    user = get_object_or_404(User, pk=user_pk)
+    company = get_object_or_404(Company, pk=company_pk)
+
+    employee, created = Employee.objects.get_or_create(
+        user=user,
+    )
+
+    employee.company = company
+    employee.add_by = request.user
+    employee.save()
+
+    return redirect('company:state_admin:detail', company.pk)
+
+
+def remove_company(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    employee = get_object_or_404(Employee, user=user)
+    company = employee.company
+    employee.company = None
+    employee.save()
+
+    return redirect('company:state_admin:detail', company.pk)

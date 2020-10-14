@@ -1,106 +1,95 @@
 from django import forms
 
-from .models import (
-    Mine,
-    MineMiner,
-    MineMinerData,
-    Statistic,
+from account.widgets import XDSoftDatePickerInput
+
+from ..models import (
+    Quarry,
+    QuarryMiner,
+    QuarryMinerData,
+    ProductionStatistic,
+    SalesSubmission,
+    LocalFinalUses,
+    ExportFinalUses,
     LocalOperator,
     LocalContractor,
     ForeignOperator,
     ForeignContractor,
     InternalCombustionMachinery,
     ElectricMachinery,
+    DailyExplosive,
     EnergySupply,
     OperatingRecord,
+    Royalties,
+    Other,
 )
 
 
-class MineForm(forms.ModelForm):
+class QuarryReadOnlyForm(forms.ModelForm):
 
     class Meta:
-        model = Mine
+        model = Quarry
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['readonly'] = True
 
-class MineMinerForm(forms.ModelForm):
+
+class QuarryMinerReadOnlyForm(forms.ModelForm):
 
     class Meta:
-        model = MineMiner
+        model = QuarryMiner
         fields = ['lot_number', 'latitude', 'longitude']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['readonly'] = True
 
-class MineMinerDataForm(forms.ModelForm):
+
+class QuarryMinerDataReadOnlyForm(forms.ModelForm):
 
     class Meta:
-        model = MineMinerData
+        model = QuarryMinerData
         fields = ['month', 'year']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['readonly'] = True
 
-class StatisticForm(forms.ModelForm):
+
+class ProductionStatisticReadOnlyForm(forms.ModelForm):
 
     class Meta:
-        model = Statistic
+        model = ProductionStatistic
         exclude = ['miner_data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.label = ''
+            field.widget.attrs['readonly'] = True
 
 
-class LocalOperatorForm(forms.ModelForm):
+class SalesSubmissionReadOnlyForm(forms.ModelForm):
 
     class Meta:
-        model = LocalOperator
+        model = SalesSubmission
         exclude = ['miner_data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.label = ''
+            field.widget.attrs['readonly'] = True
 
 
-class LocalContractorForm(forms.ModelForm):
-
-    class Meta:
-        model = LocalContractor
-        exclude = ['miner_data']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
-
-
-class ForeignOperatorForm(forms.ModelForm):
+class LocalFinalUsesReadOnlyForm(forms.ModelForm):
 
     class Meta:
-        model = ForeignOperator
-        exclude = ['miner_data']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
-
-
-class ForeignContractorForm(forms.ModelForm):
-
-    class Meta:
-        model = ForeignContractor
-        exclude = ['miner_data']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
-
-
-class InternalCombustionMachineryForm(forms.ModelForm):
-
-    class Meta:
-        model = InternalCombustionMachinery
+        model = LocalFinalUses
         exclude = ['miner_data']
         widgets = {
             'state_other': forms.Textarea(attrs={'rows': 2})
@@ -110,88 +99,17 @@ class InternalCombustionMachineryForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.label = ''
+            field.widget.attrs['readonly'] = True
 
 
-class ElectricMachineryForm(forms.ModelForm):
+class ExportFinalUsesReadOnlyForm(forms.ModelForm):
 
     class Meta:
-        model = ElectricMachinery
+        model = ExportFinalUses
         exclude = ['miner_data']
         widgets = {
             'state_other': forms.Textarea(attrs={'rows': 2})
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
-
-
-class EnergySupplyForm(forms.ModelForm):
-
-    class Meta:
-        model = EnergySupply
-        exclude = ['miner_data']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
-
-
-class OperatingRecordForm(forms.ModelForm):
-
-    class Meta:
-        model = OperatingRecord
-        exclude = ['miner_data']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
-
-
-class MineReadOnlyForm(forms.ModelForm):
-
-    class Meta:
-        model = Mine
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['readonly'] = True
-
-
-class MineMinerReadOnlyForm(forms.ModelForm):
-
-    class Meta:
-        model = MineMiner
-        fields = ['lot_number', 'latitude', 'longitude']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['readonly'] = True
-
-
-class MineMinerDataReadOnlyForm(forms.ModelForm):
-
-    class Meta:
-        model = MineMinerData
-        fields = ['month', 'year']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['readonly'] = True
-
-
-class StatisticReadOnlyForm(forms.ModelForm):
-
-    class Meta:
-        model = Statistic
-        exclude = ['miner_data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -284,6 +202,23 @@ class ElectricMachineryReadOnlyForm(forms.ModelForm):
             field.widget.attrs['readonly'] = True
 
 
+class DailyExplosiveReadOnlyForm(forms.ModelForm):
+    date = forms.DateField(
+        input_formats=['%d/%m/%Y'],
+        widget=XDSoftDatePickerInput(format='%d/%m/%Y'),
+    )
+
+    class Meta:
+        model = DailyExplosive
+        exclude = ['miner_data']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
 class EnergySupplyReadOnlyForm(forms.ModelForm):
 
     class Meta:
@@ -302,6 +237,36 @@ class OperatingRecordReadOnlyForm(forms.ModelForm):
     class Meta:
         model = OperatingRecord
         exclude = ['miner_data']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class RoyaltiesReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = Royalties
+        exclude = ['miner_data']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+            field.widget.attrs['readonly'] = True
+
+
+class OtherReadOnlyForm(forms.ModelForm):
+
+    class Meta:
+        model = Other
+        exclude = ['miner_data']
+        widgets = {
+            'title': forms.Textarea(attrs={'rows': 1}),
+            'comment': forms.Textarea(attrs={'rows': 3}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

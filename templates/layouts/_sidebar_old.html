@@ -48,7 +48,7 @@
 
   <!-- Nav Item - Senarai Pengguna -->
   <li class="nav-item ">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'account:user_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengguna</span></a>
   </li>
@@ -76,14 +76,14 @@
 
     <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'quarry:list_hq' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'mine:list_hq' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
   </li>
@@ -141,13 +141,13 @@
 
   <!-- Nav Item - Senarai Pengguna -->
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'account:state_admin:user_list' %}">
+    <a class="nav-link" href="{% url 'account:user_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengguna</span></a>
   </li>
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'company:state_admin:list' %}">
+    <a class="nav-link" href="">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Syarikat</span></a>
   </li>
@@ -159,7 +159,7 @@
   </li>
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'quarry:state_admin:list' %}">
+    <a class="nav-link" href="">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Kuari</span></a>
   </li>
@@ -174,14 +174,14 @@
 
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'quarry:list_state_admin' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'mine:list_state_admin' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
   </li>
@@ -229,12 +229,12 @@
 
   <!-- Nav Item - Senarai Pengguna -->
   <li class="nav-item ">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'account:user_listView' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengguna</span></a>
   </li>
   <li class="nav-item ">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'company:list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Syarikat</span></a>
   </li>
@@ -269,14 +269,14 @@
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
     {% comment %} <a class="nav-link" href="{% url 'quarry:listquarry' %}"> {% endcomment %}
-      <a class="nav-link" href="#edited">
+      <a class="nav-link" href="{% url 'quarry:list_state' %}">
         <i class="fas fa-fw fa-gem"></i>
         <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'mine:list_state' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
   </li>
@@ -311,14 +311,14 @@
 
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'quarry:list' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'mine:list' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
   </li>

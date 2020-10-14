@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 
@@ -25,6 +26,19 @@ class User(AbstractUser):
     @property
     def is_super_admin(self):
         return self.is_active and (self.is_superuser or self.groups.filter(name='Super Admin').exists())
+
+    def get_absolute_url(self):
+        return reverse("account:state_admin:user_detail", kwargs={"pk": self.pk})
+
+    def get_update_url(self):
+        return reverse("account:state_admin:user_update", kwargs={"pk": self.pk})
+
+    def get_toggle_active_url(self):
+        return reverse("account:state_admin:user_toggle_active", kwargs={"pk": self.pk})
+
+    def get_remove_company_url(self):
+        return reverse("account:state_admin:remove_company", kwargs={"pk": self.pk})
+
 
 class Profile(models.Model):
     JOHOR = 'JHR'

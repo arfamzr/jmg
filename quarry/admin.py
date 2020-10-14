@@ -2,6 +2,8 @@ from django.contrib import admin
 
 from .models import (
     Quarry,
+    QuarryMiner,
+    QuarryMinerData,
     ProductionStatistic,
     SalesSubmission,
     LocalFinalUses,
@@ -17,11 +19,19 @@ from .models import (
     OperatingRecord,
     Royalties,
     Other,
-    QuarryApproval,
+    QuarryDataApproval,
 )
 
 
 class QuarryAdmin(admin.ModelAdmin):
+    pass
+
+
+class QuarryMinerAdmin(admin.ModelAdmin):
+    pass
+
+
+class QuarryMinerDataAdmin(admin.ModelAdmin):
     pass
 
 
@@ -85,11 +95,13 @@ class OtherAdmin(admin.ModelAdmin):
     pass
 
 
-class QuarryApprovalAdmin(admin.ModelAdmin):
+class QuarryDataApprovalAdmin(admin.ModelAdmin):
     pass
 
 
 admin.site.register(Quarry, QuarryAdmin)
+admin.site.register(QuarryMiner, QuarryMinerAdmin)
+admin.site.register(QuarryMinerData, QuarryMinerDataAdmin)
 admin.site.register(ProductionStatistic, ProductionStatisticAdmin)
 admin.site.register(SalesSubmission, SalesSubmissionAdmin)
 admin.site.register(LocalFinalUses, LocalFinalUsesAdmin)
@@ -106,4 +118,4 @@ admin.site.register(EnergySupply, EnergySupplyAdmin)
 admin.site.register(OperatingRecord, OperatingRecordAdmin)
 admin.site.register(Royalties, RoyaltiesAdmin)
 admin.site.register(Other, OtherAdmin)
-admin.site.register(QuarryApproval, QuarryApprovalAdmin)
+admin.site.register(QuarryDataApproval, QuarryDataApprovalAdmin)
