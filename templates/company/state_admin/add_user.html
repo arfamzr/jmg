@@ -14,7 +14,7 @@
         <div class="col justify-content-end">
           <form action="." method="GET">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off" autofocus>
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
                 <button type="submit" class="btn btn-primary">Search Username</button>
               </div>
@@ -53,13 +53,13 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{% url 'account:state_admin:add_company' each_user.pk company.pk %}"
+                  <a href="{% url 'company:state_admin:company_add_employee' company.pk each_user.pk %}"
                     class="badge badge-primary">Pilih perkerja ini</a>
                 </td>
               </tr>
               {% empty %}
               <tr>
-                <td colspan="6">Tidak di jumpai</td>
+                <td colspan="10">Tidak di jumpai</td>
               </tr>
               {% endfor %}
             </tbody>

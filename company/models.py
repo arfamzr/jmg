@@ -35,6 +35,12 @@ class Company(models.Model):
     def get_absolute_url(self):
         return reverse("company:state_admin:detail", kwargs={"pk": self.pk})
 
+    def get_state_absolute_url(self):
+        return reverse("company:state:detail", kwargs={"pk": self.pk})
+
+    def get_toggle_active_url(self):
+        return reverse("company:state_admin:toggle_active", kwargs={"pk": self.pk})
+
     def get_add_employee_url(self):
         return reverse("company:state_admin:add_employee", kwargs={"pk": self.pk})
 
@@ -55,3 +61,9 @@ class Employee(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.company}'
+
+    def get_add_employee_url(self):
+        return reverse("company:state_admin:add_employee", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("company:state_admin:company_remove_employee", kwargs={"pk": self.pk})

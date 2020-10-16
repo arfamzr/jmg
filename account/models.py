@@ -30,14 +30,26 @@ class User(AbstractUser):
     def get_absolute_url(self):
         return reverse("account:state_admin:user_detail", kwargs={"pk": self.pk})
 
+    def get_state_absolute_url(self):
+        return reverse("account:state:user_detail", kwargs={"pk": self.pk})
+
     def get_update_url(self):
         return reverse("account:state_admin:user_update", kwargs={"pk": self.pk})
 
     def get_toggle_active_url(self):
         return reverse("account:state_admin:user_toggle_active", kwargs={"pk": self.pk})
 
-    def get_remove_company_url(self):
-        return reverse("account:state_admin:remove_company", kwargs={"pk": self.pk})
+    def get_quarry_list_url(self):
+        return reverse("quarry:state_admin:user_quarry_list", kwargs={"pk": self.pk})
+
+    def get_mine_list_url(self):
+        return reverse("mine:state_admin:user_mine_list", kwargs={"pk": self.pk})
+
+    def get_state_quarry_list_url(self):
+        return reverse("quarry:state:user_quarry_list", kwargs={"pk": self.pk})
+
+    def get_state_mine_list_url(self):
+        return reverse("mine:state:user_mine_list", kwargs={"pk": self.pk})
 
 
 class Profile(models.Model):

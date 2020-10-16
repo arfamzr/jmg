@@ -1,0 +1,174 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col my-auto">
+          <h5>Profile Kuari</h5>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-8">
+          <table class="table table-bordered table-sm">
+            <tbody>
+              <tr>
+                <th>Alamat</th>
+                <td>
+                  {{ quarry.address1 }}{% if quarry.address2 %},<br>{{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>{{ quarry.address3 }}{% endif %}
+                </td>
+              </tr>
+              <tr>
+                <th>No. Telefon</th>
+                <td>{{ quarry.phone_number }}</td>
+              </tr>
+              <tr>
+                <th>No. Fax</th>
+                <td>{{ quarry.fax_number }}</td>
+              </tr>
+              <tr>
+                <th>Emel</th>
+                <td>{{ quarry.email }}</td>
+              </tr>
+              <tr>
+                <th>Lokasi</th>
+                <td>{{ quarry.location }}</td>
+              </tr>
+              <tr>
+                <th>Mukim</th>
+                <td>{{ quarry.mukim }}</td>
+              </tr>
+              <tr>
+                <th>Daerah</th>
+                <td>{{ quarry.district }}</td>
+              </tr>
+              <tr>
+                <th>Negeri</th>
+                <td>{{ quarry.get_state_display }}</td>
+              </tr>
+              <tr>
+                <th>Status Tanah</th>
+                <td>{{ quarry.land_status }}</td>
+              </tr>
+              <tr>
+                <th>Rujukan Grid</th>
+                <td>{{ quarry.grid_reference }}</td>
+              </tr>
+              <tr>
+                <th>Keupayaan Maksima</th>
+                <td>{{ quarry.max_capacity }}</td>
+              </tr>
+              <tr>
+                <th>Kategori Syarikat</th>
+                <td>{{ quarry.company_category }}</td>
+              </tr>
+              <tr>
+                <th>Jenis Batuan Utama</th>
+                <td>{{ quarry.main_rock_type }}</td>
+              </tr>
+              <tr>
+                <th>Jenis Batuan Sampingan</th>
+                <td>{{ quarry.side_rock_type }}</td>
+              </tr>
+              <tr>
+                <th>Aktif</th>
+                <td>
+                  {% if quarry.status %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col my-auto d-flex">
+          <h5 class="my-auto">Senarai Pengusaha</h5>
+        </div>
+
+        <div class="col justify-content-end">
+          <form action="." method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search Username</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">No Lot</th>
+                <th scope="col">Latitude</th>
+                <th scope="col">Logitude</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Syarikat</th>
+                <th scope="col">Aktif</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for quarry_miner in quarry_miner_list %}
+              {% with each_user=quarry_miner.miner %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ quarry_miner.lot_number }}</td>
+                <td>{{ quarry_miner.latitude }}</td>
+                <td>{{ quarry_miner.longitude }}</td>
+                <td><a href="{{ each_user.get_state_absolute_url }}">{{ each_user.username }}</a></td>
+                <td>
+                  {% if each_user.employee and each_user.employee.company %}
+                  <a
+                    href="{{ each_user.employee.company.get_state_absolute_url }}">{{ each_user.employee.company.name }}</a>
+                  {% else %}
+                  Tiada Syarikat
+                  {% endif %}
+                </td>
+                <td>
+                  {% if each_user.is_active %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endwith %}
+              {% empty %}
+              <tr>
+                <td colspan="10">Tidak di jumpai</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

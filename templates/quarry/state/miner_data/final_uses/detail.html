@@ -1,0 +1,153 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" colspan="2" style="text-align: center;">TEMPATAN</th>
+                <th scope="col" colspan="2" style="text-align: center;">EKSPORT</th>
+              </tr>
+            </thead>
+            <thead class="thead-light">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" style="text-align: center;">AMAUN (MT)</th>
+                <th scope="col" style="text-align: center;">NILAI (RM)</th>
+                <th scope="col" style="text-align: center;">AMAUN (MT)</th>
+                <th scope="col" style="text-align: center;">NILAI (RM)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>PEMBINAAN</th>
+                <td style="text-align: right;">{{ local_final_uses.construction_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.construction_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.construction_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.construction_worth }}</td>
+              </tr>
+              <tr>
+                <th>BATU DIMENSI</th>
+                <td style="text-align: right;">{{ local_final_uses.dimension_stone_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.dimension_stone_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.dimension_stone_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.dimension_stone_worth }}</td>
+              </tr>
+              <tr>
+                <th>PEMBUATAN SIMEN</th>
+                <td style="text-align: right;">{{ local_final_uses.cement_making_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.cement_making_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.cement_making_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.cement_making_worth }}</td>
+              </tr>
+              <tr>
+                <th>KAPUR TOHOR</th>
+                <td style="text-align: right;">{{ local_final_uses.quicklime_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.quicklime_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.quicklime_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.quicklime_worth }}</td>
+              </tr>
+              <tr>
+                <th>SERBUK KALSIUM KARBONAT</th>
+                <td style="text-align: right;">{{ local_final_uses.calcium_carbonate_powder_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.calcium_carbonate_powder_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.calcium_carbonate_powder_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.calcium_carbonate_powder_worth }}</td>
+              </tr>
+              <tr>
+                <th>PREMIX</th>
+                <td style="text-align: right;">{{ local_final_uses.premix_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.premix_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.premix_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.premix_worth }}</td>
+              </tr>
+              <tr>
+                <th>KONKRIT READYMIX</th>
+                <td style="text-align: right;">{{ local_final_uses.ready_mix_concrete_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.ready_mix_concrete_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.ready_mix_concrete_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.ready_mix_concrete_worth }}</td>
+              </tr>
+              <tr>
+                <th>BAJA</th>
+                <td style="text-align: right;">{{ local_final_uses.fertilizer_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.fertilizer_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.fertilizer_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.fertilizer_worth }}</td>
+              </tr>
+              <tr>
+                <th>INDUSTRI KELULI</th>
+                <td style="text-align: right;">{{ local_final_uses.steel_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.steel_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.steel_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.steel_worth }}</td>
+              </tr>
+              <tr>
+                <th>KAPUR HIDRAT</th>
+                <td style="text-align: right;">{{ local_final_uses.hydrated_lime_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.hydrated_lime_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.hydrated_lime_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.hydrated_lime_worth }}</td>
+              </tr>
+              <tr>
+                <th>SERBUK DOLOMIT</th>
+                <td style="text-align: right;">{{ local_final_uses.dolomite_powder_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.dolomite_powder_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.dolomite_powder_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.dolomite_powder_worth }}</td>
+              </tr>
+              <tr>
+                <th>TERAZO</th>
+                <td style="text-align: right;">{{ local_final_uses.terrazo_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.terrazo_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.terrazo_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.terrazo_worth }}</td>
+              </tr>
+              <tr>
+                <th>LAIN-LAIN</th>
+                <td style="text-align: right;">{{ local_final_uses.other_amount }}</td>
+                <td style="text-align: right;">{{ local_final_uses.other_worth }}</td>
+                <td style="text-align: right;">{{ export_final_uses.other_amount }}</td>
+                <td style="text-align: right;">{{ export_final_uses.other_worth }}</td>
+              </tr>
+              <tr>
+                <th>(NYATAKAN)</th>
+                <td colspan="2">{{ local_final_uses.state_other }}</td>
+                <td colspan="2">{{ export_final_uses.state_other }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 col-lg-3 mt-3 ml-auto">
+          <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+            Sebelumnya
+          </a>
+        </div>
+        <div class="col-4 col-lg-3 mt-3">
+          <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+            Seterusnya
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

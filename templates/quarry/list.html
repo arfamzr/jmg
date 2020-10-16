@@ -7,133 +7,65 @@
   <!-- Page Heading -->
   <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
 
-  <div class="row">
-    <div class="col-lg-12">
-
-      <a href="{% url 'quarry:create' %}" class="btn btn-primary mb-3">Tambah Kuari
-        Baru</a>
-
-      <table class="table table-hover">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Pemegang Pajakan</th>
-            <th scope="col">Pengusaha Kuari</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for quarry in quarry_list %}
-          <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ quarry.leaseholder }}</td>
-            <td>{{ quarry.quarry_entrepreneur }}</td>
-            <td>
-              {% if quarry.get_last_approval %}
-              {% if quarry.get_last_approval.admin_approved == True %}
-              <span class="text-success">Successful</span>
-              {% elif quarry.get_last_approval.state_approved == False or quarry.get_last_approval.admin_approved == False %}
-              <span class="text-danger">Rejected</span>
-              <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#rejectCommentModal"
-                data-quarry-id="{{ quarry.id }}">
-                <i class=" far fa-eye"></i>
-              </button>
-              {% else %}
-              <span class="text-warning">In Process</span>
-              {% endif %}
-              {% else %}
-              <span class="text-info">Draft</span>
-              {% endif %}
-            </td>
-            <td>
-              {% if quarry.get_last_approval and quarry.get_last_approval.state_approved != False and quarry.get_last_approval.admin_approved != False %}
-              <a href="{{ quarry.get_readonly_url }}" class="btn btn-sm btn-secondary">
-                <i class="far fa-eye"></i>
-              </a>
-              {% else %}
-              {% comment %} <a href="{{ quarry.get_update_url }}" class="btn btn-sm btn-success">Update</a>
-              {% endcomment %}
-              <a href="{{ quarry.get_edit_url }}" class="btn btn-sm btn-info">Edit</a>
-              <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#submitQuarryModal"
-                data-quarry-id="{{ quarry.id }}">Submit</button>
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col justify-content-end">
+          <form action="." method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search Quarry</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">No Lot</th>
+                <th scope="col">Latitude</th>
+                <th scope="col">Longitude</th>
+                <th scope="col">Lokasi</th>
+                <th scope="col">Aktif</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for quarry_miner in object_list %}
+              {% with quarry=quarry_miner.quarry %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="">{{ quarry_miner.lot_number }}</a></td>
+                <td>{{ quarry_miner.latitude }}</td>
+                <td>{{ quarry_miner.longitude }}</td>
+                <td>{{ quarry }}</td>
+                <td>
+                  {% if quarry.status %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ quarry_miner.get_add_report_url }}" class="badge badge-primary">Add Report</a>
+                </td>
+              </tr>
+              {% endwith %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
 </div>
 <!-- /.container-fluid -->
-
-<!-- Submit Modal-->
-<div class="modal fade" id="submitQuarryModal" tabindex="-1" role="dialog" aria-labelledby="submitQuarryModal"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="submitQuarryModalLabel">Submit this quarry</h4>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Are you sure want to submit this quarry?
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <form action="#" method="post">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-primary">Yes</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Reject Comment Modal-->
-<div class="modal fade" id="rejectCommentModal" tabindex="-1" role="dialog" aria-labelledby="rejectCommentModal"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="rejectCommentModalLabel">Comment</h4>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <span id="comment"></span>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 {% endblock content %}
-
-{% block extra_js %}
-<script>
-  $('#submitQuarryModal').on('show.bs.modal', function (event) {
-    const button = $(event.relatedTarget)
-    const quarry_id = button.data('quarry-id')
-    const modal = $(this)
-    modal.find('form').attr('action', `${quarry_id}/submit/`)
-  })
-  $('#rejectCommentModal').on('show.bs.modal', function (event) {
-    const button = $(event.relatedTarget)
-    const quarry_id = button.data('quarry-id')
-    const modal = $(this)
-    $.ajax({
-      url: `${quarry_id}/get-comment/`,
-      success: function (result) {
-        modal.find('#comment').text(result)
-      }
-    });
-  })
-</script>
-{% endblock extra_js %}
