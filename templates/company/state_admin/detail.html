@@ -74,7 +74,7 @@
         <div class="col justify-content-end">
           <form action="." method="GET">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off" autofocus>
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
                 <button type="submit" class="btn btn-primary">Search Username</button>
               </div>
@@ -93,6 +93,7 @@
                 <th scope="col">#</th>
                 <th scope="col">Nama</th>
                 <th scope="col">Emel</th>
+                <th scope="col">Negeri</th>
                 <th scope="col">Bil Kuari</th>
                 <th scope="col">Bil Lombong</th>
                 <th scope="col">Aktif</th>
@@ -100,11 +101,13 @@
               </tr>
             </thead>
             <tbody>
-              {% for each_user in user_list %}
+              {% for employee in employee_list %}
+              {% with each_user=employee.user %}
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href="{{ each_user.get_absolute_url }}">{{ each_user.username }}</a></td>
                 <td>{{ each_user.email }}</td>
+                <td>{{ each_user.profile.get_state_display }}</td>
                 <td>{{ each_user.get_quarry_count }}</td>
                 <td>{{ each_user.get_mine_count }}</td>
                 <td>
@@ -115,12 +118,13 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ each_user.get_remove_company_url }}" class="badge badge-danger">Buang dari syarikat</a>
+                  <a href="{{ employee.get_delete_url }}" class="badge badge-danger">Buang dari syarikat</a>
                 </td>
               </tr>
+              {% endwith %}
               {% empty %}
               <tr>
-                <td colspan="6">Tidak di jumpai</td>
+                <td colspan="10">Tidak di jumpai</td>
               </tr>
               {% endfor %}
             </tbody>

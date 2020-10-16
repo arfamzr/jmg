@@ -3,8 +3,7 @@ from django import forms
 from account.widgets import XDSoftDatePickerInput
 
 from ..models import (
-    Quarry,
-    QuarryMiner,
+    QuarryMinerData,
     QuarryMinerData,
     ProductionStatistic,
     SalesSubmission,
@@ -22,20 +21,6 @@ from ..models import (
     Royalties,
     Other,
 )
-
-
-class QuarryForm(forms.ModelForm):
-
-    class Meta:
-        model = Quarry
-        fields = '__all__'
-
-
-class QuarryMinerForm(forms.ModelForm):
-
-    class Meta:
-        model = QuarryMiner
-        fields = ['lot_number', 'latitude', 'longitude']
 
 
 class QuarryMinerDataForm(forms.ModelForm):

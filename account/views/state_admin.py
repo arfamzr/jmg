@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView, DetailView, UpdateView
 
 from company.models import Company, Employee
+from quarry.models import Quarry, QuarryMiner
 
 from ..models import User, Profile
 from ..forms.state_admin import UserCreationForm, UserForm
@@ -92,28 +93,3 @@ def user_toggle_active(request, pk):
     }
 
     return render(request, 'account/state_admin/user/toggle_active.html', context)
-
-
-def add_company(request, user_pk, company_pk):
-    user = get_object_or_404(User, pk=user_pk)
-    company = get_object_or_404(Company, pk=company_pk)
-
-    employee, created = Employee.objects.get_or_create(
-        user=user,
-    )
-
-    employee.company = company
-    employee.add_by = request.user
-    employee.save()
-
-    return redirect('company:state_admin:detail', company.pk)
-
-
-def remove_company(request, pk):
-    user = get_object_or_404(User, pk=pk)
-    employee = get_object_or_404(Employee, user=user)
-    company = employee.company
-    employee.company = None
-    employee.save()
-
-    return redirect('company:state_admin:detail', company.pk)

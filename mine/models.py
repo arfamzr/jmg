@@ -28,6 +28,7 @@ class Mine(models.Model):
     main_rock_type = models.CharField(_("jenis batuan utama"), max_length=255)
     side_rock_type = models.CharField(
         _("jenis batuan sampingan"), max_length=255)
+    status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -36,19 +37,22 @@ class Mine(models.Model):
         verbose_name_plural = "lombong"
 
     def __str__(self):
-        return f'{self.lokasi}, {self.mukim}, {self.district}, {self.state}'
+        return f'{self.location}, {self.mukim}, {self.district}, {self.get_state_display()}'
+
+    def get_absolute_url(self):
+        return reverse("mine:state_admin:detail", kwargs={"pk": self.pk})
+
+    def get_state_absolute_url(self):
+        return reverse("mine:state:detail", kwargs={"pk": self.pk})
 
     def get_update_url(self):
-        return reverse("mine:update", kwargs={"pk": self.pk})
+        return reverse("mine:state_admin:update", kwargs={"pk": self.pk})
 
-    def get_edit_url(self):
-        return reverse("mine:statistic_edit", kwargs={"pk": self.pk})
+    def get_toggle_active_url(self):
+        return reverse("mine:state_admin:toggle_active", kwargs={"pk": self.pk})
 
-    def get_submit_url(self):
-        return reverse("mine:submit", kwargs={"pk": self.pk})
-
-    def get_readonly_url(self):
-        return reverse("mine:readonly", kwargs={"pk": self.pk})
+    def get_add_miner_url(self):
+        return reverse("mine:state_admin:add_miner", kwargs={"pk": self.pk})
 
 
 class MineMiner(models.Model):
@@ -73,6 +77,12 @@ class MineMiner(models.Model):
     def __str__(self):
         return f'{self.miner} ({self.mine})'
 
+    def get_delete_url(self):
+        return reverse("mine:state_admin:mine_remove_miner", kwargs={"pk": self.pk})
+
+    def get_add_report_url(self):
+        return reverse("mine:add_report", kwargs={"pk": self.pk})
+
 
 class MineMinerData(models.Model):
     miner = models.ForeignKey(MineMiner, verbose_name=_(
@@ -94,6 +104,21 @@ class MineMinerData(models.Model):
 
     def __str__(self):
         return f'{self.miner} - {self.pk}'
+
+    def get_absolute_url(self):
+        return reverse("mine:miner_data", kwargs={"pk": self.pk})
+
+    def get_state_absolute_url(self):
+        return reverse("mine:state:miner_data", kwargs={"pk": self.pk})
+
+    def get_state_admin_absolute_url(self):
+        return reverse("mine:state_admin:miner_data", kwargs={"pk": self.pk})
+
+    def get_edit_url(self):
+        return reverse("mine:statistic_edit", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("mine:miner_data_delete", kwargs={"pk": self.pk})
 
     def get_last_approval(self):
         return self.approvals.last()

@@ -1,0 +1,89 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-8">
+          <table class="table table-bordered table-sm">
+            <tbody>
+              <tr>
+                <th>TARIKH</th>
+                <td style="text-align: right;">{{ daily_explosive.date|date:"d/m/Y" }}</td>
+              </tr>
+              <tr>
+                <th>BAHAN LETUPAN BES EMULSI (KG)</th>
+                <td style="text-align: right;">{{ daily_explosive.emulsion_explosive }}</td>
+              </tr>
+              <tr>
+                <th>BAHAN LETUPAN BES NG (KG)</th>
+                <td style="text-align: right;">{{ daily_explosive.ng_explosive }}</td>
+              </tr>
+              <tr>
+                <th>BAHAN LETUPAN LAIN (KG)</th>
+                <td style="text-align: right;">{{ daily_explosive.other_explosive }}</td>
+              </tr>
+              <tr>
+                <th>PELEDAK BIASA (BIJI)</th>
+                <td style="text-align: right;">{{ daily_explosive.detonator }}</td>
+              </tr>
+              <tr>
+                <th>PELEDAK ELEKTRIK (BIJI)</th>
+                <td style="text-align: right;">{{ daily_explosive.electric_detonator }}</td>
+              </tr>
+              <tr>
+                <th>PELEDAK NON ELEKTRIK (BIJI)</th>
+                <td style="text-align: right;">{{ daily_explosive.non_electric_detonator }}</td>
+              </tr>
+              <tr>
+                <th>SAFETY FUSE (M)</th>
+                <td style="text-align: right;">{{ daily_explosive.safety_fuse }}</td>
+              </tr>
+              <tr>
+                <th>KORD PELEDAK (M)</th>
+                <td style="text-align: right;">{{ daily_explosive.detonating_cord }}</td>
+              </tr>
+              <tr>
+                <th>ANFO (KG)</th>
+                <td style="text-align: right;">{{ daily_explosive.anfo }}</td>
+              </tr>
+              <tr>
+                <th>BULK EMULSION (KG)</th>
+                <td style="text-align: right;">{{ daily_explosive.bulk_emulsion }}</td>
+              </tr>
+              <tr>
+                <th>RELAY TLD (BIJI)</th>
+                <td style="text-align: right;">{{ daily_explosive.relay_tld }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 col-lg-3 mt-3 ml-auto">
+          <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+            Sebelumnya
+          </a>
+        </div>
+        <div class="col-4 col-lg-3 mt-3">
+          <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+            Seterusnya
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

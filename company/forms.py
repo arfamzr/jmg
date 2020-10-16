@@ -9,4 +9,4 @@ class CompanyForm(forms.ModelForm):
 
     class Meta:
         model = Company
-        exclude = ['status']
+        exclude = ['state', 'status']

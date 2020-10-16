@@ -17,7 +17,7 @@
         <div class="col justify-content-end">
           <form action="." method="GET">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off" autofocus>
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
                 <button type="submit" class="btn btn-primary">Cari Syarikat</button>
               </div>
@@ -56,12 +56,19 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ company.get_update_url }}" class="badge badge-primary">Edit</a>
+                  <a href="{{ company.get_update_url }}" class="badge badge-primary">Update</a>
+                  <a href="{{ company.get_toggle_active_url }}" class="badge badge-info">
+                    {% if company.status %}
+                    Deactivate
+                    {% else %}
+                    Activate
+                    {% endif %}
+                  </a>
                 </td>
               </tr>
               {% empty %}
               <tr>
-                <td colspan="6">Tidak di jumpai</td>
+                <td colspan="10">Tidak di jumpai</td>
               </tr>
               {% endfor %}
             </tbody>
