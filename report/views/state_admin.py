@@ -348,11 +348,11 @@ def quarry_report(request):
                 foreign_operator.male_labor,
                 foreign_operator.female_labor,
                 (local_operator.total_male+local_operator.total_female +
-                    foreign_operator.total_male+foreign_operator.total_female),
+                 foreign_operator.total_male+foreign_operator.total_female),
                 (local_operator.total_male_salary+local_operator.total_female_salary +
-                    foreign_operator.total_male_salary+foreign_operator.total_female_salary),
+                 foreign_operator.total_male_salary+foreign_operator.total_female_salary),
                 (local_operator.male_man_hour+local_operator.female_man_hour +
-                    foreign_operator.male_man_hour+foreign_operator.female_man_hour),
+                 foreign_operator.male_man_hour+foreign_operator.female_man_hour),
             ])
 
             worker_contractor_datas.append([
@@ -377,11 +377,11 @@ def quarry_report(request):
                 foreign_contractor.male_labor,
                 foreign_contractor.female_labor,
                 (local_contractor.total_male+local_contractor.total_female +
-                    foreign_contractor.total_male+foreign_contractor.total_female),
+                 foreign_contractor.total_male+foreign_contractor.total_female),
                 (local_contractor.total_male_salary+local_contractor.total_female_salary +
-                    foreign_contractor.total_male_salary+foreign_contractor.total_female_salary),
+                 foreign_contractor.total_male_salary+foreign_contractor.total_female_salary),
                 (local_contractor.male_man_hour+local_contractor.female_man_hour +
-                    foreign_contractor.male_man_hour+foreign_contractor.female_man_hour),
+                 foreign_contractor.male_man_hour+foreign_contractor.female_man_hour),
             ])
 
             combustion_machinery_datas.append([
