@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.forms',
 
     'account.apps.AccountConfig',
-    'dashboard.apps.DashboardConfig',
+    'company.apps.CompanyConfig',
     'quarry.apps.QuarryConfig',
     'mine.apps.MineConfig',
-    'company.apps.CompanyConfig',
+    'dashboard.apps.DashboardConfig',
+    'report.apps.ReportConfig',
 
     'crispy_forms',
 ]

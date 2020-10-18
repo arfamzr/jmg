@@ -17,6 +17,49 @@ def current_year():
 
 
 class Quarry(models.Model):
+    GRANITE = 'GRANITE'
+    LIMESTONE = 'LIMESTONE'
+    QUARTZITE = 'QUARTZITE'
+    SANDSTONE = 'SANDSTONE'
+    TUFF = 'TUFF'
+    ANDESIT = 'ANDESITE'
+    RHYOLITE = 'RHYOLITE'
+    GRAVEL = 'GRAVEL'
+    SERPENTINITE = 'SERPENTINITE'
+    GRANODIORITE = 'GRANODIORITE'
+    PERIDOTITE = 'PERIDOTITE'
+    FELDSPAR = 'FELDSPAR'
+    DOLOMITE = 'DOLOMITE'
+    SHALE = 'SHALE'
+    MICROTONALITE = 'MICROTONALITE'
+    GABBRO = 'GABBRO'
+    BASALT = 'BASALT'
+    HORNFELS = 'HORNFELS'
+    DOLORITE = 'DOLORITE'
+    DIORITE = 'DIORITE'
+    TYPES_OF_ROCK = [
+        (GRANITE, _('Granit/Granite')),
+        (LIMESTONE, _('Batu Kapur/Limestone')),
+        (QUARTZITE, _('Batu Kuartza/Quartzite')),
+        (SANDSTONE, _('Batu Pasir/Sandstone')),
+        (TUFF, _('Batu Tuf/tuff')),
+        (ANDESIT, _('Andesit/Andesite')),
+        (RHYOLITE, _('Ryolit/Rhyolite')),
+        (GRAVEL, _('Batu Kelikir/Gravel')),
+        (SERPENTINITE, _('Serpentinite')),
+        (GRANODIORITE, _('Granodiorite')),
+        (PERIDOTITE, _('Peridotite')),
+        (FELDSPAR, _('Feldspar')),
+        (DOLOMITE, _('Dolomite')),
+        (SHALE, _('Shale')),
+        (MICROTONALITE, _('Microtonalite')),
+        (GABBRO, _('Gabbro')),
+        (BASALT, _('Basalt')),
+        (HORNFELS, _('Hornfels')),
+        (DOLORITE, _('Dolorite')),
+        (DIORITE, _('Diorite')),
+    ]
+
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
@@ -34,9 +77,10 @@ class Quarry(models.Model):
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(_("kategori syarikat"), max_length=255)
-    main_rock_type = models.CharField(_("jenis batuan utama"), max_length=255)
+    main_rock_type = models.CharField(
+        _("jenis batuan utama"), max_length=255, choices=TYPES_OF_ROCK)
     side_rock_type = models.CharField(
-        _("jenis batuan sampingan"), max_length=255)
+        _("jenis batuan sampingan"), max_length=50, blank=True, choices=TYPES_OF_ROCK)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
