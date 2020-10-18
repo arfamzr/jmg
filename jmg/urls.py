@@ -24,5 +24,6 @@ urlpatterns = [
     path('quarry/', include('quarry.urls.main', namespace='quarry')),
     path('mine/', include('mine.urls.main', namespace='mine')),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
+    path('report/', include('report.urls.main', namespace='report')),
     path('', RedirectView.as_view(pattern_name='dashboard:dashboard'))
 ]

@@ -17,7 +17,7 @@
         <div class="col-lg-8">
           <table class="table table-bordered table-sm">
             <tbody>
-              {% with mine=miner_data.mine mine_miner=miner_data.miner %}
+              {% with mine=miner_data.mine mine_miner=miner_data.miner miner=miner_data.miner.miner %}
               <tr>
                 <th>Bulan/Tahun</th>
                 <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
@@ -25,6 +25,22 @@
               <tr>
                 <th>-</th>
                 <td>-</td>
+              </tr>
+              <tr>
+                <th>Nama Syarikat</th>
+                <td>
+                  <a href="{{ miner.employee.company.get_absolute_url }}">
+                    {{ miner.employee.company.name }}
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th>Pengusaha</th>
+                <td>
+                  <a href="{{ miner.get_absolute_url }}">
+                    {{ miner.username }}
+                  </a>
+                </td>
               </tr>
               <tr>
                 <th>No. Lot</th>
@@ -94,11 +110,11 @@
               </tr>
               <tr>
                 <th>Jenis Batuan Utama</th>
-                <td>{{ mine.main_rock_type }}</td>
+                <td>{{ mine.get_main_rock_type_display }}</td>
               </tr>
               <tr>
                 <th>Jenis Batuan Sampingan</th>
-                <td>{{ mine.side_rock_type }}</td>
+                <td>{{ mine.get_side_rock_type_display }}</td>
               </tr>
               <tr>
                 <th>Aktif</th>

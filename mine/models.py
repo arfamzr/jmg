@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
 from account.models import User, Profile
-from quarry.models import QuarryMinerData, YEAR_CHOICES, current_year
+from quarry.models import QuarryMinerData, YEAR_CHOICES, current_year, Quarry
 
 
 class Mine(models.Model):
@@ -25,9 +25,10 @@ class Mine(models.Model):
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(_("kategori syarikat"), max_length=255)
-    main_rock_type = models.CharField(_("jenis batuan utama"), max_length=255)
+    main_rock_type = models.CharField(
+        _("jenis batuan utama"), max_length=255, choices=Quarry.TYPES_OF_ROCK)
     side_rock_type = models.CharField(
-        _("jenis batuan sampingan"), max_length=255)
+        _("jenis batuan sampingan"), max_length=255, blank=True, choices=Quarry.TYPES_OF_ROCK)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
