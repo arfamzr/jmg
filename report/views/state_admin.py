@@ -19,6 +19,7 @@ def quarry_report_input(request):
 
     return render(request, 'report/state_admin/quarry/form.html', context)
 
+
 def mine_report_input(request):
     form = ReportForm()
 
@@ -28,6 +29,7 @@ def mine_report_input(request):
     }
 
     return render(request, 'report/state_admin/mine/form.html', context)
+
 
 def quarry_report(request):
     form = ReportForm(request.GET)
@@ -618,6 +620,7 @@ def quarry_report(request):
     else:
         return redirect('report:state_admin:quarry_input')
 
+
 def mine_report(request):
     form = ReportForm(request.GET)
     if form.is_valid():
@@ -625,24 +628,23 @@ def mine_report(request):
         month = form.cleaned_data['month']
         rock_type = form.cleaned_data['rock_type']
 
-        datas = QuarryDataApproval.objects.filter(
+        datas = MineDataApproval.objects.filter(
             admin_approved=True,
             miner_data__year=year, miner_data__month=month,
-            miner_data__quarry__main_rock_type=rock_type,
-            miner_data__quarry__state=request.user.profile.state)
+            miner_data__mine__main_rock_type=rock_type,
+            miner_data__mine__state=request.user.profile.state)
 
         if not datas:
             raise Http404
 
         wb = xlwt.Workbook(encoding='utf-8')
-        ws_statistic = wb.add_sheet('Perangkaan Pengeluaran')
-        ws_submission = wb.add_sheet('Penyerahan Jualan')
+        ws_statistic = wb.add_sheet('Perangkaan Mineral/Logam')
         ws_worker_operator = wb.add_sheet('Jumlah Pekerja (Operator)')
         ws_worker_contractor = wb.add_sheet('Jumlah Pekerja (Kontraktor)')
         ws_combustion_machinery = wb.add_sheet('Jentera Bakar Dalam')
         ws_electric_machinery = wb.add_sheet('Jentera Elektrik')
-        ws_explosive = wb.add_sheet('Penggunaan Bahan Letupan')
         ws_energy = wb.add_sheet('Bahan Tenaga')
+        ws_record_operation = wb.add_sheet('Rekod Operasi')
 
         font_bold = xlwt.XFStyle()
         font_bold.font.bold = True
@@ -652,21 +654,12 @@ def mine_report(request):
         # Perangkaan Pengeluaran HEADER
         statistic_row = 0
 
-        statistic_headers = ['Bil', 'Syarikat (Mukim)', 'Daerah', 'Stok Awal Bulan',
-                             'Pengeluaran', 'Jumlah', 'Jualan', 'Stok Akhir Bulan', 'Royalti (RM)']
+        statistic_headers = ['Bil', 'Syarikat (Mukim)', 'Daerah', 'Stok Akhir Bulan Lalu',
+                             'Pengeluaran Lombong', 'Jumlah', 'Penyerahan kepada Pembeli', 'Stok Akhir Bulan Ini', 'Gred Hitung Panjang']
 
         for col_num in range(len(statistic_headers)):
             ws_statistic.write(statistic_row, col_num,
                                statistic_headers[col_num], font_bold)
-
-        # Penyerahan Jualan HEADER
-        submission_row = 0
-        submission_headers = ['Crusher Run', 'Quarry Dust', 'Quarry Waste', '1/8"', '3/8"',
-                              '5/8"', '3/4"', '1"', '1 1/2"', '2"', '3" x 5"', '6" x 9"', 'Block', 'Jumlah']
-
-        for col_num in range(len(submission_headers)):
-            ws_submission.write(submission_row, col_num,
-                                submission_headers[col_num], font_bold)
 
         # Jumlah Pekerja (Operator) HEADER
         worker_operator_row = 0
@@ -844,26 +837,6 @@ def mine_report(request):
         ws_electric_machinery.write(1, 10, 'Bil', font_bold)
         ws_electric_machinery.write(1, 11, 'Kw', font_bold)
 
-        # Penggunaan Bahan Letupan HEADER
-        explosive_row = 0
-
-        ws_explosive.write_merge(0, 0, 0, 2, 'Bahan Letupan (kg)', font_bold)
-        ws_explosive.write_merge(0, 0, 3, 5, 'Detonator (biji)', font_bold)
-        ws_explosive.write_merge(0, 1, 6, 6, 'Fius Keselamatan (m)', font_bold)
-        ws_explosive.write_merge(0, 1, 7, 7, 'Kord Peledak (m)', font_bold)
-        ws_explosive.write_merge(0, 1, 8, 8, 'ANFO (kg)', font_bold)
-        ws_explosive.write_merge(0, 1, 9, 9, 'Bulk Emulsion (kg)', font_bold)
-        ws_explosive.write_merge(0, 1, 10, 10, 'Relay (biji)', font_bold)
-
-        explosive_row += 1
-
-        ws_explosive.write(1, 0, 'Bes Emulsi', font_bold)
-        ws_explosive.write(1, 1, 'Bes Nitro Gliserin', font_bold)
-        ws_explosive.write(1, 2, 'Lain-lain', font_bold)
-        ws_explosive.write(1, 3, 'Biasa', font_bold)
-        ws_explosive.write(1, 4, 'Elektrik', font_bold)
-        ws_explosive.write(1, 5, 'Bukan Elektrik', font_bold)
-
         # Bahan Tenaga HEADER
         energy_row = 0
 
@@ -872,57 +845,47 @@ def mine_report(request):
         ws_energy.write(0, 2, 'Jam Operasi Sehari', font_bold)
         ws_energy.write(0, 3, 'Bil. Hari Operasi', font_bold)
 
+        # Rekod Operasi HEADER
+        energy_row = 0
+
+        ws_energy.write(0, 0, 'Dalam lombong hitung panjang, meter', font_bold)
+        ws_energy.write(0, 1, 'Ukuran lombong terdalam, meter', font_bold)
+        ws_energy.write(0, 2, 'Ukuran lombong tercetek, meter', font_bold)
+        ws_energy.write(0, 3, 'Bahan beban dibuang, tan', font_bold)
+        ws_energy.write(0, 4, 'Bahan berbijih dilombong, tan', font_bold)
+
         # set data for all
         statistic_datas = []
-        submission_datas = []
         worker_operator_datas = []
         worker_contractor_datas = []
         combustion_machinery_datas = []
         electric_machinery_datas = []
-        explosive_datas = []
         energy_datas = []
+        record_operation_datas = []
 
         for data in datas:
-            quarry = data.miner_data.quarry
+            mine = data.miner_data.mine
             company = data.requestor.employee.company
             statistic = data.miner_data.productionstatistic
             royalties = data.miner_data.royalties
-            submission = data.miner_data.salessubmission
             local_operator = data.miner_data.localoperator
             foreign_operator = data.miner_data.foreignoperator
             local_contractor = data.miner_data.localcontractor
             foreign_contractor = data.miner_data.foreigncontractor
             combustion_machinery = data.miner_data.internalcombustionmachinery
             electric_machinery = data.miner_data.electricmachinery
-            explosive = data.miner_data.daily_explosives.first()
             energy = data.miner_data.energysupply
-            record = data.miner_data.operatingrecord
+            record_operation = data.miner_data.operatingrecord
 
             statistic_datas.append([
-                f'{company.name} ({quarry.mukim})',
-                quarry.district,
+                f'{company.name} ({mine.mukim})',
+                mine.district,
                 statistic.initial_main_rock_stock,
                 statistic.main_rock_production,
                 statistic.total_main_rock,
                 statistic.main_rock_submission,
                 statistic.final_main_rock_stock,
                 royalties.royalties,
-            ])
-
-            submission_datas.append([
-                submission.crusher_amount,
-                submission.dust_amount,
-                submission.waste_amount,
-                submission.inch_1_8_amount,
-                submission.inch_3_8_amount,
-                submission.inch_5_8_amount,
-                submission.inch_3_4_amount,
-                submission.inch_1_amount,
-                submission.inch_1_1_2_amount,
-                submission.inch_2_amount,
-                submission.inch_3x5_amount,
-                submission.inch_6x9_amount,
-                submission.block_amount,
             ])
 
             worker_operator_datas.append([
@@ -1027,25 +990,19 @@ def mine_report(request):
                 (combustion_machinery.total_power+electric_machinery.total_power),
             ])
 
-            explosive_datas.append([
-                explosive.emulsion_explosive,
-                explosive.ng_explosive,
-                explosive.other_explosive,
-                explosive.detonator,
-                explosive.electric_detonator,
-                explosive.non_electric_detonator,
-                explosive.safety_fuse,
-                explosive.detonating_cord,
-                explosive.anfo,
-                explosive.bulk_emulsion,
-                explosive.relay_tld,
-            ])
-
             energy_datas.append([
                 energy.total_diesel,
                 energy.total_electric,
                 record.operating_hours,
                 record.operating_days,
+            ])
+
+            record_operation_datas.append([
+                record_operation.average_mine_depth,
+                record_operation.total_deepest_mine,
+                record_operation.shallowest_mine,
+                record_operation.material_discarded,
+                record_operation.ore_mined,
             ])
 
         # Data Perangkaan Pengeluaran
@@ -1068,26 +1025,6 @@ def mine_report(request):
         for index, alpha in enumerate(statistic_col_alpha):
             ws_statistic.write(statistic_row, index+3, xlwt.Formula(
                 f'SUM({alpha}2:{alpha}{statistic_row})'), font_bold)
-
-        # Data Penyerahan Jualan
-
-        for row in submission_datas:
-            submission_row += 1
-
-            for col_num in range(len(row)):
-                ws_submission.write(submission_row, col_num,
-                                    row[col_num], font_style)
-
-            ws_submission.write(submission_row, len(row), xlwt.Formula(
-                f'SUM(A{submission_row+1}:M{submission_row+1})'), font_bold)
-
-        submission_row += 1
-
-        submission_col_alpha = list(map(chr, range(ord('A'), ord('N')+1)))
-
-        for index, alpha in enumerate(submission_col_alpha):
-            ws_submission.write(submission_row, index, xlwt.Formula(
-                f'SUM({alpha}2:{alpha}{submission_row})'), font_bold)
 
         # Data Jumlah Pekerja (Operator)
 
@@ -1160,23 +1097,6 @@ def mine_report(request):
             ws_electric_machinery.write(electric_machinery_row, index, xlwt.Formula(
                 f'SUM({alpha}3:{alpha}{electric_machinery_row})'), font_bold)
 
-        # Data Penggunaan Bahan Letupan
-
-        for row in explosive_datas:
-            explosive_row += 1
-
-            for col_num in range(len(row)):
-                ws_explosive.write(explosive_row, col_num,
-                                   row[col_num], font_style)
-
-        explosive_row += 1
-
-        explosive_col_alpha = list(map(chr, range(ord('A'), ord('K')+1)))
-
-        for index, alpha in enumerate(explosive_col_alpha):
-            ws_explosive.write(explosive_row, index, xlwt.Formula(
-                f'SUM({alpha}3:{alpha}{explosive_row})'), font_bold)
-
         # Data Bahan Tenaga
 
         for row in energy_datas:
@@ -1193,6 +1113,24 @@ def mine_report(request):
         for index, alpha in enumerate(energy_col_alpha):
             ws_energy.write(energy_row, index, xlwt.Formula(
                 f'SUM({alpha}3:{alpha}{energy_row})'), font_bold)
+
+        # Rekod Operasi Tenaga
+
+        for row in record_operation_datas:
+            record_operation_row += 1
+
+            for col_num in range(len(row)):
+                ws_record_operation.write(record_operation_row, col_num,
+                                          row[col_num], font_style)
+
+        record_operation_row += 1
+
+        record_operation_col_alpha = list(
+            map(chr, range(ord('A'), ord('E')+1)))
+
+        for index, alpha in enumerate(record_operation_col_alpha):
+            ws_record_operation.write(record_operation_row, index, xlwt.Formula(
+                f'SUM({alpha}3:{alpha}{record_operation_row})'), font_bold)
 
         # render response
         response = HttpResponse(content_type='application/ms-excel')
