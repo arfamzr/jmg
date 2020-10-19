@@ -66,7 +66,8 @@ class OperatingRecordAdmin(admin.ModelAdmin):
 
 
 class MineDataApprovalAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['miner_data', 'state_inspector', 'state_approved', 'admin_inspector', 'admin_approved']
+    list_editable = ['state_inspector', 'state_approved', 'admin_inspector', 'admin_approved']
 
 
 admin.site.register(Mine, MineAdmin)
