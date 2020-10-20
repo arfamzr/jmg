@@ -35,6 +35,31 @@ class UserListView(ListView):
         context["title"] = 'Senarai Pengguna Sistem'
         return context
 
+class StateListView(ListView):
+    template_name = 'account/state_admin/user/state_list.html'
+    model = User
+    paginate_by = 8
+    ordering = ['-id']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            profile__state=self.request.user.profile.state,
+            groups__name__in=['JMG State'])
+        try:
+            name = self.request.GET['q']
+        except:
+            name = ''
+        if (name != ''):
+            object_list = queryset.filter(username__icontains=name)
+        else:
+            object_list = queryset
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai JMG state'
+        return context
+
 
 class UserRegistrationView(FormView):
     form_class = UserCreationForm
@@ -52,6 +77,25 @@ class UserRegistrationView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Daftar Pengguna'
+        return context
+
+class StateRegistrationView(FormView):
+    form_class = UserCreationForm
+    template_name = 'account/state_admin/user/registration.html'
+    success_url = reverse_lazy('account:state_admin:state_list')
+
+    def form_valid(self, form):
+        user = form.save()
+        group = Group.objects.get(name='JMG State')
+        group.user_set.add(user)
+        profile = Profile(user=user, state=self.request.user.profile.state)
+        # profile = Profile(user=user, state=form.cleaned_data.get('state'))
+        profile.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Daftar JMG State'
         return context
 
 
