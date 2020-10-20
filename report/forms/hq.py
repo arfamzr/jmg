@@ -4,16 +4,22 @@ from quarry.models import YEAR_CHOICES, current_year, QuarryMinerData, Quarry
 
 
 def get_type_of_rock():
-    TYPE_OF_ROCK = Quarry.TYPES_OF_ROCK
+    TYPE_OF_ROCK = list(Quarry.TYPES_OF_ROCK)
     TYPE_OF_ROCK.insert(0, (None, '------'))
     return TYPE_OF_ROCK
+
+
+def get_month_choices():
+    MONTH_CHOICES = list(QuarryMinerData.MONTH_CHOICES)
+    MONTH_CHOICES.insert(0, (None, '------'))
+    return MONTH_CHOICES
 
 
 class GraphForm(forms.Form):
     year = forms.ChoiceField(
         label='Tahun', choices=YEAR_CHOICES, initial=current_year)
     month = forms.ChoiceField(
-        label='Bulan', choices=QuarryMinerData.MONTH_CHOICES, required=False)
+        label='Bulan', choices=get_month_choices(), required=False)
     rock_type1 = forms.ChoiceField(
         label='Jenis Batuan 1', choices=Quarry.TYPES_OF_ROCK)
     rock_type2 = forms.ChoiceField(
