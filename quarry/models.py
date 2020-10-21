@@ -192,6 +192,9 @@ class QuarryMinerData(models.Model):
     def get_state_admin_absolute_url(self):
         return reverse("quarry:state_admin:miner_data", kwargs={"pk": self.pk})
 
+    def get_hq_absolute_url(self):
+        return reverse("quarry:hq:miner_data", kwargs={"pk": self.pk})
+
     def get_edit_url(self):
         return reverse("quarry:production_statistic_edit", kwargs={"pk": self.pk})
 
