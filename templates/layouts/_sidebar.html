@@ -105,9 +105,15 @@
 
 
   <li class="nav-item">
-    <a class="nav-link" href="#report">
+    <a class="nav-link" href="{% url 'report:hq:quarry_input' %}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Kuari</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:hq:mine_input' %}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Lombong</span></a>
   </li>
 
   <!-- Divider -->
@@ -117,11 +123,16 @@
     Graph
   </div>
 
-
   <li class="nav-item">
     <a class="nav-link" href="{% url 'report:hq:quarry_graph' %}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Kuari</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:hq:mine_graph' %}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Lombong</span></a>
   </li>
 
   <!-- Divider -->
@@ -145,6 +156,12 @@
   </div>
 
   <!-- Nav Item - Senarai Pengguna -->
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'account:state_admin:state_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai State</span></a>
+  </li>
+
   <li class="nav-item ">
     <a class="nav-link" href="{% url 'account:state_admin:user_list' %}">
       <i class="fas fa-fw fa-user"></i>
@@ -210,6 +227,12 @@
     <a class="nav-link" href="{% url 'report:state_admin:quarry_input' %}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Kuari</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:state_admin:mine_input' %}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Lombong</span></a>
   </li>
 
   <!-- Divider -->
