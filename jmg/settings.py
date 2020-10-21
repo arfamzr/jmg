@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'mine.apps.MineConfig',
     'dashboard.apps.DashboardConfig',
     'report.apps.ReportConfig',
+    'notification.apps.NotificationConfig',
 
     'crispy_forms',
 ]
@@ -73,6 +74,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'jmg.context_processors.base_main',
+                'notification.context_processors.notify_context',
             ],
         },
     },

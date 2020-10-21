@@ -6,6 +6,7 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User
+from notification.notify import Notify
 
 from ..models import (
     Quarry,
@@ -553,6 +554,16 @@ def other_edit(request, pk):
             form.save()
             data_approval = QuarryDataApproval.objects.create(
                 miner_data=miner_data, requestor=request.user)
+
+            jmg_states = User.objects.filter(
+                groups__name='JMG State', profile__state=miner_data.state)
+
+            notify = Notify()
+            notify_message = f'{request.user} telah menghantar permohonan data untuk kuari "{miner_data.quarry}"'
+            notify_link = reverse('quarry:state:data_list')
+
+            for jmg_state in jmg_states:
+                notify.make_notify(jmg_state, notify_message, notify_link)
 
             return redirect('quarry:data_list')
 
