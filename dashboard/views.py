@@ -40,10 +40,10 @@ def dashboard(request):
         mine_count = get_counted_data(mine_data)
     elif request.user.is_jmg_state_admin or request.user.is_jmg_state:
         quarry_data = QuarryMinerData.objects.filter(
-            miner_data__state=request.user.profile.state)
+            state=request.user.profile.state)
         quarry_count = get_counted_data(quarry_data)
         mine_data = MineMinerData.objects.filter(
-            miner_data__state=request.user.profile.state)
+            state=request.user.profile.state)
         mine_count = get_counted_data(mine_data)
     elif request.user.is_industry:
         quarry_data = QuarryMinerData.objects.filter(miner__miner=request.user)
