@@ -35,6 +35,7 @@ class UserListView(ListView):
         context["title"] = 'Senarai Pengguna Sistem'
         return context
 
+
 class StateListView(ListView):
     template_name = 'account/state_admin/user/state_list.html'
     model = User
@@ -78,6 +79,7 @@ class UserRegistrationView(FormView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Daftar Pengguna'
         return context
+
 
 class StateRegistrationView(FormView):
     form_class = UserCreationForm

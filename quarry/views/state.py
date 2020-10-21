@@ -6,6 +6,7 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User
+from notification.notify import Notify
 
 from ..models import (
     Quarry,
@@ -351,6 +352,26 @@ def other_detail(request, pk):
         data_approval.state_comment = request.POST.get('comment', '')
         data_approval.state_approved = approved
         data_approval.save()
+
+        if approved:
+            jmg_state_admins = User.objects.filter(
+                groups__name='JMG State Admin', profile__state=miner_data.state)
+
+            notify = Notify()
+            notify_message = f'{miner_data.miner.quarry} telah menghantar permohonan data untuk kuari "{miner_data.quarry}"'
+            notify_link = reverse('quarry:state_admin:data_list')
+
+            for jmg_state_admin in jmg_state_admins:
+                notify.make_notify(jmg_state_admin, notify_message, notify_link)
+        else:
+            miner = data_approval.requestor
+
+            notify = Notify()
+            notify_message = f'Data untuk kuari "{miner_data.quarry}" telah ditolak'
+            notify_link = reverse('quarry:data_list')
+
+            notify.make_notify(miner, notify_message, notify_link)
+
         return redirect('quarry:state:data_list')
 
     context = {

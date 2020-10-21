@@ -33,21 +33,21 @@
                 <th scope="col">No Lot</th>
                 <th scope="col">Latitude</th>
                 <th scope="col">Longitude</th>
-                <th scope="col">Lokasi Kuari</th>
+                <th scope="col">Lokasi Lombong</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
               {% for miner_data in object_list %}
-              {% with quarry_miner=miner_data.miner quarry=miner_data.quarry last_approval=miner_data.get_last_approval %}
+              {% with mine_miner=miner_data.miner mine=miner_data.mine last_approval=miner_data.get_last_approval %}
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
-                <td>{{ quarry_miner.lot_number }}</td>
-                <td>{{ quarry_miner.latitude }}</td>
-                <td>{{ quarry_miner.longitude }}</td>
-                <td>{{ quarry }}</td>
+                <td>{{ mine_miner.lot_number }}</td>
+                <td>{{ mine_miner.latitude }}</td>
+                <td>{{ mine_miner.longitude }}</td>
+                <td>{{ mine }}</td>
                 <td>
                   {% if last_approval %}
                   {% if last_approval.admin_approved == True %}
