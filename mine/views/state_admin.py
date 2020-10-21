@@ -6,6 +6,7 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User
+from notification.notify import Notify
 
 from ..models import (
     Mine,
@@ -355,22 +356,26 @@ def operating_record_detail(request, pk):
 
         if approved:
             jmg_hqs = User.objects.filter(
-                groups__name='JMG HQ', profile__state=miner_data.state)
+                groups__name='JMG HQ')
 
             notify = Notify()
-            notify_message = f'{miner_data.miner.mine} telah menghantar permohonan data untuk lombong "{miner_data.mine}"'
+            notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk lombong "{miner_data.mine}"'
             notify_link = reverse('mine:hq:data_list') #hq/data_list belum ada
 
-            for hq in jmg_hqs:
+            for jmg_hq in jmg_hqs:
                 notify.make_notify(jmg_hq, notify_message, notify_link)
+
         else:
             miner = data_approval.requestor
+            state_inspector = data_approval.state_inspector
 
             notify = Notify()
             notify_message = f'Data untuk lombong "{miner_data.mine}" telah ditolak'
             notify_link = reverse('mine:data_list')
+            state_notify_message = f'Data untuk lombong "{miner_data.mine}"({miner}) telah ditolak'
 
             notify.make_notify(miner, notify_message, notify_link)
+            notify.make_notify(state_inspector, state_notify_message)
 
         return redirect('mine:state_admin:data_list')
 

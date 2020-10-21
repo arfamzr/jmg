@@ -29,6 +29,7 @@ urlpatterns = [
     path('data-list/', MineMinerDataListView.as_view(), name='data_list'),
     path('state/', include('mine.urls.state', namespace='state')),
     path('state-admin/', include('mine.urls.state_admin', namespace='state_admin')),
+    path('hq/', include('mine.urls.hq', namespace='hq')),
     path(
         '<int:pk>/statistic/',
         statistic_edit,
