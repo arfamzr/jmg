@@ -24,24 +24,16 @@
             </thead>
             <tbody>
               <tr>
-                <th>DALAM LOMBONG HITUNG PANJANG (METER)</th>
-                <td style="text-align: right;">{{ operating_record.average_mine_depth }}</td>
+                <th>DIESEL (LITER)</th>
+                <td style="text-align: right;">{{ energy_supply.total_diesel }}</td>
               </tr>
               <tr>
-                <th>UKURAN LOMBONG TERDALAM (METER)</th>
-                <td style="text-align: right;">{{ operating_record.deepest_mine }}</td>
+                <th>ELEKTRIK (KwH)</th>
+                <td style="text-align: right;">{{ energy_supply.total_electric }}</td>
               </tr>
               <tr>
-                <th>UKURAN LOMBONG TERCETEK (METER)</th>
-                <td style="text-align: right;">{{ operating_record.shallowest_mine }}</td>
-              </tr>
-              <tr>
-                <th>BAHAN BEBAN DIBUANG (TAN)</th>
-                <td style="text-align: right;">{{ operating_record.material_discarded }}</td>
-              </tr>
-              <tr>
-                <th>BAHAN BEBIJIH DILOMBONG (TAN)</th>
-                <td style="text-align: right;">{{ operating_record.ore_mined }}</td>
+                <th>BAHAN LETUPAN (KG)</th>
+                <td style="text-align: right;">{{ energy_supply.total_explosive }}</td>
               </tr>
             </tbody>
           </table>
@@ -54,8 +46,8 @@
           </a>
         </div>
         <div class="col-4 col-lg-3 mt-3">
-          <a href="{% url 'mine:hq:data_list' %}" class="btn btn-info btn-user btn-block">
-            Kembali ke senarai
+          <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+            Seterusnya
           </a>
         </div>
       </div>

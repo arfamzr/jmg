@@ -1,0 +1,108 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        {% comment %} <div class="col justify-content-end">
+          <form action="." method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search Quarry</button>
+              </div>
+            </div>
+          </form>
+        </div> {% endcomment %}
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Bulan/Tahun</th>
+                <th scope="col">No Lot</th>
+                <th scope="col">Latitude</th>
+                <th scope="col">Longitude</th>
+                <th scope="col">Lokasi Lombong</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for miner_data in object_list %}
+              {% with mine_miner=miner_data.miner mine=miner_data.mine last_approval=miner_data.get_last_approval %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                <td>{{ mine_miner.lot_number }}</td>
+                <td>{{ mine_miner.latitude }}</td>
+                <td>{{ mine_miner.longitude }}</td>
+                <td>{{ mine }}</td>
+                <td>
+                  <span class="text-success">Successful</span>
+                </td>
+                <td>
+                  <a href="{{ miner_data.get_hq_absolute_url }}" class="badge badge-sm badge-secondary">
+                    <i class="far fa-eye"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endwith %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+<!-- Reject Comment Modal-->
+<div class="modal fade" id="rejectCommentModal" tabindex="-1" role="dialog" aria-labelledby="rejectCommentModal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="rejectCommentModalLabel">Comment</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="comment"></span>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+  $('#rejectCommentModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget)
+    const id = button.data('id')
+    const modal = $(this)
+    $.ajax({
+      url: `/mine/miner-data/${id}/get-comment/`,
+      success: function (result) {
+        modal.find('#comment').text(result)
+      }
+    });
+  })
+</script>
+{% endblock extra_js %}

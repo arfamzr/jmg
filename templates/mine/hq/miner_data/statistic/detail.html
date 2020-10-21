@@ -16,32 +16,34 @@
       <div class="row">
         <div class="col-lg-8">
           <table class="table table-bordered table-sm">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col"></th>
-                <th scope="col" colspan="2" style="text-align: center;">JUMLAH</th>
-              </tr>
-            </thead>
             <tbody>
               <tr>
-                <th>DALAM LOMBONG HITUNG PANJANG (METER)</th>
-                <td style="text-align: right;">{{ operating_record.average_mine_depth }}</td>
+                <th>KUANTITI MINERAL</th>
+                <td style="text-align: right;">{{ statistic.minerals_quantity }}</td>
               </tr>
               <tr>
-                <th>UKURAN LOMBONG TERDALAM (METER)</th>
-                <td style="text-align: right;">{{ operating_record.deepest_mine }}</td>
+                <th>STOK AKHIR BULAN LALU</th>
+                <td style="text-align: right;">{{ statistic.final_stock_last_month }}</td>
               </tr>
               <tr>
-                <th>UKURAN LOMBONG TERCETEK (METER)</th>
-                <td style="text-align: right;">{{ operating_record.shallowest_mine }}</td>
+                <th>PENGELUARAN LOMBONG</th>
+                <td style="text-align: right;">{{ statistic.mine_production }}</td>
               </tr>
               <tr>
-                <th>BAHAN BEBAN DIBUANG (TAN)</th>
-                <td style="text-align: right;">{{ operating_record.material_discarded }}</td>
+                <th>JUMLAH MINERAL</th>
+                <td style="text-align: right;">{{ statistic.total_minerals }}</td>
               </tr>
               <tr>
-                <th>BAHAN BEBIJIH DILOMBONG (TAN)</th>
-                <td style="text-align: right;">{{ operating_record.ore_mined }}</td>
+                <th>PENYERAHAN KEPADA PEMBELI</th>
+                <td style="text-align: right;">{{ statistic.submission_buyers }}</td>
+              </tr>
+              <tr>
+                <th>STOK AKHIR BULAN INI</th>
+                <td style="text-align: right;">{{ statistic.final_stock_this_month }}</td>
+              </tr>
+              <tr>
+                <th>GRED HITUNG PANJANG</th>
+                <td style="text-align: right;">{{ statistic.average_grade }}</td>
               </tr>
             </tbody>
           </table>
@@ -54,8 +56,8 @@
           </a>
         </div>
         <div class="col-4 col-lg-3 mt-3">
-          <a href="{% url 'mine:hq:data_list' %}" class="btn btn-info btn-user btn-block">
-            Kembali ke senarai
+          <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+            Seterusnya
           </a>
         </div>
       </div>
