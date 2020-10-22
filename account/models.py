@@ -36,6 +36,9 @@ class User(AbstractUser):
     def get_update_url(self):
         return reverse("account:state_admin:user_update", kwargs={"pk": self.pk})
 
+    def get_jmg_update_url(self):
+        return reverse("account:state_admin:state_update", kwargs={"pk": self.pk})
+
     def get_toggle_active_url(self):
         return reverse("account:state_admin:user_toggle_active", kwargs={"pk": self.pk})
 

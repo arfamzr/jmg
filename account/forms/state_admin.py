@@ -7,7 +7,7 @@ from django.contrib.auth.forms import (
     UserCreationForm as DjangoUserCreationForm,
 )
 
-from ..models import User
+from ..models import User, Profile
 
 
 class UserCreationForm(DjangoUserCreationForm):
@@ -51,3 +51,9 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
         required = ['username', 'email', 'first_name', 'last_name']
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['state']
