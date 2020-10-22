@@ -1,3 +1,4 @@
+from account.views.main import profile
 from django.contrib.auth.models import Group
 from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse_lazy
@@ -7,7 +8,7 @@ from company.models import Company, Employee
 from quarry.models import Quarry, QuarryMiner
 
 from ..models import User, Profile
-from ..forms.state_admin import UserCreationForm, UserForm
+from ..forms.state_admin import UserCreationForm, UserForm, ProfileForm, PasswordResetForm
 
 
 class UserListView(ListView):
@@ -122,6 +123,48 @@ class UserUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Update Pengguna'
         return context
+
+
+def state_update(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, instance=user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('account:state_admin:state_list')
+    else:
+        user_form = UserForm(instance=user)
+        profile_form = ProfileForm(instance=user.profile)
+
+    context = {
+        'title': 'Update State',
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+
+    return render(request, 'account/state_admin/state/update.html', context)
+
+
+def user_update_password(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            raw_password = form.cleaned_data.get('password1')
+            user.set_password(raw_password)
+            user.save()
+            return redirect('dashboard:dashboard')
+    else:
+        form = PasswordResetForm()
+
+    context = {
+        'title': f'Reset Password for {user.username}',
+        'user': user,
+        'form': form,
+    }
+    return render(request, 'account/state_admin/user/reset_password.html', context)
 
 
 def user_toggle_active(request, pk):

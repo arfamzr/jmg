@@ -3,6 +3,7 @@ from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     PasswordChangeView as DjangoPasswordChangeView,
 )
+from django.shortcuts import render
 
 from ..forms.main import AuthenticationForm
 
@@ -31,3 +32,11 @@ class PasswordChangeView(DjangoPasswordChangeView):
         # print(self.request.user.is_industry)
         context["title"] = 'Update Password'
         return context
+
+
+def profile(request):
+    context = {
+        'title': 'Profile'
+    }
+
+    return render(request, 'account/profile/detail.html', context)

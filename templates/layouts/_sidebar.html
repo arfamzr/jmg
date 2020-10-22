@@ -48,9 +48,15 @@
 
   <!-- Nav Item - Senarai Pengguna -->
   <li class="nav-item ">
-    <a class="nav-link" href="#edited">
+    <a class="nav-link" href="{% url 'account:super_admin:hq_list' %}">
       <i class="fas fa-fw fa-user"></i>
-      <span>Senarai Pengguna</span></a>
+      <span>Senarai JMG HQ</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'account:super_admin:admin_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai JMG Admin Negeri</span></a>
   </li>
 
   <!-- Divider -->

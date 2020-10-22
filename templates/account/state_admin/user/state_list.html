@@ -54,7 +54,7 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ each_user.get_update_url }}" class="badge badge-primary">Update</a>
+                  <a href="{{ each_user.get_jmg_update_url }}" class="badge badge-primary">Update</a>
                   <a href="{{ each_user.get_toggle_active_url }}" class="badge badge-info">
                     {% if each_user.is_active %}
                     Deactivate
@@ -62,6 +62,7 @@
                     Activate
                     {% endif %}
                   </a>
+                  <a href="{{ each_user.get_reset_password_url }}" class="badge badge-secondary">Reset Password</a>
                 </td>
               </tr>
               {% empty %}
