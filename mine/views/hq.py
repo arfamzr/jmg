@@ -29,15 +29,13 @@ class MineMinerDataListView(ListView):
     ordering = ['-created_at']
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter(
-            state=self.request.user.profile.state,
-        )
+        queryset = super().get_queryset()
 
         id_list = []
         for data in queryset:
             approval = data.get_last_approval()
             if approval:
-                if approval.state_approved == None:
+                if approval.state_approved == True and approval.admin_approved == True:
                     id_list.append(data.id)
         queryset = queryset.filter(id__in=id_list)
 

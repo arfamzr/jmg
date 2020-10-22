@@ -132,7 +132,7 @@ def user_toggle_active(request, pk):
         else:
             each_user.is_active = True
         each_user.save()
-        return redirect('account:state_admin:user_list')
+        return redirect('account:state_admin:state_list')
 
     context = {
         'each_user': each_user,
