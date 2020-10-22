@@ -66,8 +66,9 @@
                             </tbody>
                         </table>
 
-
-                        {% comment %} <?= $this->pagination->create_links(); ?> {% endcomment %}
+                        {% with pagin=page_obj %}
+                        {% include 'layouts/includes/_pagination.html' %}
+                        {% endwith %}
 
                     </div>
                 </div>

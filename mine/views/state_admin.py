@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -107,6 +108,16 @@ def mine_detail(request, pk):
         mine_miner_list = mine_miner_list.filter(
             miner__username__icontains=name)
 
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(mine_miner_list, 10)
+    try:
+        mine_miner_list = paginator.page(page)
+    except PageNotAnInteger:
+        mine_miner_list = paginator.page(1)
+    except EmptyPage:
+        mine_miner_list = paginator.page(paginator.num_pages)
+
     context = {
         'mine': mine,
         'mine_miner_list': mine_miner_list,
@@ -127,6 +138,16 @@ def add_miner(request, pk):
         name = ''
     if (name != ''):
         user_list = user_list.filter(username__icontains=name)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(user_list, 10)
+    try:
+        user_list = paginator.page(page)
+    except PageNotAnInteger:
+        user_list = paginator.page(1)
+    except EmptyPage:
+        user_list = paginator.page(paginator.num_pages)
 
     context = {
         'mine': mine,
@@ -175,6 +196,16 @@ def mine_remove_miner(request, pk):
 def user_mine_list(request, pk):
     user = get_object_or_404(User, pk=pk)
     mine_miner_list = MineMiner.objects.filter(miner=user)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(mine_miner_list, 10)
+    try:
+        mine_miner_list = paginator.page(page)
+    except PageNotAnInteger:
+        mine_miner_list = paginator.page(1)
+    except EmptyPage:
+        mine_miner_list = paginator.page(paginator.num_pages)
 
     context = {
         'each_user': user,
@@ -360,7 +391,8 @@ def operating_record_detail(request, pk):
 
             notify = Notify()
             notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk lombong "{miner_data.mine}"'
-            notify_link = reverse('mine:hq:data_list') #hq/data_list belum ada
+            # hq/data_list belum ada
+            notify_link = reverse('mine:hq:data_list')
 
             for jmg_hq in jmg_hqs:
                 notify.make_notify(jmg_hq, notify_message, notify_link)

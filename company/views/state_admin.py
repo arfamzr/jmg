@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView
@@ -71,6 +72,16 @@ def company_detail(request, pk):
     if (name != ''):
         employee_list = employee_list.filter(user__username__icontains=name)
 
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(employee_list, 10)
+    try:
+        employee_list = paginator.page(page)
+    except PageNotAnInteger:
+        employee_list = paginator.page(1)
+    except EmptyPage:
+        employee_list = paginator.page(paginator.num_pages)
+
     context = {
         'company': company,
         'employee_list': employee_list,
@@ -109,6 +120,16 @@ def add_employee(request, pk):
         name = ''
     if (name != ''):
         user_list = user_list.filter(username__icontains=name)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(user_list, 10)
+    try:
+        user_list = paginator.page(page)
+    except PageNotAnInteger:
+        user_list = paginator.page(1)
+    except EmptyPage:
+        user_list = paginator.page(paginator.num_pages)
 
     context = {
         'company': company,

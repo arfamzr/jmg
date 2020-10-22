@@ -125,6 +125,10 @@
             </tbody>
           </table>
 
+          {% with pagin=employee_list %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
+
         </div>
       </div>
     </div>

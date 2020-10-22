@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -61,6 +62,16 @@ def mine_detail(request, pk):
         mine_miner_list = mine_miner_list.filter(
             miner__username__icontains=name)
 
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(mine_miner_list, 10)
+    try:
+        mine_miner_list = paginator.page(page)
+    except PageNotAnInteger:
+        mine_miner_list = paginator.page(1)
+    except EmptyPage:
+        mine_miner_list = paginator.page(paginator.num_pages)
+
     context = {
         'mine': mine,
         'mine_miner_list': mine_miner_list,
@@ -73,6 +84,16 @@ def mine_detail(request, pk):
 def user_mine_list(request, pk):
     user = get_object_or_404(User, pk=pk)
     mine_miner_list = MineMiner.objects.filter(miner=user)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(mine_miner_list, 10)
+    try:
+        mine_miner_list = paginator.page(page)
+    except PageNotAnInteger:
+        mine_miner_list = paginator.page(1)
+    except EmptyPage:
+        mine_miner_list = paginator.page(paginator.num_pages)
 
     context = {
         'each_user': user,
@@ -261,7 +282,8 @@ def operating_record_detail(request, pk):
             notify_link = reverse('mine:state_admin:data_list')
 
             for jmg_state_admin in jmg_state_admins:
-                notify.make_notify(jmg_state_admin, notify_message, notify_link)
+                notify.make_notify(
+                    jmg_state_admin, notify_message, notify_link)
         else:
             miner = data_approval.requestor
 

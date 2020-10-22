@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -113,6 +114,16 @@ def quarry_detail(request, pk):
         quarry_miner_list = quarry_miner_list.filter(
             miner__username__icontains=name)
 
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(quarry_miner_list, 10)
+    try:
+        quarry_miner_list = paginator.page(page)
+    except PageNotAnInteger:
+        quarry_miner_list = paginator.page(1)
+    except EmptyPage:
+        quarry_miner_list = paginator.page(paginator.num_pages)
+
     context = {
         'quarry': quarry,
         'quarry_miner_list': quarry_miner_list,
@@ -181,6 +192,16 @@ def quarry_remove_miner(request, pk):
 def user_quarry_list(request, pk):
     user = get_object_or_404(User, pk=pk)
     quarry_miner_list = QuarryMiner.objects.filter(miner=user)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(quarry_miner_list, 10)
+    try:
+        quarry_miner_list = paginator.page(page)
+    except PageNotAnInteger:
+        quarry_miner_list = paginator.page(1)
+    except EmptyPage:
+        quarry_miner_list = paginator.page(paginator.num_pages)
 
     context = {
         'each_user': user,
@@ -464,7 +485,8 @@ def other_detail(request, pk):
 
             notify = Notify()
             notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{miner_data.quarry}"'
-            notify_link = reverse('quarry:hq:data_list') #hq/data_list belum ada
+            # hq/data_list belum ada
+            notify_link = reverse('quarry:hq:data_list')
 
             for jmg_hq in jmg_hqs:
                 notify.make_notify(jmg_hq, notify_message, notify_link)

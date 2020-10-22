@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -67,6 +68,16 @@ def quarry_detail(request, pk):
         quarry_miner_list = quarry_miner_list.filter(
             miner__username__icontains=name)
 
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(quarry_miner_list, 10)
+    try:
+        quarry_miner_list = paginator.page(page)
+    except PageNotAnInteger:
+        quarry_miner_list = paginator.page(1)
+    except EmptyPage:
+        quarry_miner_list = paginator.page(paginator.num_pages)
+
     context = {
         'quarry': quarry,
         'quarry_miner_list': quarry_miner_list,
@@ -79,6 +90,16 @@ def quarry_detail(request, pk):
 def user_quarry_list(request, pk):
     user = get_object_or_404(User, pk=pk)
     quarry_miner_list = QuarryMiner.objects.filter(miner=user)
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(quarry_miner_list, 10)
+    try:
+        quarry_miner_list = paginator.page(page)
+    except PageNotAnInteger:
+        quarry_miner_list = paginator.page(1)
+    except EmptyPage:
+        quarry_miner_list = paginator.page(paginator.num_pages)
 
     context = {
         'each_user': user,
@@ -362,7 +383,8 @@ def other_detail(request, pk):
             notify_link = reverse('quarry:state_admin:data_list')
 
             for jmg_state_admin in jmg_state_admins:
-                notify.make_notify(jmg_state_admin, notify_message, notify_link)
+                notify.make_notify(
+                    jmg_state_admin, notify_message, notify_link)
         else:
             miner = data_approval.requestor
 

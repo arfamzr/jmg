@@ -65,6 +65,10 @@
             </tbody>
           </table>
 
+          {% with pagin=user_list %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
+
         </div>
       </div>
     </div>

@@ -38,11 +38,15 @@
               {% endfor %}
             </tbody>
           </table>
-        </div>
+
+          {% with pagin=page_obj %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
         </div>
       </div>
     </div>
-
   </div>
-  <!-- /.container-fluid -->
-  {% endblock content %}
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

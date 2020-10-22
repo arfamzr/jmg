@@ -35,6 +35,10 @@
           {% endfor %}
         </tbody>
       </table>
+
+      {% with pagin=page_obj %}
+      {% include 'layouts/includes/_pagination.html' %}
+      {% endwith %}
     </div>
   </div>
 

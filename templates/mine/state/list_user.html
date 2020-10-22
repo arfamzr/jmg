@@ -106,6 +106,10 @@
               {% endfor %}
             </tbody>
           </table>
+
+          {% with pagin=mine_miner_list %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
         </div>
       </div>
     </div>
