@@ -9,5 +9,5 @@ class Notify:
 
     def get_header_notify(self, to_user):
         notifies = Notification.objects.filter(
-            to_user=to_user).order_by('-created_at')[:10]
+            to_user=to_user).order_by('-created_at')[:3]
         return notifies

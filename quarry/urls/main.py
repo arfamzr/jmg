@@ -40,6 +40,7 @@ urlpatterns = [
     path('data-list/', QuarryMinerDataListView.as_view(), name='data_list'),
     path('state/', include('quarry.urls.state', namespace='state')),
     path('state-admin/', include('quarry.urls.state_admin', namespace='state_admin')),
+    path('hq/', include('quarry.urls.hq', namespace='hq')),
     path(
         'miner-data/<int:pk>/production-statistic/edit/',
         production_statistic_edit,

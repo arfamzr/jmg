@@ -115,6 +115,9 @@ class MineMinerData(models.Model):
     def get_state_admin_absolute_url(self):
         return reverse("mine:state_admin:miner_data", kwargs={"pk": self.pk})
 
+    def get_hq_absolute_url(self):
+        return reverse("mine:hq:miner_data", kwargs={"pk": self.pk})
+
     def get_edit_url(self):
         return reverse("mine:statistic_edit", kwargs={"pk": self.pk})
 

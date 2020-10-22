@@ -6,6 +6,7 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User
+from notification.notify import Notify
 
 from ..models import (
     Mine,
@@ -82,8 +83,8 @@ def user_mine_list(request, pk):
     return render(request, 'mine/state/list_user.html', context)
 
 
-class QuarryMinerDataListView(ListView):
-    template_name = 'quarry/state/miner_data/list.html'
+class MineMinerDataListView(ListView):
+    template_name = 'mine/state/miner_data/list.html'
     model = MineMinerData
     paginate_by = 10
     ordering = ['-created_at']
@@ -124,7 +125,7 @@ def miner_data_detail(request, pk):
                         kwargs={"pk": miner_data.pk})
 
     context = {
-        'title': 'Data Kuari',
+        'title': 'Data Lombong',
         'miner_data': miner_data,
         'next_link': next_link,
     }
@@ -250,6 +251,26 @@ def operating_record_detail(request, pk):
         data_approval.state_comment = request.POST.get('comment', '')
         data_approval.state_approved = approved
         data_approval.save()
+
+        if approved:
+            jmg_state_admins = User.objects.filter(
+                groups__name='JMG State Admin', profile__state=miner_data.state)
+
+            notify = Notify()
+            notify_message = f'{miner_data.miner.mine} telah menghantar permohonan data untuk kuari "{miner_data.mine}"'
+            notify_link = reverse('mine:state_admin:data_list')
+
+            for jmg_state_admin in jmg_state_admins:
+                notify.make_notify(jmg_state_admin, notify_message, notify_link)
+        else:
+            miner = data_approval.requestor
+
+            notify = Notify()
+            notify_message = f'Data untuk lombong "{miner_data.mine}" telah ditolak'
+            notify_link = reverse('mine:data_list')
+
+            notify.make_notify(miner, notify_message, notify_link)
+
         return redirect('mine:state:data_list')
 
     context = {
