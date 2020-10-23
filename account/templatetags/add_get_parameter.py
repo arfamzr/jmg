@@ -18,8 +18,11 @@ class AddGetParameter(Node):
 
 @register.tag
 def add_get(parser, token):
-    contents = split(r'\s+', token.contents, 2)[1]
-    pairs = split(r',', contents)
+    try:
+        contents = split(r'\s+', token.contents, 2)[1]
+        pairs = split(r',', contents)
+    except:
+        pairs = []
     values = {}
     for pair in pairs:
         s = split('=', pair, 2)
