@@ -8,6 +8,48 @@ from quarry.models import QuarryMinerData, YEAR_CHOICES, current_year, Quarry
 
 
 class Mine(models.Model):
+    BAUXITE = 'BAUXITE'
+    TINORE = 'TIN ORE'
+    IRONORE = 'IRON ORE'
+    ANTIMONY = 'ANTIMONY'
+    COAL = 'COAL'
+    DIMENSIONSTONE = 'DIMENSION STONE'
+    FELDSPAR = 'FELDSPAR'
+    GALENA = 'GALENA'
+    CALCIUMCARBONATE = 'KALSIUM KARBONAT'
+    KAOLIN = 'KAOLIN'
+    CUPRUM = 'CUPRUM'
+    BALLCLAY = 'BALL CLAY'
+    MANGANESE = 'MANGANESE'
+    SHALE = 'SHALE'
+    MICA = 'MICA'
+    SILVER = 'SILVER'
+    SILICASAND = 'SILICA SAND'
+    TUNGSTEN = 'TUNGSTEN'
+    GOLD = 'GOLD'
+    GRAPHITE = 'GRAPHITE'
+    TYPES_OF_MINERAL = [
+        (BAUXITE, _('Bauksite/Bauksit')),
+        (TINORE, _('Tin Ore/Bijih Timah')),
+        (IRONORE, _('Iron Ore/Bijih Besi')),
+        (ANTIMONY, _('Antimony/Antimoni')),
+        (COAL, _('Coal/Arang Batu')),
+        (DIMENSIONSTONE, _('Dimension Stone/Batu Dimensi')),
+        (FELDSPAR, _('Feldspar/Felspar')),
+        (GALENA, _('Galena/Galena')),
+        (CALCIUMCARBONATE, _('Kalsium Karbonat')),
+        (KAOLIN, _('Kaolin')),
+        (CUPRUM, _('Kuprum')),
+        (BALLCLAY, _('Ball Clay/Lempung Bebola')),
+        (MANGANESE, _('Manganese/Mangan')),
+        (MICA, _('Mica/Mika')),
+        (SILVER, _('Silver/Perak')),
+        (SILICASAND, _('Silica Sand/Pasir Silika')),
+        (TUNGSTEN, _('Tungsten')),
+        (GOLD, _('Gold/Emas')),
+        (GRAPHITE, _('Graphite/Grafit')),
+    ]
+
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
@@ -25,10 +67,10 @@ class Mine(models.Model):
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(_("kategori syarikat"), max_length=255)
-    main_rock_type = models.CharField(
-        _("jenis batuan utama"), max_length=255, choices=Quarry.TYPES_OF_ROCK)
-    side_rock_type = models.CharField(
-        _("jenis batuan sampingan"), max_length=255, blank=True, choices=Quarry.TYPES_OF_ROCK)
+    main_mineral_type = models.CharField(
+        _("jenis mineral utama"), max_length=255, choices=Quarry.TYPES_OF_ROCK)
+    side_mineral_type = models.CharField(
+        _("jenis mineral sampingan"), max_length=255, blank=True, choices=Quarry.TYPES_OF_ROCK)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
