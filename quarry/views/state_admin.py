@@ -28,6 +28,7 @@ from ..models import (
     OperatingRecord,
     Royalties,
     Other,
+    QuarryDataApproval,
 )
 from ..forms.state_admin import QuarryForm, QuarryMinerForm
 
@@ -210,9 +211,6 @@ def user_quarry_list(request, pk):
     }
 
     return render(request, 'quarry/state_admin/list_user.html', context)
-
-
-# breakline
 
 
 class QuarryMinerDataListView(ListView):
@@ -549,3 +547,226 @@ def other_detail(request, pk):
     }
 
     return render(request, 'quarry/state_admin/miner_data/other/detail.html', context=context)
+
+
+def quarry_graph(request, pk):
+    miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+    rock_type = miner_data.quarry.main_rock_type
+    rock_list = QuarryDataApproval.objects.filter(miner_data=miner_data)
+
+    def get_rock_list(rock_list):
+        rock_jan_list = rock_list.filter(
+            miner_data__month=1)
+        rock_jan_production = 0
+        rock_jan_royalties = 0
+        for rock in rock_jan_list:
+            rock_jan_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_jan_royalties += rock.miner_data.royalties.royalties
+
+        rock_feb_list = rock_list.filter(
+            miner_data__month=2)
+        rock_feb_production = 0
+        rock_feb_royalties = 0
+        for rock in rock_feb_list:
+            rock_feb_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_feb_royalties += rock.miner_data.royalties.royalties
+
+        rock_mac_list = rock_list.filter(
+            miner_data__month=3)
+        rock_mac_production = 0
+        rock_mac_royalties = 0
+        for rock in rock_mac_list:
+            rock_mac_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_mac_royalties += rock.miner_data.royalties.royalties
+
+        rock_apr_list = rock_list.filter(
+            miner_data__month=4)
+        rock_apr_production = 0
+        rock_apr_royalties = 0
+        for rock in rock_apr_list:
+            rock_apr_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_apr_royalties += rock.miner_data.royalties.royalties
+
+        rock_mei_list = rock_list.filter(
+            miner_data__month=5)
+        rock_mei_production = 0
+        rock_mei_royalties = 0
+        for rock in rock_mei_list:
+            rock_mei_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_mei_royalties += rock.miner_data.royalties.royalties
+
+        rock_jun_list = rock_list.filter(
+            miner_data__month=6)
+        rock_jun_production = 0
+        rock_jun_royalties = 0
+        for rock in rock_jun_list:
+            rock_jun_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_jun_royalties += rock.miner_data.royalties.royalties
+
+        rock_jul_list = rock_list.filter(
+            miner_data__month=7)
+        rock_jul_production = 0
+        rock_jul_royalties = 0
+        for rock in rock_jul_list:
+            rock_jul_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_jul_royalties += rock.miner_data.royalties.royalties
+
+        rock_ogos_list = rock_list.filter(
+            miner_data__month=8)
+        rock_ogos_production = 0
+        rock_ogos_royalties = 0
+        for rock in rock_ogos_list:
+            rock_ogos_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_ogos_royalties += rock.miner_data.royalties.royalties
+
+        rock_sep_list = rock_list.filter(
+            miner_data__month=9)
+        rock_sep_production = 0
+        rock_sep_royalties = 0
+        for rock in rock_sep_list:
+            rock_sep_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_sep_royalties += rock.miner_data.royalties.royalties
+
+        rock_okt_list = rock_list.filter(
+            miner_data__month=10)
+        rock_okt_production = 0
+        rock_okt_royalties = 0
+        for rock in rock_okt_list:
+            rock_okt_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_okt_royalties += rock.miner_data.royalties.royalties
+
+        rock_nov_list = rock_list.filter(
+            miner_data__month=11)
+        rock_nov_production = 0
+        rock_nov_royalties = 0
+        for rock in rock_nov_list:
+            rock_nov_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_nov_royalties += rock.miner_data.royalties.royalties
+
+        rock_dis_list = rock_list.filter(
+            miner_data__month=12)
+        rock_dis_production = 0
+        rock_dis_royalties = 0
+        for rock in rock_dis_list:
+            rock_dis_production += rock.miner_data.productionstatistic.main_rock_production
+            rock_dis_royalties += rock.miner_data.royalties.royalties
+
+        rock = {
+            'jan': {
+                'production': rock_jan_production,
+                'royalties': rock_jan_royalties,
+            },
+            'feb': {
+                'production': rock_feb_production,
+                'royalties': rock_feb_royalties,
+            },
+            'mac': {
+                'production': rock_mac_production,
+                'royalties': rock_mac_royalties,
+            },
+            'apr': {
+                'production': rock_apr_production,
+                'royalties': rock_apr_royalties,
+            },
+            'mei': {
+                'production': rock_mei_production,
+                'royalties': rock_mei_royalties,
+            },
+            'jun': {
+                'production': rock_jun_production,
+                'royalties': rock_jun_royalties,
+            },
+            'jul': {
+                'production': rock_jul_production,
+                'royalties': rock_jul_royalties,
+            },
+            'ogos': {
+                'production': rock_ogos_production,
+                'royalties': rock_ogos_royalties,
+            },
+            'sep': {
+                'production': rock_sep_production,
+                'royalties': rock_sep_royalties,
+            },
+            'okt': {
+                'production': rock_okt_production,
+                'royalties': rock_okt_royalties,
+            },
+            'nov': {
+                'production': rock_nov_production,
+                'royalties': rock_nov_royalties,
+            },
+            'dis': {
+                'production': rock_dis_production,
+                'royalties': rock_dis_royalties,
+            },
+        }
+
+        return rock
+
+    rock = get_rock_list(rock_list)
+
+    months = [
+        {
+            'name': 'JANUARI',
+            'rock': rock['jan'],
+        },
+        {
+            'name': 'FEBRUARI',
+            'rock': rock['feb'],
+        },
+        {
+            'name': 'MAC',
+            'rock': rock['mac'],
+        },
+        {
+            'name': 'APRIL',
+            'rock': rock['apr'],
+        },
+        {
+            'name': 'MEI',
+            'rock': rock['mei'],
+        },
+        {
+            'name': 'JUN',
+            'rock': rock['jun'],
+        },
+        {
+            'name': 'JULAI',
+            'rock': rock['jul'],
+        },
+        {
+            'name': 'OGOS',
+            'rock': rock['ogos'],
+        },
+        {
+            'name': 'SEPTEMBER',
+            'rock': rock['sep'],
+        },
+        {
+            'name': 'OKTOBER',
+            'rock': rock['okt'],
+        },
+        {
+            'name': 'NOVEMBER',
+            'rock': rock['nov'],
+        },
+        {
+            'name': 'DISEMBER',
+            'rock': rock['dis'],
+        },
+    ]
+
+    rocks = {
+        'name': rock_type,
+        'production': sum([month['rock']['production'] for month in months]),
+        'royalties': sum([month['rock']['royalties'] for month in months]),
+    }
+
+    context = {
+        'title': 'Laporan/Graph Kuari',
+        'rock': rocks,
+        'months': months,
+    }
+
+    return render(request, 'quarry/state_admin/graph/data.html', context)

@@ -1,0 +1,185 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css"
+  integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w=="
+  crossorigin="anonymous" />
+{% endblock extra_styles %}
+
+{% block body %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 m-4 text-gray-800">{{ title }}</h1>
+  <button id="royaltiesBtn" class="btn btn-primary mb-3">LIHAT ROYALTI</button>
+  <button id="productionBtn" class="btn btn-primary mb-3 d-none">LIHAT PENGELUARAN</button>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div id="production" class="row">
+        <div class="col-lg-12">
+          <h4>PENGELUARAN KUARI (TAN METRIK)</h4>
+        </div>
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">BULAN</th>
+                <th scope="col" style="text-align: center;">{{ rock.name }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for month in months %}
+              <tr>
+                <th>{{ month.name }}</th>
+                <td style="text-align: right;">{{ month.rock.production }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <thead class="thead-light">
+              <tr>
+                <th></th>
+                <th style="text-align: right;">{{ rock.production }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="col-12">
+          <canvas id="productionChart" width="400" height="150"></canvas>
+        </div>
+      </div>
+      <div id="royalties" class="row d-none">
+        <div class="col-lg-12">
+          <h4>NILAI ROYALTI KUARI (RM)</h4>
+        </div>
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">NEGERI</th>
+                <th scope="col" style="text-align: center;">{{ rock.name }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for month in months %}
+              <tr>
+                <th>{{ month.name }}</th>
+                <td style="text-align: right;">{{ month.rock.royalties }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <thead class="thead-light">
+              <tr>
+                <th></th>
+                <th style="text-align: right;">{{ rock.royalties }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="col-12">
+          <canvas id="royaltiesChart" width="400" height="150"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock body %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"
+  integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA=="
+  crossorigin="anonymous"></script>
+<script>
+  var productionData = {
+    labels: [
+      // {% for month in months %}
+      '{{ month.name }}',
+      // {% endfor %}
+    ],
+    datasets: [{
+      label: 'PENGELUARAN {{ rock.name }}',
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      data: [
+        // {% for month in months %}
+        parseFloat('{{ month.rock.production }}'),
+        // {% endfor %}
+      ],
+    }, ],
+  }
+  var royaltiesData = {
+    labels: [
+      // {% for month in months %}
+      '{{ month.name }}',
+      // {% endfor %}
+    ],
+    datasets: [{
+      label: 'ROYALTI {{ rock.name }}',
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      data: [
+        // {% for month in months %}
+        parseFloat('{{ month.rock.royalties }}'),
+        // {% endfor %}
+      ],
+    }, ],
+  }
+  var ctx = document.getElementById('productionChart');
+  var productionChart = new Chart(ctx, {
+    type: 'bar',
+    data: productionData,
+    options: {
+      title: {
+        display: true,
+        text: "PENGELUARAN KUARI (TAN METRIK)",
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      responsive: true,
+    },
+  });
+  var ctx = document.getElementById('royaltiesChart');
+  var royaltiesChart = new Chart(ctx, {
+    type: 'bar',
+    data: royaltiesData,
+    options: {
+      title: {
+        display: true,
+        text: "NILAI ROYALTI KUARI (RM)",
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      responsive: true,
+    },
+  });
+</script>
+<script>
+  const production = document.getElementById('production')
+  const production_btn = document.getElementById('productionBtn')
+  const royalties = document.getElementById('royalties')
+  const royalties_btn = document.getElementById('royaltiesBtn')
+
+  production_btn.addEventListener("click", () => {
+    production.classList.remove('d-none')
+    production_btn.classList.add('d-none')
+    royalties.classList.add('d-none')
+    royalties_btn.classList.remove('d-none')
+  })
+
+  royalties_btn.addEventListener("click", () => {
+    royalties.classList.remove('d-none')
+    royalties_btn.classList.add('d-none')
+    production.classList.add('d-none')
+    production_btn.classList.remove('d-none')
+  })
+</script>
+{% endblock extra_js %}
