@@ -31,8 +31,8 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nama</th>
+                <th scope="col">Alamat</th>
                 <th scope="col">No. Telefon</th>
-                <th scope="col">Emel</th>
                 <th scope="col">Aktif</th>
               </tr>
             </thead>
@@ -41,8 +41,8 @@
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href="{{ company.get_state_absolute_url }}">{{ company.name }}</a></td>
+                <td>{{ company.address1 }}{{ company.address2 }}{{ company.address3 }}</td>
                 <td>{{ company.phone }}</td>
-                <td>{{ company.email }}</td>
                 <td>
                   {% if company.status %}
                   <i class="fas fa-check-circle text-success ml-2"></i>
