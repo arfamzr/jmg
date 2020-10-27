@@ -26,7 +26,7 @@
                                 {{ form|crispy }}
 
                                 <button type="submit" class="btn btn-primary btn-user btn-block">Update</button>
-                                <a href="<?php echo base_url() . 'AdminProfile'; ?>"
+                                <a href="{% url 'dashboard:dashboard' %}"
                                     class="btn btn-secondary btn-user btn-block">Cancel</a>
                             </div>
                         </form>
