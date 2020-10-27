@@ -23,6 +23,7 @@ from ..views.state_admin import (
     operating_record_detail,
     royalties_detail,
     other_detail,
+    quarry_graph,
 )
 
 app_name = 'state_admin'
@@ -32,6 +33,7 @@ urlpatterns = [
     path('create/', QuarryCreateView.as_view(), name='create'),
     path('<int:pk>/update/', QuarryUpdateView.as_view(), name='update'),
     path('<int:pk>/detail/', quarry_detail, name='detail'),
+    path('<int:pk>/graph/', quarry_graph, name='graph'),
     path('<int:pk>/toggle-active/', toggle_active, name='toggle_active'),
     path('<int:pk>/add-miner/', add_miner, name='add_miner'),
     path('<int:quarry_pk>/add-miner/<int:user_pk>/',

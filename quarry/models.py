@@ -98,6 +98,9 @@ class Quarry(models.Model):
     def get_state_absolute_url(self):
         return reverse("quarry:state:detail", kwargs={"pk": self.pk})
 
+    def get_graph_url(self):
+        return reverse("quarry:state_admin:graph", kwargs={"pk": self.pk})
+
     def get_update_url(self):
         return reverse("quarry:state_admin:update", kwargs={"pk": self.pk})
 
