@@ -30,8 +30,26 @@ class User(AbstractUser):
     def get_hq_absolute_url(self):
         return reverse("account:super_admin:hq_detail", kwargs={"pk": self.pk})
 
+    def get_hq_update_url(self):
+        return reverse("account:super_admin:hq_update", kwargs={"pk": self.pk})
+
+    def get_hq_toggle_active_url(self):
+        return reverse("account:super_admin:hq_toggle_active", kwargs={"pk": self.pk})
+
+    def get_hq_reset_password_url(self):
+        return reverse("account:super_admin:hq_update_password", kwargs={"pk": self.pk})
+
     def get_admin_absolute_url(self):
         return reverse("account:super_admin:admin_detail", kwargs={"pk": self.pk})
+
+    def get_admin_update_url(self):
+        return reverse("account:super_admin:admin_update", kwargs={"pk": self.pk})
+
+    def get_admin_toggle_active_url(self):
+        return reverse("account:super_admin:admin_toggle_active", kwargs={"pk": self.pk})
+
+    def get_admin_reset_password_url(self):
+        return reverse("account:super_admin:admin_update_password", kwargs={"pk": self.pk})
 
     def get_absolute_url(self):
         return reverse("account:state_admin:user_detail", kwargs={"pk": self.pk})
