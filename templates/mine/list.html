@@ -29,11 +29,11 @@
           <table class="table table-hover">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">#</th>
+                <th scope="col">No</th>
+                <th scope="col">Nama Lombong</th>
+                <th scope="col">Alamat Lombong</th>
+                <th scope="col">Jenis Batuan</th>
                 <th scope="col">No Lot</th>
-                <th scope="col">Latitude</th>
-                <th scope="col">Longitude</th>
-                <th scope="col">Lokasi</th>
                 <th scope="col">Aktif</th>
                 <th scope="col">Action</th>
               </tr>
@@ -43,10 +43,10 @@
               {% with mine=mine_miner.mine %}
               <tr>
                 <td>{{ forloop.counter }}</td>
+                <td>{{ mine.location }}</td>
+                <td>{{ mine.address1 }}{{ mine.address2 }}{{ mine.address3 }}</td>
+                <td>{{ mine.main_rock_type }}</td>
                 <td><a href="">{{ mine_miner.lot_number }}</a></td>
-                <td>{{ mine_miner.latitude }}</td>
-                <td>{{ mine_miner.longitude }}</td>
-                <td>{{ mine }}</td>
                 <td>
                   {% if mine.status %}
                   <i class="fas fa-check-circle text-success ml-2"></i>
