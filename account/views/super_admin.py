@@ -142,3 +142,25 @@ class AdminRegistrationView(FormView):
 #         context = super().get_context_data(**kwargs)
 #         context["title"] = 'Daftar JMG State'
 #         return context
+
+
+def hq_detail(request, pk):
+    each_user = get_object_or_404(User, pk=pk)
+
+    context = {
+        'each_user': each_user,
+        'title': 'Maklumat JMG HQ',
+    }
+
+    return render(request, 'account/super_admin/hq_user/detail.html', context)
+
+
+def admin_detail(request, pk):
+    each_user = get_object_or_404(User, pk=pk)
+
+    context = {
+        'each_user': each_user,
+        'title': 'Maklumat JMG Admin',
+    }
+
+    return render(request, 'account/super_admin/admin_user/detail.html', context)

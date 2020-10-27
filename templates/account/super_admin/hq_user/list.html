@@ -45,7 +45,7 @@
                             {% for each_user in user_list %}
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
-                                <td><a href="{{ each_user.get_absolute_url }}">{{ each_user.username }}</a></td>
+                                <td><a href="{{ each_user.get_hq_absolute_url }}">{{ each_user.username }}</a></td>
                                 <td>
                                     {{ each_user.first_name }} {{ each_user.last_name }}
                                 </td>

@@ -27,6 +27,12 @@ class User(AbstractUser):
     def is_super_admin(self):
         return self.is_active and (self.is_superuser or self.groups.filter(name='Super Admin').exists())
 
+    def get_hq_absolute_url(self):
+        return reverse("account:super_admin:hq_detail", kwargs={"pk": self.pk})
+
+    def get_admin_absolute_url(self):
+        return reverse("account:super_admin:admin_detail", kwargs={"pk": self.pk})
+
     def get_absolute_url(self):
         return reverse("account:state_admin:user_detail", kwargs={"pk": self.pk})
 
