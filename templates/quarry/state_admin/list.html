@@ -32,8 +32,10 @@
           <table class="table table-hover">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Lokasi</th>
+                <th scope="col">No</th>
+                <th scope="col">Nama Kuari</th>
+                <th scope="col">Alamat Kuari</th>
+                <th scope="col">Jenis Batuan</th>
                 <th scope="col">Aktif</th>
                 <th scope="col">Action</th>
               </tr>
@@ -42,7 +44,9 @@
               {% for quarry in quarry_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{{ quarry.get_absolute_url }}">{{ quarry }}</a></td>
+                <td><a href="{{ quarry.get_absolute_url }}">{{ quarry.location }}</a></td>
+                <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td>
+                <td>{{ quarry.main_rock_type }}</td>
                 <td>
                   {% if quarry.status %}
                   <i class="fas fa-check-circle text-success ml-2"></i>

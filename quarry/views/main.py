@@ -593,16 +593,66 @@ def miner_data_delete(request, pk):
 
 def miner_data_detail(request, pk):
     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
-    next_link = reverse('quarry:production_statistic',
-                        kwargs={"pk": miner_data.pk})
+    production_statistic = get_object_or_404(
+        ProductionStatistic, miner_data=miner_data)
+    sales_submission = get_object_or_404(
+        SalesSubmission, miner_data=miner_data)
+    local_final_uses = get_object_or_404(LocalFinalUses, miner_data=miner_data)
+    export_final_uses = get_object_or_404(
+        ExportFinalUses, miner_data=miner_data)
+    local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
+    local_contractor = get_object_or_404(
+        LocalContractor, miner_data=miner_data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, miner_data=miner_data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, miner_data=miner_data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, miner_data=miner_data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, miner_data=miner_data)
+    daily_explosive = get_object_or_404(DailyExplosive, miner_data=miner_data)
+    energy_supply = get_object_or_404(EnergySupply, miner_data=miner_data)
+    operating_record = get_object_or_404(
+        OperatingRecord, miner_data=miner_data)
+    royalties = get_object_or_404(Royalties, miner_data=miner_data)
+    other = get_object_or_404(Other, miner_data=miner_data)
 
     context = {
         'title': 'Data Kuari',
         'miner_data': miner_data,
-        'next_link': next_link,
+        'production_statistic': production_statistic,
+        'sales_submission': sales_submission,
+        'local_final_uses': local_final_uses,
+        'export_final_uses': export_final_uses,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'daily_explosive': daily_explosive,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
+        'royalties': royalties,
+        'other': other,
     }
 
-    return render(request, 'quarry/miner_data/detail.html', context=context)
+    return render(request, 'quarry/miner_data/detail.html', context)
+
+
+# def miner_data_detail(request, pk):
+#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     next_link = reverse('quarry:production_statistic',
+#                         kwargs={"pk": miner_data.pk})
+
+#     context = {
+#         'title': 'Data Kuari',
+#         'miner_data': miner_data,
+#         'next_link': next_link,
+#     }
+
+#     return render(request, 'quarry/miner_data/detail.html', context=context)
 
 
 def production_statistic_detail(request, pk):

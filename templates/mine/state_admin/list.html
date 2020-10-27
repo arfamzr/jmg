@@ -32,8 +32,10 @@
           <table class="table table-hover">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Lokasi</th>
+                <th scope="col">No</th>
+                <th scope="col">Nama Lombong</th>
+                <th scope="col">Alamat Lombong</th>
+                <th scope="col">Jenis Batuan</th>
                 <th scope="col">Aktif</th>
                 <th scope="col">Action</th>
               </tr>
@@ -42,7 +44,9 @@
               {% for mine in mine_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{{ mine.get_absolute_url }}">{{ mine }}</a></td>
+                <td><a href="{{ mine.get_absolute_url }}">{{ mine.location }}</a></td>
+                <td>{{ mine.address1 }}{{ mine.address2 }}{{ mine.address3 }}</td>
+                <td>{{ mine.main_rock_type }}</td>
                 <td>
                   {% if mine.status %}
                   <i class="fas fa-check-circle text-success ml-2"></i>

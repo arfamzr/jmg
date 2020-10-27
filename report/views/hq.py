@@ -1,9 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse, Http404
 
 import xlwt
-from datetime import datetime
-from django.shortcuts import render
-from django.db.models import Sum
 
 from quarry.models import QuarryDataApproval
 from mine.models import MineDataApproval
@@ -22,6 +19,7 @@ def quarry_report_input(request):
 
     return render(request, 'report/state_admin/quarry/form.html', context)
 
+
 def mine_report_input(request):
     form = ReportForm()
 
@@ -31,6 +29,7 @@ def mine_report_input(request):
     }
 
     return render(request, 'report/state_admin/mine/form.html', context)
+
 
 def quarry_report(request):
     form = ReportForm(request.GET)
@@ -621,6 +620,7 @@ def quarry_report(request):
     else:
         return redirect('report:state_admin:quarry_input')
 
+
 def mine_report(request):
     form = ReportForm(request.GET)
     if form.is_valid():
@@ -1144,6 +1144,7 @@ def mine_report(request):
 
     else:
         return redirect('report:state_admin:quarry_input')
+
 
 def quarry_graph(request):
     form = GraphForm(request.GET)
@@ -1715,6 +1716,7 @@ def quarry_graph(request):
     }
 
     return render(request, 'report/hq/graph/quarry/form.html', context)
+
 
 def mine_graph(request):
     form = GraphForm(request.GET)

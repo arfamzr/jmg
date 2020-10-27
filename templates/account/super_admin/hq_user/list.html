@@ -45,7 +45,7 @@
                             {% for each_user in user_list %}
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
-                                <td><a href="{{ each_user.get_absolute_url }}">{{ each_user.username }}</a></td>
+                                <td><a href="{{ each_user.get_hq_absolute_url }}">{{ each_user.username }}</a></td>
                                 <td>
                                     {{ each_user.first_name }} {{ each_user.last_name }}
                                 </td>
@@ -58,15 +58,16 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{{ each_user.get_update_url }}" class="badge badge-primary">Update</a>
-                                    <a href="{{ each_user.get_toggle_active_url }}" class="badge badge-info">
+                                    <a href="{{ each_user.get_hq_update_url }}" class="badge badge-primary">Update</a>
+                                    <a href="{{ each_user.get_hq_toggle_active_url }}" class="badge badge-info">
                                         {% if each_user.is_active %}
                                         Deactivate
                                         {% else %}
                                         Activate
                                         {% endif %}
                                     </a>
-                                    <a href="{{ each_user.get_reset_password_url }}" class="badge badge-secondary">Reset
+                                    <a href="{{ each_user.get_hq_reset_password_url }}"
+                                        class="badge badge-secondary">Reset
                                         Password</a>
                                 </td>
                             </tr>

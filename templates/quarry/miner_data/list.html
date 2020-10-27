@@ -28,12 +28,12 @@
           <table class="table table-hover">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">#</th>
+                <th scope="col">No</th>
                 <th scope="col">Bulan/Tahun</th>
+                <th scope="col">Nama Kuari</th>
+                <th scope="col">Alamat Kuari</th>
                 <th scope="col">No Lot</th>
-                <th scope="col">Latitude</th>
-                <th scope="col">Longitude</th>
-                <th scope="col">Lokasi Kuari</th>
+                <th scope="col">Jenis Batuan</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
@@ -44,17 +44,17 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                <td>{{ quarry.location }}</td>
+                <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td>
                 <td>{{ quarry_miner.lot_number }}</td>
-                <td>{{ quarry_miner.latitude }}</td>
-                <td>{{ quarry_miner.longitude }}</td>
-                <td>{{ quarry }}</td>
+                <td>{{ quarry.main_rock_type }}</td>
                 <td>
                   {% if last_approval %}
                   {% if last_approval.admin_approved == True %}
                   <span class="text-success">Successful</span>
                   {% elif last_approval.state_approved == False or last_approval.admin_approved == False %}
                   <span class="text-danger">Rejected</span>
-                  <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#rejectCommentModal"
+                  <button class="badge badge-sm badge-secondary" data-toggle="modal" data-target="#rejectCommentModal"
                     data-id="{{ miner_data.id }}">
                     <i class=" far fa-eye"></i>
                   </button>

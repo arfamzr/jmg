@@ -1,0 +1,350 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css"
+  integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w=="
+  crossorigin="anonymous" />
+{% endblock extra_styles %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div id="production" class="row">
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">NEGERI</th>
+                <th scope="col" style="text-align: center;">{{ rocks.rock1.name }}</th>
+                {% if rocks.rock2.name %}
+                <th scope="col" style="text-align: center;">{{ rocks.rock2.name }}</th>
+                {% endif %}
+                {% if rocks.rock3.name %}
+                <th scope="col" style="text-align: center;">{{ rocks.rock3.name }}</th>
+                {% endif %}
+                {% if rocks.rock4.name %}
+                <th scope="col" style="text-align: center;">{{ rocks.rock4.name }}</th>
+                {% endif %}
+                {% if rocks.rock5.name %}
+                <th scope="col" style="text-align: center;">{{ rocks.rock5.name }}</th>
+                {% endif %}
+                <th scope="col" style="text-align: center;">JUMLAH</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for state in states %}
+              <tr>
+                <th>{{ state.name }}</th>
+                <td style="text-align: right;">{{ state.rock1.production }}</td>
+                {% if rocks.rock2.name %}
+                <td style="text-align: right;">{{ state.rock2.production }}</td>
+                {% endif %}
+                {% if rocks.rock3.name %}
+                <td style="text-align: right;">{{ state.rock3.production }}</td>
+                {% endif %}
+                {% if rocks.rock4.name %}
+                <td style="text-align: right;">{{ state.rock4.production }}</td>
+                {% endif %}
+                {% if rocks.rock5.name %}
+                <td style="text-align: right;">{{ state.rock5.production }}</td>
+                {% endif %}
+                <td style="text-align: right;">{{ state.total_by_state.production }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <thead class="thead-light">
+              <tr>
+                <th></th>
+                <th style="text-align: right;">{{ rocks.rock1.production }}</th>
+                {% if rocks.rock2.name %}
+                <th style="text-align: right;">{{ rocks.rock2.production }}</th>
+                {% endif %}
+                {% if rocks.rock3.name %}
+                <th style="text-align: right;">{{ rocks.rock3.production }}</th>
+                {% endif %}
+                {% if rocks.rock4.name %}
+                <th style="text-align: right;">{{ rocks.rock4.production }}</th>
+                {% endif %}
+                {% if rocks.rock5.name %}
+                <th style="text-align: right;">{{ rocks.rock5.production }}</th>
+                {% endif %}
+                <th style="text-align: right;">{{ total.production }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="col-12">
+          <canvas id="productionChart" width="400" height="150"></canvas>
+        </div>
+      </div>
+      <div id="royalties" class="row d-none">
+        <div class="col-lg-12">
+          <h4>NILAI ROYALTI BAHAN BATUAN {{ month|default:'tahun'|upper }} {{ year }} (RM)</h4>
+        </div>
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">NEGERI</th>
+                <th scope="col" style="text-align: center;">{{ rocks.rock1.name }}</th>
+                {% if rocks.rock2.name %}
+                <th scope="col" style="text-align: center;">{{ rocks.rock2.name }}</th>
+                {% endif %}
+                {% if rocks.rock3.name %}
+                <th scope="col" style="text-align: center;">{{ rocks.rock3.name }}</th>
+                {% endif %}
+                {% if rocks.rock4.name %}
+                <th scope="col" style="text-align: center;">{{ rocks.rock4.name }}</th>
+                {% endif %}
+                {% if rocks.rock5.name %}
+                <th scope="col" style="text-align: center;">{{ rocks.rock5.name }}</th>
+                {% endif %}
+                <th scope="col" style="text-align: center;">JUMLAH</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for state in states %}
+              <tr>
+                <th>{{ state.name }}</th>
+                <td style="text-align: right;">{{ state.rock1.royalties }}</td>
+                {% if rocks.rock2.name %}
+                <td style="text-align: right;">{{ state.rock2.royalties }}</td>
+                {% endif %}
+                {% if rocks.rock3.name %}
+                <td style="text-align: right;">{{ state.rock3.royalties }}</td>
+                {% endif %}
+                {% if rocks.rock4.name %}
+                <td style="text-align: right;">{{ state.rock4.royalties }}</td>
+                {% endif %}
+                {% if rocks.rock5.name %}
+                <td style="text-align: right;">{{ state.rock5.royalties }}</td>
+                {% endif %}
+                <td style="text-align: right;">{{ state.total_by_state.royalties }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <thead class="thead-light">
+              <tr>
+                <th></th>
+                <th style="text-align: right;">{{ rocks.rock1.royalties }}</th>
+                {% if rocks.rock2.name %}
+                <th style="text-align: right;">{{ rocks.rock2.royalties }}</th>
+                {% endif %}
+                {% if rocks.rock3.name %}
+                <th style="text-align: right;">{{ rocks.rock3.royalties }}</th>
+                {% endif %}
+                {% if rocks.rock4.name %}
+                <th style="text-align: right;">{{ rocks.rock4.royalties }}</th>
+                {% endif %}
+                {% if rocks.rock5.name %}
+                <th style="text-align: right;">{{ rocks.rock5.royalties }}</th>
+                {% endif %}
+                <th style="text-align: right;">{{ total.royalties }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="col-12">
+          <canvas id="royaltiesChart" width="400" height="150"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"
+  integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA=="
+  crossorigin="anonymous"></script>
+<script>
+  var productionData = {
+    labels: [
+      // {% for state in states %}
+      '{{ state.name }}',
+      // {% endfor %}
+    ],
+    datasets: [{
+        label: 'PENGELUARAN {{ rocks.rock1.name }}',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock1.production }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% if rocks.rock2.name %}
+      {
+        label: 'PENGELUARAN {{ rocks.rock2.name }}',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock2.production }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if rocks.rock3.name %}
+      {
+        label: 'PENGELUARAN {{ rocks.rock3.name }}',
+        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock3.production }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if rocks.rock4.name %}
+      {
+        label: 'PENGELUARAN {{ rocks.rock4.name }}',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock4.production }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if rocks.rock5.name %}
+      {
+        label: 'PENGELUARAN {{ rocks.rock5.name }}',
+        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock5.production }}'),
+          // {% endfor %}
+        ],
+      },
+      //{% endif %}
+    ],
+  }
+  var royaltiesData = {
+    labels: [
+      // {% for state in states %}
+      '{{ state.name }}',
+      // {% endfor %}
+    ],
+    datasets: [{
+        label: 'ROYALTI {{ rocks.rock1.name }}',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock1.royalties }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% if rocks.rock2.name %}
+      {
+        label: 'ROYALTI {{ rocks.rock2.name }}',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock2.royalties }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if rocks.rock3.name %}
+      {
+        label: 'ROYALTI {{ rocks.rock3.name }}',
+        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock3.royalties }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if rocks.rock4.name %}
+      {
+        label: 'ROYALTI {{ rocks.rock4.name }}',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock4.royalties }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if rocks.rock5.name %}
+      {
+        label: 'ROYALTI {{ rocks.rock5.name }}',
+        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        data: [
+          // {% for state in states %}
+          parseFloat('{{ state.rock5.royalties }}'),
+          // {% endfor %}
+        ],
+      },
+      //{% endif %}
+    ],
+  }
+  var ctx = document.getElementById('productionChart');
+  var productionChart = new Chart(ctx, {
+    type: 'bar',
+    data: productionData,
+    options: {
+      title: {
+        display: true,
+        text: "PENGELUARAN KUARI {{ month|default:'tahun'|upper }} {{ year }} (TAN METRIK)",
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      responsive: true,
+    },
+  });
+  var ctx = document.getElementById('royaltiesChart');
+  var royaltiesChart = new Chart(ctx, {
+    type: 'bar',
+    data: royaltiesData,
+    options: {
+      title: {
+        display: true,
+        text: "NILAI ROYALTI BAHAN BATUAN {{ month|default:'tahun'|upper }} {{ year }} (RM)",
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      responsive: true,
+    },
+  });
+</script>
+<script>
+  const production = document.getElementById('production')
+  const production_btn = document.getElementById('productionBtn')
+  const royalties = document.getElementById('royalties')
+  const royalties_btn = document.getElementById('royaltiesBtn')
+
+  production_btn.addEventListener("click", () => {
+    production.classList.remove('d-none')
+    production_btn.classList.add('d-none')
+    royalties.classList.add('d-none')
+    royalties_btn.classList.remove('d-none')
+  })
+
+  royalties_btn.addEventListener("click", () => {
+    royalties.classList.remove('d-none')
+    royalties_btn.classList.add('d-none')
+    production.classList.add('d-none')
+    production_btn.classList.remove('d-none')
+  })
+</script>
+{% endblock extra_js %}

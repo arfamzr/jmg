@@ -1,4 +1,5 @@
 {% load static %}
+{% load add_get_parameter %}
 
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -10,6 +11,51 @@
     </div>
     <div class="sidebar-brand-text mx-3">{{ user.get_full_name }}</div>
   </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Kuari
+  </div>
+
+
+  <!-- Nav Item -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:executive:quarry_production_graph' %}{% add_get %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Pengeluaran</span></a>
+  </li>
+
+  <!-- Nav Item -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:executive:quarry_royalties_graph' %}{% add_get %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Royalti</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Lombong
+  </div>
+
+  <!-- Nav Item -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:executive:mine_production_graph' %}{% add_get %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Pengeluaran</span></a>
+  </li>
+
+  <!-- Nav Item -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:executive:mine_royalties_graph' %}{% add_get %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Royalti</span></a>
+  </li>
 
   <!-- Divider -->
   <hr class="sidebar-divider">
