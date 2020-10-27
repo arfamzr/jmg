@@ -11,6 +11,7 @@ from ..views.state_admin import (
     toggle_active,
     user_mine_list,
     MineMinerDataListView,
+    MineMinerDataSuccessListView,
     miner_data_detail,
     statistic_detail,
     local_worker_detail,
@@ -36,6 +37,7 @@ urlpatterns = [
     path('user-mine/<int:pk>/',
          user_mine_list, name='user_mine_list'),
     path('data-list/', MineMinerDataListView.as_view(), name='data_list'),
+    path('data-list/success', MineMinerDataSuccessListView.as_view(), name='data_list_success'),
     path(
         'miner-data/<int:pk>/',
         miner_data_detail,

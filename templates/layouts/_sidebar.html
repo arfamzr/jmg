@@ -271,6 +271,36 @@
   <!-- Divider -->
   <hr class="sidebar-divider">
 
+   <!-- Heading -->
+  <div class="sidebar-heading">
+    Senarai Data Lulus
+  </div>
+
+  <!-- Nav Item - Kuari -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'quarry:state_admin:data_list_success' %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Kuari</span></a>
+  </li>
+
+  <!-- Nav Item - Lombong -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'mine:state_admin:data_list_success' %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Lombong</span></a>
+  </li>
+
+  <!-- Nav Item - Mineral -->
+  <li class="nav-item">
+    <a class="nav-link" href="<?= base_url('mineral'); ?>">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Mineral</span></a>
+  </li>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
   <div class="sidebar-heading">
     Laporan
   </div>
