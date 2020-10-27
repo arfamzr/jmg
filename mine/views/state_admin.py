@@ -251,6 +251,41 @@ class MineMinerDataListView(ListView):
         context["title"] = 'Senarai Data Lombong'
         return context
 
+class MineMinerDataSuccessListView(ListView):
+    template_name = 'mine/state_admin/miner_data/list.html'
+    model = MineMinerData
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            state=self.request.user.profile.state,
+        )
+
+        id_list = []
+        for data in queryset:
+            approval = data.get_last_approval()
+            if approval:
+                if approval.state_approved == True and approval.admin_approved == True:
+                    id_list.append(data.id)
+        queryset = queryset.filter(id__in=id_list)
+
+        try:
+            name = self.request.GET['q']
+        except:
+            name = ''
+        if (name != ''):
+            # object_list = queryset.filter(location__icontains=name)
+            object_list = queryset
+        else:
+            object_list = queryset
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Data Lombong'
+        return context
+
 
 def miner_data_detail(request, pk):
     miner_data = get_object_or_404(MineMinerData, pk=pk)

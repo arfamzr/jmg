@@ -11,6 +11,7 @@ from ..views.state_admin import (
     toggle_active,
     user_quarry_list,
     QuarryMinerDataListView,
+    QuarryMinerDataSuccessListView,
     miner_data_detail,
     production_statistic_detail,
     sales_submission_detail,
@@ -41,6 +42,7 @@ urlpatterns = [
     path('user-quarry/<int:pk>/',
          user_quarry_list, name='user_quarry_list'),
     path('data-list/', QuarryMinerDataListView.as_view(), name='data_list'),
+    path('data-list/success/', QuarryMinerDataSuccessListView.as_view(), name='data_list_success'),
     path(
         'miner-data/<int:pk>/',
         miner_data_detail,
