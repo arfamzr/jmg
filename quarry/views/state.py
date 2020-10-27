@@ -148,16 +148,99 @@ class QuarryMinerDataListView(ListView):
 
 def miner_data_detail(request, pk):
     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
-    next_link = reverse('quarry:state:production_statistic',
-                        kwargs={"pk": miner_data.pk})
+    production_statistic = get_object_or_404(
+        ProductionStatistic, miner_data=miner_data)
+    sales_submission = get_object_or_404(
+        SalesSubmission, miner_data=miner_data)
+    local_final_uses = get_object_or_404(LocalFinalUses, miner_data=miner_data)
+    export_final_uses = get_object_or_404(
+        ExportFinalUses, miner_data=miner_data)
+    local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
+    local_contractor = get_object_or_404(
+        LocalContractor, miner_data=miner_data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, miner_data=miner_data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, miner_data=miner_data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, miner_data=miner_data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, miner_data=miner_data)
+    daily_explosive = get_object_or_404(DailyExplosive, miner_data=miner_data)
+    energy_supply = get_object_or_404(EnergySupply, miner_data=miner_data)
+    operating_record = get_object_or_404(
+        OperatingRecord, miner_data=miner_data)
+    royalties = get_object_or_404(Royalties, miner_data=miner_data)
+    other = get_object_or_404(Other, miner_data=miner_data)
+
+    if request.method == 'POST':
+        approved = False
+        if request.POST.get('choice') == 'yes':
+            approved = True
+
+        data_approval = miner_data.get_last_approval()
+        data_approval.state_inspector = request.user
+        data_approval.state_comment = request.POST.get('comment', '')
+        data_approval.state_approved = approved
+        data_approval.save()
+
+        if approved:
+            jmg_state_admins = User.objects.filter(
+                groups__name='JMG State Admin', profile__state=miner_data.state)
+
+            notify = Notify()
+            notify_message = f'{miner_data.miner.quarry} telah menghantar permohonan data untuk kuari "{miner_data.quarry}"'
+            notify_link = reverse('quarry:state_admin:data_list')
+
+            for jmg_state_admin in jmg_state_admins:
+                notify.make_notify(
+                    jmg_state_admin, notify_message, notify_link)
+        else:
+            miner = data_approval.requestor
+
+            notify = Notify()
+            notify_message = f'Data untuk kuari "{miner_data.quarry}" telah ditolak'
+            notify_link = reverse('quarry:data_list')
+
+            notify.make_notify(miner, notify_message, notify_link)
+
+        return redirect('quarry:state:data_list')
 
     context = {
         'title': 'Data Kuari',
         'miner_data': miner_data,
-        'next_link': next_link,
+        'production_statistic': production_statistic,
+        'sales_submission': sales_submission,
+        'local_final_uses': local_final_uses,
+        'export_final_uses': export_final_uses,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'daily_explosive': daily_explosive,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
+        'royalties': royalties,
+        'other': other,
     }
 
-    return render(request, 'quarry/state/miner_data/detail.html', context=context)
+    return render(request, 'quarry/state/miner_data/detail.html', context)
+
+
+# def miner_data_detail(request, pk):
+#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     next_link = reverse('quarry:state:production_statistic',
+#                         kwargs={"pk": miner_data.pk})
+
+#     context = {
+#         'title': 'Data Kuari',
+#         'miner_data': miner_data,
+#         'next_link': next_link,
+#     }
+
+#     return render(request, 'quarry/state/miner_data/detail.html', context=context)
 
 
 def production_statistic_detail(request, pk):

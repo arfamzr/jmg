@@ -54,7 +54,7 @@
                   <span class="text-success">Successful</span>
                   {% elif last_approval.state_approved == False or last_approval.admin_approved == False %}
                   <span class="text-danger">Rejected</span>
-                  <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#rejectCommentModal"
+                  <button class="badge badge-sm badge-secondary" data-toggle="modal" data-target="#rejectCommentModal"
                     data-id="{{ miner_data.id }}">
                     <i class=" far fa-eye"></i>
                   </button>
