@@ -1,10 +1,10 @@
 from django.contrib.auth.models import Group
 from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, DetailView, UpdateView
 
 from ..models import User, Profile
-from ..forms.state_admin import UserCreationForm
+from ..forms.state_admin import UserCreationForm, UserForm, ProfileForm, PasswordResetForm
 from ..forms.super_admin import HqUserCreationForm
 
 
@@ -164,3 +164,111 @@ def admin_detail(request, pk):
     }
 
     return render(request, 'account/super_admin/admin_user/detail.html', context)
+
+
+class HQUpdateView(UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'account/super_admin/hq_user/update.html'
+    context_object_name = 'each_user'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Update JMG HQ'
+        return context
+
+
+def admin_update(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, instance=user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            return redirect('account:super_admin:admin_list')
+    else:
+        user_form = UserForm(instance=user)
+        profile_form = ProfileForm(instance=user.profile)
+
+    context = {
+        'title': 'Update JMG Admin State',
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+
+    return render(request, 'account/super_admin/admin_user/update.html', context)
+
+
+def hq_toggle_active(request, pk):
+    each_user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        if each_user.is_active == True:
+            each_user.is_active = False
+        else:
+            each_user.is_active = True
+        each_user.save()
+        return redirect('account:super_admin:hq_list')
+
+    context = {
+        'each_user': each_user,
+    }
+
+    return render(request, 'account/super_admin/hq_user/toggle_active.html', context)
+
+
+def admin_toggle_active(request, pk):
+    each_user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        if each_user.is_active == True:
+            each_user.is_active = False
+        else:
+            each_user.is_active = True
+        each_user.save()
+        return redirect('account:super_admin:admin_list')
+
+    context = {
+        'each_user': each_user,
+    }
+
+    return render(request, 'account/super_admin/admin_user/toggle_active.html', context)
+
+
+def hq_update_password(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            raw_password = form.cleaned_data.get('password1')
+            user.set_password(raw_password)
+            user.save()
+            return redirect('dashboard:dashboard')
+    else:
+        form = PasswordResetForm()
+
+    context = {
+        'title': f'Reset Password for {user.username}',
+        'user': user,
+        'form': form,
+    }
+    return render(request, 'account/super_admin/hq_user/reset_password.html', context)
+
+
+def admin_update_password(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            raw_password = form.cleaned_data.get('password1')
+            user.set_password(raw_password)
+            user.save()
+            return redirect('dashboard:dashboard')
+    else:
+        form = PasswordResetForm()
+
+    context = {
+        'title': f'Reset Password for {user.username}',
+        'user': user,
+        'form': form,
+    }
+    return render(request, 'account/super_admin/admin_user/reset_password.html', context)
