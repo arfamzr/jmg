@@ -1,4 +1,5 @@
 from django.http import Http404, HttpResponse
+from django.http import request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
@@ -389,16 +390,51 @@ def miner_data_delete(request, pk):
 
 def miner_data_detail(request, pk):
     miner_data = get_object_or_404(MineMinerData, pk=pk)
-    next_link = reverse('mine:statistic',
-                        kwargs={"pk": miner_data.pk})
+    statistic = get_object_or_404(Statistic, miner_data=miner_data)
+    local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
+    local_contractor = get_object_or_404(
+        LocalContractor, miner_data=miner_data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, miner_data=miner_data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, miner_data=miner_data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, miner_data=miner_data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, miner_data=miner_data)
+    energy_supply = get_object_or_404(EnergySupply, miner_data=miner_data)
+    operating_record = get_object_or_404(
+        OperatingRecord, miner_data=miner_data)
 
     context = {
-        'title': 'Data Kuari',
+        'title': 'Data Lombong',
         'miner_data': miner_data,
-        'next_link': next_link,
+        'statistic': statistic,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
     }
 
     return render(request, 'mine/miner_data/detail.html', context=context)
+
+
+# def miner_data_detail(request, pk):
+#     miner_data = get_object_or_404(MineMinerData, pk=pk)
+#     next_link = reverse('mine:statistic',
+#                         kwargs={"pk": miner_data.pk})
+
+#     context = {
+#         'title': 'Data Kuari',
+#         'miner_data': miner_data,
+#         'next_link': next_link,
+#     }
+
+#     return render(request, 'mine/miner_data/detail.html', context=context)
 
 
 def statistic_detail(request, pk):

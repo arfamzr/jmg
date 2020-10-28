@@ -251,6 +251,7 @@ class MineMinerDataListView(ListView):
         context["title"] = 'Senarai Data Lombong'
         return context
 
+
 class MineMinerDataSuccessListView(ListView):
     template_name = 'mine/state_admin/miner_data/list.html'
     model = MineMinerData
@@ -289,16 +290,88 @@ class MineMinerDataSuccessListView(ListView):
 
 def miner_data_detail(request, pk):
     miner_data = get_object_or_404(MineMinerData, pk=pk)
-    next_link = reverse('mine:state_admin:statistic',
-                        kwargs={"pk": miner_data.pk})
+    statistic = get_object_or_404(Statistic, miner_data=miner_data)
+    local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
+    local_contractor = get_object_or_404(
+        LocalContractor, miner_data=miner_data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, miner_data=miner_data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, miner_data=miner_data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, miner_data=miner_data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, miner_data=miner_data)
+    energy_supply = get_object_or_404(EnergySupply, miner_data=miner_data)
+    operating_record = get_object_or_404(
+        OperatingRecord, miner_data=miner_data)
+
+    if request.method == 'POST':
+        approved = False
+        if request.POST.get('choice') == 'yes':
+            approved = True
+
+        data_approval = miner_data.get_last_approval()
+        data_approval.admin_inspector = request.user
+        data_approval.admin_comment = request.POST.get('comment', '')
+        data_approval.admin_approved = approved
+        data_approval.save()
+
+        if approved:
+            jmg_hqs = User.objects.filter(
+                groups__name='JMG HQ')
+
+            notify = Notify()
+            notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk lombong "{miner_data.mine}"'
+            # hq/data_list belum ada
+            notify_link = reverse('mine:hq:data_list')
+
+            for jmg_hq in jmg_hqs:
+                notify.make_notify(jmg_hq, notify_message, notify_link)
+
+        else:
+            miner = data_approval.requestor
+            state_inspector = data_approval.state_inspector
+
+            notify = Notify()
+            notify_message = f'Data untuk lombong "{miner_data.mine}" telah ditolak'
+            notify_link = reverse('mine:data_list')
+            state_notify_message = f'Data untuk lombong "{miner_data.mine}"({miner}) telah ditolak'
+
+            notify.make_notify(miner, notify_message, notify_link)
+            notify.make_notify(state_inspector, state_notify_message)
+
+        return redirect('mine:state_admin:data_list')
 
     context = {
-        'title': 'Data Kuari',
+        'title': 'Data Lombong',
         'miner_data': miner_data,
-        'next_link': next_link,
+        'statistic': statistic,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
     }
 
     return render(request, 'mine/state_admin/miner_data/detail.html', context=context)
+
+
+# def miner_data_detail(request, pk):
+#     miner_data = get_object_or_404(MineMinerData, pk=pk)
+#     next_link = reverse('mine:state_admin:statistic',
+#                         kwargs={"pk": miner_data.pk})
+
+#     context = {
+#         'title': 'Data Kuari',
+#         'miner_data': miner_data,
+#         'next_link': next_link,
+#     }
+
+#     return render(request, 'mine/state_admin/miner_data/detail.html', context=context)
 
 
 def statistic_detail(request, pk):
