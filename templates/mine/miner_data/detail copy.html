@@ -1,0 +1,146 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-8">
+          <table class="table table-bordered table-sm">
+            <tbody>
+              {% with mine=miner_data.mine mine_miner=miner_data.miner miner=miner_data.miner.miner %}
+              <tr>
+                <th>Bulan/Tahun</th>
+                <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+              </tr>
+              <tr>
+                <th>-</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Nama Syarikat</th>
+                <td>
+                  <a href="{{ miner.employee.company.get_absolute_url }}">
+                    {{ miner.employee.company.name }}
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th>Pengusaha</th>
+                <td>
+                  <a href="{{ miner.get_absolute_url }}">
+                    {{ miner.username }}
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th>No. Lot</th>
+                <td>{{ mine_miner.lot_number }}</td>
+              </tr>
+              <tr>
+                <th>Latitude</th>
+                <td>{{ mine_miner.latitude }}</td>
+              </tr>
+              <tr>
+                <th>Longitude</th>
+                <td>{{ mine_miner.longitude }}</td>
+              </tr>
+              <tr>
+                <th>-</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Alamat</th>
+                <td>
+                  {{ mine.address1 }}{% if mine.address2 %},<br>{{ mine.address2 }}{% endif %}{% if mine.address3 %},<br>{{ mine.address3 }}{% endif %}
+                </td>
+              </tr>
+              <tr>
+                <th>No. Telefon</th>
+                <td>{{ mine.phone_number }}</td>
+              </tr>
+              <tr>
+                <th>No. Fax</th>
+                <td>{{ mine.fax_number }}</td>
+              </tr>
+              <tr>
+                <th>Emel</th>
+                <td>{{ mine.email }}</td>
+              </tr>
+              <tr>
+                <th>Lokasi</th>
+                <td>{{ mine.location }}</td>
+              </tr>
+              <tr>
+                <th>Mukim</th>
+                <td>{{ mine.mukim }}</td>
+              </tr>
+              <tr>
+                <th>Daerah</th>
+                <td>{{ mine.district }}</td>
+              </tr>
+              <tr>
+                <th>Negeri</th>
+                <td>{{ mine.get_state_display }}</td>
+              </tr>
+              <tr>
+                <th>Status Tanah</th>
+                <td>{{ mine.land_status }}</td>
+              </tr>
+              <tr>
+                <th>Rujukan Grid</th>
+                <td>{{ mine.grid_reference }}</td>
+              </tr>
+              <tr>
+                <th>Keupayaan Maksima</th>
+                <td>{{ mine.max_capacity }}</td>
+              </tr>
+              <tr>
+                <th>Kategori Syarikat</th>
+                <td>{{ mine.company_category }}</td>
+              </tr>
+              <tr>
+                <th>Jenis Batuan Utama</th>
+                <td>{{ mine.get_main_rock_type_display }}</td>
+              </tr>
+              <tr>
+                <th>Jenis Batuan Sampingan</th>
+                <td>{{ mine.get_side_rock_type_display }}</td>
+              </tr>
+              <tr>
+                <th>Aktif</th>
+                <td>
+                  {% if mine.status %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endwith %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 col-lg-3 ml-auto mt-3">
+          <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+            Seterusnya
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

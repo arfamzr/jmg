@@ -369,7 +369,7 @@ def miner_data_detail(request, pk):
         'other': other,
     }
 
-    return render(request, 'quarry/state/miner_data/detail.html', context)
+    return render(request, 'quarry/state_admin/miner_data/detail.html', context)
 
 
 # def miner_data_detail(request, pk):
