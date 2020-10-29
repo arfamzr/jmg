@@ -4,7 +4,8 @@ from .models import (
     Mine,
     MineMiner,
     MineMinerData,
-    Statistic,
+    MainStatistic,
+    SideStatistic,
     LocalOperator,
     ForeignOperator,
     LocalContractor,
@@ -29,7 +30,11 @@ class MineMinerDataAdmin(admin.ModelAdmin):
     pass
 
 
-class StatisticAdmin(admin.ModelAdmin):
+class MainStatisticAdmin(admin.ModelAdmin):
+    pass
+
+
+class SideStatisticAdmin(admin.ModelAdmin):
     pass
 
 
@@ -66,14 +71,17 @@ class OperatingRecordAdmin(admin.ModelAdmin):
 
 
 class MineDataApprovalAdmin(admin.ModelAdmin):
-    list_display = ['miner_data', 'state_inspector', 'state_approved', 'admin_inspector', 'admin_approved']
-    list_editable = ['state_inspector', 'state_approved', 'admin_inspector', 'admin_approved']
+    list_display = ['miner_data', 'state_inspector',
+                    'state_approved', 'admin_inspector', 'admin_approved']
+    list_editable = ['state_inspector', 'state_approved',
+                     'admin_inspector', 'admin_approved']
 
 
 admin.site.register(Mine, MineAdmin)
 admin.site.register(MineMiner, MineMinerAdmin)
 admin.site.register(MineMinerData, MineMinerDataAdmin)
-admin.site.register(Statistic, StatisticAdmin)
+admin.site.register(MainStatistic, MainStatisticAdmin)
+admin.site.register(SideStatistic, SideStatisticAdmin)
 admin.site.register(LocalOperator, LocalOperatorAdmin)
 admin.site.register(ForeignOperator, ForeignOperatorAdmin)
 admin.site.register(LocalContractor, LocalContractorAdmin)

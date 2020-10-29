@@ -4,10 +4,10 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
 from account.models import User, Profile
-from quarry.models import QuarryMinerData, YEAR_CHOICES, current_year, Quarry
+from quarry.models import QuarryMinerData, YEAR_CHOICES, current_year
 
 
-class Mine(models.Model):
+class Choices:
     BAUXITE = 'BAUXITE'
     TINORE = 'TIN ORE'
     IRONORE = 'IRON ORE'
@@ -50,6 +50,8 @@ class Mine(models.Model):
         (GRAPHITE, _('Graphite/Grafit')),
     ]
 
+
+class Mine(models.Model):
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
@@ -67,10 +69,6 @@ class Mine(models.Model):
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(_("kategori syarikat"), max_length=255)
-    main_mineral_type = models.CharField(
-        _("jenis mineral utama"), max_length=255, choices=Quarry.TYPES_OF_ROCK)
-    side_mineral_type = models.CharField(
-        _("jenis mineral sampingan"), max_length=255, blank=True, choices=Quarry.TYPES_OF_ROCK)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -170,9 +168,11 @@ class MineMinerData(models.Model):
         return self.approvals.last()
 
 
-class Statistic(models.Model):
-    miner_data = models.OneToOneField(MineMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+class MainStatistic(models.Model):
+    miner_data = models.ForeignKey(MineMinerData, verbose_name=_(
+        "miner data"), on_delete=models.CASCADE, related_name="main_minerals")
+    mineral_type = models.CharField(
+        _("jenis mineral utama"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
     minerals_quantity = models.DecimalField(
         _("kuantiti_mineral"), max_digits=15, decimal_places=2)
     final_stock_last_month = models.DecimalField(
@@ -190,11 +190,52 @@ class Statistic(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "perangkaan"
-        verbose_name_plural = "perangkaan"
+        verbose_name = "perangkaan batuan utama"
+        verbose_name_plural = "perangkaan batuan utama"
 
     def __str__(self):
         return f"{self.miner_data}"
+
+    def get_edit_url(self):
+        return reverse("mine:main_statistic_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("mine:main_statistic_delete", kwargs={"pk": self.pk})
+
+
+class SideStatistic(models.Model):
+    miner_data = models.ForeignKey(MineMinerData, verbose_name=_(
+        "miner data"), on_delete=models.CASCADE, related_name="side_minerals")
+    mineral_type = models.CharField(
+        _("jenis mineral sampingan"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
+    minerals_quantity = models.DecimalField(
+        _("kuantiti_mineral"), max_digits=15, decimal_places=2)
+    final_stock_last_month = models.DecimalField(
+        _("stok akhir bulan lalu"), max_digits=15, decimal_places=2)
+    mine_production = models.DecimalField(
+        _("pengeluaran lombong"), max_digits=15, decimal_places=2)
+    total_minerals = models.DecimalField(
+        _("jumlah mineral"), max_digits=15, decimal_places=2)
+    submission_buyers = models.DecimalField(
+        _("penyerahan kepada pembeli"), max_digits=15, decimal_places=2)
+    final_stock_this_month = models.DecimalField(
+        _("stok akhir bulan ini"), max_digits=15, decimal_places=2)
+    average_grade = models.CharField(_("gred hitung panjang"), max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "perangkaan batuan sampingan"
+        verbose_name_plural = "perangkaan batuan sampingan"
+
+    def __str__(self):
+        return f"{self.miner_data}"
+
+    def get_edit_url(self):
+        return reverse("mine:side_statistic_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("mine:side_statistic_delete", kwargs={"pk": self.pk})
 
 
 class LocalOperator(models.Model):

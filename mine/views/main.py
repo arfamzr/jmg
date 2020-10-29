@@ -13,7 +13,8 @@ from ..models import (
     Mine,
     MineMiner,
     MineMinerData,
-    Statistic,
+    MainStatistic,
+    SideStatistic,
     LocalOperator,
     LocalContractor,
     ForeignOperator,
@@ -26,7 +27,8 @@ from ..models import (
 )
 from ..forms.main import (
     MineMinerDataForm,
-    StatisticForm,
+    MainStatisticForm,
+    SideStatisticForm,
     LocalOperatorForm,
     LocalContractorForm,
     ForeignOperatorForm,
@@ -115,35 +117,132 @@ def add_report(request, pk):
 
 def statistic_edit(request, pk):
     miner_data = get_object_or_404(MineMinerData, pk=pk)
-    try:
-        statistic = Statistic.objects.get(miner_data=miner_data)
-    except Statistic.DoesNotExist:
-        statistic = None
-
-    if request.method == 'POST':
-        if statistic == None:
-            form = StatisticForm(request.POST)
-        else:
-            form = StatisticForm(
-                request.POST, instance=statistic)
-
-        if form.is_valid():
-            form.instance.miner_data = miner_data
-            form.save()
-            return redirect('mine:local_worker_edit', pk=miner_data.pk)
-
-    else:
-        if statistic == None:
-            form = StatisticForm()
-        else:
-            form = StatisticForm(instance=statistic)
+    main_statistic_list = MainStatistic.objects.filter(miner_data=miner_data)
+    side_statistic_list = SideStatistic.objects.filter(miner_data=miner_data)
+    next_link = reverse('mine:local_worker_edit', kwargs={'pk': miner_data.pk})
 
     context = {
-        'title': 'Edit Perangkaan',
-        'form': form,
+        'title': 'Perangkaan',
+        'miner_data': miner_data,
+        'main_statistic_list': main_statistic_list,
+        'side_statistic_list': side_statistic_list,
+        'next_link': next_link,
     }
 
-    return render(request, 'mine/miner_data/statistic/form.html', context=context)
+    return render(request, 'mine/miner_data/statistic/list.html', context)
+
+
+class MainStatisticCreateView(CreateView):
+    template_name = 'mine/miner_data/statistic/form.html'
+    form_class = MainStatisticForm
+    model = MainStatistic
+
+    def form_valid(self, form):
+        self.miner_data = get_object_or_404(
+            MineMinerData, pk=self.kwargs['pk'])
+        form.instance.miner_data = self.miner_data
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('mine:statistic_edit', kwargs={'pk': self.miner_data.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Tambah Perangkaan Mineral Utama'
+        return context
+
+
+class MainStatisticUpdateView(UpdateView):
+    template_name = 'mine/miner_data/statistic/form.html'
+    form_class = MainStatisticForm
+    model = MainStatistic
+
+    def get_success_url(self):
+        return reverse('mine:statistic_edit', kwargs={'pk': self.object.miner_data.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Edit Perangkaan Mineral Utama'
+        return context
+
+
+def main_statistic_delete(request, pk):
+    main_statistic = get_object_or_404(MainStatistic, pk=pk)
+    main_statistic.delete()
+    return redirect('mine:statistic_edit', pk=main_statistic.miner_data.pk)
+
+
+class SideStatisticCreateView(CreateView):
+    template_name = 'mine/miner_data/statistic/form.html'
+    form_class = SideStatisticForm
+    model = SideStatistic
+
+    def form_valid(self, form):
+        self.miner_data = get_object_or_404(
+            MineMinerData, pk=self.kwargs['pk'])
+        form.instance.miner_data = self.miner_data
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('mine:statistic_edit', kwargs={'pk': self.miner_data.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Tambah Perangkaan Mineral Sampingan'
+        return context
+
+
+class SideStatisticUpdateView(UpdateView):
+    template_name = 'mine/miner_data/statistic/form.html'
+    form_class = SideStatisticForm
+    model = SideStatistic
+
+    def get_success_url(self):
+        return reverse('mine:statistic_edit', kwargs={'pk': self.object.miner_data.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Edit Perangkaan Mineral Sampingan'
+        return context
+
+
+def side_statistic_delete(request, pk):
+    side_statistic = get_object_or_404(SideStatistic, pk=pk)
+    side_statistic.delete()
+    return redirect('mine:statistic_edit', pk=side_statistic.miner_data.pk)
+
+
+# def main_statistic_edit(request, pk):
+#     miner_data = get_object_or_404(MineMinerData, pk=pk)
+#     try:
+#         statistic = MainStatistic.objects.get(miner_data=miner_data)
+#     except MainStatistic.DoesNotExist:
+#         statistic = None
+
+#     if request.method == 'POST':
+#         if statistic == None:
+#             form = MainStatisticForm(request.POST)
+#         else:
+#             form = MainStatisticForm(
+#                 request.POST, instance=statistic)
+
+#         if form.is_valid():
+#             form.instance.miner_data = miner_data
+#             form.save()
+#             return redirect('mine:local_worker_edit', pk=miner_data.pk)
+
+#     else:
+#         if statistic == None:
+#             form = MainStatisticForm()
+#         else:
+#             form = MainStatisticForm(instance=statistic)
+
+#     context = {
+#         'title': 'Perangkaan Mineral Utama',
+#         'form': form,
+#     }
+
+#     return render(request, 'mine/miner_data/statistic/form.html', context=context)
 
 
 def local_worker_edit(request, pk):
@@ -390,7 +489,7 @@ def miner_data_delete(request, pk):
 
 def miner_data_detail(request, pk):
     miner_data = get_object_or_404(MineMinerData, pk=pk)
-    statistic = get_object_or_404(Statistic, miner_data=miner_data)
+    statistic = get_object_or_404(MainStatistic, miner_data=miner_data)
     local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
     local_contractor = get_object_or_404(
         LocalContractor, miner_data=miner_data)
@@ -443,7 +542,7 @@ def statistic_detail(request, pk):
                         kwargs={"pk": miner_data.pk})
     next_link = reverse('mine:local_worker',
                         kwargs={"pk": miner_data.pk})
-    statistic = get_object_or_404(Statistic, miner_data=miner_data)
+    statistic = get_object_or_404(MainStatistic, miner_data=miner_data)
 
     context = {
         'title': 'Perangkaan',

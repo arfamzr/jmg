@@ -10,7 +10,7 @@ from notification.notify import Notify
 
 from ..models import (
     MineMinerData,
-    Statistic,
+    MainStatistic,
     LocalOperator,
     LocalContractor,
     ForeignOperator,
@@ -76,7 +76,7 @@ def statistic_detail(request, pk):
                         kwargs={"pk": miner_data.pk})
     next_link = reverse('mine:hq:local_worker',
                         kwargs={"pk": miner_data.pk})
-    statistic = get_object_or_404(Statistic, miner_data=miner_data)
+    statistic = get_object_or_404(MainStatistic, miner_data=miner_data)
 
     context = {
         'title': 'Perangkaan',

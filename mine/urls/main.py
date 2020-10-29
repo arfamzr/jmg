@@ -5,6 +5,12 @@ from ..views.main import (
     add_report,
     MineMinerDataListView,
     statistic_edit,
+    MainStatisticCreateView,
+    SideStatisticCreateView,
+    MainStatisticUpdateView,
+    SideStatisticUpdateView,
+    main_statistic_delete,
+    side_statistic_delete,
     local_worker_edit,
     foreign_worker_edit,
     machinery_edit,
@@ -34,6 +40,36 @@ urlpatterns = [
         '<int:pk>/statistic/',
         statistic_edit,
         name='statistic_edit'
+    ),
+    path(
+        '<int:pk>/main-statistic/create/',
+        MainStatisticCreateView.as_view(),
+        name='main_statistic_create'
+    ),
+    path(
+        '<int:pk>/side-statistic/create/',
+        SideStatisticCreateView.as_view(),
+        name='side_statistic_create'
+    ),
+    path(
+        'main-statistic/<int:pk>/update/',
+        MainStatisticUpdateView.as_view(),
+        name='main_statistic_update'
+    ),
+    path(
+        'side-statistic/<int:pk>/update/',
+        SideStatisticUpdateView.as_view(),
+        name='side_statistic_update'
+    ),
+    path(
+        'main-statistic/<int:pk>/delete/',
+        main_statistic_delete,
+        name='main_statistic_delete'
+    ),
+    path(
+        'side-statistic/<int:pk>/delete/',
+        side_statistic_delete,
+        name='side_statistic_delete'
     ),
     path(
         '<int:pk>/local-worker/',

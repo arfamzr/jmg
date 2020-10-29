@@ -2,7 +2,8 @@ from django import forms
 
 from ..models import (
     MineMinerData,
-    Statistic,
+    MainStatistic,
+    SideStatistic,
     LocalOperator,
     LocalContractor,
     ForeignOperator,
@@ -21,10 +22,22 @@ class MineMinerDataForm(forms.ModelForm):
         fields = ['month', 'year']
 
 
-class StatisticForm(forms.ModelForm):
+class MainStatisticForm(forms.ModelForm):
 
     class Meta:
-        model = Statistic
+        model = MainStatistic
+        exclude = ['miner_data']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.label = ''
+
+
+class SideStatisticForm(forms.ModelForm):
+
+    class Meta:
+        model = SideStatistic
         exclude = ['miner_data']
 
     def __init__(self, *args, **kwargs):
