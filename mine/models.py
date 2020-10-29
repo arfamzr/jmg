@@ -51,6 +51,15 @@ class Choices:
     ]
 
 
+class Land_Status:
+    KERAJAAN = 'TANAH KERAJAAN'
+    SENDIRIAN = 'TANAH TUAN PUNYA'
+    LAND_STATUS = [
+        (KERAJAAN, _('Tanah Kerajaan')),
+        (SENDIRIAN, _('Tanah Tuan Punya')),
+    ]
+
+
 class Mine(models.Model):
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
@@ -65,7 +74,8 @@ class Mine(models.Model):
     district = models.CharField(_("daerah"), max_length=255)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
-    land_status = models.CharField(_("status tanah"), max_length=255)
+    land_status = models.CharField(
+        _("status tanah"), max_length=255, choices=Land_Status.LAND_STATUS)
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(_("kategori syarikat"), max_length=255)
