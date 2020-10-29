@@ -39,16 +39,14 @@
                     <th>Negeri</th>
                     <td>{{ user.profile.get_state_display }}</td>
                   </tr>
+                  {% if user.employee %}
                   <tr>
-                    <th>Syarikat/th>
+                    <th>Syarikat</th>
                     <td>
-                      {% if user.employee %}
                       {{ user.employee.company.name }}
-                      {% else %}
-                      Tiada Syarikat
-                      {% endif %}
                     </td>
                   </tr>
+                  {% endif %}
                 </tbody>
               </table>
             </div>
