@@ -204,14 +204,63 @@
   {% if user.is_jmg_state_admin %}
   <!-- Heading User -->
   <div class="sidebar-heading">
-    User
+    Lombong
   </div>
 
   <!-- Nav Item - Senarai Pengguna -->
-  <li class="nav-item ">
+  <!--<li class="nav-item ">
     <a class="nav-link" href="{% url 'account:state_admin:state_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai State</span></a>
+  </li>-->
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'company:state_admin:list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Pemajak</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Pengurus</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'account:state_admin:user_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Pengusaha</span></a>
+  </li>
+
+  <!--<li class="nav-item ">
+    <a class="nav-link" href="{% url 'quarry:state_admin:list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Kuari</span></a>
+  </li>-->
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'mine:state_admin:list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Lombong</span></a>
+  </li>
+
+
+  <hr class="sidebar-divider">
+
+  <div class="sidebar-heading">
+    Kuari
+  </div>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'company:state_admin:list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Pemajak</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Pengurus</span></a>
   </li>
 
   <li class="nav-item ">
@@ -221,21 +270,9 @@
   </li>
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'company:state_admin:list' %}">
-      <i class="fas fa-fw fa-user"></i>
-      <span>Senarai Pemajak</span></a>
-  </li>
-
-  <li class="nav-item ">
     <a class="nav-link" href="{% url 'quarry:state_admin:list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Kuari</span></a>
-  </li>
-
-  <li class="nav-item ">
-    <a class="nav-link" href="{% url 'mine:state_admin:list' %}">
-      <i class="fas fa-fw fa-user"></i>
-      <span>Senarai Lombong</span></a>
   </li>
 
   <!-- Divider -->
@@ -352,12 +389,12 @@
 
   {% if user.is_jmg_state %}
   <!-- Heading User -->
-  <div class="sidebar-heading">
+  <!-- <div class="sidebar-heading">
     User
   </div>
 
   <!-- Nav Item - Senarai Pengguna -->
-  <li class="nav-item ">
+  <!--<li class="nav-item ">
     <a class="nav-link" href="{% url 'account:state:user_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengusaha</span></a>
@@ -382,7 +419,7 @@
   </li>
 
   <!-- Divider -->
-  <hr class="sidebar-divider">
+  <!--<hr class="sidebar-divider">-->
 
   <!-- Heading -->
   <div class="sidebar-heading">
@@ -444,23 +481,23 @@
   </li>
 
   <!-- Divider -->
-  <hr class="sidebar-divider">
+  <!--<hr class="sidebar-divider">-->
 
   <!-- Heading -->
-  <div class="sidebar-heading">
+  <!--<div class="sidebar-heading">
     Sejarah Penghantaran Penyata
   </div>
 
 
   <!-- Nav Item - Kuari -->
-  <li class="nav-item">
+  <!--<li class="nav-item">
     <a class="nav-link" href="{% url 'quarry:data_list' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Kuari</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
-  <li class="nav-item">
+  <!--<li class="nav-item">
     <a class="nav-link" href="{% url 'mine:data_list' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>Lombong</span></a>
