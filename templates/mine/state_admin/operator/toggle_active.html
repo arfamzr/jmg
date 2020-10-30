@@ -1,0 +1,37 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <form class="user" method="post" action=".">
+            <div class="row mb-3">
+              <h3 class="col">
+                Are you sure to
+                {% if operator.status %}deactivate{% else %}activate{% endif %}
+                this lease holder(<b>{{ operator }}</b>)?
+              </h3>
+            </div>
+            <div class="row">
+              <div class="col">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                  Yes
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

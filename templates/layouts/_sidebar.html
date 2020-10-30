@@ -15,6 +15,7 @@
   <!-- Divider -->
   <hr class="sidebar-divider">
 
+  {% if user.is_executive %}
   <!-- Heading -->
   <div class="sidebar-heading">
     Kuari
@@ -59,6 +60,7 @@
 
   <!-- Divider -->
   <hr class="sidebar-divider">
+  {% endif %}
 
   <!-- Heading -->
   <div class="sidebar-heading">
@@ -215,7 +217,7 @@
   </li>-->
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'company:state_admin:list' %}">
+    <a class="nav-link" href="{% url 'mine:state_admin:lease_holder_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pemajak</span></a>
   </li>
@@ -227,7 +229,7 @@
   </li>
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'account:state_admin:user_list' %}">
+    <a class="nav-link" href="{% url 'mine:state_admin:operator_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengusaha</span></a>
   </li>

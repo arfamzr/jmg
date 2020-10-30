@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.views.generic import TemplateView
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from quarry.models import QuarryMinerData
 from mine.models import MineMinerData
@@ -33,6 +33,8 @@ def get_counted_data(data_list):
 
 
 def dashboard(request):
+    if not request.user.is_authenticated:
+        return redirect('account:login')
     if request.user.is_jmg_hq:
         quarry_data = QuarryMinerData.objects.all()
         quarry_count = get_counted_data(quarry_data)

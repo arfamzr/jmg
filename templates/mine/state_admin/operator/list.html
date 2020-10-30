@@ -11,7 +11,7 @@
     <div class="card-header py-3">
       <div class="row">
         <div class="col">
-          <a href="{% url 'mine:state_admin:create' %}" class="btn btn-primary">Tambah Lombong</a>
+          <a href="{% url 'mine:state_admin:operator_create' %}" class="btn btn-primary">Tambah Pengusaha</a>
         </div>
 
         <div class="col justify-content-end">
@@ -19,7 +19,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search Mine</button>
+                <button type="submit" class="btn btn-primary">Search Pengusaha</button>
               </div>
             </div>
           </form>
@@ -33,31 +33,39 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">Nama Lombong</th>
-                <th scope="col">Alamat Lombong</th>
-                <th scope="col">Jenis Batuan</th>
+                <th scope="col">Nama</th>
+                <th scope="col">No Phone</th>
+                <th scope="col">No Fax</th>
+                <th scope="col">Email</th>
+                <th scope="col">Alamat</th>
                 <th scope="col">Aktif</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
-              {% for mine in mine_list %}
+              {% for operator in object_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{{ mine.get_absolute_url }}">{{ mine.location }}</a></td>
-                <td>{{ mine.address1 }}{{ mine.address2 }}{{ mine.address3 }}</td>
-                <td><a href="{{ mine.get_mineral_list_url }}" class="badge badge-primary">Senarai Mineral</a></td>
+                <td>{{ operator.name }}</td>
+                <td>{{ operator.phone }}</td>
+                <td>{{ operator.fax }}</td>
+                <td>{{ operator.email }}</td>
                 <td>
-                  {% if mine.status %}
+                  {{ operator.address1 }}{% if operator.address2 %},<br>
+                  {{ operator.address2 }}{% endif %}{% if operator.address3 %},<br>
+                  {{ operator.address3 }}{% endif %}
+                </td>
+                <td>
+                  {% if operator.status %}
                   <i class="fas fa-check-circle text-success ml-2"></i>
                   {% else %}
                   <i class="fas fa-times-circle text-danger ml-2"></i>
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ mine.get_update_url }}" class="badge badge-primary">Update</a>
-                  <a href="{{ mine.get_toggle_active_url }}" class="badge badge-info">
-                    {% if mine.status %}
+                  <a href="{{ operator.get_update_url }}" class="badge badge-primary">Update</a>
+                  <a href="{{ operator.get_toggle_active_url }}" class="badge badge-info">
+                    {% if operator.status %}
                     Deactivate
                     {% else %}
                     Activate

@@ -60,7 +60,83 @@ class Land_Status:
     ]
 
 
+class LeaseHolder(models.Model):
+    name = models.CharField(_("nama"), max_length=255)
+    ic_number = models.CharField(_("no K/P"), max_length=25)
+    address1 = models.CharField(_("alamat"), max_length=255)
+    address2 = models.CharField(
+        _("alamat (line 2)"), max_length=255, blank=True)
+    address3 = models.CharField(
+        _("alamat (line 3)"), max_length=255, blank=True)
+    state = models.CharField(_("negeri"), max_length=3,
+                             choices=Profile.STATE_CHOICES)
+    status = models.BooleanField(_("status"), default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "pemajak lombong"
+        verbose_name_plural = "pemajak lombong"
+
+    def __str__(self):
+        return self.name
+
+    def get_update_url(self):
+        return reverse("mine:state_admin:lease_holder_update", kwargs={"pk": self.pk})
+
+    def get_toggle_active_url(self):
+        return reverse("mine:state_admin:lease_holder_toggle_active", kwargs={"pk": self.pk})
+
+
+class Manager(models.Model):
+    user = models.OneToOneField(User, verbose_name=_(
+        "user"), on_delete=models.CASCADE, primary_key=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "pengurus lombong"
+        verbose_name_plural = "pengurus lombong"
+
+    def __str__(self):
+        return f'{self.user}'
+
+
+class Operator(models.Model):
+    name = models.CharField(_("nama syarikat"), max_length=255)
+    address1 = models.CharField(_("alamat"), max_length=255)
+    address2 = models.CharField(
+        _("alamat (line 2)"), max_length=255, blank=True)
+    address3 = models.CharField(
+        _("alamat (line 3)"), max_length=255, blank=True)
+    phone = models.CharField(_("no phone"), max_length=50)
+    fax = models.CharField(_("no fax"), max_length=50)
+    email = models.CharField(_("emel"), max_length=255)
+    status = models.BooleanField(_("status"), default=True)
+    state = models.CharField(_("negeri"), max_length=3,
+                             choices=Profile.STATE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "pengusaha lombong"
+        verbose_name_plural = "pengusaha lombong"
+
+    def __str__(self):
+        return self.name
+
+    def get_update_url(self):
+        return reverse("mine:state_admin:operator_update", kwargs={"pk": self.pk})
+
+    def get_toggle_active_url(self):
+        return reverse("mine:state_admin:operator_toggle_active", kwargs={"pk": self.pk})
+
+
 class Mine(models.Model):
+    lease_holder = models.OneToOneField(LeaseHolder, verbose_name=_(
+        "pemajak"), on_delete=models.CASCADE, primary_key=True, related_name="mines_managered")
+    manager = models.ForeignKey(Manager, verbose_name=_(
+        "pengurus"), on_delete=models.SET_NULL, null=True)
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
@@ -79,6 +155,8 @@ class Mine(models.Model):
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(_("kategori syarikat"), max_length=255)
+    operators = models.ManyToManyField(Operator, verbose_name=_(
+        "operators"), related_name='mines', blank=True)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -102,8 +180,55 @@ class Mine(models.Model):
     def get_toggle_active_url(self):
         return reverse("mine:state_admin:toggle_active", kwargs={"pk": self.pk})
 
+    def get_mineral_list_url(self):
+        return reverse("mine:state_admin:mineral_list", kwargs={"pk": self.pk})
+
     def get_add_miner_url(self):
         return reverse("mine:state_admin:add_miner", kwargs={"pk": self.pk})
+
+
+class MainMineral(models.Model):
+    mine = models.ForeignKey(Mine, verbose_name=_(
+        "mine"), on_delete=models.CASCADE, related_name="main_minerals")
+    mineral_type = models.CharField(
+        _("jenis mineral"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "batuan utama"
+        verbose_name_plural = "batuan utama"
+
+    def __str__(self):
+        return f"{self.get_mineral_type_display}"
+
+    def get_edit_url(self):
+        return reverse("mine:state_admin:main_mineral_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("mine:state_admin:main_mineral_delete", kwargs={"pk": self.pk})
+
+
+class SideMineral(models.Model):
+    mine = models.ForeignKey(Mine, verbose_name=_(
+        "mine"), on_delete=models.CASCADE, related_name="side_minerals")
+    mineral_type = models.CharField(
+        _("jenis mineral"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "batuan sampingan"
+        verbose_name_plural = "batuan sampingan"
+
+    def __str__(self):
+        return f"{self.get_mineral_type_display}"
+
+    def get_edit_url(self):
+        return reverse("mine:state_admin:side_mineral_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("mine:state_admin:side_mineral_delete", kwargs={"pk": self.pk})
 
 
 class MineMiner(models.Model):

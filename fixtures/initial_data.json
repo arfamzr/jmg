@@ -2,7 +2,7 @@
   {
     "model": "auth.group",
     "pk": 1,
-    "fields": { "name": "Industry", "permissions": [] }
+    "fields": { "name": "Manager", "permissions": [] }
   },
   {
     "model": "auth.group",
