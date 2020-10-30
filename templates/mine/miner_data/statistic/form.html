@@ -77,3 +77,40 @@
 </div>
 <!-- /.container-fluid -->
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+  const minerals_quantity = document.getElementById('id_minerals_quantity')
+  const final_stock_last_month = document.getElementById('id_final_stock_last_month')
+  const mine_production = document.getElementById('id_mine_production')
+  const total_minerals = document.getElementById('id_total_minerals')
+  const submission_buyers = document.getElementById('id_submission_buyers')
+  const final_stock_this_month = document.getElementById('id_final_stock_this_month')
+
+  const set_total_minerals = () => {
+    let total = (parseFloat(final_stock_last_month.value) || 0) + (parseFloat(mine_production.value) || 0)
+    total_minerals.value = total
+  }
+
+  const set_final_stock_this_month = () => {
+    let total = (parseFloat(total_minerals.value) || 0) - (parseFloat(submission_buyers.value) || 0)
+    final_stock_this_month.value = total
+  }
+
+  final_stock_last_month.addEventListener("change", () => {
+    set_total_minerals()
+    set_final_stock_this_month()
+  })
+  mine_production.addEventListener("change", () => {
+    set_total_minerals()
+    set_final_stock_this_month()
+  })
+
+  total_minerals.addEventListener("change", () => {
+    set_final_stock_this_month()
+  })
+  submission_buyers.addEventListener("change", () => {
+    set_final_stock_this_month()
+  })
+</script>
+{% endblock extra_js %}

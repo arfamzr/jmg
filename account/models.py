@@ -8,8 +8,8 @@ class User(AbstractUser):
     email = models.EmailField(_("email"), unique=True)
 
     @property
-    def is_industry(self):
-        return self.is_active and (self.is_superuser or self.groups.filter(name="Industry").exists())
+    def is_manager(self):
+        return self.is_active and (self.is_superuser or self.groups.filter(name="Manager").exists())
 
     @property
     def is_jmg_state(self):
