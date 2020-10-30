@@ -15,42 +15,44 @@
     <div class="card-body">
       <div class="row">
         <div class="col-lg-12">
-          <table class="table table-bordered table-sm">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col"></th>
-                <th scope="col" style="text-align: center;">BATUAN UTAMA (TAN MATRIK)</th>
-                <th scope="col" style="text-align: center;">BATUAN SAMPINGAN (TAN MATRIK)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>STOK AWAL BULAN</th>
-                <td style="text-align: right;">{{ production_statistic.initial_main_rock_stock }}</td>
-                <td style="text-align: right;">{{ production_statistic.initial_side_rock_stock }}</td>
-              </tr>
-              <tr>
-                <th>PENGELUARAN</th>
-                <td style="text-align: right;">{{ production_statistic.main_rock_production }}</td>
-                <td style="text-align: right;">{{ production_statistic.side_rock_production }}</td>
-              </tr>
-              <tr>
-                <th>JUMLAH</th>
-                <td style="text-align: right;">{{ production_statistic.total_main_rock }}</td>
-                <td style="text-align: right;">{{ production_statistic.total_side_rock }}</td>
-              </tr>
-              <tr>
-                <th>PENYERAHAN</th>
-                <td style="text-align: right;">{{ production_statistic.main_rock_submission }}</td>
-                <td style="text-align: right;">{{ production_statistic.side_rock_submission }}</td>
-              </tr>
-              <tr>
-                <th>STOCK AKHIR</th>
-                <td style="text-align: right;">{{ production_statistic.final_main_rock_stock }}</td>
-                <td style="text-align: right;">{{ production_statistic.final_side_rock_stock }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col" style="text-align: center;">BATUAN UTAMA (TAN MATRIK)</th>
+                  <th scope="col" style="text-align: center;">BATUAN SAMPINGAN (TAN MATRIK)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>STOK AWAL BULAN</th>
+                  <td style="text-align: right;">{{ production_statistic.initial_main_rock_stock }}</td>
+                  <td style="text-align: right;">{{ production_statistic.initial_side_rock_stock }}</td>
+                </tr>
+                <tr>
+                  <th>PENGELUARAN</th>
+                  <td style="text-align: right;">{{ production_statistic.main_rock_production }}</td>
+                  <td style="text-align: right;">{{ production_statistic.side_rock_production }}</td>
+                </tr>
+                <tr>
+                  <th>JUMLAH</th>
+                  <td style="text-align: right;">{{ production_statistic.total_main_rock }}</td>
+                  <td style="text-align: right;">{{ production_statistic.total_side_rock }}</td>
+                </tr>
+                <tr>
+                  <th>PENYERAHAN</th>
+                  <td style="text-align: right;">{{ production_statistic.main_rock_submission }}</td>
+                  <td style="text-align: right;">{{ production_statistic.side_rock_submission }}</td>
+                </tr>
+                <tr>
+                  <th>STOCK AKHIR</th>
+                  <td style="text-align: right;">{{ production_statistic.final_main_rock_stock }}</td>
+                  <td style="text-align: right;">{{ production_statistic.final_side_rock_stock }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div class="row">

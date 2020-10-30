@@ -25,40 +25,43 @@
     <div class="card-body">
       <div class="row">
         <div class="col-lg-12">
-          <table class="table table-hover">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Nama Syarikat</th>
-                <th scope="col">Alamat Syarikat</th>
-                <th scope="col">Lokasi Lombong</th>
-                <th scope="col">Bulan/Tahun</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for miner_data in object_list %}
-              {% with company=miner_data.miner.miner.employee.company mine_miner=miner_data.miner mine=miner_data.mine last_approval=miner_data.get_last_approval %}
-              <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ company.name }}</td>
-                <td>{{ company.address1 }}</td>
-                <td>{{ mine }}</td>
-                <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
-                <td>
-                  <span class="text-success">Successful</span>
-                </td>
-                <td>
-                  <a href="{{ miner_data.get_hq_absolute_url }}" class="badge badge-sm badge-secondary">
-                    <i class="far fa-eye"></i>
-                  </a>
-                </td>
-              </tr>
-              {% endwith %}
-              {% endfor %}
-            </tbody>
-          </table>
+          <div class="table-responsive-xl">
+            <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Nama Syarikat</th>
+                  <th scope="col">Alamat Syarikat</th>
+                  <th scope="col">Lokasi Lombong</th>
+                  <th scope="col">Bulan/Tahun</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for miner_data in object_list %}
+                {% with company=miner_data.miner.miner.employee.company mine_miner=miner_data.miner mine=miner_data.mine last_approval=miner_data.get_last_approval %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ company.name }}</td>
+                  <td>{{ company.address1 }}</td>
+                  <td>{{ mine }}</td>
+                  <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                  <td>
+                    <span class="text-success">Successful</span>
+                  </td>
+                  <td>
+                    <a href="{{ miner_data.get_hq_absolute_url }}" class="badge badge-sm badge-secondary">
+                      <i class="far fa-eye"></i>
+                    </a>
+                  </td>
+                </tr>
+                {% endwith %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
 
           {% with pagin=page_obj %}
           {% include 'layouts/includes/_pagination.html' %}

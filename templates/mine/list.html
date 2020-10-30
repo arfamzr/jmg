@@ -26,42 +26,44 @@
     <div class="card-body">
       <div class="row">
         <div class="col-lg-12">
-          <table class="table table-hover">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Nama Lombong</th>
-                <th scope="col">Alamat Lombong</th>
-                <th scope="col">Jenis Batuan</th>
-                <th scope="col">No Lot</th>
-                <th scope="col">Aktif</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for mine_miner in object_list %}
-              {% with mine=mine_miner.mine %}
-              <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ mine.location }}</td>
-                <td>{{ mine.address1 }}{{ mine.address2 }}{{ mine.address3 }}</td>
-                <td>{{ mine.main_rock_type }}</td>
-                <td><a href="">{{ mine_miner.lot_number }}</a></td>
-                <td>
-                  {% if mine.status %}
-                  <i class="fas fa-check-circle text-success ml-2"></i>
-                  {% else %}
-                  <i class="fas fa-times-circle text-danger ml-2"></i>
-                  {% endif %}
-                </td>
-                <td>
-                  <a href="{{ mine_miner.get_add_report_url }}" class="badge badge-primary">Add Report</a>
-                </td>
-              </tr>
-              {% endwith %}
-              {% endfor %}
-            </tbody>
-          </table>
+          <div class="table-responsive-xl">
+            <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">No</th>
+                  <th scope="col">Nama Lombong</th>
+                  <th scope="col">Alamat Lombong</th>
+                  <th scope="col">Jenis Batuan</th>
+                  <th scope="col">No Lot</th>
+                  <th scope="col">Aktif</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for mine_miner in object_list %}
+                {% with mine=mine_miner.mine %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ mine.location }}</td>
+                  <td>{{ mine.address1 }}{{ mine.address2 }}{{ mine.address3 }}</td>
+                  <td>{{ mine.main_rock_type }}</td>
+                  <td><a href="">{{ mine_miner.lot_number }}</a></td>
+                  <td>
+                    {% if mine.status %}
+                    <i class="fas fa-check-circle text-success ml-2"></i>
+                    {% else %}
+                    <i class="fas fa-times-circle text-danger ml-2"></i>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <a href="{{ mine_miner.get_add_report_url }}" class="badge badge-primary">Add Report</a>
+                  </td>
+                </tr>
+                {% endwith %}
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
 
           {% with pagin=page_obj %}
           {% include 'layouts/includes/_pagination.html' %}
