@@ -13,6 +13,13 @@ from ..views.state_admin import (
     OperatorUpdateView,
     operator_toggle_active,
 
+    # manager
+    ManagerListView,
+    ManagerCreateView,
+    ManagerUpdateView,
+    manager_toggle_active,
+
+
     # mine
     MineListView,
     MineCreateView,
@@ -58,6 +65,15 @@ urlpatterns = [
          LeaseHolderUpdateView.as_view(), name='lease_holder_update'),
     path('lease-holder/<int:pk>/toggle-active/',
          lease_holder_toggle_active, name='lease_holder_toggle_active'),
+
+    # manager
+    path('manager/', ManagerListView.as_view(), name='manager_list'),
+    path('manager/create/', ManagerCreateView.as_view(),
+         name='manager_create'),
+    path('manager/<int:pk>/update/',
+         ManagerUpdateView.as_view(), name='manager_update'),
+    path('operator/<int:pk>/toggle-active/',
+         manager_toggle_active, name='manager_toggle_active'),
 
     # operator
     path('operator/', OperatorListView.as_view(), name='operator_list'),

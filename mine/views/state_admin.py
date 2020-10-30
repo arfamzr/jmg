@@ -112,14 +112,14 @@ def lease_holder_toggle_active(request, pk):
 
 # manager views
 class ManagerListView(ListView):
-    template_name = 'mine/state_admin/lease_holder/list.html'
+    template_name = 'mine/state_admin/manager/list.html'
     model = Manager
     paginate_by = 10
     ordering = ['-created_at']
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(
-            state=self.request.user.profile.state)
+            user__profile__state=self.request.user.profile.state)
         try:
             name = self.request.GET['q']
         except:
@@ -132,15 +132,15 @@ class ManagerListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai Pemajak Lombong'
+        context["title"] = 'Senarai Pengurus Lombong'
         return context
 
 
-class LeaseHolderCreateView(CreateView):
-    template_name = 'mine/state_admin/lease_holder/form.html'
-    model = LeaseHolder
-    form_class = LeaseHolderForm
-    success_url = reverse_lazy('mine:state_admin:lease_holder_list')
+class ManagerCreateView(CreateView):
+    template_name = 'mine/state_admin/manager/form.html'
+    model = Manager
+    form_class = ManagerForm
+    success_url = reverse_lazy('mine:state_admin:manager_list')
 
     def form_valid(self, form):
         form.instance.state = self.request.user.profile.state
@@ -148,37 +148,37 @@ class LeaseHolderCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Tambah Pemajak Lombong'
+        context["title"] = 'Tambah Pengurus Lombong'
         return context
 
 
-class LeaseHolderUpdateView(UpdateView):
-    template_name = 'mine/state_admin/lease_holder/form.html'
-    model = LeaseHolder
-    form_class = LeaseHolderForm
-    success_url = reverse_lazy('mine:state_admin:lease_holder_list')
+class ManagerUpdateView(UpdateView):
+    template_name = 'mine/state_admin/manager/form.html'
+    model = Manager
+    form_class = ManagerForm
+    success_url = reverse_lazy('mine:state_admin:manager_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update Pemajak Lombong'
+        context["title"] = 'Update Pengurus Lombong'
         return context
 
 
-def lease_holder_toggle_active(request, pk):
-    lease_holder = get_object_or_404(LeaseHolder, pk=pk)
+def manager_toggle_active(request, pk):
+    manager = get_object_or_404(Manager, pk=pk)
     if request.method == 'POST':
-        if lease_holder.status == True:
-            lease_holder.status = False
+        if manager.status == True:
+            manager.status = False
         else:
-            lease_holder.status = True
-        lease_holder.save()
-        return redirect('mine:state_admin:lease_holder_list')
+            manager.status = True
+        manager.save()
+        return redirect('mine:state_admin:manager_list')
 
     context = {
-        'lease_holder': lease_holder,
+        'manager': manager,
     }
 
-    return render(request, 'mine/state_admin/lease_holder/toggle_active.html', context)
+    return render(request, 'mine/state_admin/manager/toggle_active.html', context)
 
 
 # operator views
