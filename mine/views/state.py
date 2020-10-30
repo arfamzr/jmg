@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404, HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
@@ -142,7 +142,7 @@ class MineMinerDataListView(ListView):
 
 def miner_data_detail(request, pk):
     miner_data = get_object_or_404(MineMinerData, pk=pk)
-    statistic = get_object_or_404(MainStatistic, miner_data=miner_data)
+    statistic = get_list_or_404(MainStatistic, miner_data=miner_data)
     local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
     local_contractor = get_object_or_404(
         LocalContractor, miner_data=miner_data)
@@ -193,6 +193,7 @@ def miner_data_detail(request, pk):
 
     context = {
         'title': 'Data Lombong',
+        'test': 'test',
         'miner_data': miner_data,
         'statistic': statistic,
         'local_operator': local_operator,
@@ -205,6 +206,7 @@ def miner_data_detail(request, pk):
         'operating_record': operating_record,
     }
 
+    # print(statistic)
     return render(request, 'mine/state/miner_data/detail.html', context=context)
 
 
@@ -228,7 +230,7 @@ def statistic_detail(request, pk):
                         kwargs={"pk": miner_data.pk})
     next_link = reverse('mine:state:local_worker',
                         kwargs={"pk": miner_data.pk})
-    statistic = get_object_or_404(MainStatistic, miner_data=miner_data)
+    statistic = get_list_or_404(MainStatistic, miner_data=miner_data)
 
     context = {
         'title': 'Perangkaan',
