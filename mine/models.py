@@ -403,8 +403,8 @@ class LocalOperator(models.Model):
     female_clerk = models.IntegerField(_("kerani perempuan"))
     male_labor = models.IntegerField(_("buruh lelaki"))
     female_labor = models.IntegerField(_("buruh perempuan"))
-    total_female = models.IntegerField(_("jumlah perempuan"))
     total_male = models.IntegerField(_("jumlah lelaki"))
+    total_female = models.IntegerField(_("jumlah perempuan"))
     total_male_salary = models.DecimalField(
         _("jumlah upah gaji lelaki"), max_digits=15, decimal_places=2)
     total_female_salary = models.DecimalField(

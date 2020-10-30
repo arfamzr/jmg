@@ -168,3 +168,139 @@
 </div>
 <!-- /.container-fluid -->
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+  // male operator
+  const operator_male_manager = document.getElementById('id_male_manager')
+  const operator_male_professional = document.getElementById('id_male_professional')
+  const operator_male_technical = document.getElementById('id_male_technical')
+  const operator_male_clerk = document.getElementById('id_male_clerk')
+  const operator_male_labor = document.getElementById('id_male_labor')
+  const operator_total_male = document.getElementById('id_total_male')
+
+  const set_operator_total_male = () => {
+    let total = (parseFloat(operator_male_manager.value) || 0) +
+      (parseFloat(operator_male_professional.value) || 0) +
+      (parseFloat(operator_male_technical.value) || 0) +
+      (parseFloat(operator_male_clerk.value) || 0) +
+      (parseFloat(operator_male_labor.value) || 0)
+    operator_total_male.value = total
+  }
+
+  operator_male_manager.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+  operator_male_professional.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+  operator_male_technical.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+  operator_male_clerk.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+  operator_male_labor.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+
+  // female operator
+  const operator_female_manager = document.getElementById('id_female_manager')
+  const operator_female_professional = document.getElementById('id_female_professional')
+  const operator_female_technical = document.getElementById('id_female_technical')
+  const operator_female_clerk = document.getElementById('id_female_clerk')
+  const operator_female_labor = document.getElementById('id_female_labor')
+  const operator_total_female = document.getElementById('id_total_female')
+
+  const set_operator_total_female = () => {
+    let total = (parseFloat(operator_female_manager.value) || 0) +
+      (parseFloat(operator_female_professional.value) || 0) +
+      (parseFloat(operator_female_technical.value) || 0) +
+      (parseFloat(operator_female_clerk.value) || 0) +
+      (parseFloat(operator_female_labor.value) || 0)
+    operator_total_female.value = total
+  }
+
+  operator_female_manager.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+  operator_female_professional.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+  operator_female_technical.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+  operator_female_clerk.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+  operator_female_labor.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+
+  // male contractor
+  const contractor_male_manager = document.getElementById('id_second-male_manager')
+  const contractor_male_professional = document.getElementById('id_second-male_professional')
+  const contractor_male_technical = document.getElementById('id_second-male_technical')
+  const contractor_male_clerk = document.getElementById('id_second-male_clerk')
+  const contractor_male_labor = document.getElementById('id_second-male_labor')
+  const contractor_total_male = document.getElementById('id_second-total_male')
+
+  const set_contractor_total_male = () => {
+    let total = (parseFloat(contractor_male_manager.value) || 0) +
+      (parseFloat(contractor_male_professional.value) || 0) +
+      (parseFloat(contractor_male_technical.value) || 0) +
+      (parseFloat(contractor_male_clerk.value) || 0) +
+      (parseFloat(contractor_male_labor.value) || 0)
+    contractor_total_male.value = total
+  }
+
+  contractor_male_manager.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+  contractor_male_professional.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+  contractor_male_technical.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+  contractor_male_clerk.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+  contractor_male_labor.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+
+  // female contractor
+  const contractor_female_manager = document.getElementById('id_second-female_manager')
+  const contractor_female_professional = document.getElementById('id_second-female_professional')
+  const contractor_female_technical = document.getElementById('id_second-female_technical')
+  const contractor_female_clerk = document.getElementById('id_second-female_clerk')
+  const contractor_female_labor = document.getElementById('id_second-female_labor')
+  const contractor_total_female = document.getElementById('id_second-total_female')
+
+  const set_contractor_total_female = () => {
+    let total = (parseFloat(contractor_female_manager.value) || 0) +
+      (parseFloat(contractor_female_professional.value) || 0) +
+      (parseFloat(contractor_female_technical.value) || 0) +
+      (parseFloat(contractor_female_clerk.value) || 0) +
+      (parseFloat(contractor_female_labor.value) || 0)
+    contractor_total_female.value = total
+  }
+
+  contractor_female_manager.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+  contractor_female_professional.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+  contractor_female_technical.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+  contractor_female_clerk.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+  contractor_female_labor.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+</script>
+{% endblock extra_js %}
