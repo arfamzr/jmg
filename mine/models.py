@@ -60,6 +60,19 @@ class Land_Status:
     ]
 
 
+class Method_Mining:
+    DEDAH = 'DEDAH'
+    BAWAHTANAH = 'BAWAH TANAH'
+    KAPALKOREK = 'KAPAL KOREK'
+    PAMKELIKIR = 'PAM KELIKIR'
+    METHOD_MINING = [
+        (DEDAH, _('Dedah')),
+        (BAWAHTANAH, _('Bawah Tanah')),
+        (KAPALKOREK, _('Kapal Korek')),
+        (PAMKELIKIR, _('Pam Kelikir')),
+    ]
+
+
 class LeaseHolder(models.Model):
     name = models.CharField(_("nama"), max_length=255)
     ic_number = models.CharField(_("no K/P"), max_length=25)
@@ -149,14 +162,15 @@ class Mine(models.Model):
         "pemajak"), on_delete=models.CASCADE, primary_key=True)
     operator = models.ForeignKey(Operator, verbose_name=_(
         "pengusaha"), on_delete=models.SET_NULL, null=True, related_name="mines")
+    name = models.CharField(_("nama lombong"), max_length=255)
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
     address3 = models.CharField(
         _("alamat (line 3)"), max_length=255, blank=True)
-    phone_number = models.CharField(_("no tel"), max_length=15)
-    fax_number = models.CharField(_("no fax"), max_length=15)
-    email = models.EmailField(_("email"), max_length=254)
+    # phone_number = models.CharField(_("no tel"), max_length=15)
+    # fax_number = models.CharField(_("no fax"), max_length=15)
+    # email = models.EmailField(_("email"), max_length=254)
     location = models.CharField(_("lokasi"), max_length=255)
     mukim = models.CharField(_("mukim"), max_length=255)
     district = models.CharField(_("daerah"), max_length=255)
@@ -164,9 +178,11 @@ class Mine(models.Model):
                              choices=Profile.STATE_CHOICES)
     land_status = models.CharField(
         _("status tanah"), max_length=255, choices=Land_Status.LAND_STATUS)
+    method_mining = models.CharField(_("cara melombong"), max_length=255,
+                             choices=Method_Mining.METHOD_MINING)
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
-    max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
-    company_category = models.CharField(_("kategori syarikat"), max_length=255)
+    # max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
+    # company_category = models.CharField(_("kategori syarikat"), max_length=255)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
