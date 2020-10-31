@@ -31,10 +31,10 @@ class MineForm(forms.ModelForm):
         model = Mine
         exclude = ['state', 'status', 'operators']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['lease_holder'].widget.attrs['disabled'] = True
-        self.fields['operator'].widget.attrs['disabled'] = True
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['lease_holder'].widget.attrs['disabled'] = True
+    #     self.fields['operator'].widget.attrs['disabled'] = True
 
 
 class MainMineralForm(forms.ModelForm):
