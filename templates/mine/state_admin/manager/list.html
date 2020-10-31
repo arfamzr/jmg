@@ -42,17 +42,18 @@
             </thead>
             <tbody>
               {% for manager in object_list %}
+              {% with profile=manager.user.profile %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ manager.name }}</td>
-                <td>{{ manager.ic_number }}</td>
+                <td>{{ manager.user.get_full_name }}</td>
+                <td>{{ profile.ic_number }}</td>
                 <td>
-                  {{ manager.address1 }}{% if manager.address2 %},<br>
-                  {{ manager.address2 }}{% endif %}{% if manager.address3 %},<br>
-                  {{ manager.address3 }}{% endif %}
+                  {{ profile.address1 }}{% if profile.address2 %},<br>
+                  {{ profile.address2 }}{% endif %}{% if profile.address3 %},<br>
+                  {{ profile.address3 }}{% endif %}
                 </td>
                 <td>
-                  {% if manager.status %}
+                  {% if manager.user.is_active %}
                   <i class="fas fa-check-circle text-success ml-2"></i>
                   {% else %}
                   <i class="fas fa-times-circle text-danger ml-2"></i>
@@ -61,7 +62,7 @@
                 <td>
                   <a href="{{ manager.get_update_url }}" class="badge badge-primary">Update</a>
                   <a href="{{ manager.get_toggle_active_url }}" class="badge badge-info">
-                    {% if manager.status %}
+                    {% if manager.user.is_active %}
                     Deactivate
                     {% else %}
                     Activate
@@ -69,6 +70,7 @@
                   </a>
                 </td>
               </tr>
+              {% endwith %}
               {% endfor %}
             </tbody>
           </table>

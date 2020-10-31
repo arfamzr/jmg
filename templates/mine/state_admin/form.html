@@ -28,3 +28,26 @@
 </div>
 <!-- /.container-fluid -->
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+  var manager = $('#id_manager')
+  var lease_holder = $('#id_lease_holder')
+  var operator = $('#id_operator')
+
+  manager.change(function () {
+    var manager_id = manager.val()
+    $.ajax({
+      url: `/mine/state-admin/manager/${manager_id}/get-manager-data/`,
+      success: function (data) {
+        lease_holder.val(data.lease_holder_id)
+        operator.val(data.operator_id)
+      },
+      error: function () {
+        lease_holder.val('')
+        operator.val('')
+      }
+    })
+  })
+</script>
+{% endblock extra_js %}

@@ -14,8 +14,8 @@
             <div class="row mb-3">
               <h3 class="col">
                 Are you sure to
-                {% if lease_holder.status %}deactivate{% else %}activate{% endif %}
-                this lease holder(<b>{{ lease_holder }}</b>)?
+                {% if user.is_active %}deactivate{% else %}activate{% endif %}
+                this manager(<b>{{ user }}</b>)?
               </h3>
             </div>
             <div class="row">

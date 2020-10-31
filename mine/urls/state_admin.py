@@ -15,10 +15,10 @@ from ..views.state_admin import (
 
     # manager
     ManagerListView,
-    ManagerCreateView,
-    ManagerUpdateView,
+    manager_create,
+    manager_update,
     manager_toggle_active,
-
+    get_manager_data,
 
     # mine
     MineListView,
@@ -68,12 +68,17 @@ urlpatterns = [
 
     # manager
     path('manager/', ManagerListView.as_view(), name='manager_list'),
-    path('manager/create/', ManagerCreateView.as_view(),
+    path('manager/create/', manager_create,
          name='manager_create'),
     path('manager/<int:pk>/update/',
-         ManagerUpdateView.as_view(), name='manager_update'),
-    path('operator/<int:pk>/toggle-active/',
+         manager_update, name='manager_update'),
+    path('manager/<int:pk>/toggle-active/',
          manager_toggle_active, name='manager_toggle_active'),
+    path(
+        'manager/<int:pk>/get-manager-data/',
+        get_manager_data,
+        name='get_manager_data'
+    ),
 
     # operator
     path('operator/', OperatorListView.as_view(), name='operator_list'),

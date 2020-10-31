@@ -1,12 +1,15 @@
+from django.contrib.auth.models import Group
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, JsonResponse
+from django.http import request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
-from account.models import User
+from account.models import User, Profile
+from account.forms.state_admin import UserCreationForm, UserForm, ProfileForm
 from notification.notify import Notify
 
 from ..models import (
@@ -136,49 +139,92 @@ class ManagerListView(ListView):
         return context
 
 
-class ManagerCreateView(CreateView):
-    template_name = 'mine/state_admin/manager/form.html'
-    model = Manager
-    form_class = ManagerForm
-    success_url = reverse_lazy('mine:state_admin:manager_list')
+def manager_create(request):
+    if request.method == 'POST':
+        manager_form = ManagerForm(request.POST)
+        user_form = UserCreationForm(request.POST)
+        profile_form = ProfileForm(request.POST)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            group = Group.objects.get(name='Manager')
+            group.user_set.add(user)
+            profile_form.instance.user = user
+            profile_form.instance.state = request.user.profile.state
+            profile = profile_form.save()
+            manager_form.instance.user = user
+            manager = manager_form.save()
+            return redirect('mine:state_admin:manager_list')
 
-    def form_valid(self, form):
-        form.instance.state = self.request.user.profile.state
-        return super().form_valid(form)
+    else:
+        manager_form = ManagerForm()
+        user_form = UserCreationForm()
+        profile_form = ProfileForm()
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = 'Tambah Pengurus Lombong'
-        return context
+    context = {
+        'title': 'Daftar Pengurus Lombong',
+        'manager_form': manager_form,
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+
+    return render(request, 'mine/state_admin/manager/form.html', context)
 
 
-class ManagerUpdateView(UpdateView):
-    template_name = 'mine/state_admin/manager/form.html'
-    model = Manager
-    form_class = ManagerForm
-    success_url = reverse_lazy('mine:state_admin:manager_list')
+def manager_update(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    manager = get_object_or_404(Manager, user=user)
+    profile = get_object_or_404(Profile, user=user)
+    if request.method == 'POST':
+        manager_form = ManagerForm(request.POST, instance=manager)
+        user_form = UserForm(request.POST, instance=user)
+        profile_form = ProfileForm(request.POST, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            profile = profile_form.save()
+            manager = manager_form.save()
+            return redirect('mine:state_admin:manager_list')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = 'Update Pengurus Lombong'
-        return context
+    else:
+        manager_form = ManagerForm(instance=manager)
+        user_form = UserForm(instance=user)
+        profile_form = ProfileForm(instance=profile)
+
+    context = {
+        'title': 'Update Pengurus Lombong',
+        'manager_form': manager_form,
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+
+    return render(request, 'mine/state_admin/manager/form.html', context)
 
 
 def manager_toggle_active(request, pk):
-    manager = get_object_or_404(Manager, pk=pk)
+    user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
-        if manager.status == True:
-            manager.status = False
+        if user.is_active == True:
+            user.is_active = False
         else:
-            manager.status = True
-        manager.save()
+            user.is_active = True
+        user.save()
         return redirect('mine:state_admin:manager_list')
 
     context = {
-        'manager': manager,
+        'user': user,
     }
 
     return render(request, 'mine/state_admin/manager/toggle_active.html', context)
+
+
+def get_manager_data(request, pk):
+    manager = get_object_or_404(Manager, pk=pk)
+
+    data = {
+        'lease_holder_id': manager.lease_holder.id,
+        'operator_id': manager.operator.id,
+    }
+
+    return JsonResponse(data)
 
 
 # operator views

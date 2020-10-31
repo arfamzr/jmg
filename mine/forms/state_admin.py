@@ -15,7 +15,7 @@ class ManagerForm(forms.ModelForm):
 
     class Meta:
         model = Manager
-        fields = '__all__'
+        exclude = ['user']
 
 
 class OperatorForm(forms.ModelForm):
@@ -30,6 +30,11 @@ class MineForm(forms.ModelForm):
     class Meta:
         model = Mine
         exclude = ['state', 'status', 'operators']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['lease_holder'].widget.attrs['disabled'] = True
+        self.fields['operator'].widget.attrs['disabled'] = True
 
 
 class MainMineralForm(forms.ModelForm):

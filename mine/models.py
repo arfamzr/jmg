@@ -88,37 +88,6 @@ class LeaseHolder(models.Model):
         return reverse("mine:state_admin:lease_holder_toggle_active", kwargs={"pk": self.pk})
 
 
-class Manager(models.Model):
-    name = models.CharField(_("nama"), max_length=255)
-    ic_number = models.CharField(_("no K/P"), max_length=25)
-    address1 = models.CharField(_("alamat"), max_length=255)
-    address2 = models.CharField(
-        _("alamat (line 2)"), max_length=255, blank=True)
-    address3 = models.CharField(
-        _("alamat (line 3)"), max_length=255, blank=True)
-    user = models.OneToOneField(User, verbose_name=_(
-        "user"), on_delete=models.CASCADE, primary_key=True)
-    lease_holder = models.ForeignKey(LeaseHolder, verbose_name=_(
-        "pemajak"), on_delete=models.SET_NULL, null=True)
-    # state = models.CharField(_("negeri"), max_length=3,
-    #                          choices=Profile.STATE_CHOICES)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "pengurus lombong"
-        verbose_name_plural = "pengurus lombong"
-
-    def __str__(self):
-        return f'{self.user}'
-
-    def get_update_url(self):
-        return reverse("mine:state_admin:manager_update", kwargs={"pk": self.pk})
-
-    def get_toggle_active_url(self):
-        return reverse("mine:state_admin:manager_toggle_active", kwargs={"pk": self.pk})
-
-
 class Operator(models.Model):
     name = models.CharField(_("nama syarikat"), max_length=255)
     address1 = models.CharField(_("alamat"), max_length=255)
@@ -149,11 +118,37 @@ class Operator(models.Model):
         return reverse("mine:state_admin:operator_toggle_active", kwargs={"pk": self.pk})
 
 
-class Mine(models.Model):
+class Manager(models.Model):
+    user = models.OneToOneField(User, verbose_name=_(
+        "user"), on_delete=models.CASCADE, primary_key=True)
     lease_holder = models.OneToOneField(LeaseHolder, verbose_name=_(
-        "pemajak"), on_delete=models.CASCADE, primary_key=True, related_name="mines_managered")
-    manager = models.ForeignKey(Manager, verbose_name=_(
+        "pemajak"), on_delete=models.SET_NULL, null=True)
+    operator = models.ForeignKey(Operator, verbose_name=_(
+        "pengusaha"), on_delete=models.SET_NULL, null=True, related_name="managers")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "pengurus lombong"
+        verbose_name_plural = "pengurus lombong"
+
+    def __str__(self):
+        return f'{self.user}'
+
+    def get_update_url(self):
+        return reverse("mine:state_admin:manager_update", kwargs={"pk": self.pk})
+
+    def get_toggle_active_url(self):
+        return reverse("mine:state_admin:manager_toggle_active", kwargs={"pk": self.pk})
+
+
+class Mine(models.Model):
+    manager = models.OneToOneField(Manager, verbose_name=_(
         "pengurus"), on_delete=models.SET_NULL, null=True)
+    lease_holder = models.OneToOneField(LeaseHolder, verbose_name=_(
+        "pemajak"), on_delete=models.CASCADE, primary_key=True)
+    operator = models.ForeignKey(Operator, verbose_name=_(
+        "pengusaha"), on_delete=models.SET_NULL, null=True, related_name="mines")
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
@@ -172,8 +167,6 @@ class Mine(models.Model):
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(_("kategori syarikat"), max_length=255)
-    operators = models.ManyToManyField(Operator, verbose_name=_(
-        "operators"), related_name='mines', blank=True)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

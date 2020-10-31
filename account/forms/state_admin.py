@@ -57,7 +57,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['state']
+        exclude = ['user', 'state', 'image']
 
 
 class PasswordResetForm(forms.Form):
