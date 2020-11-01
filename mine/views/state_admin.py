@@ -34,6 +34,7 @@ from ..forms.state_admin import (
     LeaseHolderForm,
     ManagerForm,
     OperatorForm,
+    MineOwnerForm,
     MineForm,
     MainMineralForm,
     SideMineralForm,
@@ -137,9 +138,10 @@ class ManagerListView(ListView):
         return context
 
 
-def manager_create(request):
+def manager_create(request, pk):
+    lease_holder = get_object_or_404(LeaseHolder, pk=pk)
     if request.method == 'POST':
-        manager_form = ManagerForm(request.POST)
+        # manager_form = ManagerForm(request.POST)
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
@@ -149,18 +151,20 @@ def manager_create(request):
             profile_form.instance.user = user
             profile_form.instance.state = request.user.profile.state
             profile = profile_form.save()
-            manager_form.instance.user = user
-            manager = manager_form.save()
+            manager = Manager(user=user, lease_holder=lease_holder)
+            manager.save()
+            # manager_form.instance.user = user
+            # manager = manager_form.save()
             return redirect('mine:state_admin:manager_list')
 
     else:
-        manager_form = ManagerForm()
+        # manager_form = ManagerForm()
         user_form = UserCreationForm()
         profile_form = ProfileForm()
 
     context = {
         'title': 'Daftar Pengurus Lombong',
-        'manager_form': manager_form,
+        # 'manager_form': manager_form,
         'user_form': user_form,
         'profile_form': profile_form,
     }
@@ -170,26 +174,26 @@ def manager_create(request):
 
 def manager_update(request, pk):
     user = get_object_or_404(User, pk=pk)
-    manager = get_object_or_404(Manager, user=user)
+    # manager = get_object_or_404(Manager, user=user)
     profile = get_object_or_404(Profile, user=user)
     if request.method == 'POST':
-        manager_form = ManagerForm(request.POST, instance=manager)
+        # manager_form = ManagerForm(request.POST, instance=manager)
         user_form = UserForm(request.POST, instance=user)
         profile_form = ProfileForm(request.POST, instance=profile)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
             profile = profile_form.save()
-            manager = manager_form.save()
+            # manager = manager_form.save()
             return redirect('mine:state_admin:manager_list')
 
     else:
-        manager_form = ManagerForm(instance=manager)
+        # manager_form = ManagerForm(instance=manager)
         user_form = UserForm(instance=user)
         profile_form = ProfileForm(instance=profile)
 
     context = {
         'title': 'Update Pengurus Lombong',
-        'manager_form': manager_form,
+        # 'manager_form': manager_form,
         'user_form': user_form,
         'profile_form': profile_form,
     }
@@ -257,9 +261,18 @@ class OperatorCreateView(CreateView):
     form_class = OperatorForm
     success_url = reverse_lazy('mine:state_admin:operator_list')
 
+    def dispatch(self, request, *args, **kwargs):
+        self.manager = get_object_or_404(Manager, pk=self.kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         form.instance.state = self.request.user.profile.state
         return super().form_valid(form)
+
+    def get_success_url(self):
+        self.manager.operator = self.object
+        self.manager.save()
+        return super().get_success_url()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -328,7 +341,16 @@ class MineCreateView(CreateView):
     form_class = MineForm
     success_url = reverse_lazy('mine:state_admin:mineral_list')
 
+    def dispatch(self, request, *args, **kwargs):
+        self.operator = get_object_or_404(Operator, pk=self.kwargs['pk'])
+        self.manager = get_object_or_404(Manager, operator=self.operator)
+        self.lease_holder = self.manager.lease_holder
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
+        form.instance.lease_holder = self.lease_holder
+        form.instance.manager = self.manager
+        form.instance.operator = self.operator
         form.instance.state = self.request.user.profile.state
         return super().form_valid(form)
 
@@ -338,6 +360,11 @@ class MineCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Tambah Lombong'
+        context['owner_form'] = MineOwnerForm(initial={
+            'lease_holder': self.lease_holder,
+            'manager': self.manager,
+            'operator': self.operator,
+        })
         return context
 
 
@@ -350,6 +377,11 @@ class MineUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Update Lombong'
+        context['owner_form'] = MineOwnerForm(initial={
+            'lease_holder': self.object.lease_holder,
+            'manager': self.object.manager,
+            'operator': self.object.operator,
+        })
         return context
 
     def get_success_url(self):

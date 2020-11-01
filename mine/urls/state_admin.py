@@ -71,7 +71,7 @@ urlpatterns = [
 
     # manager
     path('manager/', ManagerListView.as_view(), name='manager_list'),
-    path('manager/create/', manager_create,
+    path('<int:pk>/manager/create/', manager_create,
          name='manager_create'),
     path('manager/<int:pk>/update/',
          manager_update, name='manager_update'),
@@ -85,7 +85,7 @@ urlpatterns = [
 
     # operator
     path('operator/', OperatorListView.as_view(), name='operator_list'),
-    path('operator/create/', OperatorCreateView.as_view(),
+    path('<int:pk>/operator/create/', OperatorCreateView.as_view(),
          name='operator_create'),
     path('operator/<int:pk>/update/',
          OperatorUpdateView.as_view(), name='operator_update'),
@@ -94,7 +94,7 @@ urlpatterns = [
 
     # mine
     path('', MineListView.as_view(), name='list'),
-    path('create/', MineCreateView.as_view(), name='create'),
+    path('<int:pk>/create/', MineCreateView.as_view(), name='create'),
     path('<int:pk>/update/', MineUpdateView.as_view(), name='update'),
     path('<int:pk>/detail/', mine_detail, name='detail'),
     path('<int:pk>/toggle-active/', toggle_active, name='toggle_active'),

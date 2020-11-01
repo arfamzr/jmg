@@ -25,11 +25,22 @@ class OperatorForm(forms.ModelForm):
         exclude = ['state', 'status']
 
 
+class MineOwnerForm(forms.Form):
+    lease_holder = forms.CharField(label='Pemajak', max_length=255)
+    manager = forms.CharField(label='Pengurus', max_length=255)
+    operator = forms.CharField(label='Pengusaha', max_length=255)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['disabled'] = True
+
+
 class MineForm(forms.ModelForm):
 
     class Meta:
         model = Mine
-        exclude = ['state', 'status', 'operators']
+        exclude = ['lease_holder', 'manager', 'operator', 'state', 'status']
 
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)

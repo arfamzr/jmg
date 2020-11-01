@@ -100,6 +100,9 @@ class LeaseHolder(models.Model):
     def get_toggle_active_url(self):
         return reverse("mine:state_admin:lease_holder_toggle_active", kwargs={"pk": self.pk})
 
+    def get_manager_create_url(self):
+        return reverse("mine:state_admin:manager_create", kwargs={"pk": self.pk})
+
 
 class Operator(models.Model):
     name = models.CharField(_("nama syarikat"), max_length=255)
@@ -130,6 +133,9 @@ class Operator(models.Model):
     def get_toggle_active_url(self):
         return reverse("mine:state_admin:operator_toggle_active", kwargs={"pk": self.pk})
 
+    def get_mine_create_url(self):
+        return reverse("mine:state_admin:create", kwargs={"pk": self.pk})
+
 
 class Manager(models.Model):
     user = models.OneToOneField(User, verbose_name=_(
@@ -153,6 +159,9 @@ class Manager(models.Model):
 
     def get_toggle_active_url(self):
         return reverse("mine:state_admin:manager_toggle_active", kwargs={"pk": self.pk})
+
+    def get_operator_create_url(self):
+        return reverse("mine:state_admin:operator_create", kwargs={"pk": self.pk})
 
 
 class Mine(models.Model):
