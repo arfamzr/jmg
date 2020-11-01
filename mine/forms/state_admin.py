@@ -1,7 +1,7 @@
 from django import forms
 from django.db.models import fields
 
-from ..models import LeaseHolder, Manager, Operator, Mine, MainMineral, SideMineral, MineMiner
+from ..models import LeaseHolder, Manager, Operator, Mine, MainMineral, SideMineral
 
 
 class LeaseHolderForm(forms.ModelForm):
@@ -49,10 +49,3 @@ class SideMineralForm(forms.ModelForm):
     class Meta:
         model = SideMineral
         exclude = ['mine']
-
-
-class MineMinerForm(forms.ModelForm):
-
-    class Meta:
-        model = MineMiner
-        fields = ['lot_number', 'latitude', 'longitude']

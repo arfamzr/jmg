@@ -11,8 +11,7 @@ from notification.notify import Notify
 
 from ..models import (
     Mine,
-    MineMiner,
-    MineMinerData,
+    Data,
     MainStatistic,
     SideStatistic,
     LocalOperator,
@@ -23,10 +22,10 @@ from ..models import (
     ElectricMachinery,
     EnergySupply,
     OperatingRecord,
-    MineDataApproval,
+    Approval,
 )
 from ..forms.main import (
-    MineMinerDataForm,
+    DataForm,
     MainStatisticForm,
     SideStatisticForm,
     LocalOperatorForm,
@@ -40,40 +39,16 @@ from ..forms.main import (
 )
 
 
-class MineMinerListView(ListView):
-    template_name = 'mine/list.html'
-    model = MineMiner
+# data views
+class DataListView(ListView):
+    template_name = 'mine/data/list.html'
+    model = Data
     paginate_by = 10
     ordering = ['-created_at']
 
     def get_queryset(self):
         queryset = super().get_queryset().filter(
-            miner=self.request.user)
-        try:
-            name = self.request.GET['q']
-        except:
-            name = ''
-        if (name != ''):
-            object_list = queryset.filter(location__icontains=name)
-        else:
-            object_list = queryset
-        return object_list
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai Lombong'
-        return context
-
-
-class MineMinerDataListView(ListView):
-    template_name = 'mine/miner_data/list.html'
-    model = MineMinerData
-    paginate_by = 10
-    ordering = ['-created_at']
-
-    def get_queryset(self):
-        queryset = super().get_queryset().filter(
-            miner__miner=self.request.user)
+            manager__user=self.request.user)
         try:
             name = self.request.GET['q']
         except:
@@ -87,64 +62,103 @@ class MineMinerDataListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai Data Lombong'
+        context["title"] = 'Senarai RPLB'
         return context
 
 
-def add_report(request, pk):
-    mine_miner = get_object_or_404(MineMiner, pk=pk)
+class DataCreateView(CreateView):
+    model = Data
+    form_class = DataForm
+    template_name = 'mine/data/form.html'
 
-    if request.method == 'POST':
-        form = MineMinerDataForm(request.POST)
-        if form.is_valid():
-            form.instance.miner = mine_miner
-            form.instance.mine = mine_miner.mine
-            form.instance.state = mine_miner.mine.state
-            miner_data = form.save()
+    def form_valid(self, form):
+        form.instance.manager = self.request.user.manager
+        form.instance.mine = self.request.user.manager.mine
+        form.instance.state = self.request.user.manager.mine.state
+        return super().form_valid(form)
 
-            return redirect('mine:statistic_edit', pk=miner_data.id)
+    def get_success_url(self):
+        return reverse('mine:statistic_edit', kwargs={'pk': self.object.id})
 
-    else:
-        form = MineMinerDataForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Tambah RPLB'
+        return context
+
+
+def data_delete(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+
+    if data.manager.user == request.user:
+        data.delete()
+
+    return redirect('mine:data_list')
+
+
+def data_detail(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    local_operator = get_object_or_404(LocalOperator, data=data)
+    local_contractor = get_object_or_404(
+        LocalContractor, data=data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, data=data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, data=data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, data=data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, data=data)
+    energy_supply = get_object_or_404(EnergySupply, data=data)
+    operating_record = get_object_or_404(
+        OperatingRecord, data=data)
 
     context = {
-        'form': form,
-        'title': 'Tambah Data Lombong',
+        'title': 'Data Lombong',
+        'data': data,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
     }
 
-    return render(request, 'mine/miner_data/form.html', context)
+    return render(request, 'mine/data/detail.html', context=context)
 
 
+# statistic views
 def statistic_edit(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
-    main_statistic_list = MainStatistic.objects.filter(miner_data=miner_data)
-    side_statistic_list = SideStatistic.objects.filter(miner_data=miner_data)
-    next_link = reverse('mine:local_worker_edit', kwargs={'pk': miner_data.pk})
+    data = get_object_or_404(Data, pk=pk)
+    main_statistic_list = MainStatistic.objects.filter(data=data)
+    side_statistic_list = SideStatistic.objects.filter(data=data)
+    next_link = reverse('mine:local_worker_edit', kwargs={'pk': data.pk})
 
     context = {
         'title': 'Perangkaan',
-        'miner_data': miner_data,
+        'data': data,
         'main_statistic_list': main_statistic_list,
         'side_statistic_list': side_statistic_list,
         'next_link': next_link,
     }
 
-    return render(request, 'mine/miner_data/statistic/list.html', context)
+    return render(request, 'mine/data/statistic/list.html', context)
 
 
 class MainStatisticCreateView(CreateView):
-    template_name = 'mine/miner_data/statistic/form.html'
+    template_name = 'mine/data/statistic/form.html'
     form_class = MainStatisticForm
     model = MainStatistic
 
     def form_valid(self, form):
-        self.miner_data = get_object_or_404(
-            MineMinerData, pk=self.kwargs['pk'])
-        form.instance.miner_data = self.miner_data
+        self.data = get_object_or_404(
+            Data, pk=self.kwargs['pk'])
+        form.instance.data = self.data
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('mine:statistic_edit', kwargs={'pk': self.miner_data.pk})
+        return reverse('mine:statistic_edit', kwargs={'pk': self.data.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -153,12 +167,12 @@ class MainStatisticCreateView(CreateView):
 
 
 class MainStatisticUpdateView(UpdateView):
-    template_name = 'mine/miner_data/statistic/form.html'
+    template_name = 'mine/data/statistic/form.html'
     form_class = MainStatisticForm
     model = MainStatistic
 
     def get_success_url(self):
-        return reverse('mine:statistic_edit', kwargs={'pk': self.object.miner_data.pk})
+        return reverse('mine:statistic_edit', kwargs={'pk': self.object.data.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -169,22 +183,36 @@ class MainStatisticUpdateView(UpdateView):
 def main_statistic_delete(request, pk):
     main_statistic = get_object_or_404(MainStatistic, pk=pk)
     main_statistic.delete()
-    return redirect('mine:statistic_edit', pk=main_statistic.miner_data.pk)
+    return redirect('mine:statistic_edit', pk=main_statistic.data.pk)
+
+
+def main_statistic_detail(request, pk):
+    main_statistic = get_object_or_404(MainStatistic, pk=pk)
+    next_link = reverse("mine:data_detail", kwargs={
+                        "pk": main_statistic.data.pk})
+
+    context = {
+        'title': 'Perangkaan Mineral Utama',
+        'next_link': next_link,
+        'statistic': main_statistic,
+    }
+
+    return render(request, 'mine/data/statistic/detail.html', context)
 
 
 class SideStatisticCreateView(CreateView):
-    template_name = 'mine/miner_data/statistic/form.html'
+    template_name = 'mine/data/statistic/form.html'
     form_class = SideStatisticForm
     model = SideStatistic
 
     def form_valid(self, form):
-        self.miner_data = get_object_or_404(
-            MineMinerData, pk=self.kwargs['pk'])
-        form.instance.miner_data = self.miner_data
+        self.data = get_object_or_404(
+            Data, pk=self.kwargs['pk'])
+        form.instance.data = self.data
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('mine:statistic_edit', kwargs={'pk': self.miner_data.pk})
+        return reverse('mine:statistic_edit', kwargs={'pk': self.data.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -193,12 +221,12 @@ class SideStatisticCreateView(CreateView):
 
 
 class SideStatisticUpdateView(UpdateView):
-    template_name = 'mine/miner_data/statistic/form.html'
+    template_name = 'mine/data/statistic/form.html'
     form_class = SideStatisticForm
     model = SideStatistic
 
     def get_success_url(self):
-        return reverse('mine:statistic_edit', kwargs={'pk': self.object.miner_data.pk})
+        return reverse('mine:statistic_edit', kwargs={'pk': self.object.data.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -209,49 +237,31 @@ class SideStatisticUpdateView(UpdateView):
 def side_statistic_delete(request, pk):
     side_statistic = get_object_or_404(SideStatistic, pk=pk)
     side_statistic.delete()
-    return redirect('mine:statistic_edit', pk=side_statistic.miner_data.pk)
+    return redirect('mine:statistic_edit', pk=side_statistic.data.pk)
 
 
-# def main_statistic_edit(request, pk):
-#     miner_data = get_object_or_404(MineMinerData, pk=pk)
-#     try:
-#         statistic = MainStatistic.objects.get(miner_data=miner_data)
-#     except MainStatistic.DoesNotExist:
-#         statistic = None
+def side_statistic_detail(request, pk):
+    side_statistic = get_object_or_404(SideStatistic, pk=pk)
+    next_link = reverse("mine:data_detail", kwargs={
+                        "pk": side_statistic.data.pk})
 
-#     if request.method == 'POST':
-#         if statistic == None:
-#             form = MainStatisticForm(request.POST)
-#         else:
-#             form = MainStatisticForm(
-#                 request.POST, instance=statistic)
+    context = {
+        'title': 'Perangkaan Mineral Sampingan',
+        'next_link': next_link,
+        'statistic': side_statistic,
+    }
 
-#         if form.is_valid():
-#             form.instance.miner_data = miner_data
-#             form.save()
-#             return redirect('mine:local_worker_edit', pk=miner_data.pk)
-
-#     else:
-#         if statistic == None:
-#             form = MainStatisticForm()
-#         else:
-#             form = MainStatisticForm(instance=statistic)
-
-#     context = {
-#         'title': 'Perangkaan Mineral Utama',
-#         'form': form,
-#     }
-
-#     return render(request, 'mine/miner_data/statistic/form.html', context=context)
+    return render(request, 'mine/data/statistic/detail.html', context)
 
 
+# local worker views
 def local_worker_edit(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
+    data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:statistic_edit',
-                        kwargs={"pk": miner_data.pk})
+                        kwargs={"pk": data.pk})
     try:
-        local_operator = LocalOperator.objects.get(miner_data=miner_data)
-        local_contractor = LocalContractor.objects.get(miner_data=miner_data)
+        local_operator = LocalOperator.objects.get(data=data)
+        local_contractor = LocalContractor.objects.get(data=data)
     except LocalOperator.DoesNotExist:
         local_operator = None
         local_contractor = None
@@ -268,11 +278,14 @@ def local_worker_edit(request, pk):
                 request.POST, instance=local_contractor, prefix='second')
 
         if operator_form.is_valid() and contractor_form.is_valid():
-            operator_form.instance.miner_data = miner_data
-            contractor_form.instance.miner_data = miner_data
+            operator_form.instance.data = data
+            contractor_form.instance.data = data
             operator_form.save()
             contractor_form.save()
-            return redirect('mine:foreign_worker_edit', pk=miner_data.pk)
+            return redirect('mine:foreign_worker_edit', pk=data.pk)
+        else:
+            print(operator_form.errors)
+            print(contractor_form.errors)
 
     else:
         if local_operator == None:
@@ -290,17 +303,18 @@ def local_worker_edit(request, pk):
         'prev_link': prev_link,
     }
 
-    return render(request, 'mine/miner_data/worker/form.html', context=context)
+    return render(request, 'mine/data/worker/form.html', context=context)
 
 
+# foreign worker views
 def foreign_worker_edit(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
+    data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:local_worker_edit',
-                        kwargs={"pk": miner_data.pk})
+                        kwargs={"pk": data.pk})
     try:
-        foreign_operator = ForeignOperator.objects.get(miner_data=miner_data)
+        foreign_operator = ForeignOperator.objects.get(data=data)
         foreign_contractor = ForeignContractor.objects.get(
-            miner_data=miner_data)
+            data=data)
     except ForeignOperator.DoesNotExist:
         foreign_operator = None
         foreign_contractor = None
@@ -317,11 +331,11 @@ def foreign_worker_edit(request, pk):
                 request.POST, instance=foreign_contractor, prefix='second')
 
         if operator_form.is_valid() and contractor_form.is_valid():
-            operator_form.instance.miner_data = miner_data
-            contractor_form.instance.miner_data = miner_data
+            operator_form.instance.data = data
+            contractor_form.instance.data = data
             operator_form.save()
             contractor_form.save()
-            return redirect('mine:machinery_edit', pk=miner_data.pk)
+            return redirect('mine:machinery_edit', pk=data.pk)
 
     else:
         if foreign_operator == None:
@@ -339,18 +353,19 @@ def foreign_worker_edit(request, pk):
         'prev_link': prev_link,
     }
 
-    return render(request, 'mine/miner_data/worker/form.html', context=context)
+    return render(request, 'mine/data/worker/form.html', context=context)
 
 
+# machinery views
 def machinery_edit(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
+    data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:foreign_worker_edit',
-                        kwargs={"pk": miner_data.pk})
+                        kwargs={"pk": data.pk})
     try:
         combustion_machinery = InternalCombustionMachinery.objects.get(
-            miner_data=miner_data)
+            data=data)
         electric_machinery = ElectricMachinery.objects.get(
-            miner_data=miner_data)
+            data=data)
     except InternalCombustionMachinery.DoesNotExist:
         combustion_machinery = None
         electric_machinery = None
@@ -367,11 +382,11 @@ def machinery_edit(request, pk):
                 request.POST, instance=electric_machinery, prefix='second')
 
         if combustion_form.is_valid() and electric_form.is_valid():
-            combustion_form.instance.miner_data = miner_data
-            electric_form.instance.miner_data = miner_data
+            combustion_form.instance.data = data
+            electric_form.instance.data = data
             combustion_form.save()
             electric_form.save()
-            return redirect('mine:energy_supply_edit', pk=miner_data.pk)
+            return redirect('mine:energy_supply_edit', pk=data.pk)
 
     else:
         if combustion_machinery == None:
@@ -390,15 +405,16 @@ def machinery_edit(request, pk):
         'prev_link': prev_link,
     }
 
-    return render(request, 'mine/miner_data/machinery/form.html', context=context)
+    return render(request, 'mine/data/machinery/form.html', context=context)
 
 
+# energy supply views
 def energy_supply_edit(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
+    data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:machinery_edit',
-                        kwargs={"pk": miner_data.pk})
+                        kwargs={"pk": data.pk})
     try:
-        energy_supply = EnergySupply.objects.get(miner_data=miner_data)
+        energy_supply = EnergySupply.objects.get(data=data)
     except EnergySupply.DoesNotExist:
         energy_supply = None
 
@@ -410,9 +426,9 @@ def energy_supply_edit(request, pk):
                 request.POST, instance=energy_supply)
 
         if form.is_valid():
-            form.instance.miner_data = miner_data
+            form.instance.data = data
             form.save()
-            return redirect('mine:operating_record_edit', pk=miner_data.pk)
+            return redirect('mine:operating_record_edit', pk=data.pk)
 
     else:
         if energy_supply == None:
@@ -426,15 +442,16 @@ def energy_supply_edit(request, pk):
         'prev_link': prev_link,
     }
 
-    return render(request, 'mine/miner_data/energy_supply/form.html', context=context)
+    return render(request, 'mine/data/energy_supply/form.html', context=context)
 
 
+# operating record views
 def operating_record_edit(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
+    data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:energy_supply_edit',
-                        kwargs={"pk": miner_data.pk})
+                        kwargs={"pk": data.pk})
     try:
-        operating_record = OperatingRecord.objects.get(miner_data=miner_data)
+        operating_record = OperatingRecord.objects.get(data=data)
     except OperatingRecord.DoesNotExist:
         operating_record = None
 
@@ -446,20 +463,20 @@ def operating_record_edit(request, pk):
                 request.POST, instance=operating_record)
 
         if form.is_valid():
-            form.instance.miner_data = miner_data
+            form.instance.data = data
             form.save()
-            data_approval = MineDataApproval.objects.create(
-                miner_data=miner_data, requestor=request.user)
+            data_approval = Approval.objects.create(
+                data=data, requestor=request.user)
 
-            jmg_states = User.objects.filter(
-                groups__name='JMG State', profile__state=miner_data.state)
+            # jmg_states = User.objects.filter(
+            #     groups__name='JMG State', profile__state=data.state)
 
-            notify = Notify()
-            notify_message = f'{request.user} telah menghantar permohonan data untuk lombong "{miner_data.mine}"'
-            notify_link = reverse('mine:state:data_list')
+            # notify = Notify()
+            # notify_message = f'{request.user} telah menghantar permohonan data untuk lombong "{data.mine}"'
+            # notify_link = reverse('mine:state:data_list')
 
-            for jmg_state in jmg_states:
-                notify.make_notify(jmg_state, notify_message, notify_link)
+            # for jmg_state in jmg_states:
+            #     notify.make_notify(jmg_state, notify_message, notify_link)
 
             return redirect('mine:data_list')
 
@@ -475,191 +492,229 @@ def operating_record_edit(request, pk):
         'prev_link': prev_link,
     }
 
-    return render(request, 'mine/miner_data/operating_record/form.html', context=context)
+    return render(request, 'mine/data/operating_record/form.html', context=context)
 
 
-def miner_data_delete(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
+# class MineMinerListView(ListView):
+#     template_name = 'mine/list.html'
+#     model = MineMiner
+#     paginate_by = 10
+#     ordering = ['-created_at']
 
-    if miner_data.miner.miner == request.user:
-        miner_data.delete()
+#     def get_queryset(self):
+#         queryset = super().get_queryset().filter(
+#             miner=self.request.user)
+#         try:
+#             name = self.request.GET['q']
+#         except:
+#             name = ''
+#         if (name != ''):
+#             object_list = queryset.filter(location__icontains=name)
+#         else:
+#             object_list = queryset
+#         return object_list
 
-    return redirect('mine:data_list')
-
-
-def miner_data_detail(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
-    statistic = get_object_or_404(MainStatistic, miner_data=miner_data)
-    local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
-    local_contractor = get_object_or_404(
-        LocalContractor, miner_data=miner_data)
-    foreign_operator = get_object_or_404(
-        ForeignOperator, miner_data=miner_data)
-    foreign_contractor = get_object_or_404(
-        ForeignContractor, miner_data=miner_data)
-    combustion_machinery = get_object_or_404(
-        InternalCombustionMachinery, miner_data=miner_data)
-    electric_machinery = get_object_or_404(
-        ElectricMachinery, miner_data=miner_data)
-    energy_supply = get_object_or_404(EnergySupply, miner_data=miner_data)
-    operating_record = get_object_or_404(
-        OperatingRecord, miner_data=miner_data)
-
-    context = {
-        'title': 'Data Lombong',
-        'miner_data': miner_data,
-        'statistic': statistic,
-        'local_operator': local_operator,
-        'local_contractor': local_contractor,
-        'foreign_operator': foreign_operator,
-        'foreign_contractor': foreign_contractor,
-        'combustion_machinery': combustion_machinery,
-        'electric_machinery': electric_machinery,
-        'energy_supply': energy_supply,
-        'operating_record': operating_record,
-    }
-
-    return render(request, 'mine/miner_data/detail.html', context=context)
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["title"] = 'Senarai Lombong'
+#         return context
 
 
-# def miner_data_detail(request, pk):
-#     miner_data = get_object_or_404(MineMinerData, pk=pk)
-#     next_link = reverse('mine:statistic',
-#                         kwargs={"pk": miner_data.pk})
+# def add_report(request, pk):
+#     mine_miner = get_object_or_404(MineMiner, pk=pk)
+
+#     if request.method == 'POST':
+#         form = DataForm(request.POST)
+#         if form.is_valid():
+#             form.instance.miner = mine_miner
+#             form.instance.mine = mine_miner.mine
+#             form.instance.state = mine_miner.mine.state
+#             data = form.save()
+
+#             return redirect('mine:statistic_edit', pk=data.id)
+
+#     else:
+#         form = DataForm()
 
 #     context = {
-#         'title': 'Data Kuari',
-#         'miner_data': miner_data,
+#         'form': form,
+#         'title': 'Tambah Data Lombong',
+#     }
+
+#     return render(request, 'mine/data/form.html', context)
+
+
+# # def main_statistic_edit(request, pk):
+# #     data = get_object_or_404(Data, pk=pk)
+# #     try:
+# #         statistic = MainStatistic.objects.get(data=data)
+# #     except MainStatistic.DoesNotExist:
+# #         statistic = None
+
+# #     if request.method == 'POST':
+# #         if statistic == None:
+# #             form = MainStatisticForm(request.POST)
+# #         else:
+# #             form = MainStatisticForm(
+# #                 request.POST, instance=statistic)
+
+# #         if form.is_valid():
+# #             form.instance.data = data
+# #             form.save()
+# #             return redirect('mine:local_worker_edit', pk=data.pk)
+
+# #     else:
+# #         if statistic == None:
+# #             form = MainStatisticForm()
+# #         else:
+# #             form = MainStatisticForm(instance=statistic)
+
+# #     context = {
+# #         'title': 'Perangkaan Mineral Utama',
+# #         'form': form,
+# #     }
+
+# #     return render(request, 'mine/data/statistic/form.html', context=context)
+
+
+# # def data_detail(request, pk):
+# #     data = get_object_or_404(Data, pk=pk)
+# #     next_link = reverse('mine:statistic',
+# #                         kwargs={"pk": data.pk})
+
+# #     context = {
+# #         'title': 'Data Kuari',
+# #         'data': data,
+# #         'next_link': next_link,
+# #     }
+
+# #     return render(request, 'mine/data/detail.html', context=context)
+
+
+# def statistic_detail(request, pk):
+#     data = get_object_or_404(Data, pk=pk)
+#     prev_link = reverse('mine:data',
+#                         kwargs={"pk": data.pk})
+#     next_link = reverse('mine:local_worker',
+#                         kwargs={"pk": data.pk})
+#     statistic = get_object_or_404(MainStatistic, data=data)
+
+#     context = {
+#         'title': 'Perangkaan',
+#         'statistic': statistic,
+#         'prev_link': prev_link,
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'mine/miner_data/detail.html', context=context)
+#     return render(request, 'mine/data/statistic/detail.html', context=context)
 
 
-def statistic_detail(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
-    prev_link = reverse('mine:miner_data',
-                        kwargs={"pk": miner_data.pk})
-    next_link = reverse('mine:local_worker',
-                        kwargs={"pk": miner_data.pk})
-    statistic = get_object_or_404(MainStatistic, miner_data=miner_data)
+# def local_worker_detail(request, pk):
+#     data = get_object_or_404(Data, pk=pk)
+#     prev_link = reverse('mine:statistic',
+#                         kwargs={"pk": data.pk})
+#     next_link = reverse('mine:foreign_worker',
+#                         kwargs={"pk": data.pk})
+#     local_operator = get_object_or_404(LocalOperator, data=data)
+#     local_contractor = get_object_or_404(
+#         LocalContractor, data=data)
 
-    context = {
-        'title': 'Perangkaan',
-        'statistic': statistic,
-        'prev_link': prev_link,
-        'next_link': next_link,
-    }
+#     context = {
+#         'title': 'Pekerjaan (Tempatan)',
+#         'operator': local_operator,
+#         'contractor': local_contractor,
+#         'prev_link': prev_link,
+#         'next_link': next_link,
+#     }
 
-    return render(request, 'mine/miner_data/statistic/detail.html', context=context)
-
-
-def local_worker_detail(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
-    prev_link = reverse('mine:statistic',
-                        kwargs={"pk": miner_data.pk})
-    next_link = reverse('mine:foreign_worker',
-                        kwargs={"pk": miner_data.pk})
-    local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
-    local_contractor = get_object_or_404(
-        LocalContractor, miner_data=miner_data)
-
-    context = {
-        'title': 'Pekerjaan (Tempatan)',
-        'operator': local_operator,
-        'contractor': local_contractor,
-        'prev_link': prev_link,
-        'next_link': next_link,
-    }
-
-    return render(request, 'mine/miner_data/worker/detail.html', context=context)
+#     return render(request, 'mine/data/worker/detail.html', context=context)
 
 
-def foreign_worker_detail(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
-    prev_link = reverse('mine:local_worker',
-                        kwargs={"pk": miner_data.pk})
-    next_link = reverse('mine:machinery',
-                        kwargs={"pk": miner_data.pk})
-    foreign_operator = get_object_or_404(
-        ForeignOperator, miner_data=miner_data)
-    foreign_contractor = get_object_or_404(
-        ForeignContractor, miner_data=miner_data)
+# def foreign_worker_detail(request, pk):
+#     data = get_object_or_404(Data, pk=pk)
+#     prev_link = reverse('mine:local_worker',
+#                         kwargs={"pk": data.pk})
+#     next_link = reverse('mine:machinery',
+#                         kwargs={"pk": data.pk})
+#     foreign_operator = get_object_or_404(
+#         ForeignOperator, data=data)
+#     foreign_contractor = get_object_or_404(
+#         ForeignContractor, data=data)
 
-    context = {
-        'title': 'Pekerjaan (Asing)',
-        'operator': foreign_operator,
-        'contractor': foreign_contractor,
-        'prev_link': prev_link,
-        'next_link': next_link,
-    }
+#     context = {
+#         'title': 'Pekerjaan (Asing)',
+#         'operator': foreign_operator,
+#         'contractor': foreign_contractor,
+#         'prev_link': prev_link,
+#         'next_link': next_link,
+#     }
 
-    return render(request, 'mine/miner_data/worker/detail.html', context=context)
-
-
-def machinery_detail(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
-    prev_link = reverse('mine:foreign_worker',
-                        kwargs={"pk": miner_data.pk})
-    next_link = reverse('mine:energy_supply',
-                        kwargs={"pk": miner_data.pk})
-    combustion_machinery = get_object_or_404(
-        InternalCombustionMachinery, miner_data=miner_data)
-    electric_machinery = get_object_or_404(
-        ElectricMachinery, miner_data=miner_data)
-
-    context = {
-        'title': 'Jentera',
-        'combustion_machinery': combustion_machinery,
-        'electric_machinery': electric_machinery,
-        'prev_link': prev_link,
-        'next_link': next_link,
-    }
-
-    return render(request, 'mine/miner_data/machinery/detail.html', context=context)
+#     return render(request, 'mine/data/worker/detail.html', context=context)
 
 
-def energy_supply_detail(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
-    prev_link = reverse('mine:machinery',
-                        kwargs={"pk": miner_data.pk})
-    next_link = reverse('mine:operating_record',
-                        kwargs={"pk": miner_data.pk})
-    energy_supply = get_object_or_404(EnergySupply, miner_data=miner_data)
+# def machinery_detail(request, pk):
+#     data = get_object_or_404(Data, pk=pk)
+#     prev_link = reverse('mine:foreign_worker',
+#                         kwargs={"pk": data.pk})
+#     next_link = reverse('mine:energy_supply',
+#                         kwargs={"pk": data.pk})
+#     combustion_machinery = get_object_or_404(
+#         InternalCombustionMachinery, data=data)
+#     electric_machinery = get_object_or_404(
+#         ElectricMachinery, data=data)
 
-    context = {
-        'title': 'Bahan Tenaga',
-        'energy_supply': energy_supply,
-        'prev_link': prev_link,
-        'next_link': next_link,
-    }
+#     context = {
+#         'title': 'Jentera',
+#         'combustion_machinery': combustion_machinery,
+#         'electric_machinery': electric_machinery,
+#         'prev_link': prev_link,
+#         'next_link': next_link,
+#     }
 
-    return render(request, 'mine/miner_data/energy_supply/detail.html', context=context)
-
-
-def operating_record_detail(request, pk):
-    miner_data = get_object_or_404(MineMinerData, pk=pk)
-    prev_link = reverse('mine:energy_supply',
-                        kwargs={"pk": miner_data.pk})
-    operating_record = get_object_or_404(
-        OperatingRecord, miner_data=miner_data)
-
-    context = {
-        'title': 'Rekod Operasi',
-        'operating_record': operating_record,
-        'prev_link': prev_link,
-        'miner_data_id': miner_data.id,
-    }
-
-    return render(request, 'mine/miner_data/operating_record/detail.html', context=context)
+#     return render(request, 'mine/data/machinery/detail.html', context=context)
 
 
-def get_comment_data(request, pk):
-    data_miner = get_object_or_404(MineMinerData, pk=pk)
-    data_approval = data_miner.get_last_approval()
-    if data_approval.admin_comment:
-        return HttpResponse(data_approval.admin_comment)
-    elif data_approval.state_comment:
-        return HttpResponse(data_approval.state_comment)
-    else:
-        return HttpResponse('')
+# def energy_supply_detail(request, pk):
+#     data = get_object_or_404(Data, pk=pk)
+#     prev_link = reverse('mine:machinery',
+#                         kwargs={"pk": data.pk})
+#     next_link = reverse('mine:operating_record',
+#                         kwargs={"pk": data.pk})
+#     energy_supply = get_object_or_404(EnergySupply, data=data)
+
+#     context = {
+#         'title': 'Bahan Tenaga',
+#         'energy_supply': energy_supply,
+#         'prev_link': prev_link,
+#         'next_link': next_link,
+#     }
+
+#     return render(request, 'mine/data/energy_supply/detail.html', context=context)
+
+
+# def operating_record_detail(request, pk):
+#     data = get_object_or_404(Data, pk=pk)
+#     prev_link = reverse('mine:energy_supply',
+#                         kwargs={"pk": data.pk})
+#     operating_record = get_object_or_404(
+#         OperatingRecord, data=data)
+
+#     context = {
+#         'title': 'Rekod Operasi',
+#         'operating_record': operating_record,
+#         'prev_link': prev_link,
+#         'data_id': data.id,
+#     }
+
+#     return render(request, 'mine/data/operating_record/detail.html', context=context)
+
+
+# def get_comment_data(request, pk):
+#     data_miner = get_object_or_404(Data, pk=pk)
+#     data_approval = data_miner.get_last_approval()
+#     if data_approval.admin_comment:
+#         return HttpResponse(data_approval.admin_comment)
+#     elif data_approval.state_comment:
+#         return HttpResponse(data_approval.state_comment)
+#     else:
+#         return HttpResponse('')

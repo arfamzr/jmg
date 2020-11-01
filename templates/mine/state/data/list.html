@@ -31,21 +31,21 @@
                 <th scope="col">No</th>
                 <th scope="col">Nama Syarikat</th>
                 <th scope="col">Alamat Syarikat</th>
-                <th scope="col">Lokasi Lombong</th>
+                <th scope="col">Nama Lombong</th>
                 <th scope="col">Bulan/Tahun</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
-              {% for miner_data in object_list %}
-              {% with company=miner_data.miner.miner.employee.company mine_miner=miner_data.miner mine=miner_data.mine last_approval=miner_data.get_last_approval %}
+              {% for data in object_list %}
+              {% with mine_miner=data.miner mine=data.mine last_approval=data.get_last_approval %}
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ company.name }}</td>
                 <td>{{ company.address1 }}</td>
                 <td>{{ mine }}</td>
-                <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                <td>{{ data.get_month_display }} {{ data.year }}</td>
                 <td>
                   {% if last_approval %}
                   {% if last_approval.admin_approved == True %}
@@ -53,7 +53,7 @@
                   {% elif last_approval.state_approved == False or last_approval.admin_approved == False %}
                   <span class="text-danger">Rejected</span>
                   <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#rejectCommentModal"
-                    data-id="{{ miner_data.id }}">
+                    data-id="{{ data.id }}">
                     <i class=" far fa-eye"></i>
                   </button>
                   {% else %}
@@ -64,7 +64,7 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ miner_data.get_state_absolute_url }}" class="badge badge-sm badge-secondary">
+                  <a href="{{ data.get_state_absolute_url }}" class="badge badge-sm badge-secondary">
                     <i class="far fa-eye"></i>
                   </a>
                 </td>

@@ -1,7 +1,7 @@
 from django import forms
 
 from ..models import (
-    MineMinerData,
+    Data,
     MainStatistic,
     SideStatistic,
     LocalOperator,
@@ -15,10 +15,10 @@ from ..models import (
 )
 
 
-class MineMinerDataForm(forms.ModelForm):
+class DataForm(forms.ModelForm):
 
     class Meta:
-        model = MineMinerData
+        model = Data
         fields = ['month', 'year']
 
 
@@ -26,7 +26,7 @@ class MainStatisticForm(forms.ModelForm):
 
     class Meta:
         model = MainStatistic
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,7 +38,7 @@ class SideStatisticForm(forms.ModelForm):
 
     class Meta:
         model = SideStatistic
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -50,7 +50,7 @@ class LocalOperatorForm(forms.ModelForm):
 
     class Meta:
         model = LocalOperator
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -62,7 +62,7 @@ class LocalContractorForm(forms.ModelForm):
 
     class Meta:
         model = LocalContractor
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -74,7 +74,7 @@ class ForeignOperatorForm(forms.ModelForm):
 
     class Meta:
         model = ForeignOperator
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -86,7 +86,7 @@ class ForeignContractorForm(forms.ModelForm):
 
     class Meta:
         model = ForeignContractor
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -98,7 +98,7 @@ class InternalCombustionMachineryForm(forms.ModelForm):
 
     class Meta:
         model = InternalCombustionMachinery
-        exclude = ['miner_data']
+        exclude = ['data']
         widgets = {
             'state_other': forms.Textarea(attrs={'rows': 2})
         }
@@ -113,7 +113,7 @@ class ElectricMachineryForm(forms.ModelForm):
 
     class Meta:
         model = ElectricMachinery
-        exclude = ['miner_data']
+        exclude = ['data']
         widgets = {
             'state_other': forms.Textarea(attrs={'rows': 2})
         }
@@ -128,7 +128,7 @@ class EnergySupplyForm(forms.ModelForm):
 
     class Meta:
         model = EnergySupply
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -140,7 +140,7 @@ class OperatingRecordForm(forms.ModelForm):
 
     class Meta:
         model = OperatingRecord
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

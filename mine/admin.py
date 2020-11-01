@@ -7,8 +7,7 @@ from .models import (
     Mine,
     MainMineral,
     SideMineral,
-    MineMiner,
-    MineMinerData,
+    Data,
     MainStatistic,
     SideStatistic,
     LocalOperator,
@@ -19,7 +18,7 @@ from .models import (
     ElectricMachinery,
     EnergySupply,
     OperatingRecord,
-    MineDataApproval,
+    Approval,
 )
 
 
@@ -53,13 +52,8 @@ class SideMineralAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(MineMiner)
-class MineMinerAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(MineMinerData)
-class MineMinerDataAdmin(admin.ModelAdmin):
+@admin.register(Data)
+class DataAdmin(admin.ModelAdmin):
     pass
 
 
@@ -113,9 +107,9 @@ class OperatingRecordAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(MineDataApproval)
-class MineDataApprovalAdmin(admin.ModelAdmin):
-    list_display = ['miner_data', 'state_inspector',
+@admin.register(Approval)
+class ApprovalAdmin(admin.ModelAdmin):
+    list_display = ['data', 'state_inspector',
                     'state_approved', 'admin_inspector', 'admin_approved']
     list_editable = ['state_inspector', 'state_approved',
                      'admin_inspector', 'admin_approved']

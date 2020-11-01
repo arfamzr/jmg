@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.shortcuts import redirect, render
 
 from quarry.models import QuarryMinerData
-from mine.models import MineMinerData
+from mine.models import Data
 
 
 def get_counted_data(data_list):
@@ -38,19 +38,19 @@ def dashboard(request):
     if request.user.is_jmg_hq:
         quarry_data = QuarryMinerData.objects.all()
         quarry_count = get_counted_data(quarry_data)
-        mine_data = MineMinerData.objects.all()
+        mine_data = Data.objects.all()
         mine_count = get_counted_data(mine_data)
     elif request.user.is_jmg_state_admin or request.user.is_jmg_state:
         quarry_data = QuarryMinerData.objects.filter(
             state=request.user.profile.state)
         quarry_count = get_counted_data(quarry_data)
-        mine_data = MineMinerData.objects.filter(
+        mine_data = Data.objects.filter(
             state=request.user.profile.state)
         mine_count = get_counted_data(mine_data)
     elif request.user.is_manager:
         quarry_data = QuarryMinerData.objects.filter(miner__miner=request.user)
         quarry_count = get_counted_data(quarry_data)
-        mine_data = MineMinerData.objects.filter(miner__miner=request.user)
+        mine_data = Data.objects.filter(manager__user=request.user)
         mine_count = get_counted_data(mine_data)
     else:
         quarry_count = None

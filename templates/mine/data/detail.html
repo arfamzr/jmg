@@ -31,65 +31,146 @@
               <div class="row">
                 <div class="col-lg-8">
                   <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Data</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      {% with mine=miner_data.mine mine_miner=miner_data.miner miner=miner_data.miner.miner %}
+                      {% with mine=data.mine manager=data.mine.manager lease_holder=data.mine.lease_holder operator=data.mine.operator %}
                       <tr>
                         <th>Bulan/Tahun</th>
-                        <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                        <td>{{ data.get_month_display }} {{ data.year }}</td>
                       </tr>
+                    </tbody>
+                    <thead class="thead-dark">
                       <tr>
-                        <th>-</th>
-                        <td>-</td>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pengurus</th>
                       </tr>
+                    </thead>
+                    <tbody>
                       <tr>
-                        <th>Nama Syarikat</th>
+                        <th>Nama Pengurus</th>
                         <td>
-                          <a href="{{ miner.employee.company.get_absolute_url }}">
-                            {{ miner.employee.company.name }}
-                          </a>
+                          {{ manager.user.get_full_name }}
                         </td>
                       </tr>
                       <tr>
-                        <th>Pengusaha</th>
+                        <th>No K/P</th>
                         <td>
-                          <a href="{{ miner.get_absolute_url }}">
-                            {{ miner.username }}
-                          </a>
+                          {{ manager.user.profile.ic_number }}
                         </td>
-                      </tr>
-                      <tr>
-                        <th>No. Lot</th>
-                        <td>{{ mine_miner.lot_number }}</td>
-                      </tr>
-                      <tr>
-                        <th>Latitude</th>
-                        <td>{{ mine_miner.latitude }}</td>
-                      </tr>
-                      <tr>
-                        <th>Longitude</th>
-                        <td>{{ mine_miner.longitude }}</td>
-                      </tr>
-                      <tr>
-                        <th>-</th>
-                        <td>-</td>
                       </tr>
                       <tr>
                         <th>Alamat</th>
                         <td>
-                          {{ mine.address1 }}{% if mine.address2 %},<br>{{ mine.address2 }}{% endif %}{% if mine.address3 %},<br>{{ mine.address3 }}{% endif %}
+                          {{ manager.user.profile.address1 }}{% if manager.user.profile.address2 %},<br>
+                          {{ manager.user.profile.address2 }}{% endif %}{% if manager.user.profile.address3 %},<br>
+                          {{ manager.user.profile.address3 }}{% endif %}
                         </td>
                       </tr>
                       <tr>
-                        <th>No. Telefon</th>
-                        <td>{{ mine.phone_number }}</td>
+                        <th>Negeri</th>
+                        <td>
+                          {{ manager.user.profile.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pemajak</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama</th>
+                        <td>
+                          {{ lease_holder.name }}
+                        </td>
                       </tr>
                       <tr>
-                        <th>No. Fax</th>
-                        <td>{{ mine.fax_number }}</td>
+                        <th>No K/P</th>
+                        <td>
+                          {{ lease_holder.ic_number }}
+                        </td>
                       </tr>
                       <tr>
-                        <th>Emel</th>
-                        <td>{{ mine.email }}</td>
+                        <th>Alamat</th>
+                        <td>
+                          {{ lease_holder.address1 }}{% if lease_holder.address2 %},<br>
+                          {{ lease_holder.address2 }}{% endif %}{% if lease_holder.address3 %},<br>
+                          {{ lease_holder.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>
+                          {{ lease_holder.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pengusaha</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama Syarikat</th>
+                        <td>
+                          {{ operator.name }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ operator.address1 }}{% if operator.address2 %},<br>
+                          {{ operator.address2 }}{% endif %}{% if operator.address3 %},<br>
+                          {{ operator.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No Phone</th>
+                        <td>
+                          {{ operator.phone }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No Fax</th>
+                        <td>
+                          {{ operator.fax }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Email</th>
+                        <td>
+                          {{ operator.email }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>
+                          {{ operator.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Lombong</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama Lombong</th>
+                        <td>{{ mine.name }}</td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ mine.address1 }}{% if mine.address2 %},<br>
+                          {{ mine.address2 }}{% endif %}{% if mine.address3 %},<br>
+                          {{ mine.address3 }}{% endif %}
+                        </td>
                       </tr>
                       <tr>
                         <th>Lokasi</th>
@@ -109,27 +190,15 @@
                       </tr>
                       <tr>
                         <th>Status Tanah</th>
-                        <td>{{ mine.land_status }}</td>
+                        <td>{{ mine.get_land_status_display }}</td>
+                      </tr>
+                      <tr>
+                        <th>Cara Melombong</th>
+                        <td>{{ mine.get_method_mining_display }}</td>
                       </tr>
                       <tr>
                         <th>Rujukan Grid</th>
                         <td>{{ mine.grid_reference }}</td>
-                      </tr>
-                      <tr>
-                        <th>Keupayaan Maksima</th>
-                        <td>{{ mine.max_capacity }}</td>
-                      </tr>
-                      <tr>
-                        <th>Kategori Syarikat</th>
-                        <td>{{ mine.company_category }}</td>
-                      </tr>
-                      <tr>
-                        <th>Jenis Batuan Utama</th>
-                        <td>{{ mine.get_main_rock_type_display }}</td>
-                      </tr>
-                      <tr>
-                        <th>Jenis Batuan Sampingan</th>
-                        <td>{{ mine.get_side_rock_type_display }}</td>
                       </tr>
                       <tr>
                         <th>Aktif</th>
@@ -164,35 +233,35 @@
               <div class="row">
                 <div class="col-lg-8">
                   <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Jenis Mineral</th>
+                        <th scope="col">Kategori</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
                     <tbody>
+                      {% for main_mineral in data.main_minerals.all %}
                       <tr>
-                        <th>KUANTITI MINERAL</th>
-                        <td style="text-align: right;">{{ statistic.minerals_quantity }}</td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ main_mineral.get_mineral_type_display }}</td>
+                        <td>Mineral Utama</td>
+                        <td>
+                          <a href="{{ main_mineral.get_absolute_url }}" class="badge badge-sm badge-info">Lihat</a>
+                        </td>
                       </tr>
+                      {% endfor %}
+                      {% for side_mineral in data.side_minerals.all %}
                       <tr>
-                        <th>STOK AKHIR BULAN LALU</th>
-                        <td style="text-align: right;">{{ statistic.final_stock_last_month }}</td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ side_mineral.get_mineral_type_display }}</td>
+                        <td>Mineral Sapingan</td>
+                        <td>
+                          <a href="{{ side_mineral.get_absolute_url }}" class="badge badge-sm badge-info">Lihat</a>
+                        </td>
                       </tr>
-                      <tr>
-                        <th>PENGELUARAN LOMBONG</th>
-                        <td style="text-align: right;">{{ statistic.mine_production }}</td>
-                      </tr>
-                      <tr>
-                        <th>JUMLAH MINERAL</th>
-                        <td style="text-align: right;">{{ statistic.total_minerals }}</td>
-                      </tr>
-                      <tr>
-                        <th>PENYERAHAN KEPADA PEMBELI</th>
-                        <td style="text-align: right;">{{ statistic.submission_buyers }}</td>
-                      </tr>
-                      <tr>
-                        <th>STOK AKHIR BULAN INI</th>
-                        <td style="text-align: right;">{{ statistic.final_stock_this_month }}</td>
-                      </tr>
-                      <tr>
-                        <th>GRED HITUNG PANJANG</th>
-                        <td style="text-align: right;">{{ statistic.average_grade }}</td>
-                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -619,13 +688,18 @@
   </div>
 
   <div class="row">
+    {% block page_nav %}
     <div class="col-4 col-lg-3 mt-3">
       <a href="{% url 'mine:data_list' %}" class="btn btn-info btn-user btn-block">
         Kembali ke senarai
       </a>
     </div>
+    {% endblock page_nav %}
   </div>
 
 </div>
 <!-- /.container-fluid -->
+
+{% block modal_content %}
+{% endblock modal_content %}
 {% endblock content %}
