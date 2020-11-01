@@ -33,6 +33,9 @@ from ..views.main import (
     # operating record
     operating_record_edit,
 
+    # comment
+    get_comment_data,
+
     # MineMinerListView,
     # add_report,
     # miner_data_delete,
@@ -145,6 +148,13 @@ urlpatterns = [
         name='operating_record_edit'
     ),
 
+    # comment
+    path(
+        'data/<int:pk>/get-comment/',
+        get_comment_data,
+        name='get_comment'
+    ),
+
     # user include
     path('state/', include('mine.urls.state', namespace='state')),
     path('state-admin/', include('mine.urls.state_admin', namespace='state_admin')),
@@ -182,9 +192,4 @@ urlpatterns = [
     #     operating_record_detail,
     #     name='operating_record'
     # ),
-    # path(
-    #     'miner-data/<int:pk>/get-comment/',
-    #     get_comment_data,
-    #     name='get_comment'
-    # )
 ]

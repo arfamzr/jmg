@@ -495,6 +495,18 @@ def operating_record_edit(request, pk):
     return render(request, 'mine/data/operating_record/form.html', context=context)
 
 
+# comment views
+def get_comment_data(request, pk):
+    data_miner = get_object_or_404(Data, pk=pk)
+    data_approval = data_miner.get_last_approval()
+    if data_approval.admin_comment:
+        return HttpResponse(data_approval.admin_comment)
+    elif data_approval.state_comment:
+        return HttpResponse(data_approval.state_comment)
+    else:
+        return HttpResponse('')
+
+
 # class MineMinerListView(ListView):
 #     template_name = 'mine/list.html'
 #     model = MineMiner
@@ -707,14 +719,3 @@ def operating_record_edit(request, pk):
 #     }
 
 #     return render(request, 'mine/data/operating_record/detail.html', context=context)
-
-
-# def get_comment_data(request, pk):
-#     data_miner = get_object_or_404(Data, pk=pk)
-#     data_approval = data_miner.get_last_approval()
-#     if data_approval.admin_comment:
-#         return HttpResponse(data_approval.admin_comment)
-#     elif data_approval.state_comment:
-#         return HttpResponse(data_approval.state_comment)
-#     else:
-#         return HttpResponse('')
