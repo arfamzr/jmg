@@ -45,7 +45,7 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td><a href="{{ mine.get_absolute_url }}">{{ mine.location }}</a></td>
-                <td>{{ mine.address1 }}{{ mine.address2 }}{{ mine.address3 }}</td>
+                <td>{{ mine.address1 }} <br> {{ mine.address2 }} <br> {{ mine.address3 }}</td>
                 <td><a href="{{ mine.get_mineral_list_url }}" class="badge badge-primary">Senarai Mineral</a></td>
                 <td>
                   {% if mine.status %}
