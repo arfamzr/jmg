@@ -39,11 +39,11 @@
             </thead>
             <tbody>
               {% for miner_data in object_list %}
-              {% with company=miner_data.miner.miner.employee.company mine_miner=miner_data.miner mine=miner_data.mine last_approval=miner_data.get_last_approval %}
+              {% with operator=miner_data.mine.operator mine_miner=miner_data.miner mine=miner_data.mine last_approval=miner_data.get_last_approval %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ company.name }}</td>
-                <td>{{ company.address1 }}</td>
+                <td>{{ operator.name }}</td>
+                <td>{{ operator.address1 }} {{ operator.address2 }} {{ operator.address3 }}</td>
                 <td>{{ mine }}</td>
                 <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
                 <td>
