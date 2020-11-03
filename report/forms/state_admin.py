@@ -2,6 +2,7 @@ from django import forms
 
 from account.models import Profile
 from quarry.models import YEAR_CHOICES, current_year, QuarryMinerData, Quarry
+from mine.models import Choices
 
 
 def get_type_of_rock():
@@ -10,13 +11,30 @@ def get_type_of_rock():
     return TYPE_OF_ROCK
 
 
-class ReportForm(forms.Form):
+def get_type_of_mineral():
+    TYPE_OF_MINERAL = list(Choices.TYPES_OF_MINERAL)
+    TYPE_OF_MINERAL.insert(0, (None, '------'))
+    return TYPE_OF_MINERAL
+
+
+class QuarryReportForm(forms.Form):
     year = forms.ChoiceField(
         label='Tahun', choices=YEAR_CHOICES, initial=current_year)
     month = forms.ChoiceField(
         label='Bulan', choices=QuarryMinerData.MONTH_CHOICES, required=False)
     rock_type = forms.ChoiceField(
         label='Jenis Batuan', choices=Quarry.TYPES_OF_ROCK, required=False)
+    # state = forms.ChoiceField(
+    #     label='Negeri', choices=Profile.STATE_CHOICES, required=False)
+
+
+class MineReportForm(forms.Form):
+    year = forms.ChoiceField(
+        label='Tahun', choices=YEAR_CHOICES, initial=current_year)
+    month = forms.ChoiceField(
+        label='Bulan', choices=QuarryMinerData.MONTH_CHOICES, required=False)
+    rock_type = forms.ChoiceField(
+        label='Jenis Mineral Utama', choices=Choices.TYPES_OF_MINERAL, required=False)
     # state = forms.ChoiceField(
     #     label='Negeri', choices=Profile.STATE_CHOICES, required=False)
 
