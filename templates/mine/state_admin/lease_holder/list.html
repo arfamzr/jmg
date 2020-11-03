@@ -34,7 +34,8 @@
               <tr>
                 <th scope="col">No</th>
                 <th scope="col">Nama</th>
-                <th scope="col">No K/P</th>
+                <th scope="col">No Pajakan</th>
+                <th scope="col">Tamat Pajakan</th>
                 <th scope="col">Alamat</th>
                 <th scope="col">Aktif</th>
                 <th scope="col">Action</th>
@@ -45,7 +46,8 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ lease_holder.name }}</td>
-                <td>{{ lease_holder.ic_number }}</td>
+                <td>{{ lease_holder.lease_number }}</td>
+                <td>{{ lease_holder.lease_expired }}</td>
                 <td>
                   {{ lease_holder.address1 }}{% if lease_holder.address2 %},<br>
                   {{ lease_holder.address2 }}{% endif %}{% if lease_holder.address3 %},<br>

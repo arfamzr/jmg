@@ -39,7 +39,7 @@
               {% for mine in mine_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{{ mine.get_state_absolute_url }}">{{ mine.location }}</a></td>
+                <td><a href="{{ mine.get_state_absolute_url }}">{{ mine.name }}</a></td>
                 <td>{{ mine.address1 }}{{ mine.address2 }}{{ mine.address3 }}</td>
                 <td>{{ mine.main_rock_type }}</td>
                 <td>
