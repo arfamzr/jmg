@@ -16,7 +16,7 @@ class Choices:
     DIMENSIONSTONE = 'DIMENSION STONE'
     FELDSPAR = 'FELDSPAR'
     GALENA = 'GALENA'
-    CALCIUMCARBONATE = 'KALSIUM KARBONAT'
+    LIMESTONE = 'BATU KAPUR'
     KAOLIN = 'KAOLIN'
     CUPRUM = 'CUPRUM'
     BALLCLAY = 'BALL CLAY'
@@ -37,7 +37,7 @@ class Choices:
         (DIMENSIONSTONE, _('Dimension Stone/Batu Dimensi')),
         (FELDSPAR, _('Feldspar/Felspar')),
         (GALENA, _('Galena/Galena')),
-        (CALCIUMCARBONATE, _('Kalsium Karbonat')),
+        (LIMESTONE, _('Limestone/Batu Kapur')),
         (KAOLIN, _('Kaolin')),
         (CUPRUM, _('Kuprum')),
         (BALLCLAY, _('Ball Clay/Lempung Bebola')),
@@ -75,7 +75,7 @@ class Method_Mining:
 
 class LeaseHolder(models.Model):
     name = models.CharField(_("nama"), max_length=255)
-    ic_number = models.CharField(_("no K/P"), max_length=25)
+    lease_number = models.CharField(_("no pajakan"), max_length=25)
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
@@ -83,6 +83,8 @@ class LeaseHolder(models.Model):
         _("alamat (line 3)"), max_length=255, blank=True)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
+    area = models.CharField(_("keluasan"), max_length=50, blank=True)
+    lease_expired = models.DateField(_("tarikh tamat pajakan"))
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
