@@ -1,12 +1,20 @@
+from report.forms.state_admin import get_type_of_mineral
 from django import forms
 
 from quarry.models import Quarry
+from mine.models import Choices
 
 
 def get_type_of_rock():
     TYPE_OF_ROCK = list(Quarry.TYPES_OF_ROCK)
     TYPE_OF_ROCK.insert(0, (None, '------'))
     return TYPE_OF_ROCK
+
+
+def get_type_of_mineral():
+    TYPE_OF_MINERAL = list(Choices.TYPES_OF_MINERAL)
+    TYPE_OF_MINERAL.insert(0, (None, '------'))
+    return TYPE_OF_MINERAL
 
 
 class GraphForm(forms.Form):
