@@ -78,7 +78,7 @@
                     </tbody>
                     <thead class="thead-dark">
                       <tr>
-                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pemajak</th>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pajakan</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -89,9 +89,15 @@
                         </td>
                       </tr>
                       <tr>
-                        <th>No K/P</th>
+                        <th>No Pajakan</th>
                         <td>
-                          {{ lease_holder.ic_number }}
+                          {{ lease_holder.lease_number }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Tarikh Luput Pajakan</th>
+                        <td>
+                          {{ lease_holder.lease_expired }}
                         </td>
                       </tr>
                       <tr>
