@@ -21,9 +21,23 @@
           <table class="table table-bordered table-sm">
             <tbody>
               <tr>
+                <th>Pemajak</th>
+                <td>{{ quarry.lease_holder }}</td>
+              </tr>
+              <tr>
+                <th>Pengusaha</th>
+                <td>{{ quarry.operator }}</td>
+              </tr>
+              <tr>
+                <th>Pengurus</th>
+                <td>{{ quarry.manager }}</td>
+              </tr>
+              <tr>
                 <th>Alamat</th>
                 <td>
-                  {{ quarry.address1 }}{% if quarry.address2 %},<br>{{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>{{ quarry.address3 }}{% endif %}
+                  {{ quarry.address1 }}{% if quarry.address2 %},<br>
+                  {{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>
+                  {{ quarry.address3 }}{% endif %}
                 </td>
               </tr>
               <tr>
@@ -71,14 +85,6 @@
                 <td>{{ quarry.company_category }}</td>
               </tr>
               <tr>
-                <th>Jenis Batuan Utama</th>
-                <td>{{ quarry.get_main_rock_type_display }}</td>
-              </tr>
-              <tr>
-                <th>Jenis Batuan Sampingan</th>
-                <td>{{ quarry.get_side_rock_type_display }}</td>
-              </tr>
-              <tr>
                 <th>Aktif</th>
                 <td>
                   {% if quarry.status %}
@@ -99,19 +105,7 @@
     <div class="card-header py-3">
       <div class="row">
         <div class="col my-auto d-flex">
-          <h5 class="my-auto">Senarai Pengusaha</h5>
-          <a href="{{ quarry.get_add_miner_url }}" class="btn btn-primary ml-3">Tambah Pengusaha</a>
-        </div>
-
-        <div class="col justify-content-end">
-          <form action="." method="GET">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search Username</button>
-              </div>
-            </div>
-          </form>
+          <h5 class="my-auto">Senarai Batuan</h5>
         </div>
       </div>
     </div>
@@ -122,56 +116,28 @@
           <table class="table table-hover">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">No Lot</th>
-                <th scope="col">Latitude</th>
-                <th scope="col">Logitude</th>
-                <th scope="col">Nama</th>
-                <th scope="col">Syarikat</th>
-                <th scope="col">Aktif</th>
-                <th scope="col">Action</th>
+                <th scope="col">No</th>
+                <th scope="col">Jenis Batuan</th>
+                <th scope="col">Kategori</th>
               </tr>
             </thead>
             <tbody>
-              {% for quarry_miner in quarry_miner_list %}
-              {% with each_user=quarry_miner.miner %}
+              {% for main_rock in quarry.main_rocks.all %}
               <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ quarry_miner.lot_number }}</td>
-                <td>{{ quarry_miner.latitude }}</td>
-                <td>{{ quarry_miner.longitude }}</td>
-                <td><a href="{{ each_user.get_absolute_url }}">{{ each_user.username }}</a></td>
-                <td>
-                  {% if each_user.employee and each_user.employee.company %}
-                  <a href="{{ each_user.employee.company.get_absolute_url }}">{{ each_user.employee.company.name }}</a>
-                  {% else %}
-                  Tiada Syarikat
-                  {% endif %}
-                </td>
-                <td>
-                  {% if each_user.is_active %}
-                  <i class="fas fa-check-circle text-success ml-2"></i>
-                  {% else %}
-                  <i class="fas fa-times-circle text-danger ml-2"></i>
-                  {% endif %}
-                </td>
-                <td>
-                  <a href="{{ quarry_miner.get_delete_url }}" class="badge badge-danger">Buang dari
-                    kuari</a>
-                </td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ main_rock.get_rock_type_display }}</td>
+                <td>Batuan Utama</td>
               </tr>
-              {% endwith %}
-              {% empty %}
+              {% endfor %}
+              {% for side_rock in quarry.side_rocks.all %}
               <tr>
-                <td colspan="10">Tidak di jumpai</td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ side_rock.get_rock_type_display }}</td>
+                <td>Batuan Sampingan</td>
               </tr>
               {% endfor %}
             </tbody>
           </table>
-
-          {% with pagin=quarry_miner_list %}
-          {% include 'layouts/includes/_pagination.html' %}
-          {% endwith %}
 
         </div>
       </div>
