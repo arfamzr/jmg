@@ -370,6 +370,37 @@
   </li>-->
 
   <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:state_admin:quarry_production_graph' %}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Pengeluaran</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:state_admin:quarry_worker_graph' %}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Pekerja</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'report:state_admin:quarry_royalties_graph' %}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Royalti</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <div class="sidebar-heading">
+    Graph Lombong
+  </div>
+
+  <!--<li class="nav-item">
+    <a class="nav-link" href="{# {% url 'report:state_admin:quarry_graph' %} #}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Lombong Aktif</span></a>
+  </li>-->
+
+  <li class="nav-item">
     <a class="nav-link" href="{% url 'report:state_admin:mine_production_graph' %}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Pengeluaran</span></a>

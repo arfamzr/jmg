@@ -19,7 +19,7 @@
     <div class="card-body">
       <div class="row mb-5">
         <div class="col-12 mb-5">
-          <canvas id="mainWorkerChart" width="400" height="150"></canvas>
+          <canvas id="mainRoyaltiesChart" width="400" height="150"></canvas>
         </div>
         <div class="col-lg-12">
           <table class="table table-bordered table-sm">
@@ -33,7 +33,7 @@
               {% for rock in main_rocks %}
               <tr>
                 <th>{{ rock.name }}</th>
-                <td style="text-align: right;">{{ rock.worker }}</td>
+                <td style="text-align: right;">{{ rock.royalties }}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -43,7 +43,7 @@
       {% if side_rocks %}
       <div class="row">
         <div class="col-12 mb-5">
-          <canvas id="sideWorkerChart" width="400" height="150"></canvas>
+          <canvas id="sideRoyaltiesChart" width="400" height="150"></canvas>
         </div>
         <div class="col-lg-12">
           <table class="table table-bordered table-sm">
@@ -57,7 +57,7 @@
               {% for rock in side_rocks %}
               <tr>
                 <th>{{ rock.name }}</th>
-                <td style="text-align: right;">{{ rock.worker }}</td>
+                <td style="text-align: right;">{{ rock.royalties }}</td>
               </tr>
               {% endfor %}
             </tbody>
@@ -77,8 +77,8 @@
   integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA=="
   crossorigin="anonymous"></script>
 <script>
-  var ctx = document.getElementById('mainWorkerChart');
-  var mainWorkerChart = new Chart(ctx, {
+  var ctx = document.getElementById('mainRoyaltiesChart');
+  var mainRoyaltiesChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: [
@@ -87,10 +87,10 @@
         // {% endfor %}
       ],
       datasets: [{
-        label: '# of Votes',
+        label: 'Mineral Utama',
         data: [
           // {% for rock in main_rocks %}
-          parseFloat('{{ rock.worker }}'),
+          parseFloat('{{ rock.royalties }}'),
           // {% endfor %}
         ],
         backgroundColor: [
@@ -115,7 +115,7 @@
     options: {
       title: {
         display: true,
-        text: "JUMLAH PEKERJA LOMBONG MINERAL UTAMA - {{ month }} {{ year }} (TAN METRIK)",
+        text: "ROYALTI KUARI MINERAL UTAMA - {{ month }} {{ year }} (TAN METRIK)",
       },
       scales: {
         yAxes: [{
@@ -126,8 +126,8 @@
       }
     }
   })
-  var ctx = document.getElementById('sideWorkerChart');
-  var sideWorkerChart = new Chart(ctx, {
+  var ctx = document.getElementById('sideRoyaltiesChart');
+  var sideRoyaltiesChart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: [
@@ -136,10 +136,10 @@
         // {% endfor %}
       ],
       datasets: [{
-        label: '# of Votes',
+        label: 'Mineral Sampingan',
         data: [
           // {% for rock in side_rocks %}
-          parseFloat('{{ rock.worker }}'),
+          parseFloat('{{ rock.royalties }}'),
           // {% endfor %}
         ],
         backgroundColor: [
@@ -164,7 +164,7 @@
     options: {
       title: {
         display: true,
-        text: "JUMLAH PEKERJA LOMBONG MINERAL SAMPINGAN - {{ month }} {{ year }} (TAN METRIK)",
+        text: "ROYALTI KUARI MINERAL SAMPINGAN - {{ month }} {{ year }} (TAN METRIK)",
       },
       scales: {
         yAxes: [{
