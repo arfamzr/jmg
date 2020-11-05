@@ -235,7 +235,7 @@
   </li>
 
   <!--<li class="nav-item ">
-    <a class="nav-link" href="{% url 'quarry:state_admin:list' %}">
+    <a class="nav-link" href="{# {% url 'quarry:state_admin:list' %} #}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Kuari</span></a>
   </li>-->
@@ -254,25 +254,25 @@
   </div>
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'company:state_admin:list' %}">
+    <a class="nav-link" href="{% url 'quarry:state_admin:lease_holder_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pajakan</span></a>
   </li>
 
   <li class="nav-item ">
-    <a class="nav-link" href="">
-      <i class="fas fa-fw fa-user"></i>
-      <span>Senarai Pengurus</span></a>
-  </li>
-
-  <li class="nav-item ">
-    <a class="nav-link" href="{% url 'account:state_admin:user_list' %}">
+    <a class="nav-link" href="{% url 'quarry:state_admin:operator_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Pengusaha</span></a>
   </li>
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'quarry:state_admin:list' %}">
+    <a class="nav-link" href="{% url 'quarry:state_admin:manager_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Pengurus</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{# {% url 'quarry:state_admin:list' %} #}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Kuari</span></a>
   </li>
@@ -287,7 +287,7 @@
 
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'quarry:state_admin:data_list' %}">
+    <a class="nav-link" href="{# {% url 'quarry:state_admin:data_list' %} #}">
       <i class="fas fa-fw fa-gem"></i>
       <span>PKB</span></a>
   </li>
@@ -317,7 +317,7 @@
 
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'quarry:state_admin:data_list_success' %}">
+    <a class="nav-link" href="{# {% url 'quarry:state_admin:data_list_success' %} #}">
       <i class="fas fa-fw fa-gem"></i>
       <span>PKB</span></a>
   </li>

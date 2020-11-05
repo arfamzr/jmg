@@ -14,7 +14,7 @@ from notification.notify import Notify
 
 from ..models import (
     LeaseHolder,
-    Manager,
+    MineManager,
     Operator,
     Mine,
     MainMineral,
@@ -32,7 +32,7 @@ from ..models import (
 )
 from ..forms.state_admin import (
     LeaseHolderForm,
-    ManagerForm,
+    MineManagerForm,
     OperatorForm,
     MineOwnerForm,
     MineForm,
@@ -115,7 +115,7 @@ def lease_holder_toggle_active(request, pk):
 # manager views
 class ManagerListView(ListView):
     template_name = 'mine/state_admin/manager/list.html'
-    model = Manager
+    model = MineManager
     paginate_by = 10
     ordering = ['-created_at']
 
@@ -141,7 +141,7 @@ class ManagerListView(ListView):
 def manager_create(request, pk):
     lease_holder = get_object_or_404(LeaseHolder, pk=pk)
     if request.method == 'POST':
-        # manager_form = ManagerForm(request.POST)
+        # manager_form = MineManagerForm(request.POST)
         user_form = UserCreationForm(request.POST)
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
@@ -151,14 +151,14 @@ def manager_create(request, pk):
             profile_form.instance.user = user
             profile_form.instance.state = request.user.profile.state
             profile = profile_form.save()
-            manager = Manager(user=user, lease_holder=lease_holder)
+            manager = MineManager(user=user, lease_holder=lease_holder)
             manager.save()
             # manager_form.instance.user = user
             # manager = manager_form.save()
             return redirect('mine:state_admin:manager_list')
 
     else:
-        # manager_form = ManagerForm()
+        # manager_form = MineManagerForm()
         user_form = UserCreationForm()
         profile_form = ProfileForm()
 
@@ -174,10 +174,10 @@ def manager_create(request, pk):
 
 def manager_update(request, pk):
     user = get_object_or_404(User, pk=pk)
-    # manager = get_object_or_404(Manager, user=user)
+    # manager = get_object_or_404(MineManager, user=user)
     profile = get_object_or_404(Profile, user=user)
     if request.method == 'POST':
-        # manager_form = ManagerForm(request.POST, instance=manager)
+        # manager_form = MineManagerForm(request.POST, instance=manager)
         user_form = UserForm(request.POST, instance=user)
         profile_form = ProfileForm(request.POST, instance=profile)
         if user_form.is_valid() and profile_form.is_valid():
@@ -187,7 +187,7 @@ def manager_update(request, pk):
             return redirect('mine:state_admin:manager_list')
 
     else:
-        # manager_form = ManagerForm(instance=manager)
+        # manager_form = MineManagerForm(instance=manager)
         user_form = UserForm(instance=user)
         profile_form = ProfileForm(instance=profile)
 
@@ -219,7 +219,7 @@ def manager_toggle_active(request, pk):
 
 
 def get_manager_data(request, pk):
-    manager = get_object_or_404(Manager, pk=pk)
+    manager = get_object_or_404(MineManager, pk=pk)
 
     data = {
         'lease_holder_id': manager.lease_holder.id,
@@ -262,7 +262,7 @@ class OperatorCreateView(CreateView):
     success_url = reverse_lazy('mine:state_admin:operator_list')
 
     def dispatch(self, request, *args, **kwargs):
-        self.manager = get_object_or_404(Manager, pk=self.kwargs['pk'])
+        self.manager = get_object_or_404(MineManager, pk=self.kwargs['pk'])
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -343,7 +343,7 @@ class MineCreateView(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         self.operator = get_object_or_404(Operator, pk=self.kwargs['pk'])
-        self.manager = get_object_or_404(Manager, operator=self.operator)
+        self.manager = get_object_or_404(MineManager, operator=self.operator)
         self.lease_holder = self.manager.lease_holder
         return super().dispatch(request, *args, **kwargs)
 
@@ -379,7 +379,7 @@ class MineUpdateView(UpdateView):
         context["title"] = 'Update Lombong'
         context['owner_form'] = MineOwnerForm(initial={
             'lease_holder': self.object.lease_holder,
-            'manager': self.object.manager,
+            'manager': self.object.minemanager,
             'operator': self.object.operator,
         })
         return context

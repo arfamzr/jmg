@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, FormView, DetailView, UpdateView
 
 from company.models import Company, Employee
-from quarry.models import Quarry, QuarryMiner
+from quarry.models import Quarry
 
 from ..models import User, Profile
 from ..forms.state_admin import UserCreationForm, UserForm, ProfileForm, PasswordResetForm

@@ -16,7 +16,7 @@ def current_year():
     return datetime.date.today().year
 
 
-class Quarry(models.Model):
+class Choices:
     GRANITE = 'GRANITE'
     LIMESTONE = 'LIMESTONE'
     QUARTZITE = 'QUARTZITE'
@@ -60,27 +60,144 @@ class Quarry(models.Model):
         (DIORITE, _('Diorite')),
     ]
 
+
+class Land_Status:
+    KERAJAAN = 'TANAH KERAJAAN'
+    SENDIRIAN = 'TANAH TUAN PUNYA'
+    LAND_STATUS = [
+        (KERAJAAN, _('Tanah Kerajaan')),
+        (SENDIRIAN, _('Tanah Tuan Punya')),
+    ]
+
+
+class LeaseHolder(models.Model):
+    name = models.CharField(_("nama"), max_length=255)
+    lease_number = models.CharField(_("no pajakan"), max_length=25)
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
     address3 = models.CharField(
         _("alamat (line 3)"), max_length=255, blank=True)
-    phone_number = models.CharField(_("no tel"), max_length=15)
-    fax_number = models.CharField(_("no fax"), max_length=15)
-    email = models.EmailField(_("email"), max_length=254)
+    state = models.CharField(_("negeri"), max_length=3,
+                             choices=Profile.STATE_CHOICES)
+    area = models.CharField(_("keluasan"), max_length=50, blank=True)
+    lease_expired = models.DateField(_("tarikh tamat pajakan"))
+    status = models.BooleanField(_("status"), default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "pemajak kuari"
+        verbose_name_plural = "pemajak kuari"
+
+    def __str__(self):
+        return self.name
+
+    def get_update_url(self):
+        return reverse("quarry:state_admin:lease_holder_update", kwargs={"pk": self.pk})
+
+    def get_toggle_active_url(self):
+        return reverse("quarry:state_admin:lease_holder_toggle_active", kwargs={"pk": self.pk})
+
+    def get_manager_create_url(self):
+        return reverse("quarry:state_admin:manager_create", kwargs={"pk": self.pk})
+
+
+class Operator(models.Model):
+    name = models.CharField(_("nama syarikat"), max_length=255)
+    address1 = models.CharField(_("alamat"), max_length=255)
+    address2 = models.CharField(
+        _("alamat (line 2)"), max_length=255, blank=True)
+    address3 = models.CharField(
+        _("alamat (line 3)"), max_length=255, blank=True)
+    phone = models.CharField(_("no phone"), max_length=50)
+    fax = models.CharField(_("no fax"), max_length=50)
+    email = models.CharField(_("emel"), max_length=255)
+    status = models.BooleanField(_("status"), default=True)
+    state = models.CharField(_("negeri"), max_length=3,
+                             choices=Profile.STATE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "pengusaha kuari"
+        verbose_name_plural = "pengusaha kuari"
+
+    def __str__(self):
+        return self.name
+
+    def get_update_url(self):
+        return reverse("quarry:state_admin:operator_update", kwargs={"pk": self.pk})
+
+    def get_toggle_active_url(self):
+        return reverse("quarry:state_admin:operator_toggle_active", kwargs={"pk": self.pk})
+
+    def get_quarry_create_url(self):
+        return reverse("quarry:state_admin:create", kwargs={"pk": self.pk})
+
+
+class QuarryManager(models.Model):
+    user = models.OneToOneField(User, verbose_name=_(
+        "user"), on_delete=models.CASCADE, primary_key=True)
+    lease_holder = models.OneToOneField(LeaseHolder, verbose_name=_(
+        "pemajak"), on_delete=models.SET_NULL, null=True)
+    operator = models.ForeignKey(Operator, verbose_name=_(
+        "pengusaha"), on_delete=models.SET_NULL, null=True, related_name="managers")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "pengurus kuari"
+        verbose_name_plural = "pengurus kuari"
+
+    def __str__(self):
+        return f'{self.user}'
+
+    def get_update_url(self):
+        return reverse("quarry:state_admin:manager_update", kwargs={"pk": self.pk})
+
+    def get_toggle_active_url(self):
+        return reverse("quarry:state_admin:manager_toggle_active", kwargs={"pk": self.pk})
+
+    def get_operator_create_url(self):
+        return reverse("quarry:state_admin:operator_create", kwargs={"pk": self.pk})
+
+
+class Quarry(models.Model):
+    TUNGGAL = 'TUNGGAL'
+    KONGSI = 'KONGSI'
+    KOPERASI = 'KOPERASI'
+    SDNBHD = 'SDN BHD'
+    BHD = 'BHD'
+    CATEGORY_OF_COMPANY = [
+        (TUNGGAL, _('TUNGGAL')),
+        (KONGSI, _('KONGSI')),
+        (KOPERASI, _('KOPERASI')),
+        (SDNBHD, _('SDN BHD')),
+        (BHD, _('BHD')),
+    ]
+
+    manager = models.OneToOneField(QuarryManager, verbose_name=_(
+        "pengurus"), on_delete=models.SET_NULL, null=True)
+    lease_holder = models.OneToOneField(LeaseHolder, verbose_name=_(
+        "pemajak"), on_delete=models.CASCADE, primary_key=True)
+    operator = models.ForeignKey(Operator, verbose_name=_(
+        "pengusaha"), on_delete=models.SET_NULL, null=True, related_name="quarries")
+    name = models.CharField(_("nama kuari"), max_length=255)
+    address1 = models.CharField(_("alamat"), max_length=255)
+    address2 = models.CharField(
+        _("alamat (line 2)"), max_length=255, blank=True)
+    address3 = models.CharField(
+        _("alamat (line 3)"), max_length=255, blank=True)
     location = models.CharField(_("lokasi"), max_length=255)
     mukim = models.CharField(_("mukim"), max_length=255)
     district = models.CharField(_("daerah"), max_length=255)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
-    land_status = models.CharField(_("status tanah"), max_length=255)
     grid_reference = models.CharField(_("rujukan grid"), max_length=255)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
-    company_category = models.CharField(_("kategori syarikat"), max_length=255)
-    main_rock_type = models.CharField(
-        _("jenis batuan utama"), max_length=255, choices=TYPES_OF_ROCK)
-    side_rock_type = models.CharField(
-        _("jenis batuan sampingan"), max_length=50, blank=True, choices=TYPES_OF_ROCK)
+    company_category = models.CharField(
+        _("kategori syarikat"), max_length=255, choices=CATEGORY_OF_COMPANY)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -90,57 +207,118 @@ class Quarry(models.Model):
         verbose_name_plural = "kuari"
 
     def __str__(self):
-        return f'{self.location}, {self.mukim}, {self.district}, {self.get_state_display()}'
+        return self.name
 
-    def get_absolute_url(self):
-        return reverse("quarry:state_admin:detail", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("quarry:state_admin:detail", kwargs={"pk": self.pk})
 
-    def get_state_absolute_url(self):
-        return reverse("quarry:state:detail", kwargs={"pk": self.pk})
+    # def get_state_absolute_url(self):
+    #     return reverse("quarry:state:detail", kwargs={"pk": self.pk})
 
-    def get_graph_url(self):
-        return reverse("quarry:state_admin:graph", kwargs={"pk": self.pk})
+    # def get_graph_url(self):
+    #     return reverse("quarry:state_admin:graph", kwargs={"pk": self.pk})
 
-    def get_update_url(self):
-        return reverse("quarry:state_admin:update", kwargs={"pk": self.pk})
+    # def get_update_url(self):
+    #     return reverse("quarry:state_admin:update", kwargs={"pk": self.pk})
 
-    def get_toggle_active_url(self):
-        return reverse("quarry:state_admin:toggle_active", kwargs={"pk": self.pk})
+    # def get_toggle_active_url(self):
+    #     return reverse("quarry:state_admin:toggle_active", kwargs={"pk": self.pk})
 
-    def get_add_miner_url(self):
-        return reverse("quarry:state_admin:add_miner", kwargs={"pk": self.pk})
+    # def get_add_miner_url(self):
+    #     return reverse("quarry:state_admin:add_miner", kwargs={"pk": self.pk})
 
 
-class QuarryMiner(models.Model):
-    miner = models.ForeignKey(User, verbose_name=_(
-        "pengusaha"), on_delete=models.CASCADE, related_name='quarries_mined')
+class Lot(models.Model):
     quarry = models.ForeignKey(Quarry, verbose_name=_(
-        "kuari"), on_delete=models.CASCADE, related_name="miners")
-    add_by = models.ForeignKey(User, verbose_name=_(
-        "add by"), on_delete=models.SET_NULL, related_name='quarry_miners_added', null=True)
-    lot_number = models.CharField(_("no lot"), max_length=255)
-    latitude = models.DecimalField(
-        _("latitude"), max_digits=15, decimal_places=4)
-    longitude = models.DecimalField(
-        _("longitude"), max_digits=15, decimal_places=4)
+        "quarry"), on_delete=models.CASCADE, related_name="lots")
+    no_lot = models.CharField(_("no lot"), max_length=255)
+    land_status = models.CharField(
+        _("status tanah"), max_length=255, choices=Land_Status.LAND_STATUS)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "pengusaha kuari"
-        verbose_name_plural = "pengusaha kuari"
+        verbose_name = "lot kuari"
+        verbose_name_plural = "lot kuari"
 
     def __str__(self):
-        return f'{self.miner} ({self.quarry})'
+        return self.no_lot
+
+
+class MainRock(models.Model):
+    quarry = models.ForeignKey(Quarry, verbose_name=_(
+        "quarry"), on_delete=models.CASCADE, related_name="main_rocks")
+    rock_type = models.CharField(
+        _("jenis batuan"), max_length=255, choices=Choices.TYPES_OF_ROCK)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "batuan utama"
+        verbose_name_plural = "batuan utama"
+
+    def __str__(self):
+        return f"{self.get_rock_type_display()}"
+
+    def get_edit_url(self):
+        return reverse("quarry:state_admin:main_rock_update", kwargs={"pk": self.pk})
 
     def get_delete_url(self):
-        return reverse("quarry:state_admin:quarry_remove_miner", kwargs={"pk": self.pk})
-
-    def get_add_report_url(self):
-        return reverse("quarry:add_report", kwargs={"pk": self.pk})
+        return reverse("quarry:state_admin:main_rock_delete", kwargs={"pk": self.pk})
 
 
-class QuarryMinerData(models.Model):
+class SideRock(models.Model):
+    quarry = models.ForeignKey(Quarry, verbose_name=_(
+        "quarry"), on_delete=models.CASCADE, related_name="side_rocks")
+    rock_type = models.CharField(
+        _("jenis batuan"), max_length=255, choices=Choices.TYPES_OF_ROCK)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "batuan sampingan"
+        verbose_name_plural = "batuan sampingan"
+
+    def __str__(self):
+        return f"{self.get_rock_type_display()}"
+
+    def get_edit_url(self):
+        return reverse("quarry:state_admin:side_rock_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("quarry:state_admin:side_rock_delete", kwargs={"pk": self.pk})
+
+
+# class QuarryMiner(models.Model):
+#     miner = models.ForeignKey(User, verbose_name=_(
+#         "pengusaha"), on_delete=models.CASCADE, related_name='quarries_mined')
+#     quarry = models.ForeignKey(Quarry, verbose_name=_(
+#         "kuari"), on_delete=models.CASCADE, related_name="miners")
+#     add_by = models.ForeignKey(User, verbose_name=_(
+#         "add by"), on_delete=models.SET_NULL, related_name='quarry_miners_added', null=True)
+#     lot_number = models.CharField(_("no lot"), max_length=255)
+#     latitude = models.DecimalField(
+#         _("latitude"), max_digits=15, decimal_places=4)
+#     longitude = models.DecimalField(
+#         _("longitude"), max_digits=15, decimal_places=4)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     class Meta:
+#         verbose_name = "pengusaha kuari"
+#         verbose_name_plural = "pengusaha kuari"
+
+#     def __str__(self):
+#         return f'{self.miner} ({self.quarry})'
+
+#     def get_delete_url(self):
+#         return reverse("quarry:state_admin:quarry_remove_miner", kwargs={"pk": self.pk})
+
+#     def get_add_report_url(self):
+#         return reverse("quarry:add_report", kwargs={"pk": self.pk})
+
+
+class Data(models.Model):
     JAN = 1
     FEB = 2
     MAR = 3
@@ -167,10 +345,10 @@ class QuarryMinerData(models.Model):
         (NOV, _('November')),
         (DEC, _('Disember')),
     ]
-    miner = models.ForeignKey(QuarryMiner, verbose_name=_(
-        "pengusaha"), on_delete=models.SET_NULL, related_name='data', null=True)
+    manager = models.ForeignKey(QuarryManager, verbose_name=_(
+        "pengusaha"), on_delete=models.SET_NULL, related_name='mine_data', null=True)
     quarry = models.ForeignKey(Quarry, verbose_name=_(
-        "kuari"), on_delete=models.SET_NULL, related_name='miner_data', null=True)
+        "kuari"), on_delete=models.SET_NULL, related_name='data', null=True)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
     month = models.PositiveIntegerField(_("bulan"), choices=MONTH_CHOICES)
@@ -187,116 +365,85 @@ class QuarryMinerData(models.Model):
         return f'{self.miner} - {self.pk}'
 
     def get_absolute_url(self):
-        return reverse("quarry:miner_data", kwargs={"pk": self.pk})
+        return reverse("quarry:data", kwargs={"pk": self.pk})
 
     def get_state_absolute_url(self):
-        return reverse("quarry:state:miner_data", kwargs={"pk": self.pk})
+        return reverse("quarry:state:data", kwargs={"pk": self.pk})
 
     def get_state_admin_absolute_url(self):
-        return reverse("quarry:state_admin:miner_data", kwargs={"pk": self.pk})
+        return reverse("quarry:state_admin:data", kwargs={"pk": self.pk})
 
     def get_hq_absolute_url(self):
-        return reverse("quarry:hq:miner_data", kwargs={"pk": self.pk})
+        return reverse("quarry:hq:data", kwargs={"pk": self.pk})
 
     def get_edit_url(self):
         return reverse("quarry:production_statistic_edit", kwargs={"pk": self.pk})
 
     def get_delete_url(self):
-        return reverse("quarry:miner_data_delete", kwargs={"pk": self.pk})
+        return reverse("quarry:data_delete", kwargs={"pk": self.pk})
 
     def get_last_approval(self):
         return self.approvals.last()
 
 
-class ProductionStatistic(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
-    initial_main_rock_stock = models.DecimalField(
-        _("stok awal bulan batuan utama"), max_digits=15, decimal_places=4)
-    initial_side_rock_stock = models.DecimalField(
-        _("stok awal bulan batuan sampingan"), max_digits=15, decimal_places=4)
-    main_rock_production = models.DecimalField(
-        _("pengeluaran batuan utama"), max_digits=15, decimal_places=4)
-    side_rock_production = models.DecimalField(
-        _("pengeluaran batuan sampingan"), max_digits=15, decimal_places=4)
-    total_main_rock = models.DecimalField(
-        _("jumlah batuan utama"), max_digits=15, decimal_places=4)
-    total_side_rock = models.DecimalField(
-        _("jumlah batuan sampingan"), max_digits=15, decimal_places=4)
-    main_rock_submission = models.DecimalField(
-        _("penyerahan batuan utama"), max_digits=15, decimal_places=4)
-    side_rock_submission = models.DecimalField(
-        _("penyerahan batuan sampingan"), max_digits=15, decimal_places=4)
-    final_main_rock_stock = models.DecimalField(
-        _("stok akhir batuan utama"), max_digits=15, decimal_places=4)
-    final_side_rock_stock = models.DecimalField(
-        _("stok akhir batuan sampingan"), max_digits=15, decimal_places=4)
+class MainProductionStatistic(models.Model):
+    data = models.ForeignKey(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, related_name='main_rocks')
+    rock_type = models.CharField(
+        _("jenis batuan utama"), max_length=255, choices=Choices.TYPES_OF_ROCK)
+    initial_rock_stock = models.DecimalField(
+        _("stok awal bulan"), max_digits=15, decimal_places=4)
+    rock_production = models.DecimalField(
+        _("pengeluaran"), max_digits=15, decimal_places=4)
+    total_rock = models.DecimalField(
+        _("jumlah"), max_digits=15, decimal_places=4)
+    rock_submission = models.DecimalField(
+        _("penyerahan"), max_digits=15, decimal_places=4)
+    final_rock_stock = models.DecimalField(
+        _("stok akhir"), max_digits=15, decimal_places=4)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "perangkaan pengeluaran"
-        verbose_name_plural = "perangkaan pengeluaran"
+        verbose_name = "perangkaan pengeluaran batuan utama"
+        verbose_name_plural = "perangkaan pengeluaran batuan utama"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.get_rock_type_display()} - {self.data}"
+
+
+class SideProductionStatistic(models.Model):
+    data = models.ForeignKey(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, related_name='side_rocks')
+    rock_type = models.CharField(
+        _("jenis batuan sampingan"), max_length=255, choices=Choices.TYPES_OF_ROCK)
+    initial_rock_stock = models.DecimalField(
+        _("stok awal bulan"), max_digits=15, decimal_places=4)
+    rock_production = models.DecimalField(
+        _("pengeluaran"), max_digits=15, decimal_places=4)
+    total_rock = models.DecimalField(
+        _("jumlah"), max_digits=15, decimal_places=4)
+    rock_submission = models.DecimalField(
+        _("penyerahan"), max_digits=15, decimal_places=4)
+    final_rock_stock = models.DecimalField(
+        _("stok akhir"), max_digits=15, decimal_places=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "perangkaan pengeluaran batuan sampingan"
+        verbose_name_plural = "perangkaan pengeluaran batuan sampingan"
+
+    def __str__(self):
+        return f"{self.get_rock_type_display()} - {self.data}"
 
 
 class SalesSubmission(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
-    crusher_amount = models.DecimalField(
-        _("amaun crusher run"), max_digits=15, decimal_places=4)
-    crusher_worth = models.DecimalField(
-        _("nilai crusher run"), max_digits=15, decimal_places=2)
-    dust_amount = models.DecimalField(
-        _("amaun quarry dust"), max_digits=15, decimal_places=4)
-    dust_worth = models.DecimalField(
-        _("nilai quarry dust"), max_digits=15, decimal_places=2)
-    waste_amount = models.DecimalField(
-        _("amaun quarry waste"), max_digits=15, decimal_places=4)
-    waste_worth = models.DecimalField(
-        _("nilai quarry waste"), max_digits=15, decimal_places=2)
-    inch_1_8_amount = models.DecimalField(
-        _("amaun 1/8\""), max_digits=15, decimal_places=4)
-    inch_1_8_worth = models.DecimalField(
-        _("nilai 1/8\""), max_digits=15, decimal_places=2)
-    inch_3_8_amount = models.DecimalField(
-        _("amaun 3/8\""), max_digits=15, decimal_places=4)
-    inch_3_8_worth = models.DecimalField(
-        _("nilai 3/8\""), max_digits=15, decimal_places=2)
-    inch_5_8_amount = models.DecimalField(
-        _("amaun 5/8\""), max_digits=15, decimal_places=4)
-    inch_5_8_worth = models.DecimalField(
-        _("nilai 5/8\""), max_digits=15, decimal_places=2)
-    inch_3_4_amount = models.DecimalField(
-        _("amaun 3/4\""), max_digits=15, decimal_places=4)
-    inch_3_4_worth = models.DecimalField(
-        _("nilai 3/4\""), max_digits=15, decimal_places=2)
-    inch_1_amount = models.DecimalField(
-        _("amaun 1\""), max_digits=15, decimal_places=4)
-    inch_1_worth = models.DecimalField(
-        _("nilai 1\""), max_digits=15, decimal_places=2)
-    inch_1_1_2_amount = models.DecimalField(
-        _("amaun 1 1/2\""), max_digits=15, decimal_places=4)
-    inch_1_1_2_worth = models.DecimalField(
-        _("nilai 1 1/2\""), max_digits=15, decimal_places=2)
-    inch_2_amount = models.DecimalField(
-        _("amaun 2\""), max_digits=15, decimal_places=4)
-    inch_2_worth = models.DecimalField(
-        _("nilai 2\""), max_digits=15, decimal_places=2)
-    inch_3x5_amount = models.DecimalField(
-        _("amaun 3\" x 5\""), max_digits=15, decimal_places=4)
-    inch_3x5_worth = models.DecimalField(
-        _("nilai 3\" x 5\""), max_digits=15, decimal_places=2)
-    inch_6x9_amount = models.DecimalField(
-        _("amaun 6\" x 9\""), max_digits=15, decimal_places=4)
-    inch_6x9_worth = models.DecimalField(
-        _("nilai 6\" x 9\""), max_digits=15, decimal_places=2)
-    block_amount = models.DecimalField(
-        _("amaun block"), max_digits=15, decimal_places=4)
-    block_worth = models.DecimalField(
-        _("nilai block"), max_digits=15, decimal_places=2)
+    data = models.ForeignKey(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, related_name='sales_submissios')
+    submission_size = models.CharField(_("saiz penyerahan"), max_length=255)
+    amount = models.DecimalField(_("amaun"), max_digits=15, decimal_places=4)
+    worth = models.DecimalField(_("nilai"), max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -305,12 +452,12 @@ class SalesSubmission(models.Model):
         verbose_name_plural = "penyerahan jualan"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class LocalFinalUses(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     construction_amount = models.DecimalField(
         _("amaun pembinaan"), max_digits=15, decimal_places=4)
     construction_worth = models.DecimalField(
@@ -372,12 +519,12 @@ class LocalFinalUses(models.Model):
         verbose_name_plural = "kegunaan akhir tempatan"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class ExportFinalUses(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     construction_amount = models.DecimalField(
         _("amaun pembinaan"), max_digits=15, decimal_places=4)
     construction_worth = models.DecimalField(
@@ -439,12 +586,12 @@ class ExportFinalUses(models.Model):
         verbose_name_plural = "kegunaan akhir eksport"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class LocalOperator(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     male_manager = models.IntegerField(_("pengurus lelaki"))
     female_manager = models.IntegerField(_("pengurus perempuan"))
     male_professional = models.IntegerField(_("profesional lelaki"))
@@ -471,12 +618,12 @@ class LocalOperator(models.Model):
         verbose_name_plural = "operator tempatan"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class ForeignOperator(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     male_manager = models.IntegerField(_("pengurus lelaki"))
     female_manager = models.IntegerField(_("pengurus perempuan"))
     male_professional = models.IntegerField(_("profesional lelaki"))
@@ -503,12 +650,12 @@ class ForeignOperator(models.Model):
         verbose_name_plural = "operator asing"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class LocalContractor(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     male_manager = models.IntegerField(_("pengurus lelaki"))
     female_manager = models.IntegerField(_("pengurus perempuan"))
     male_professional = models.IntegerField(_("profesional lelaki"))
@@ -535,12 +682,12 @@ class LocalContractor(models.Model):
         verbose_name_plural = "kontraktor tempatan"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class ForeignContractor(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     male_manager = models.IntegerField(_("pengurus lelaki"))
     female_manager = models.IntegerField(_("pengurus perempuan"))
     male_professional = models.IntegerField(_("profesional lelaki"))
@@ -567,12 +714,12 @@ class ForeignContractor(models.Model):
         verbose_name_plural = "kontraktor asing"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class InternalCombustionMachinery(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     number_lorry = models.IntegerField(_("bilangan lori"))
     lorry_power = models.DecimalField(
         _("kuasa lori"), max_digits=15, decimal_places=2)
@@ -624,12 +771,12 @@ class InternalCombustionMachinery(models.Model):
         verbose_name_plural = "jentera bakar dalam"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class ElectricMachinery(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     number_lorry = models.IntegerField(_("bilangan lori"))
     lorry_power = models.DecimalField(
         _("kuasa lori"), max_digits=15, decimal_places=2)
@@ -681,12 +828,12 @@ class ElectricMachinery(models.Model):
         verbose_name_plural = "jentera elektrik"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class DailyExplosive(models.Model):
-    miner_data = models.ForeignKey(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, related_name='daily_explosives')
+    data = models.ForeignKey(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, related_name='daily_explosives')
     date = models.DateField(_("tarikh"))
     emulsion_explosive = models.DecimalField(
         _("bahan letupan bes emulsi"), max_digits=15, decimal_places=2)
@@ -713,12 +860,12 @@ class DailyExplosive(models.Model):
         verbose_name_plural = "bahan letupan harian"
 
     def __str__(self):
-        return f'{self.miner_data} ({self.pk})'
+        return f'{self.data} ({self.pk})'
 
 
 class EnergySupply(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     total_diesel = models.DecimalField(
         _("jumlah diesel"), max_digits=15, decimal_places=2)
     total_electric = models.DecimalField(
@@ -731,12 +878,12 @@ class EnergySupply(models.Model):
         verbose_name_plural = "bahan tenaga"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class OperatingRecord(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     operating_hours = models.IntegerField(_("jam operasi sehari"))
     operating_days = models.IntegerField(_("bilangan hari operasi"))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -747,12 +894,12 @@ class OperatingRecord(models.Model):
         verbose_name_plural = "rekod operasi"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class Royalties(models.Model):
-    miner_data = models.OneToOneField(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+    data = models.OneToOneField(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, primary_key=True)
     royalties = models.DecimalField(
         _("royalti"), max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -763,12 +910,12 @@ class Royalties(models.Model):
         verbose_name_plural = "royalti"
 
     def __str__(self):
-        return f"{self.miner_data}"
+        return f"{self.data}"
 
 
 class Other(models.Model):
-    miner_data = models.ForeignKey(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, related_name='others')
+    data = models.ForeignKey(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, related_name='others')
     title = models.CharField(_("tajuk"), max_length=255, blank=True)
     comment = models.TextField(_("komen"), blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -779,12 +926,12 @@ class Other(models.Model):
         verbose_name_plural = "lain-lain"
 
     def __str__(self):
-        return f'{self.miner_data} ({self.pk})'
+        return f'{self.data} ({self.pk})'
 
 
-class QuarryDataApproval(models.Model):
-    miner_data = models.ForeignKey(QuarryMinerData, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, related_name='approvals')
+class Approval(models.Model):
+    data = models.ForeignKey(Data, verbose_name=_(
+        "data"), on_delete=models.CASCADE, related_name='approvals')
     requestor = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
         "requestor"), on_delete=models.CASCADE, related_name='quarry_requested')
     state_inspector = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
@@ -805,4 +952,4 @@ class QuarryDataApproval(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.miner_data} ({self.pk})'
+        return f'{self.data} ({self.pk})'

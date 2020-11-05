@@ -5,7 +5,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.db.models import Sum
 
-from quarry.models import QuarryDataApproval
+from quarry.models import Approval
 from mine.models import Approval, MainStatistic
 
 from ..forms.state_admin import MineReportForm, GraphForm

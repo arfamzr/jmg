@@ -2,8 +2,8 @@ from django.db.models import Q
 from django.views.generic import TemplateView
 from django.shortcuts import redirect, render
 
-from quarry.models import QuarryMinerData
-from mine.models import Data
+from quarry.models import Data as QuarryData
+from mine.models import Data as MineData
 
 
 def get_counted_data(data_list):
@@ -36,21 +36,21 @@ def dashboard(request):
     if not request.user.is_authenticated:
         return redirect('account:login')
     if request.user.is_jmg_hq:
-        quarry_data = QuarryMinerData.objects.all()
+        quarry_data = QuarryData.objects.all()
         quarry_count = get_counted_data(quarry_data)
-        mine_data = Data.objects.all()
+        mine_data = MineData.objects.all()
         mine_count = get_counted_data(mine_data)
     elif request.user.is_jmg_state_admin or request.user.is_jmg_state:
-        quarry_data = QuarryMinerData.objects.filter(
+        quarry_data = QuarryData.objects.filter(
             state=request.user.profile.state)
         quarry_count = get_counted_data(quarry_data)
-        mine_data = Data.objects.filter(
+        mine_data = MineData.objects.filter(
             state=request.user.profile.state)
         mine_count = get_counted_data(mine_data)
     elif request.user.is_manager:
-        quarry_data = QuarryMinerData.objects.filter(miner__miner=request.user)
+        quarry_data = QuarryData.objects.filter(miner__miner=request.user)
         quarry_count = get_counted_data(quarry_data)
-        mine_data = Data.objects.filter(manager__user=request.user)
+        mine_data = MineData.objects.filter(manager__user=request.user)
         mine_count = get_counted_data(mine_data)
     else:
         quarry_count = None

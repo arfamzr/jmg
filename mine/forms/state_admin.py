@@ -1,7 +1,7 @@
 from django import forms
 from django.db.models import fields
 
-from ..models import LeaseHolder, Manager, Operator, Mine, MainMineral, SideMineral
+from ..models import LeaseHolder, MineManager, Operator, Mine, MainMineral, SideMineral
 
 
 class LeaseHolderForm(forms.ModelForm):
@@ -11,10 +11,10 @@ class LeaseHolderForm(forms.ModelForm):
         exclude = ['state', 'status']
 
 
-class ManagerForm(forms.ModelForm):
+class MineManagerForm(forms.ModelForm):
 
     class Meta:
-        model = Manager
+        model = MineManager
         exclude = ['user']
 
 

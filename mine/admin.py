@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import (
     LeaseHolder,
-    Manager,
+    MineManager,
     Operator,
     Mine,
     MainMineral,
@@ -27,8 +27,8 @@ class LeaseHolderAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Manager)
-class ManagerAdmin(admin.ModelAdmin):
+@admin.register(MineManager)
+class MineManagerAdmin(admin.ModelAdmin):
     pass
 
 
