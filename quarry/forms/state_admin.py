@@ -2,8 +2,13 @@ from django import forms
 
 from ..models import LeaseHolder, Lot, QuarryManager, Operator, Quarry, MainRock, SideRock
 
+from account.widgets import XDSoftDatePickerInput
 
 class LeaseHolderForm(forms.ModelForm):
+    lease_expired = forms.DateField(
+        input_formats=['%d/%m/%Y'],
+        widget=XDSoftDatePickerInput(format='%d/%m/%Y'),
+    )
 
     class Meta:
         model = LeaseHolder
