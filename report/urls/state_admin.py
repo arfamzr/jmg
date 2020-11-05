@@ -14,6 +14,15 @@ from ..views.state_admin import (
 
     # mine worker graph
     mine_worker_graph,
+
+    # quarry production graph
+    quarry_production_graph,
+
+    # quarry worker graph
+    quarry_worker_graph,
+
+    # quarry royalties graph
+    quarry_royalties_graph,
 )
 
 app_name = 'state_admin'
@@ -32,6 +41,18 @@ urlpatterns = [
     # mine worker graph
     path('mine/graph/worker/', mine_worker_graph,
          name='mine_worker_graph'),
+
+    # quarry production graph
+    path('quarry/graph/production/', quarry_production_graph,
+         name='quarry_production_graph'),
+
+    # quarry worker graph
+    path('quarry/graph/worker/', quarry_worker_graph,
+         name='quarry_worker_graph'),
+
+    # quarry royalties graph
+    path('quarry/graph/royalties/', quarry_royalties_graph,
+         name='quarry_royalties_graph'),
 
     # path('quarry/input/', quarry_report_input, name='quarry_input'),
     # path('quarry/', quarry_report, name='quarry'),

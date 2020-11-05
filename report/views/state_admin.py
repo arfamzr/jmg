@@ -6,11 +6,11 @@ from datetime import datetime
 from django.shortcuts import render
 from django.db.models import Sum
 
-from quarry.models import Approval as QuarryApproval, MainProductionStatistic
-from mine.models import Approval as MineApproval, MainStatistic
+from quarry.models import Approval as QuarryApproval, MainProductionStatistic, SideProductionStatistic
+from mine.models import Approval as MineApproval, MainStatistic, SideStatistic
 
 from ..forms.state_admin import MineReportForm, QuarryReportForm, GraphForm
-from ..forms.hq import GraphForm, MineProductionGraphForm, MineWorkerGraphForm
+from ..forms.hq import GraphForm, MineProductionGraphForm, QuarryProductionGraphForm, MineWorkerGraphForm
 
 
 # mine report (export excel)
@@ -1201,22 +1201,31 @@ def quarry_report(request):
 
 
 def mine_production_graph(request):
-    if request.GET.get('rock_type1'):
+    if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
 
         if form.is_valid():
             year = form.cleaned_data.get('year')
             month = form.cleaned_data.get('month')
-            rock_type1 = form.cleaned_data.get('rock_type1')
-            rock_type2 = form.cleaned_data.get('rock_type2')
-            rock_type3 = form.cleaned_data.get('rock_type3')
-            rock_type4 = form.cleaned_data.get('rock_type4')
-            rock_type5 = form.cleaned_data.get('rock_type5')
+            main_rock_type1 = form.cleaned_data.get('main_rock_type1')
+            main_rock_type2 = form.cleaned_data.get('main_rock_type2')
+            main_rock_type3 = form.cleaned_data.get('main_rock_type3')
+            main_rock_type4 = form.cleaned_data.get('main_rock_type4')
+            main_rock_type5 = form.cleaned_data.get('main_rock_type5')
+            side_rock_type1 = form.cleaned_data.get('side_rock_type1')
+            side_rock_type2 = form.cleaned_data.get('side_rock_type2')
+            side_rock_type3 = form.cleaned_data.get('side_rock_type3')
+            side_rock_type4 = form.cleaned_data.get('side_rock_type4')
+            side_rock_type5 = form.cleaned_data.get('side_rock_type5')
 
             if not month:
                 month = 12
 
-            rock_list = MainStatistic.objects.filter(
+            main_rock_list = MainStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            side_rock_list = SideStatistic.objects.filter(
                 data__year=year, data__month=month,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
@@ -1234,16 +1243,37 @@ def mine_production_graph(request):
 
                 return data
 
-            rocks = []
-            rocks.append(get_total_rock(rock_list, rock_type1))
-            if rock_type2:
-                rocks.append(get_total_rock(rock_list, rock_type2))
-            if rock_type3:
-                rocks.append(get_total_rock(rock_list, rock_type3))
-            if rock_type4:
-                rocks.append(get_total_rock(rock_list, rock_type4))
-            if rock_type5:
-                rocks.append(get_total_rock(rock_list, rock_type5))
+            main_rocks = []
+            main_rocks.append(get_total_rock(main_rock_list, main_rock_type1))
+            if main_rock_type2:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type2))
+            if main_rock_type3:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type3))
+            if main_rock_type4:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type4))
+            if main_rock_type5:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type5))
+
+            side_rocks = []
+            if side_rock_type1:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type1))
+            if side_rock_type2:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type2))
+            if side_rock_type3:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type3))
+            if side_rock_type4:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type4))
+            if side_rock_type5:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type5))
 
             month = dict(form.fields['month'].choices)[int(month)]
 
@@ -1251,7 +1281,8 @@ def mine_production_graph(request):
                 'title': f'Laporan/Graph Pengeluaran Lombong ({month} {year})',
                 'year': year,
                 'month': month,
-                'rocks': rocks,
+                'main_rocks': main_rocks,
+                'side_rocks': side_rocks,
             }
 
             return render(request, 'report/state_admin/mine/graph/production/report.html', context)
@@ -1268,22 +1299,31 @@ def mine_production_graph(request):
 
 
 def mine_worker_graph(request):
-    if request.GET.get('rock_type1'):
+    if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
 
         if form.is_valid():
             year = form.cleaned_data.get('year')
             month = form.cleaned_data.get('month')
-            rock_type1 = form.cleaned_data.get('rock_type1')
-            rock_type2 = form.cleaned_data.get('rock_type2')
-            rock_type3 = form.cleaned_data.get('rock_type3')
-            rock_type4 = form.cleaned_data.get('rock_type4')
-            rock_type5 = form.cleaned_data.get('rock_type5')
+            main_rock_type1 = form.cleaned_data.get('main_rock_type1')
+            main_rock_type2 = form.cleaned_data.get('main_rock_type2')
+            main_rock_type3 = form.cleaned_data.get('main_rock_type3')
+            main_rock_type4 = form.cleaned_data.get('main_rock_type4')
+            main_rock_type5 = form.cleaned_data.get('main_rock_type5')
+            side_rock_type1 = form.cleaned_data.get('side_rock_type1')
+            side_rock_type2 = form.cleaned_data.get('side_rock_type2')
+            side_rock_type3 = form.cleaned_data.get('side_rock_type3')
+            side_rock_type4 = form.cleaned_data.get('side_rock_type4')
+            side_rock_type5 = form.cleaned_data.get('side_rock_type5')
 
             if not month:
                 month = 12
 
-            rock_list = MainStatistic.objects.filter(
+            main_rock_list = MainStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            side_rock_list = SideStatistic.objects.filter(
                 data__year=year, data__month=month,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
@@ -1308,16 +1348,37 @@ def mine_worker_graph(request):
 
                 return data
 
-            rocks = []
-            rocks.append(get_total_rock(rock_list, rock_type1))
-            if rock_type2:
-                rocks.append(get_total_rock(rock_list, rock_type2))
-            if rock_type3:
-                rocks.append(get_total_rock(rock_list, rock_type3))
-            if rock_type4:
-                rocks.append(get_total_rock(rock_list, rock_type4))
-            if rock_type5:
-                rocks.append(get_total_rock(rock_list, rock_type5))
+            main_rocks = []
+            main_rocks.append(get_total_rock(main_rock_list, main_rock_type1))
+            if main_rock_type2:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type2))
+            if main_rock_type3:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type3))
+            if main_rock_type4:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type4))
+            if main_rock_type5:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type5))
+
+            side_rocks = []
+            if side_rock_type1:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type1))
+            if side_rock_type2:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type2))
+            if side_rock_type3:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type3))
+            if side_rock_type4:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type4))
+            if side_rock_type5:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type5))
 
             month = dict(form.fields['month'].choices)[int(month)]
 
@@ -1325,7 +1386,8 @@ def mine_worker_graph(request):
                 'title': f'Laporan/Graph Pekerja Lombong ({month} {year})',
                 'year': year,
                 'month': month,
-                'rocks': rocks,
+                'main_rocks': main_rocks,
+                'side_rocks': side_rocks,
             }
 
             return render(request, 'report/state_admin/mine/graph/worker/report.html', context)
@@ -1339,6 +1401,307 @@ def mine_worker_graph(request):
     }
 
     return render(request, 'report/state_admin/mine/graph/worker/form.html', context)
+
+
+def quarry_production_graph(request):
+    if request.GET.get('main_rock_type1'):
+        form = QuarryProductionGraphForm(request.GET)
+
+        if form.is_valid():
+            year = form.cleaned_data.get('year')
+            month = form.cleaned_data.get('month')
+            main_rock_type1 = form.cleaned_data.get('main_rock_type1')
+            main_rock_type2 = form.cleaned_data.get('main_rock_type2')
+            main_rock_type3 = form.cleaned_data.get('main_rock_type3')
+            main_rock_type4 = form.cleaned_data.get('main_rock_type4')
+            main_rock_type5 = form.cleaned_data.get('main_rock_type5')
+            side_rock_type1 = form.cleaned_data.get('side_rock_type1')
+            side_rock_type2 = form.cleaned_data.get('side_rock_type2')
+            side_rock_type3 = form.cleaned_data.get('side_rock_type3')
+            side_rock_type4 = form.cleaned_data.get('side_rock_type4')
+            side_rock_type5 = form.cleaned_data.get('side_rock_type5')
+
+            if not month:
+                month = 12
+
+            main_rock_list = MainProductionStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            side_rock_list = SideProductionStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            def get_total_rock(rock_list, rock_type):
+                rocks = rock_list.filter(rock_type=rock_type)
+
+                rock_production = 0
+                for rock in rocks:
+                    rock_production += rock.rock_production
+
+                data = {
+                    'name': rock_type,
+                    'production': rock_production,
+                }
+
+                return data
+
+            main_rocks = []
+            main_rocks.append(get_total_rock(main_rock_list, main_rock_type1))
+            if main_rock_type2:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type2))
+            if main_rock_type3:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type3))
+            if main_rock_type4:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type4))
+            if main_rock_type5:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type5))
+
+            side_rocks = []
+            if side_rock_type1:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type1))
+            if side_rock_type2:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type2))
+            if side_rock_type3:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type3))
+            if side_rock_type4:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type4))
+            if side_rock_type5:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type5))
+
+            month = dict(form.fields['month'].choices)[int(month)]
+
+            context = {
+                'title': f'Laporan/Graph Pengeluaran Kuari ({month} {year})',
+                'year': year,
+                'month': month,
+                'main_rocks': main_rocks,
+                'side_rocks': side_rocks,
+            }
+
+            return render(request, 'report/state_admin/quarry/graph/production/report.html', context)
+
+    else:
+        form = QuarryProductionGraphForm()
+
+    context = {
+        'form': form,
+        'title': 'Laporan/Graph Pengeluaran Kuari',
+    }
+
+    return render(request, 'report/state_admin/quarry/graph/production/form.html', context)
+
+
+def quarry_worker_graph(request):
+    if request.GET.get('main_rock_type1'):
+        form = QuarryProductionGraphForm(request.GET)
+
+        if form.is_valid():
+            year = form.cleaned_data.get('year')
+            month = form.cleaned_data.get('month')
+            main_rock_type1 = form.cleaned_data.get('main_rock_type1')
+            main_rock_type2 = form.cleaned_data.get('main_rock_type2')
+            main_rock_type3 = form.cleaned_data.get('main_rock_type3')
+            main_rock_type4 = form.cleaned_data.get('main_rock_type4')
+            main_rock_type5 = form.cleaned_data.get('main_rock_type5')
+            side_rock_type1 = form.cleaned_data.get('side_rock_type1')
+            side_rock_type2 = form.cleaned_data.get('side_rock_type2')
+            side_rock_type3 = form.cleaned_data.get('side_rock_type3')
+            side_rock_type4 = form.cleaned_data.get('side_rock_type4')
+            side_rock_type5 = form.cleaned_data.get('side_rock_type5')
+
+            if not month:
+                month = 12
+
+            main_rock_list = MainProductionStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            side_rock_list = SideProductionStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            def get_total_rock(rock_list, rock_type):
+                rocks = rock_list.filter(rock_type=rock_type)
+
+                rock_worker = 0
+                for rock in rocks:
+                    rock_worker += rock.data.localoperator.total_male
+                    rock_worker += rock.data.localoperator.total_female
+                    rock_worker += rock.data.foreignoperator.total_male
+                    rock_worker += rock.data.foreignoperator.total_female
+                    rock_worker += rock.data.localcontractor.total_male
+                    rock_worker += rock.data.localcontractor.total_female
+                    rock_worker += rock.data.foreigncontractor.total_male
+                    rock_worker += rock.data.foreigncontractor.total_female
+
+                data = {
+                    'name': rock_type,
+                    'worker': rock_worker,
+                }
+
+                return data
+
+            main_rocks = []
+            main_rocks.append(get_total_rock(main_rock_list, main_rock_type1))
+            if main_rock_type2:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type2))
+            if main_rock_type3:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type3))
+            if main_rock_type4:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type4))
+            if main_rock_type5:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type5))
+
+            side_rocks = []
+            if side_rock_type1:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type1))
+            if side_rock_type2:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type2))
+            if side_rock_type3:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type3))
+            if side_rock_type4:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type4))
+            if side_rock_type5:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type5))
+
+            month = dict(form.fields['month'].choices)[int(month)]
+
+            context = {
+                'title': f'Laporan/Graph Pekerja Kuari ({month} {year})',
+                'year': year,
+                'month': month,
+                'main_rocks': main_rocks,
+                'side_rocks': side_rocks,
+            }
+
+            return render(request, 'report/state_admin/quarry/graph/worker/report.html', context)
+
+    else:
+        form = QuarryProductionGraphForm()
+
+    context = {
+        'form': form,
+        'title': 'Laporan/Graph Pekerja Kuari',
+    }
+
+    return render(request, 'report/state_admin/quarry/graph/worker/form.html', context)
+
+
+def quarry_royalties_graph(request):
+    if request.GET.get('main_rock_type1'):
+        form = QuarryProductionGraphForm(request.GET)
+
+        if form.is_valid():
+            year = form.cleaned_data.get('year')
+            month = form.cleaned_data.get('month')
+            main_rock_type1 = form.cleaned_data.get('main_rock_type1')
+            main_rock_type2 = form.cleaned_data.get('main_rock_type2')
+            main_rock_type3 = form.cleaned_data.get('main_rock_type3')
+            main_rock_type4 = form.cleaned_data.get('main_rock_type4')
+            main_rock_type5 = form.cleaned_data.get('main_rock_type5')
+            side_rock_type1 = form.cleaned_data.get('side_rock_type1')
+            side_rock_type2 = form.cleaned_data.get('side_rock_type2')
+            side_rock_type3 = form.cleaned_data.get('side_rock_type3')
+            side_rock_type4 = form.cleaned_data.get('side_rock_type4')
+            side_rock_type5 = form.cleaned_data.get('side_rock_type5')
+
+            if not month:
+                month = 12
+
+            main_rock_list = MainProductionStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            side_rock_list = SideProductionStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            def get_total_rock(rock_list, rock_type):
+                rocks = rock_list.filter(rock_type=rock_type)
+
+                rock_royalties = 0
+                for rock in rocks:
+                    rock_royalties += rock.data.royalties.royalties
+
+                data = {
+                    'name': rock_type,
+                    'royalties': rock_royalties,
+                }
+
+                return data
+
+            main_rocks = []
+            main_rocks.append(get_total_rock(main_rock_list, main_rock_type1))
+            if main_rock_type2:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type2))
+            if main_rock_type3:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type3))
+            if main_rock_type4:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type4))
+            if main_rock_type5:
+                main_rocks.append(get_total_rock(
+                    main_rock_list, main_rock_type5))
+
+            side_rocks = []
+            if side_rock_type1:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type1))
+            if side_rock_type2:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type2))
+            if side_rock_type3:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type3))
+            if side_rock_type4:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type4))
+            if side_rock_type5:
+                side_rocks.append(get_total_rock(
+                    side_rock_list, side_rock_type5))
+
+            month = dict(form.fields['month'].choices)[int(month)]
+
+            context = {
+                'title': f'Laporan/Graph Royalti Kuari ({month} {year})',
+                'year': year,
+                'month': month,
+                'main_rocks': main_rocks,
+                'side_rocks': side_rocks,
+            }
+
+            return render(request, 'report/state_admin/quarry/graph/royalties/report.html', context)
+
+    else:
+        form = QuarryProductionGraphForm()
+
+    context = {
+        'form': form,
+        'title': 'Laporan/Graph Royalti Kuari',
+    }
+
+    return render(request, 'report/state_admin/quarry/graph/royalties/form.html', context)
 
 
 # def quarry_report_input(request):
