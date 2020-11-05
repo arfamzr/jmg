@@ -237,7 +237,7 @@ class MainMineral(models.Model):
         verbose_name_plural = "batuan utama"
 
     def __str__(self):
-        return f"{self.get_mineral_type_display}"
+        return f"{self.get_mineral_type_display()}"
 
     def get_edit_url(self):
         return reverse("mine:state_admin:main_mineral_update", kwargs={"pk": self.pk})
@@ -259,7 +259,7 @@ class SideMineral(models.Model):
         verbose_name_plural = "batuan sampingan"
 
     def __str__(self):
-        return f"{self.get_mineral_type_display}"
+        return f"{self.get_mineral_type_display()}"
 
     def get_edit_url(self):
         return reverse("mine:state_admin:side_mineral_update", kwargs={"pk": self.pk})
