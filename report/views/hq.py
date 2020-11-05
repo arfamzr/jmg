@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, HttpResponse, Http404
 import xlwt
 from datetime import datetime
 
-from quarry.models import QuarryDataApproval
+from quarry.models import Approval
 from mine.models import Approval, MainStatistic
 
 # from ..forms.state_admin import ReportForm

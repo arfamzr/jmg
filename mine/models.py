@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 
 from account.models import User, Profile
-from quarry.models import QuarryMinerData, YEAR_CHOICES, current_year
+from quarry.models import Data, YEAR_CHOICES, current_year
 
 
 class Choices:
@@ -139,7 +139,7 @@ class Operator(models.Model):
         return reverse("mine:state_admin:create", kwargs={"pk": self.pk})
 
 
-class Manager(models.Model):
+class MineManager(models.Model):
     user = models.OneToOneField(User, verbose_name=_(
         "user"), on_delete=models.CASCADE, primary_key=True)
     lease_holder = models.OneToOneField(LeaseHolder, verbose_name=_(
@@ -167,7 +167,7 @@ class Manager(models.Model):
 
 
 class Mine(models.Model):
-    manager = models.OneToOneField(Manager, verbose_name=_(
+    manager = models.OneToOneField(MineManager, verbose_name=_(
         "pengurus"), on_delete=models.SET_NULL, null=True)
     lease_holder = models.OneToOneField(LeaseHolder, verbose_name=_(
         "pemajak"), on_delete=models.CASCADE, primary_key=True)
@@ -233,8 +233,8 @@ class MainMineral(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "batuan utama"
-        verbose_name_plural = "batuan utama"
+        verbose_name = "mineral utama"
+        verbose_name_plural = "mineral utama"
 
     def __str__(self):
         return f"{self.get_mineral_type_display()}"
@@ -255,8 +255,8 @@ class SideMineral(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "batuan sampingan"
-        verbose_name_plural = "batuan sampingan"
+        verbose_name = "mineral sampingan"
+        verbose_name_plural = "mineral sampingan"
 
     def __str__(self):
         return f"{self.get_mineral_type_display()}"
@@ -298,14 +298,14 @@ class SideMineral(models.Model):
 
 
 class Data(models.Model):
-    manager = models.ForeignKey(Manager, verbose_name=_(
+    manager = models.ForeignKey(MineManager, verbose_name=_(
         "pengusaha"), on_delete=models.SET_NULL, related_name='mine_data', null=True)
     mine = models.ForeignKey(Mine, verbose_name=_(
         "lombong"), on_delete=models.SET_NULL, related_name='data', null=True)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
     month = models.PositiveIntegerField(
-        _("bulan"), choices=QuarryMinerData.MONTH_CHOICES)
+        _("bulan"), choices=Data.MONTH_CHOICES)
     year = models.PositiveIntegerField(
         _("tahun"), choices=YEAR_CHOICES, default=current_year)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -328,7 +328,7 @@ class Data(models.Model):
         return reverse("mine:state_admin:data_detail", kwargs={"pk": self.pk})
 
     # def get_hq_absolute_url(self):
-    #     return reverse("mine:hq:miner_data", kwargs={"pk": self.pk})
+    #     return reverse("mine:hq:data", kwargs={"pk": self.pk})
 
     def get_edit_url(self):
         return reverse("mine:statistic_edit", kwargs={"pk": self.pk})
@@ -342,7 +342,7 @@ class Data(models.Model):
 
 class MainStatistic(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, related_name="main_minerals")
+        "data"), on_delete=models.CASCADE, related_name="main_minerals")
     mineral_type = models.CharField(
         _("jenis mineral utama"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
     minerals_quantity = models.DecimalField(
@@ -366,7 +366,7 @@ class MainStatistic(models.Model):
         verbose_name_plural = "perangkaan batuan utama"
 
     def __str__(self):
-        return f"{self.data}"
+        return f"{self.get_mineral_type_display()} - {self.data}"
 
     def get_absolute_url(self):
         return reverse("mine:main_statistic_detail", kwargs={"pk": self.pk})
@@ -380,7 +380,7 @@ class MainStatistic(models.Model):
 
 class SideStatistic(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, related_name="side_minerals")
+        "data"), on_delete=models.CASCADE, related_name="side_minerals")
     mineral_type = models.CharField(
         _("jenis mineral sampingan"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
     minerals_quantity = models.DecimalField(
@@ -404,7 +404,7 @@ class SideStatistic(models.Model):
         verbose_name_plural = "perangkaan batuan sampingan"
 
     def __str__(self):
-        return f"{self.data}"
+        return f"{self.get_mineral_type_display()} - {self.data}"
 
     def get_absolute_url(self):
         return reverse("mine:side_statistic_detail", kwargs={"pk": self.pk})
@@ -418,7 +418,7 @@ class SideStatistic(models.Model):
 
 class LocalOperator(models.Model):
     data = models.OneToOneField(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+        "data"), on_delete=models.CASCADE, primary_key=True)
     male_manager = models.IntegerField(_("pengurus lelaki"))
     female_manager = models.IntegerField(_("pengurus perempuan"))
     male_professional = models.IntegerField(_("profesional lelaki"))
@@ -450,7 +450,7 @@ class LocalOperator(models.Model):
 
 class ForeignOperator(models.Model):
     data = models.OneToOneField(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+        "data"), on_delete=models.CASCADE, primary_key=True)
     male_manager = models.IntegerField(_("pengurus lelaki"))
     female_manager = models.IntegerField(_("pengurus perempuan"))
     male_professional = models.IntegerField(_("profesional lelaki"))
@@ -482,7 +482,7 @@ class ForeignOperator(models.Model):
 
 class LocalContractor(models.Model):
     data = models.OneToOneField(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+        "data"), on_delete=models.CASCADE, primary_key=True)
     male_manager = models.IntegerField(_("pengurus lelaki"))
     female_manager = models.IntegerField(_("pengurus perempuan"))
     male_professional = models.IntegerField(_("profesional lelaki"))
@@ -514,7 +514,7 @@ class LocalContractor(models.Model):
 
 class ForeignContractor(models.Model):
     data = models.OneToOneField(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+        "data"), on_delete=models.CASCADE, primary_key=True)
     male_manager = models.IntegerField(_("pengurus lelaki"))
     female_manager = models.IntegerField(_("pengurus perempuan"))
     male_professional = models.IntegerField(_("profesional lelaki"))
@@ -546,7 +546,7 @@ class ForeignContractor(models.Model):
 
 class InternalCombustionMachinery(models.Model):
     data = models.OneToOneField(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+        "data"), on_delete=models.CASCADE, primary_key=True)
     number_lorry = models.IntegerField(_("bilangan lori"))
     lorry_power = models.DecimalField(
         _("kuasa lori"), max_digits=15, decimal_places=2)
@@ -603,7 +603,7 @@ class InternalCombustionMachinery(models.Model):
 
 class ElectricMachinery(models.Model):
     data = models.OneToOneField(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+        "data"), on_delete=models.CASCADE, primary_key=True)
     number_lorry = models.IntegerField(_("bilangan lori"))
     lorry_power = models.DecimalField(
         _("kuasa lori"), max_digits=15, decimal_places=2)
@@ -660,7 +660,7 @@ class ElectricMachinery(models.Model):
 
 class EnergySupply(models.Model):
     data = models.OneToOneField(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+        "data"), on_delete=models.CASCADE, primary_key=True)
     total_diesel = models.DecimalField(
         _("jumlah diesel"), max_digits=15, decimal_places=2)
     total_electric = models.DecimalField(
@@ -680,7 +680,7 @@ class EnergySupply(models.Model):
 
 class OperatingRecord(models.Model):
     data = models.OneToOneField(Data, verbose_name=_(
-        "miner data"), on_delete=models.CASCADE, primary_key=True)
+        "data"), on_delete=models.CASCADE, primary_key=True)
     average_mine_depth = models.DecimalField(
         _("dalam lombong hitung panjang"), max_digits=15, decimal_places=2)
     deepest_mine = models.DecimalField(
@@ -704,7 +704,7 @@ class OperatingRecord(models.Model):
 
 class Approval(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
-        "miner data"), related_name='approvals', on_delete=models.CASCADE)
+        "data"), related_name='approvals', on_delete=models.CASCADE)
     requestor = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(
         "requestor"), on_delete=models.CASCADE, related_name='mine_requested')
     state_inspector = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_(

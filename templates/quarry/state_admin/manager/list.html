@@ -1,0 +1,91 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        {% comment %} <div class="col">
+          <a href="{% url 'mine:state_admin:manager_create' %}" class="btn btn-primary">Tambah Pengurus</a>
+        </div> {% endcomment %}
+
+        <div class="col justify-content-end">
+          <form action="." method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Search Pengurus</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Nama</th>
+                <th scope="col">No K/P</th>
+                <th scope="col">Alamat</th>
+                <th scope="col">Aktif</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for manager in object_list %}
+              {% with profile=manager.user.profile %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ manager.user.get_full_name }}</td>
+                <td>{{ profile.ic_number }}</td>
+                <td>
+                  {{ profile.address1 }}{% if profile.address2 %},<br>
+                  {{ profile.address2 }}{% endif %}{% if profile.address3 %},<br>
+                  {{ profile.address3 }}{% endif %}
+                </td>
+                <td>
+                  {% if manager.user.is_active %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ manager.get_update_url }}" class="badge badge-primary">Update</a>
+                  <a href="{{ manager.get_toggle_active_url }}" class="badge badge-info">
+                    {% if manager.user.is_active %}
+                    Deactivate
+                    {% else %}
+                    Activate
+                    {% endif %}
+                  </a>
+                  {% if not manager.operator %}
+                  <a href="{{ manager.get_operator_create_url }}" class="badge badge-primary">Tambah Pengusaha</a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endwith %}
+              {% endfor %}
+            </tbody>
+          </table>
+
+          {% with pagin=page_obj %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
