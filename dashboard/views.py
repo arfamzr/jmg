@@ -48,7 +48,7 @@ def dashboard(request):
             state=request.user.profile.state)
         mine_count = get_counted_data(mine_data)
     elif request.user.is_manager:
-        quarry_data = QuarryData.objects.filter(miner__miner=request.user)
+        quarry_data = QuarryData.objects.filter(manager__user=request.user)
         quarry_count = get_counted_data(quarry_data)
         mine_data = MineData.objects.filter(manager__user=request.user)
         mine_count = get_counted_data(mine_data)

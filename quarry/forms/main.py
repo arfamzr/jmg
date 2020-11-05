@@ -3,9 +3,9 @@ from django import forms
 from account.widgets import XDSoftDatePickerInput
 
 from ..models import (
-    QuarryMinerData,
-    QuarryMinerData,
-    ProductionStatistic,
+    Data,
+    MainProductionStatistic,
+    SideProductionStatistic,
     SalesSubmission,
     LocalFinalUses,
     ExportFinalUses,
@@ -23,42 +23,54 @@ from ..models import (
 )
 
 
-class QuarryMinerDataForm(forms.ModelForm):
+class DataForm(forms.ModelForm):
 
     class Meta:
-        model = QuarryMinerData
+        model = Data
         fields = ['month', 'year']
 
 
-class ProductionStatisticForm(forms.ModelForm):
+class MainProductionStatisticForm(forms.ModelForm):
 
     class Meta:
-        model = ProductionStatistic
-        exclude = ['miner_data']
+        model = MainProductionStatistic
+        exclude = ['data']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     for field_name, field in self.fields.items():
+    #         field.label = ''
+
+
+class SideProductionStatisticForm(forms.ModelForm):
+
+    class Meta:
+        model = SideProductionStatistic
+        exclude = ['data']
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     for field_name, field in self.fields.items():
+    #         field.label = ''
 
 
 class SalesSubmissionForm(forms.ModelForm):
 
     class Meta:
         model = SalesSubmission
-        exclude = ['miner_data']
+        exclude = ['data']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.label = ''
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     for field_name, field in self.fields.items():
+    #         field.label = ''
 
 
 class LocalFinalUsesForm(forms.ModelForm):
 
     class Meta:
         model = LocalFinalUses
-        exclude = ['miner_data']
+        exclude = ['data']
         widgets = {
             'state_other': forms.Textarea(attrs={'rows': 2})
         }
@@ -73,7 +85,7 @@ class ExportFinalUsesForm(forms.ModelForm):
 
     class Meta:
         model = ExportFinalUses
-        exclude = ['miner_data']
+        exclude = ['data']
         widgets = {
             'state_other': forms.Textarea(attrs={'rows': 2})
         }
@@ -88,7 +100,7 @@ class LocalOperatorForm(forms.ModelForm):
 
     class Meta:
         model = LocalOperator
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -100,7 +112,7 @@ class LocalContractorForm(forms.ModelForm):
 
     class Meta:
         model = LocalContractor
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -112,7 +124,7 @@ class ForeignOperatorForm(forms.ModelForm):
 
     class Meta:
         model = ForeignOperator
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -124,7 +136,7 @@ class ForeignContractorForm(forms.ModelForm):
 
     class Meta:
         model = ForeignContractor
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -136,7 +148,7 @@ class InternalCombustionMachineryForm(forms.ModelForm):
 
     class Meta:
         model = InternalCombustionMachinery
-        exclude = ['miner_data']
+        exclude = ['data']
         widgets = {
             'state_other': forms.Textarea(attrs={'rows': 2})
         }
@@ -151,7 +163,7 @@ class ElectricMachineryForm(forms.ModelForm):
 
     class Meta:
         model = ElectricMachinery
-        exclude = ['miner_data']
+        exclude = ['data']
         widgets = {
             'state_other': forms.Textarea(attrs={'rows': 2})
         }
@@ -170,7 +182,7 @@ class DailyExplosiveForm(forms.ModelForm):
 
     class Meta:
         model = DailyExplosive
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -182,7 +194,7 @@ class EnergySupplyForm(forms.ModelForm):
 
     class Meta:
         model = EnergySupply
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -194,7 +206,7 @@ class OperatingRecordForm(forms.ModelForm):
 
     class Meta:
         model = OperatingRecord
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -206,7 +218,7 @@ class RoyaltiesForm(forms.ModelForm):
 
     class Meta:
         model = Royalties
-        exclude = ['miner_data']
+        exclude = ['data']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -218,7 +230,7 @@ class OtherForm(forms.ModelForm):
 
     class Meta:
         model = Other
-        exclude = ['miner_data']
+        exclude = ['data']
         widgets = {
             'title': forms.Textarea(attrs={'rows': 1}),
             'comment': forms.Textarea(attrs={'rows': 3}),
