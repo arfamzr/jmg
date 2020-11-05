@@ -41,18 +41,6 @@
                 </td>
               </tr>
               <tr>
-                <th>No. Telefon</th>
-                <td>{{ quarry.phone_number }}</td>
-              </tr>
-              <tr>
-                <th>No. Fax</th>
-                <td>{{ quarry.fax_number }}</td>
-              </tr>
-              <tr>
-                <th>Emel</th>
-                <td>{{ quarry.email }}</td>
-              </tr>
-              <tr>
                 <th>Lokasi</th>
                 <td>{{ quarry.location }}</td>
               </tr>
@@ -69,12 +57,12 @@
                 <td>{{ quarry.get_state_display }}</td>
               </tr>
               <tr>
-                <th>Status Tanah</th>
-                <td>{{ quarry.land_status }}</td>
+                <th>Latitude</th>
+                <td>{{ quarry.latitude }}</td>
               </tr>
               <tr>
-                <th>Rujukan Grid</th>
-                <td>{{ quarry.grid_reference }}</td>
+                <th>Longitude</th>
+                <td>{{ quarry.longitude }}</td>
               </tr>
               <tr>
                 <th>Keupayaan Maksima</th>
@@ -134,6 +122,42 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ side_rock.get_rock_type_display }}</td>
                 <td>Batuan Sampingan</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col my-auto d-flex">
+          <h5 class="my-auto">Senarai Lot</h5>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">No Lot</th>
+                <th scope="col">Status Tanah</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for lot in quarry.lots.all %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ lot.no_lot }}</td>
+                <td>{{ lot.land_status }}</td>
               </tr>
               {% endfor %}
             </tbody>

@@ -250,6 +250,9 @@ class Lot(models.Model):
     def __str__(self):
         return self.no_lot
 
+    # def __str__(self):
+    #     return f"{self.get_lot_display()}"
+
     def get_edit_url(self):
         return reverse("quarry:state_admin:lot_update", kwargs={"pk": self.pk})
 
