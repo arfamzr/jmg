@@ -20,6 +20,32 @@ from ..views.state_admin import (
     manager_toggle_active,
     get_manager_data,
 
+    # quarry
+    QuarryListView,
+    QuarryCreateView,
+    QuarryUpdateView,
+    quarry_detail,
+    toggle_active,
+
+    # lot
+    lot_list,
+    LotCreateView,
+    LotUpdateView,
+    lot_delete,
+
+    # rock
+    rock_list,
+
+    # main rock
+    MainRockCreateView,
+    MainRockUpdateView,
+    main_rock_delete,
+
+    # side rock
+    SideRockCreateView,
+    SideRockUpdateView,
+    side_rock_delete,
+
     # QuarryListView,
     # QuarryCreateView,
     # QuarryUpdateView,
@@ -80,6 +106,76 @@ urlpatterns = [
          OperatorUpdateView.as_view(), name='operator_update'),
     path('operator/<int:pk>/toggle-active/',
          operator_toggle_active, name='operator_toggle_active'),
+
+    # quarry
+    path('', QuarryListView.as_view(), name='list'),
+    path('<int:pk>/create/', QuarryCreateView.as_view(), name='create'),
+    path('<int:pk>/update/', QuarryUpdateView.as_view(), name='update'),
+    path('<int:pk>/detail/', quarry_detail, name='detail'),
+    path('<int:pk>/toggle-active/', toggle_active, name='toggle_active'),
+
+    # lot
+    path(
+        '<int:pk>/lot/',
+        lot_list,
+        name='lot_list'
+    ),
+    path(
+        '<int:pk>/lot/create/',
+        LotCreateView.as_view(),
+        name='lot_create'
+    ),
+    path(
+        'lot/<int:pk>/update/',
+        LotUpdateView.as_view(),
+        name='lot_update'
+    ),
+    path(
+        'lot/<int:pk>/delete/',
+        lot_delete,
+        name='lot_delete'
+    ),
+
+    # rock
+    path(
+        '<int:pk>/rock/',
+        rock_list,
+        name='rock_list'
+    ),
+
+    # main rock
+    path(
+        '<int:pk>/main-rock/create/',
+        MainRockCreateView.as_view(),
+        name='main_rock_create'
+    ),
+    path(
+        'main-rock/<int:pk>/update/',
+        MainRockUpdateView.as_view(),
+        name='main_rock_update'
+    ),
+    path(
+        'main-rock/<int:pk>/delete/',
+        main_rock_delete,
+        name='main_rock_delete'
+    ),
+
+    # side rock
+    path(
+        '<int:pk>/side-rock/create/',
+        SideRockCreateView.as_view(),
+        name='side_rock_create'
+    ),
+    path(
+        'side-rock/<int:pk>/update/',
+        SideRockUpdateView.as_view(),
+        name='side_rock_update'
+    ),
+    path(
+        'side-rock/<int:pk>/delete/',
+        side_rock_delete,
+        name='side_rock_delete'
+    ),
 
     # path('', QuarryListView.as_view(), name='list'),
     # path('create/', QuarryCreateView.as_view(), name='create'),

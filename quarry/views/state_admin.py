@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import Http404, HttpResponse, JsonResponse
+from django.http import request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
@@ -16,6 +17,7 @@ from ..models import (
     QuarryManager,
     Operator,
     Quarry,
+    Lot,
     MainRock,
     SideRock,
     Data,
@@ -41,6 +43,7 @@ from ..forms.state_admin import (
     OperatorForm,
     QuarryOwnerForm,
     QuarryForm,
+    LotForm,
     MainRockForm,
     SideRockForm,
 )
@@ -314,74 +317,263 @@ def operator_toggle_active(request, pk):
     return render(request, 'quarry/state_admin/operator/toggle_active.html', context)
 
 
-# class QuarryListView(ListView):
-#     template_name = 'quarry/state_admin/list.html'
-#     model = Quarry
-#     paginate_by = 10
-#     ordering = ['-created_at']
+# quarry views
+class QuarryListView(ListView):
+    template_name = 'quarry/state_admin/list.html'
+    model = Quarry
+    paginate_by = 10
+    ordering = ['-created_at']
 
-#     def get_queryset(self):
-#         queryset = super().get_queryset().filter(
-#             state=self.request.user.profile.state)
-#         try:
-#             name = self.request.GET['q']
-#         except:
-#             name = ''
-#         if (name != ''):
-#             object_list = queryset.filter(location__icontains=name)
-#         else:
-#             object_list = queryset
-#         return object_list
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            state=self.request.user.profile.state)
+        try:
+            name = self.request.GET['q']
+        except:
+            name = ''
+        if (name != ''):
+            object_list = queryset.filter(location__icontains=name)
+        else:
+            object_list = queryset
+        return object_list
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["title"] = 'Senarai Kuari'
-#         return context
-
-
-# class QuarryCreateView(CreateView):
-#     template_name = 'quarry/state_admin/form.html'
-#     model = Quarry
-#     form_class = QuarryForm
-#     success_url = reverse_lazy('quarry:state_admin:list')
-
-#     def form_valid(self, form):
-#         form.instance.state = self.request.user.profile.state
-#         return super().form_valid(form)
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["title"] = 'Tambah Kuari'
-#         return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai Kuari'
+        return context
 
 
-# class QuarryUpdateView(UpdateView):
-#     template_name = 'quarry/state_admin/form.html'
-#     model = Quarry
-#     form_class = QuarryForm
-#     success_url = reverse_lazy('quarry:state_admin:list')
+class QuarryCreateView(CreateView):
+    template_name = 'quarry/state_admin/form.html'
+    model = Quarry
+    form_class = QuarryForm
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["title"] = 'Update Kuari'
-#         return context
+    def dispatch(self, request, *args, **kwargs):
+        self.operator = get_object_or_404(Operator, pk=self.kwargs['pk'])
+        self.manager = get_object_or_404(QuarryManager, operator=self.operator)
+        self.lease_holder = self.manager.lease_holder
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.lease_holder = self.lease_holder
+        form.instance.manager = self.manager
+        form.instance.operator = self.operator
+        form.instance.state = self.request.user.profile.state
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:lot_list', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Tambah Kuari'
+        context['owner_form'] = QuarryOwnerForm(initial={
+            'lease_holder': self.lease_holder,
+            'manager': self.manager,
+            'operator': self.operator,
+        })
+        return context
 
 
-# def toggle_active(request, pk):
-#     quarry = get_object_or_404(Quarry, pk=pk)
-#     if request.method == 'POST':
-#         if quarry.status == True:
-#             quarry.status = False
-#         else:
-#             quarry.status = True
-#         quarry.save()
-#         return redirect('quarry:state_admin:list')
+class QuarryUpdateView(UpdateView):
+    template_name = 'quarry/state_admin/form.html'
+    model = Quarry
+    form_class = QuarryForm
 
-#     context = {
-#         'quarry': quarry,
-#     }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Update Kuari'
+        context['owner_form'] = QuarryOwnerForm(initial={
+            'lease_holder': self.object.lease_holder,
+            'manager': self.object.manager,
+            'operator': self.object.operator,
+        })
+        return context
 
-#     return render(request, 'quarry/state_admin/toggle_active.html', context)
+    def get_success_url(self):
+        return reverse('quarry:state_admin:lot_list', kwargs={'pk': self.object.pk})
+
+
+def toggle_active(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    if request.method == 'POST':
+        if quarry.status == True:
+            quarry.status = False
+        else:
+            quarry.status = True
+        quarry.save()
+        return redirect('quarry:state_admin:list')
+
+    context = {
+        'quarry': quarry,
+    }
+
+    return render(request, 'quarry/state_admin/toggle_active.html', context)
+
+
+def quarry_detail(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+
+    context = {
+        'quarry': quarry,
+        'title': 'Maklumat Quarry',
+    }
+
+    return render(request, 'quarry/state_admin/detail.html', context)
+
+
+# lot views
+def lot_list(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    lot_list = Lot.objects.filter(quarry=quarry)
+
+    context = {
+        'title': 'Batuan',
+        'quarry': quarry,
+        'lot_list': lot_list,
+    }
+
+    return render(request, 'quarry/state_admin/lot/list.html', context)
+
+
+class LotCreateView(CreateView):
+    template_name = 'quarry/state_admin/lot/form.html'
+    form_class = LotForm
+    model = Lot
+
+    def form_valid(self, form):
+        self.quarry = get_object_or_404(
+            Quarry, pk=self.kwargs['pk'])
+        form.instance.quarry = self.quarry
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:lot_list', kwargs={'pk': self.quarry.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Tambah Lot'
+        return context
+
+
+class LotUpdateView(UpdateView):
+    template_name = 'quarry/state_admin/lot/form.html'
+    form_class = LotForm
+    model = Lot
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:lot_list', kwargs={'pk': self.object.quarry.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Edit Lot'
+        return context
+
+
+def lot_delete(request, pk):
+    lot = get_object_or_404(Lot, pk=pk)
+    lot.delete()
+    return redirect('quarry:state_admin:lot_list', pk=lot.quarry.pk)
+
+# ###
+
+
+# rock views
+def rock_list(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    main_rock_list = MainRock.objects.filter(quarry=quarry)
+    side_rock_list = SideRock.objects.filter(quarry=quarry)
+
+    context = {
+        'title': 'Batuan',
+        'quarry': quarry,
+        'main_rock_list': main_rock_list,
+        'side_rock_list': side_rock_list,
+    }
+
+    return render(request, 'quarry/state_admin/rock/list.html', context)
+
+
+# main rock views
+class MainRockCreateView(CreateView):
+    template_name = 'quarry/state_admin/rock/form.html'
+    form_class = MainRockForm
+    model = MainRock
+
+    def form_valid(self, form):
+        self.quarry = get_object_or_404(
+            Quarry, pk=self.kwargs['pk'])
+        form.instance.quarry = self.quarry
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:rock_list', kwargs={'pk': self.quarry.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Tambah Batuan Utama'
+        return context
+
+
+class MainRockUpdateView(UpdateView):
+    template_name = 'quarry/state_admin/rock/form.html'
+    form_class = MainRockForm
+    model = MainRock
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:rock_list', kwargs={'pk': self.object.quarry.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Edit Batuan Utama'
+        return context
+
+
+def main_rock_delete(request, pk):
+    main_rock = get_object_or_404(MainRock, pk=pk)
+    main_rock.delete()
+    return redirect('quarry:state_admin:rock_list', pk=main_rock.quarry.pk)
+
+
+# side rock views
+class SideRockCreateView(CreateView):
+    template_name = 'quarry/state_admin/rock/form.html'
+    form_class = SideRockForm
+    model = SideRock
+
+    def form_valid(self, form):
+        self.quarry = get_object_or_404(
+            Quarry, pk=self.kwargs['pk'])
+        form.instance.quarry = self.quarry
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:rock_list', kwargs={'pk': self.quarry.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Tambah Batuan Sampingan'
+        return context
+
+
+class SideRockUpdateView(UpdateView):
+    template_name = 'quarry/state_admin/rock/form.html'
+    form_class = SideRockForm
+    model = SideRock
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:rock_list', kwargs={'pk': self.object.quarry.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Edit Batuan Sampingan'
+        return context
+
+
+def side_rock_delete(request, pk):
+    side_rock = get_object_or_404(SideRock, pk=pk)
+    side_rock.delete()
+    return redirect('quarry:state_admin:rock_list', pk=side_rock.quarry.pk)
 
 
 # def quarry_detail(request, pk):

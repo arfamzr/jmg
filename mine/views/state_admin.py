@@ -339,7 +339,6 @@ class MineCreateView(CreateView):
     template_name = 'mine/state_admin/form.html'
     model = Mine
     form_class = MineForm
-    success_url = reverse_lazy('mine:state_admin:mineral_list')
 
     def dispatch(self, request, *args, **kwargs):
         self.operator = get_object_or_404(Operator, pk=self.kwargs['pk'])
@@ -372,14 +371,13 @@ class MineUpdateView(UpdateView):
     template_name = 'mine/state_admin/form.html'
     model = Mine
     form_class = MineForm
-    success_url = reverse_lazy('mine:state_admin:mineral_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Update Lombong'
         context['owner_form'] = MineOwnerForm(initial={
             'lease_holder': self.object.lease_holder,
-            'manager': self.object.minemanager,
+            'manager': self.object.manager,
             'operator': self.object.operator,
         })
         return context

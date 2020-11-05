@@ -194,7 +194,10 @@ class Quarry(models.Model):
     district = models.CharField(_("daerah"), max_length=255)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
-    grid_reference = models.CharField(_("rujukan grid"), max_length=255)
+    longitude = models.DecimalField(
+        _("longitude"), max_digits=15, decimal_places=4)
+    latitude = models.DecimalField(
+        _("latitude"), max_digits=15, decimal_places=4)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(
         _("kategori syarikat"), max_length=255, choices=CATEGORY_OF_COMPANY)
@@ -218,11 +221,11 @@ class Quarry(models.Model):
     # def get_graph_url(self):
     #     return reverse("quarry:state_admin:graph", kwargs={"pk": self.pk})
 
-    # def get_update_url(self):
-    #     return reverse("quarry:state_admin:update", kwargs={"pk": self.pk})
+    def get_update_url(self):
+        return reverse("quarry:state_admin:update", kwargs={"pk": self.pk})
 
-    # def get_toggle_active_url(self):
-    #     return reverse("quarry:state_admin:toggle_active", kwargs={"pk": self.pk})
+    def get_toggle_active_url(self):
+        return reverse("quarry:state_admin:toggle_active", kwargs={"pk": self.pk})
 
     # def get_add_miner_url(self):
     #     return reverse("quarry:state_admin:add_miner", kwargs={"pk": self.pk})
@@ -243,6 +246,12 @@ class Lot(models.Model):
 
     def __str__(self):
         return self.no_lot
+
+    def get_edit_url(self):
+        return reverse("quarry:state_admin:lot_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("quarry:state_admin:lot_delete", kwargs={"pk": self.pk})
 
 
 class MainRock(models.Model):

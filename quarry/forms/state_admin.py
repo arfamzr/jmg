@@ -1,6 +1,6 @@
 from django import forms
 
-from ..models import LeaseHolder, QuarryManager, Operator, Quarry, MainRock, SideRock
+from ..models import LeaseHolder, Lot, QuarryManager, Operator, Quarry, MainRock, SideRock
 
 
 class LeaseHolderForm(forms.ModelForm):
@@ -42,15 +42,22 @@ class QuarryForm(forms.ModelForm):
         exclude = ['lease_holder', 'manager', 'operator', 'state', 'status']
 
 
+class LotForm(forms.ModelForm):
+
+    class Meta:
+        model = Lot
+        exclude = ['quarry']
+
+
 class MainRockForm(forms.ModelForm):
 
     class Meta:
         model = MainRock
-        exclude = ['mine']
+        exclude = ['quarry']
 
 
 class SideRockForm(forms.ModelForm):
 
     class Meta:
         model = SideRock
-        exclude = ['mine']
+        exclude = ['quarry']
