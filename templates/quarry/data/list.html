@@ -10,6 +10,9 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <div class="row">
+        <div class="col">
+          <a href="{% url 'quarry:data_create' %}" class="btn btn-primary">Tambah PKB</a>
+        </div>
         {% comment %} <div class="col justify-content-end">
           <form action="." method="GET">
             <div class="input-group">
@@ -39,11 +42,11 @@
               </tr>
             </thead>
             <tbody>
-              {% for miner_data in object_list %}
-              {% with quarry_miner=miner_data.miner quarry=miner_data.quarry last_approval=miner_data.get_last_approval %}
+              {% for data in object_list %}
+              {% with quarry_miner=data.miner quarry=data.quarry last_approval=data.get_last_approval %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                <td>{{ data.get_month_display }} {{ data.year }}</td>
                 <td>{{ quarry.location }}</td>
                 <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td>
                 <td>{{ quarry_miner.lot_number }}</td>
@@ -55,7 +58,7 @@
                   {% elif last_approval.state_approved == False or last_approval.admin_approved == False %}
                   <span class="text-danger">Rejected</span>
                   <button class="badge badge-sm badge-secondary" data-toggle="modal" data-target="#rejectCommentModal"
-                    data-id="{{ miner_data.id }}">
+                    data-id="{{ data.id }}">
                     <i class=" far fa-eye"></i>
                   </button>
                   {% else %}
@@ -67,12 +70,12 @@
                 </td>
                 <td>
                   {% if last_approval and last_approval.state_approved != False and last_approval.admin_approved != False %}
-                  <a href="{{ miner_data.get_absolute_url }}" class="badge badge-sm badge-secondary">
+                  <a href="{{ data.get_absolute_url }}" class="badge badge-sm badge-secondary">
                     <i class="far fa-eye"></i>
                   </a>
                   {% else %}
-                  <a href="{{ miner_data.get_edit_url }}" class="badge badge-sm badge-info">Edit</a>
-                  <a href="{{ miner_data.get_delete_url }}" class="badge badge-sm badge-danger">Delete</a>
+                  <a href="{{ data.get_edit_url }}" class="badge badge-sm badge-info">Edit</a>
+                  <a href="{{ data.get_delete_url }}" class="badge badge-sm badge-danger">Delete</a>
                   {% endif %}
                 </td>
               </tr>

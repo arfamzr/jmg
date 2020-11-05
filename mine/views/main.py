@@ -72,9 +72,9 @@ class DataCreateView(CreateView):
     template_name = 'mine/data/form.html'
 
     def form_valid(self, form):
-        form.instance.manager = self.request.user.manager
-        form.instance.mine = self.request.user.manager.mine
-        form.instance.state = self.request.user.manager.mine.state
+        form.instance.manager = self.request.user.minemanager
+        form.instance.mine = self.request.user.minemanager.mine
+        form.instance.state = self.request.user.minemanager.mine.state
         return super().form_valid(form)
 
     def get_success_url(self):

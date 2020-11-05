@@ -25,6 +25,7 @@ from ..views.state_admin import (
     MineCreateView,
     MineUpdateView,
     mine_detail,
+    toggle_active,
 
     # data
     DataListView,
@@ -34,7 +35,6 @@ from ..views.state_admin import (
     # add_miner,
     # mine_add_miner,
     # mine_remove_miner,
-    toggle_active,
     # user_mine_list,
     statistic_detail,
     local_worker_detail,

@@ -194,7 +194,10 @@ class Quarry(models.Model):
     district = models.CharField(_("daerah"), max_length=255)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
-    grid_reference = models.CharField(_("rujukan grid"), max_length=255)
+    longitude = models.DecimalField(
+        _("longitude"), max_digits=15, decimal_places=4)
+    latitude = models.DecimalField(
+        _("latitude"), max_digits=15, decimal_places=4)
     max_capacity = models.CharField(_("keupayaan maksima"), max_length=255)
     company_category = models.CharField(
         _("kategori syarikat"), max_length=255, choices=CATEGORY_OF_COMPANY)
@@ -218,11 +221,11 @@ class Quarry(models.Model):
     # def get_graph_url(self):
     #     return reverse("quarry:state_admin:graph", kwargs={"pk": self.pk})
 
-    # def get_update_url(self):
-    #     return reverse("quarry:state_admin:update", kwargs={"pk": self.pk})
+    def get_update_url(self):
+        return reverse("quarry:state_admin:update", kwargs={"pk": self.pk})
 
-    # def get_toggle_active_url(self):
-    #     return reverse("quarry:state_admin:toggle_active", kwargs={"pk": self.pk})
+    def get_toggle_active_url(self):
+        return reverse("quarry:state_admin:toggle_active", kwargs={"pk": self.pk})
 
     # def get_add_miner_url(self):
     #     return reverse("quarry:state_admin:add_miner", kwargs={"pk": self.pk})
@@ -243,6 +246,12 @@ class Lot(models.Model):
 
     def __str__(self):
         return self.no_lot
+
+    def get_edit_url(self):
+        return reverse("quarry:state_admin:lot_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("quarry:state_admin:lot_delete", kwargs={"pk": self.pk})
 
 
 class MainRock(models.Model):
@@ -411,6 +420,15 @@ class MainProductionStatistic(models.Model):
     def __str__(self):
         return f"{self.get_rock_type_display()} - {self.data}"
 
+    def get_absolute_url(self):
+        return reverse("quarry:main_production_statistic_detail", kwargs={"pk": self.pk})
+
+    def get_edit_url(self):
+        return reverse("quarry:main_production_statistic_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("quarry:main_production_statistic_delete", kwargs={"pk": self.pk})
+
 
 class SideProductionStatistic(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
@@ -437,13 +455,24 @@ class SideProductionStatistic(models.Model):
     def __str__(self):
         return f"{self.get_rock_type_display()} - {self.data}"
 
+    def get_absolute_url(self):
+        return reverse("quarry:side_production_statistic_detail", kwargs={"pk": self.pk})
+
+    def get_edit_url(self):
+        return reverse("quarry:side_production_statistic_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("quarry:side_production_statistic_delete", kwargs={"pk": self.pk})
+
 
 class SalesSubmission(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
         "data"), on_delete=models.CASCADE, related_name='sales_submissios')
     submission_size = models.CharField(_("saiz penyerahan"), max_length=255)
-    amount = models.DecimalField(_("amaun"), max_digits=15, decimal_places=4)
-    worth = models.DecimalField(_("nilai"), max_digits=15, decimal_places=2)
+    amount = models.DecimalField(
+        _("amaun (Tan Metrik)"), max_digits=15, decimal_places=4)
+    worth = models.DecimalField(
+        _("nilai (RM)"), max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -453,6 +482,15 @@ class SalesSubmission(models.Model):
 
     def __str__(self):
         return f"{self.data}"
+
+    def get_absolute_url(self):
+        return reverse("quarry:sales_submission_detail", kwargs={"pk": self.pk})
+
+    def get_edit_url(self):
+        return reverse("quarry:sales_submission_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("quarry:sales_submission_delete", kwargs={"pk": self.pk})
 
 
 class LocalFinalUses(models.Model):
