@@ -2,7 +2,7 @@ from django.urls import path
 
 from ..views.state import (
     # mine
-    MineListView,
+    # MineListView,
 
     # data
     DataListView,
@@ -22,7 +22,7 @@ app_name = 'state'
 
 urlpatterns = [
     # mine
-    path('', MineListView.as_view(), name='list'),
+    # path('', MineListView.as_view(), name='list'),
 
     # data
     path('data/', DataListView.as_view(), name='data_list'),

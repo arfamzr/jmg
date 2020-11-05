@@ -1,27 +1,40 @@
 from django.urls import path
 
-# from ..views.state import (
-#     QuarryListView,
-#     quarry_detail,
-#     user_quarry_list,
-#     QuarryMinerDataListView,
-#     miner_data_detail,
-#     production_statistic_detail,
-#     sales_submission_detail,
-#     final_uses_detail,
-#     local_worker_detail,
-#     foreign_worker_detail,
-#     machinery_detail,
-#     daily_explosive_detail,
-#     energy_supply_detail,
-#     operating_record_detail,
-#     royalties_detail,
-#     other_detail,
-# )
+from ..views.state import (
+
+    # data
+    DataListView,
+    data_detail,
+
+    # QuarryListView,
+    # quarry_detail,
+    # user_quarry_list,
+    # QuarryMinerDataListView,
+    # miner_data_detail,
+    # production_statistic_detail,
+    # sales_submission_detail,
+    # final_uses_detail,
+    # local_worker_detail,
+    # foreign_worker_detail,
+    # machinery_detail,
+    # daily_explosive_detail,
+    # energy_supply_detail,
+    # operating_record_detail,
+    # royalties_detail,
+    # other_detail,
+)
 
 app_name = 'state'
 
 urlpatterns = [
+    # data
+    path('data/', DataListView.as_view(), name='data_list'),
+    path(
+        'miner-data/<int:pk>/',
+        data_detail,
+        name='data_detail',
+    ),
+
     # path('', QuarryListView.as_view(), name='list'),
     # path('<int:pk>/detail/', quarry_detail, name='detail'),
     # path('user-quarry/<int:pk>/',

@@ -374,16 +374,16 @@ class Data(models.Model):
         return f'{self.miner} - {self.pk}'
 
     def get_absolute_url(self):
-        return reverse("quarry:data", kwargs={"pk": self.pk})
+        return reverse("quarry:data_detail", kwargs={"pk": self.pk})
 
     def get_state_absolute_url(self):
-        return reverse("quarry:state:data", kwargs={"pk": self.pk})
+        return reverse("quarry:state:data_detail", kwargs={"pk": self.pk})
 
     def get_state_admin_absolute_url(self):
-        return reverse("quarry:state_admin:data", kwargs={"pk": self.pk})
+        return reverse("quarry:state_admin:data_detail", kwargs={"pk": self.pk})
 
     def get_hq_absolute_url(self):
-        return reverse("quarry:hq:data", kwargs={"pk": self.pk})
+        return reverse("quarry:hq:data_detail", kwargs={"pk": self.pk})
 
     def get_edit_url(self):
         return reverse("quarry:production_statistic_edit", kwargs={"pk": self.pk})
@@ -467,7 +467,7 @@ class SideProductionStatistic(models.Model):
 
 class SalesSubmission(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
-        "data"), on_delete=models.CASCADE, related_name='sales_submissios')
+        "data"), on_delete=models.CASCADE, related_name='sales_submissions')
     submission_size = models.CharField(_("saiz penyerahan"), max_length=255)
     amount = models.DecimalField(
         _("amaun (Tan Metrik)"), max_digits=15, decimal_places=4)

@@ -25,20 +25,38 @@ from ..views.main import (
     sales_submission_delete,
     sales_submission_detail,
 
+    # final uses
+    final_uses_edit,
+
+    # local worker
+    local_worker_edit,
+
+    # foreign worker
+    foreign_worker_edit,
+
+    # machiner
+    machinery_edit,
+
+    # daily explosive
+    daily_explosive_edit,
+
+    # energy supply
+    energy_supply_edit,
+
+    # operating record
+    operating_record_edit,
+
+    # royalties
+    royalties_edit,
+
+    # other
+    other_edit,
+
     # QuarryMinerListView,
     # add_report,
     # QuarryMinerDataListView,
     # production_statistic_edit,
     # sales_submission_edit,
-    # final_uses_edit,
-    # local_worker_edit,
-    # foreign_worker_edit,
-    # machinery_edit,
-    # daily_explosive_edit,
-    # energy_supply_edit,
-    # operating_record_edit,
-    # royalties_edit,
-    # other_edit,
     # miner_data_delete,
     # miner_data_detail,
     # production_statistic_detail,
@@ -147,6 +165,69 @@ urlpatterns = [
         name='sales_submission_detail'
     ),
 
+    # final uses
+    path(
+        'data/<int:pk>/final-uses/edit/',
+        final_uses_edit,
+        name='final_uses_edit',
+    ),
+
+    # local worker
+    path(
+        'data/<int:pk>/local-worker/edit/',
+        local_worker_edit,
+        name='local_worker_edit',
+    ),
+
+    # foreign worker
+    path(
+        'data/<int:pk>/foreign-worker/edit/',
+        foreign_worker_edit,
+        name='foreign_worker_edit',
+    ),
+
+    # machinery
+    path(
+        'data/<int:pk>/machinery/edit/',
+        machinery_edit,
+        name='machinery_edit',
+    ),
+
+    # daily explosive
+    path(
+        'data/<int:pk>/daily-explosive/edit/',
+        daily_explosive_edit,
+        name='daily_explosive_edit',
+    ),
+
+    # energy supply
+    path(
+        'data/<int:pk>/energy-supply/edit/',
+        energy_supply_edit,
+        name='energy_supply_edit',
+    ),
+
+    # operating record
+    path(
+        'data/<int:pk>/operating-record/edit/',
+        operating_record_edit,
+        name='operating_record_edit',
+    ),
+
+    # royalties
+    path(
+        'data/<int:pk>/royalties/edit/',
+        royalties_edit,
+        name='royalties_edit',
+    ),
+
+    # other
+    path(
+        'data/<int:pk>/other/edit/',
+        other_edit,
+        name='other_edit',
+    ),
+
     # user include
     path('state/', include('quarry.urls.state', namespace='state')),
     path('state-admin/', include('quarry.urls.state_admin', namespace='state_admin')),
@@ -156,127 +237,82 @@ urlpatterns = [
     # path('<int:pk>/add-report/', add_report, name='add_report'),
     # path('data-list/', QuarryMinerDataListView.as_view(), name='data_list'),
     # path(
-    #     'miner-data/<int:pk>/production-statistic/edit/',
+    #     'data/<int:pk>/production-statistic/edit/',
     #     production_statistic_edit,
     #     name='production_statistic_edit',
     # ),
     # path(
-    #     'miner-data/<int:pk>/sales-submission/edit/',
+    #     'data/<int:pk>/sales-submission/edit/',
     #     sales_submission_edit,
     #     name='sales_submission_edit',
     # ),
     # path(
-    #     'miner-data/<int:pk>/final-uses/edit/',
-    #     final_uses_edit,
-    #     name='final_uses_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/local-worker/edit/',
-    #     local_worker_edit,
-    #     name='local_worker_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/foreign-worker/edit/',
-    #     foreign_worker_edit,
-    #     name='foreign_worker_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/machinery/edit/',
-    #     machinery_edit,
-    #     name='machinery_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/daily-explosive/edit/',
-    #     daily_explosive_edit,
-    #     name='daily_explosive_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/energy-supply/edit/',
-    #     energy_supply_edit,
-    #     name='energy_supply_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/operating-record/edit/',
-    #     operating_record_edit,
-    #     name='operating_record_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/royalties/edit/',
-    #     royalties_edit,
-    #     name='royalties_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/other/edit/',
-    #     other_edit,
-    #     name='other_edit',
-    # ),
-    # path(
-    #     'miner-data/<int:pk>/delete/edit/',
+    #     'data/<int:pk>/delete/edit/',
     #     miner_data_delete,
     #     name='miner_data_delete',
     # ),
     # path(
-    #     'miner-data/<int:pk>/',
+    #     'data/<int:pk>/',
     #     miner_data_detail,
     #     name='miner_data',
     # ),
     # path(
-    #     'miner-data/<int:pk>/production-statistic/',
+    #     'data/<int:pk>/production-statistic/',
     #     production_statistic_detail,
     #     name='production_statistic',
     # ),
     # path(
-    #     'miner-data/<int:pk>/sales-submission/',
+    #     'data/<int:pk>/sales-submission/',
     #     sales_submission_detail,
     #     name='sales_submission',
     # ),
     # path(
-    #     'miner-data/<int:pk>/final-uses/',
+    #     'data/<int:pk>/final-uses/',
     #     final_uses_detail,
     #     name='final_uses',
     # ),
     # path(
-    #     'miner-data/<int:pk>/local-worker/',
+    #     'data/<int:pk>/local-worker/',
     #     local_worker_detail,
     #     name='local_worker',
     # ),
     # path(
-    #     'miner-data/<int:pk>/foreign-worker/',
+    #     'data/<int:pk>/foreign-worker/',
     #     foreign_worker_detail,
     #     name='foreign_worker',
     # ),
     # path(
-    #     'miner-data/<int:pk>/machinery/',
+    #     'data/<int:pk>/machinery/',
     #     machinery_detail,
     #     name='machinery',
     # ),
     # path(
-    #     'miner-data/<int:pk>/daily-explosive/',
+    #     'data/<int:pk>/daily-explosive/',
     #     daily_explosive_detail,
     #     name='daily_explosive',
     # ),
     # path(
-    #     'miner-data/<int:pk>/energy-supply/',
+    #     'data/<int:pk>/energy-supply/',
     #     energy_supply_detail,
     #     name='energy_supply',
     # ),
     # path(
-    #     'miner-data/<int:pk>/operating-record/',
+    #     'data/<int:pk>/operating-record/',
     #     operating_record_detail,
     #     name='operating_record',
     # ),
     # path(
-    #     'miner-data/<int:pk>/royalties/',
+    #     'data/<int:pk>/royalties/',
     #     royalties_detail,
     #     name='royalties',
     # ),
     # path(
-    #     'miner-data/<int:pk>/other/',
+    #     'data/<int:pk>/other/',
     #     other_detail,
     #     name='other',
     # ),
     # path(
-    #     'miner-data/<int:pk>/get-comment/',
+    #     'data/<int:pk>/get-comment/',
     #     get_comment_data,
     #     name='get_comment'
     # ),

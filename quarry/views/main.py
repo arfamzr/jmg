@@ -281,13 +281,13 @@ def side_production_statistic_detail(request, pk):
 def sales_submission_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     sales_submission_list = SalesSubmission.objects.filter(data=data)
-    # next_link = reverse('quarry:final_uses_edit', kwargs={'pk': data.pk})
+    next_link = reverse('quarry:final_uses_edit', kwargs={'pk': data.pk})
 
     context = {
         'title': 'Penyerahan Jualan',
         'data': data,
         'sales_submission_list': sales_submission_list,
-        # 'next_link': next_link,
+        'next_link': next_link,
     }
 
     return render(request, 'quarry/data/sales_submission/list.html', context=context)
@@ -347,6 +347,415 @@ def sales_submission_detail(request, pk):
     return render(request, 'quarry/data/sales_submission/detail.html', context)
 
 
+# final uses views
+def final_uses_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:sales_submission_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        local_final_uses = LocalFinalUses.objects.get(data=data)
+        export_final_uses = ExportFinalUses.objects.get(data=data)
+    except LocalFinalUses.DoesNotExist:
+        local_final_uses = None
+        export_final_uses = None
+
+    if request.method == 'POST':
+        if local_final_uses == None:
+            local_form = LocalFinalUsesForm(request.POST)
+            export_form = ExportFinalUsesForm(request.POST, prefix='second')
+        else:
+            local_form = LocalFinalUsesForm(
+                request.POST, instance=local_final_uses)
+            export_form = ExportFinalUsesForm(
+                request.POST, instance=export_final_uses, prefix='second')
+
+        if local_form.is_valid() and export_form.is_valid():
+            local_form.instance.data = data
+            export_form.instance.data = data
+            local_form.save()
+            export_form.save()
+            return redirect('quarry:local_worker_edit', pk=data.pk)
+
+    else:
+        if local_final_uses == None:
+            local_form = LocalFinalUsesForm()
+            export_form = ExportFinalUsesForm(prefix='second')
+        else:
+            local_form = LocalFinalUsesForm(instance=local_final_uses)
+            export_form = ExportFinalUsesForm(
+                instance=export_final_uses, prefix='second')
+
+    context = {
+        'title': 'Edit Kegunaan Akhir',
+        'local_form': local_form,
+        'export_form': export_form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/final_uses/form.html', context=context)
+
+
+# local worker views
+def local_worker_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:final_uses_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        local_operator = LocalOperator.objects.get(data=data)
+        local_contractor = LocalContractor.objects.get(data=data)
+    except LocalOperator.DoesNotExist:
+        local_operator = None
+        local_contractor = None
+
+    if request.method == 'POST':
+        if local_operator == None:
+            operator_form = LocalOperatorForm(request.POST)
+            contractor_form = LocalContractorForm(
+                request.POST, prefix='second')
+        else:
+            operator_form = LocalOperatorForm(
+                request.POST, instance=local_operator)
+            contractor_form = LocalContractorForm(
+                request.POST, instance=local_contractor, prefix='second')
+
+        if operator_form.is_valid() and contractor_form.is_valid():
+            operator_form.instance.data = data
+            contractor_form.instance.data = data
+            operator_form.save()
+            contractor_form.save()
+            return redirect('quarry:foreign_worker_edit', pk=data.pk)
+
+    else:
+        if local_operator == None:
+            operator_form = LocalOperatorForm()
+            contractor_form = LocalContractorForm(prefix='second')
+        else:
+            operator_form = LocalOperatorForm(instance=local_operator)
+            contractor_form = LocalContractorForm(
+                instance=local_contractor, prefix='second')
+
+    context = {
+        'title': 'Edit Pekerjaan (Tempatan)',
+        'operator_form': operator_form,
+        'contractor_form': contractor_form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/worker/form.html', context=context)
+
+
+# foreign worker views
+def foreign_worker_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:local_worker_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        foreign_operator = ForeignOperator.objects.get(data=data)
+        foreign_contractor = ForeignContractor.objects.get(
+            data=data)
+    except ForeignOperator.DoesNotExist:
+        foreign_operator = None
+        foreign_contractor = None
+
+    if request.method == 'POST':
+        if foreign_operator == None:
+            operator_form = ForeignOperatorForm(request.POST)
+            contractor_form = ForeignContractorForm(
+                request.POST, prefix='second')
+        else:
+            operator_form = ForeignOperatorForm(
+                request.POST, instance=foreign_operator)
+            contractor_form = ForeignContractorForm(
+                request.POST, instance=foreign_contractor, prefix='second')
+
+        if operator_form.is_valid() and contractor_form.is_valid():
+            operator_form.instance.data = data
+            contractor_form.instance.data = data
+            operator_form.save()
+            contractor_form.save()
+            return redirect('quarry:machinery_edit', pk=data.pk)
+
+    else:
+        if foreign_operator == None:
+            operator_form = ForeignOperatorForm()
+            contractor_form = ForeignContractorForm(prefix='second')
+        else:
+            operator_form = ForeignOperatorForm(instance=foreign_operator)
+            contractor_form = ForeignContractorForm(
+                instance=foreign_contractor, prefix='second')
+
+    context = {
+        'title': 'Edit Pekerjaan (Asing)',
+        'operator_form': operator_form,
+        'contractor_form': contractor_form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/worker/form.html', context=context)
+
+
+# machinery views
+def machinery_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:foreign_worker_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        combustion_machinery = InternalCombustionMachinery.objects.get(
+            data=data)
+        electric_machinery = ElectricMachinery.objects.get(
+            data=data)
+    except InternalCombustionMachinery.DoesNotExist:
+        combustion_machinery = None
+        electric_machinery = None
+
+    if request.method == 'POST':
+        if combustion_machinery == None:
+            combustion_form = InternalCombustionMachineryForm(request.POST)
+            electric_form = ElectricMachineryForm(
+                request.POST, prefix='second')
+        else:
+            combustion_form = InternalCombustionMachineryForm(
+                request.POST, instance=combustion_machinery)
+            electric_form = ElectricMachineryForm(
+                request.POST, instance=electric_machinery, prefix='second')
+
+        if combustion_form.is_valid() and electric_form.is_valid():
+            combustion_form.instance.data = data
+            electric_form.instance.data = data
+            combustion_form.save()
+            electric_form.save()
+            return redirect('quarry:daily_explosive_edit', pk=data.pk)
+
+    else:
+        if combustion_machinery == None:
+            combustion_form = InternalCombustionMachineryForm()
+            electric_form = ElectricMachineryForm(prefix='second')
+        else:
+            combustion_form = InternalCombustionMachineryForm(
+                instance=combustion_machinery)
+            electric_form = ElectricMachineryForm(
+                instance=electric_machinery, prefix='second')
+
+    context = {
+        'title': 'Edit Jentera',
+        'combustion_form': combustion_form,
+        'electric_form': electric_form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/machinery/form.html', context=context)
+
+
+# daily explosive views
+def daily_explosive_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:machinery_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        daily_explosive = DailyExplosive.objects.get(data=data)
+    except DailyExplosive.DoesNotExist:
+        daily_explosive = None
+
+    if request.method == 'POST':
+        if daily_explosive == None:
+            form = DailyExplosiveForm(request.POST)
+        else:
+            form = DailyExplosiveForm(
+                request.POST, instance=daily_explosive)
+
+        if form.is_valid():
+            form.instance.data = data
+            form.save()
+            return redirect('quarry:energy_supply_edit', pk=data.pk)
+
+    else:
+        if daily_explosive == None:
+            form = DailyExplosiveForm()
+        else:
+            form = DailyExplosiveForm(instance=daily_explosive)
+
+    context = {
+        'title': 'Edit Bahan Letupan Harian',
+        'form': form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/daily_explosive/form.html', context=context)
+
+
+# energy supply views
+def energy_supply_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:daily_explosive_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        energy_supply = EnergySupply.objects.get(data=data)
+    except EnergySupply.DoesNotExist:
+        energy_supply = None
+
+    if request.method == 'POST':
+        if energy_supply == None:
+            form = EnergySupplyForm(request.POST)
+        else:
+            form = EnergySupplyForm(
+                request.POST, instance=energy_supply)
+
+        if form.is_valid():
+            form.instance.data = data
+            form.save()
+            return redirect('quarry:operating_record_edit', pk=data.pk)
+
+    else:
+        if energy_supply == None:
+            form = EnergySupplyForm()
+        else:
+            form = EnergySupplyForm(instance=energy_supply)
+
+    context = {
+        'title': 'Edit Bahan Tenaga',
+        'form': form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/energy_supply/form.html', context=context)
+
+
+# operating record views
+def operating_record_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:energy_supply_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        operating_record = OperatingRecord.objects.get(data=data)
+    except OperatingRecord.DoesNotExist:
+        operating_record = None
+
+    if request.method == 'POST':
+        if operating_record == None:
+            form = OperatingRecordForm(request.POST)
+        else:
+            form = OperatingRecordForm(
+                request.POST, instance=operating_record)
+
+        if form.is_valid():
+            form.instance.data = data
+            form.save()
+            return redirect('quarry:royalties_edit', pk=data.pk)
+
+    else:
+        if operating_record == None:
+            form = OperatingRecordForm()
+        else:
+            form = OperatingRecordForm(instance=operating_record)
+
+    context = {
+        'title': 'Edit Rekod Operasi',
+        'form': form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/operating_record/form.html', context=context)
+
+
+# royalties views
+def royalties_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:operating_record_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        royalties = Royalties.objects.get(data=data)
+    except Royalties.DoesNotExist:
+        royalties = None
+
+    if request.method == 'POST':
+        if royalties == None:
+            form = RoyaltiesForm(request.POST)
+        else:
+            form = RoyaltiesForm(
+                request.POST, instance=royalties)
+
+        if form.is_valid():
+            form.instance.data = data
+            form.save()
+            return redirect('quarry:other_edit', pk=data.pk)
+
+    else:
+        if royalties == None:
+            form = RoyaltiesForm()
+        else:
+            form = RoyaltiesForm(instance=royalties)
+
+    context = {
+        'title': 'Edit Royalti',
+        'form': form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/royalties/form.html', context=context)
+
+
+# other views
+def other_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    prev_link = reverse('quarry:royalties_edit',
+                        kwargs={"pk": data.pk})
+    try:
+        other = Other.objects.get(data=data)
+    except Other.DoesNotExist:
+        other = None
+
+    if request.method == 'POST':
+        if other == None:
+            form = OtherForm(request.POST)
+        else:
+            form = OtherForm(
+                request.POST, instance=other)
+
+        if form.is_valid():
+            form.instance.data = data
+            form.save()
+            data_approval = Approval.objects.create(
+                data=data, requestor=request.user)
+
+            # jmg_states = User.objects.filter(
+            #     groups__name='JMG State', profile__state=data.state)
+
+            # notify = Notify()
+            # notify_message = f'{request.user} telah menghantar permohonan data untuk kuari "{data.quarry}"'
+            # notify_link = reverse('quarry:state:data_list')
+
+            # for jmg_state in jmg_states:
+            #     notify.make_notify(jmg_state, notify_message, notify_link)
+
+            return redirect('quarry:data_list')
+
+    else:
+        if other == None:
+            form = OtherForm()
+        else:
+            form = OtherForm(instance=other)
+
+    context = {
+        'title': 'Edit Lain-lain',
+        'form': form,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/other/form.html', context=context)
+
+
+# comment views
+def get_comment_data(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    data_approval = data.get_last_approval()
+    if data_approval.admin_comment:
+        return HttpResponse(data_approval.admin_comment)
+    elif data_approval.state_comment:
+        return HttpResponse(data_approval.state_comment)
+    else:
+        return HttpResponse('')
+
+
 # class QuarryMinerListView(ListView):
 #     template_name = 'quarry/list.html'
 #     model = QuarryMiner
@@ -376,7 +785,7 @@ def sales_submission_detail(request, pk):
 #     quarry_miner = get_object_or_404(QuarryMiner, pk=pk)
 
 #     if request.method == 'POST':
-#         form = QuarryMinerDataForm(request.POST)
+#         form = DataForm(request.POST)
 #         if form.is_valid():
 #             form.instance.miner = quarry_miner
 #             form.instance.quarry = quarry_miner.quarry
@@ -386,7 +795,7 @@ def sales_submission_detail(request, pk):
 #             return redirect('quarry:production_statistic_edit', pk=data.id)
 
 #     else:
-#         form = QuarryMinerDataForm()
+#         form = DataForm()
 
 #     context = {
 #         'form': form,
@@ -397,7 +806,7 @@ def sales_submission_detail(request, pk):
 
 
 # def production_statistic_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     try:
 #         production_statistic = ProductionStatistic.objects.get(
 #             data=data)
@@ -431,7 +840,7 @@ def sales_submission_detail(request, pk):
 
 
 # def sales_submission_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:production_statistic_edit',
 #                         kwargs={"pk": data.pk})
 #     try:
@@ -466,396 +875,8 @@ def sales_submission_detail(request, pk):
 #     return render(request, 'quarry/data/sales_submission/form.html', context=context)
 
 
-# def final_uses_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:sales_submission_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         local_final_uses = LocalFinalUses.objects.get(data=data)
-#         export_final_uses = ExportFinalUses.objects.get(data=data)
-#     except LocalFinalUses.DoesNotExist:
-#         local_final_uses = None
-#         export_final_uses = None
-
-#     if request.method == 'POST':
-#         if local_final_uses == None:
-#             local_form = LocalFinalUsesForm(request.POST)
-#             export_form = ExportFinalUsesForm(request.POST, prefix='second')
-#         else:
-#             local_form = LocalFinalUsesForm(
-#                 request.POST, instance=local_final_uses)
-#             export_form = ExportFinalUsesForm(
-#                 request.POST, instance=export_final_uses, prefix='second')
-
-#         if local_form.is_valid() and export_form.is_valid():
-#             local_form.instance.data = data
-#             export_form.instance.data = data
-#             local_form.save()
-#             export_form.save()
-#             return redirect('quarry:local_worker_edit', pk=data.pk)
-
-#     else:
-#         if local_final_uses == None:
-#             local_form = LocalFinalUsesForm()
-#             export_form = ExportFinalUsesForm(prefix='second')
-#         else:
-#             local_form = LocalFinalUsesForm(instance=local_final_uses)
-#             export_form = ExportFinalUsesForm(
-#                 instance=export_final_uses, prefix='second')
-
-#     context = {
-#         'title': 'Edit Kegunaan Akhir',
-#         'local_form': local_form,
-#         'export_form': export_form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/final_uses/form.html', context=context)
-
-
-# def local_worker_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:final_uses_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         local_operator = LocalOperator.objects.get(data=data)
-#         local_contractor = LocalContractor.objects.get(data=data)
-#     except LocalOperator.DoesNotExist:
-#         local_operator = None
-#         local_contractor = None
-
-#     if request.method == 'POST':
-#         if local_operator == None:
-#             operator_form = LocalOperatorForm(request.POST)
-#             contractor_form = LocalContractorForm(
-#                 request.POST, prefix='second')
-#         else:
-#             operator_form = LocalOperatorForm(
-#                 request.POST, instance=local_operator)
-#             contractor_form = LocalContractorForm(
-#                 request.POST, instance=local_contractor, prefix='second')
-
-#         if operator_form.is_valid() and contractor_form.is_valid():
-#             operator_form.instance.data = data
-#             contractor_form.instance.data = data
-#             operator_form.save()
-#             contractor_form.save()
-#             return redirect('quarry:foreign_worker_edit', pk=data.pk)
-
-#     else:
-#         if local_operator == None:
-#             operator_form = LocalOperatorForm()
-#             contractor_form = LocalContractorForm(prefix='second')
-#         else:
-#             operator_form = LocalOperatorForm(instance=local_operator)
-#             contractor_form = LocalContractorForm(
-#                 instance=local_contractor, prefix='second')
-
-#     context = {
-#         'title': 'Edit Pekerjaan (Tempatan)',
-#         'operator_form': operator_form,
-#         'contractor_form': contractor_form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/worker/form.html', context=context)
-
-
-# def foreign_worker_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:local_worker_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         foreign_operator = ForeignOperator.objects.get(data=data)
-#         foreign_contractor = ForeignContractor.objects.get(
-#             data=data)
-#     except ForeignOperator.DoesNotExist:
-#         foreign_operator = None
-#         foreign_contractor = None
-
-#     if request.method == 'POST':
-#         if foreign_operator == None:
-#             operator_form = ForeignOperatorForm(request.POST)
-#             contractor_form = ForeignContractorForm(
-#                 request.POST, prefix='second')
-#         else:
-#             operator_form = ForeignOperatorForm(
-#                 request.POST, instance=foreign_operator)
-#             contractor_form = ForeignContractorForm(
-#                 request.POST, instance=foreign_contractor, prefix='second')
-
-#         if operator_form.is_valid() and contractor_form.is_valid():
-#             operator_form.instance.data = data
-#             contractor_form.instance.data = data
-#             operator_form.save()
-#             contractor_form.save()
-#             return redirect('quarry:machinery_edit', pk=data.pk)
-
-#     else:
-#         if foreign_operator == None:
-#             operator_form = ForeignOperatorForm()
-#             contractor_form = ForeignContractorForm(prefix='second')
-#         else:
-#             operator_form = ForeignOperatorForm(instance=foreign_operator)
-#             contractor_form = ForeignContractorForm(
-#                 instance=foreign_contractor, prefix='second')
-
-#     context = {
-#         'title': 'Edit Pekerjaan (Asing)',
-#         'operator_form': operator_form,
-#         'contractor_form': contractor_form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/worker/form.html', context=context)
-
-
-# def machinery_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:foreign_worker_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         combustion_machinery = InternalCombustionMachinery.objects.get(
-#             data=data)
-#         electric_machinery = ElectricMachinery.objects.get(
-#             data=data)
-#     except InternalCombustionMachinery.DoesNotExist:
-#         combustion_machinery = None
-#         electric_machinery = None
-
-#     if request.method == 'POST':
-#         if combustion_machinery == None:
-#             combustion_form = InternalCombustionMachineryForm(request.POST)
-#             electric_form = ElectricMachineryForm(
-#                 request.POST, prefix='second')
-#         else:
-#             combustion_form = InternalCombustionMachineryForm(
-#                 request.POST, instance=combustion_machinery)
-#             electric_form = ElectricMachineryForm(
-#                 request.POST, instance=electric_machinery, prefix='second')
-
-#         if combustion_form.is_valid() and electric_form.is_valid():
-#             combustion_form.instance.data = data
-#             electric_form.instance.data = data
-#             combustion_form.save()
-#             electric_form.save()
-#             return redirect('quarry:daily_explosive_edit', pk=data.pk)
-
-#     else:
-#         if combustion_machinery == None:
-#             combustion_form = InternalCombustionMachineryForm()
-#             electric_form = ElectricMachineryForm(prefix='second')
-#         else:
-#             combustion_form = InternalCombustionMachineryForm(
-#                 instance=combustion_machinery)
-#             electric_form = ElectricMachineryForm(
-#                 instance=electric_machinery, prefix='second')
-
-#     context = {
-#         'title': 'Edit Jentera',
-#         'combustion_form': combustion_form,
-#         'electric_form': electric_form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/machinery/form.html', context=context)
-
-
-# def daily_explosive_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:machinery_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         daily_explosive = DailyExplosive.objects.get(data=data)
-#     except DailyExplosive.DoesNotExist:
-#         daily_explosive = None
-
-#     if request.method == 'POST':
-#         if daily_explosive == None:
-#             form = DailyExplosiveForm(request.POST)
-#         else:
-#             form = DailyExplosiveForm(
-#                 request.POST, instance=daily_explosive)
-
-#         if form.is_valid():
-#             form.instance.data = data
-#             form.save()
-#             return redirect('quarry:energy_supply_edit', pk=data.pk)
-
-#     else:
-#         if daily_explosive == None:
-#             form = DailyExplosiveForm()
-#         else:
-#             form = DailyExplosiveForm(instance=daily_explosive)
-
-#     context = {
-#         'title': 'Edit Bahan Letupan Harian',
-#         'form': form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/daily_explosive/form.html', context=context)
-
-
-# def energy_supply_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:daily_explosive_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         energy_supply = EnergySupply.objects.get(data=data)
-#     except EnergySupply.DoesNotExist:
-#         energy_supply = None
-
-#     if request.method == 'POST':
-#         if energy_supply == None:
-#             form = EnergySupplyForm(request.POST)
-#         else:
-#             form = EnergySupplyForm(
-#                 request.POST, instance=energy_supply)
-
-#         if form.is_valid():
-#             form.instance.data = data
-#             form.save()
-#             return redirect('quarry:operating_record_edit', pk=data.pk)
-
-#     else:
-#         if energy_supply == None:
-#             form = EnergySupplyForm()
-#         else:
-#             form = EnergySupplyForm(instance=energy_supply)
-
-#     context = {
-#         'title': 'Edit Bahan Tenaga',
-#         'form': form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/energy_supply/form.html', context=context)
-
-
-# def operating_record_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:energy_supply_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         operating_record = OperatingRecord.objects.get(data=data)
-#     except OperatingRecord.DoesNotExist:
-#         operating_record = None
-
-#     if request.method == 'POST':
-#         if operating_record == None:
-#             form = OperatingRecordForm(request.POST)
-#         else:
-#             form = OperatingRecordForm(
-#                 request.POST, instance=operating_record)
-
-#         if form.is_valid():
-#             form.instance.data = data
-#             form.save()
-#             return redirect('quarry:royalties_edit', pk=data.pk)
-
-#     else:
-#         if operating_record == None:
-#             form = OperatingRecordForm()
-#         else:
-#             form = OperatingRecordForm(instance=operating_record)
-
-#     context = {
-#         'title': 'Edit Rekod Operasi',
-#         'form': form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/operating_record/form.html', context=context)
-
-
-# def royalties_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:operating_record_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         royalties = Royalties.objects.get(data=data)
-#     except Royalties.DoesNotExist:
-#         royalties = None
-
-#     if request.method == 'POST':
-#         if royalties == None:
-#             form = RoyaltiesForm(request.POST)
-#         else:
-#             form = RoyaltiesForm(
-#                 request.POST, instance=royalties)
-
-#         if form.is_valid():
-#             form.instance.data = data
-#             form.save()
-#             return redirect('quarry:other_edit', pk=data.pk)
-
-#     else:
-#         if royalties == None:
-#             form = RoyaltiesForm()
-#         else:
-#             form = RoyaltiesForm(instance=royalties)
-
-#     context = {
-#         'title': 'Edit Royalti',
-#         'form': form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/royalties/form.html', context=context)
-
-
-# def other_edit(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:royalties_edit',
-#                         kwargs={"pk": data.pk})
-#     try:
-#         other = Other.objects.get(data=data)
-#     except Other.DoesNotExist:
-#         other = None
-
-#     if request.method == 'POST':
-#         if other == None:
-#             form = OtherForm(request.POST)
-#         else:
-#             form = OtherForm(
-#                 request.POST, instance=other)
-
-#         if form.is_valid():
-#             form.instance.data = data
-#             form.save()
-#             data_approval = QuarryDataApproval.objects.create(
-#                 data=data, requestor=request.user)
-
-#             jmg_states = User.objects.filter(
-#                 groups__name='JMG State', profile__state=data.state)
-
-#             notify = Notify()
-#             notify_message = f'{request.user} telah menghantar permohonan data untuk kuari "{data.quarry}"'
-#             notify_link = reverse('quarry:state:data_list')
-
-#             for jmg_state in jmg_states:
-#                 notify.make_notify(jmg_state, notify_message, notify_link)
-
-#             return redirect('quarry:data_list')
-
-#     else:
-#         if other == None:
-#             form = OtherForm()
-#         else:
-#             form = OtherForm(instance=other)
-
-#     context = {
-#         'title': 'Edit Lain-lain',
-#         'form': form,
-#         'prev_link': prev_link,
-#     }
-
-#     return render(request, 'quarry/data/other/form.html', context=context)
-
-
 # # def data_detail(request, pk):
-# #     data = get_object_or_404(QuarryMinerData, pk=pk)
+# #     data = get_object_or_404(Data, pk=pk)
 # #     next_link = reverse('quarry:production_statistic',
 # #                         kwargs={"pk": data.pk})
 
@@ -869,7 +890,7 @@ def sales_submission_detail(request, pk):
 
 
 # def production_statistic_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:data',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:sales_submission',
@@ -888,7 +909,7 @@ def sales_submission_detail(request, pk):
 
 
 # def sales_submission_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:production_statistic',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:final_uses',
@@ -907,7 +928,7 @@ def sales_submission_detail(request, pk):
 
 
 # def final_uses_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:sales_submission',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:local_worker',
@@ -928,7 +949,7 @@ def sales_submission_detail(request, pk):
 
 
 # def local_worker_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:final_uses',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:foreign_worker',
@@ -949,7 +970,7 @@ def sales_submission_detail(request, pk):
 
 
 # def foreign_worker_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:local_worker',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:machinery',
@@ -971,7 +992,7 @@ def sales_submission_detail(request, pk):
 
 
 # def machinery_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:foreign_worker',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:daily_explosive',
@@ -993,7 +1014,7 @@ def sales_submission_detail(request, pk):
 
 
 # def daily_explosive_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:machinery',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:energy_supply',
@@ -1011,7 +1032,7 @@ def sales_submission_detail(request, pk):
 
 
 # def energy_supply_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:daily_explosive',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:operating_record',
@@ -1029,7 +1050,7 @@ def sales_submission_detail(request, pk):
 
 
 # def operating_record_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:energy_supply',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:royalties',
@@ -1048,7 +1069,7 @@ def sales_submission_detail(request, pk):
 
 
 # def royalties_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:operating_record',
 #                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:other',
@@ -1066,7 +1087,7 @@ def sales_submission_detail(request, pk):
 
 
 # def other_detail(request, pk):
-#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(Data, pk=pk)
 #     prev_link = reverse('quarry:royalties',
 #                         kwargs={"pk": data.pk})
 #     other = get_object_or_404(Other, data=data)
@@ -1079,14 +1100,3 @@ def sales_submission_detail(request, pk):
 #     }
 
 #     return render(request, 'quarry/data/other/detail.html', context=context)
-
-
-# def get_comment_data(request, pk):
-#     data_miner = get_object_or_404(QuarryMinerData, pk=pk)
-#     data_approval = data_miner.get_last_approval()
-#     if data_approval.admin_comment:
-#         return HttpResponse(data_approval.admin_comment)
-#     elif data_approval.state_comment:
-#         return HttpResponse(data_approval.state_comment)
-#     else:
-#         return HttpResponse('')
