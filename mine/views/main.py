@@ -497,8 +497,8 @@ def operating_record_edit(request, pk):
 
 # comment views
 def get_comment_data(request, pk):
-    data_miner = get_object_or_404(Data, pk=pk)
-    data_approval = data_miner.get_last_approval()
+    data = get_object_or_404(Data, pk=pk)
+    data_approval = data.get_last_approval()
     if data_approval.admin_comment:
         return HttpResponse(data_approval.admin_comment)
     elif data_approval.state_comment:

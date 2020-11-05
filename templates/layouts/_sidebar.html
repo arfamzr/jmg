@@ -287,7 +287,7 @@
 
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{# {% url 'quarry:state_admin:data_list' %} #}">
+    <a class="nav-link" href="{% url 'quarry:state_admin:data_list' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>PKB</span></a>
   </li>
@@ -317,7 +317,7 @@
 
   <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{# {% url 'quarry:state_admin:data_list_success' %} #}">
+    <a class="nav-link" href="{% url 'quarry:state_admin:data_list_success' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>PKB</span></a>
   </li>
@@ -415,13 +415,13 @@
   </li>
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'quarry:state:list' %}">
+    <a class="nav-link" href="{# {% url 'quarry:state:list' %} #}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Kuari</span></a>
   </li>
 
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'mine:state:list' %}">
+    <a class="nav-link" href="{# {% url 'mine:state:list' %} #}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai Lombong</span></a>
   </li>

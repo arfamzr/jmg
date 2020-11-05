@@ -32,65 +32,152 @@
               <div class="row">
                 <div class="col-lg-8">
                   <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Data</th>
+                      </tr>
+                    </thead>
                     <tbody>
-                      {% with quarry=miner_data.quarry quarry_miner=miner_data.miner miner=miner_data.miner.miner %}
+                      {% with quarry=data.quarry manager=data.quarry.manager lease_holder=data.quarry.lease_holder operator=data.quarry.operator %}
                       <tr>
                         <th>Bulan/Tahun</th>
-                        <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                        <td>{{ data.get_month_display }} {{ data.year }}</td>
                       </tr>
+                    </tbody>
+                    <thead class="thead-dark">
                       <tr>
-                        <th>-</th>
-                        <td>-</td>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pengurus</th>
                       </tr>
+                    </thead>
+                    <tbody>
                       <tr>
-                        <th>Nama Syarikat</th>
+                        <th>Nama Pengurus</th>
                         <td>
-                          <a href="{{ miner.employee.company.get_absolute_url }}">
-                            {{ miner.employee.company.name }}
-                          </a>
+                          {{ manager.user.get_full_name }}
                         </td>
                       </tr>
                       <tr>
-                        <th>Pengusaha</th>
+                        <th>No K/P</th>
                         <td>
-                          <a href="{{ miner.get_absolute_url }}">
-                            {{ miner.username }}
-                          </a>
+                          {{ manager.user.profile.ic_number }}
                         </td>
-                      </tr>
-                      <tr>
-                        <th>No. Lot</th>
-                        <td>{{ quarry_miner.lot_number }}</td>
-                      </tr>
-                      <tr>
-                        <th>Latitude</th>
-                        <td>{{ quarry_miner.latitude }}</td>
-                      </tr>
-                      <tr>
-                        <th>Longitude</th>
-                        <td>{{ quarry_miner.longitude }}</td>
-                      </tr>
-                      <tr>
-                        <th>-</th>
-                        <td>-</td>
                       </tr>
                       <tr>
                         <th>Alamat</th>
                         <td>
-                          {{ quarry.address1 }}{% if quarry.address2 %},<br>{{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>{{ quarry.address3 }}{% endif %}
+                          {{ manager.user.profile.address1 }}{% if manager.user.profile.address2 %},<br>
+                          {{ manager.user.profile.address2 }}{% endif %}{% if manager.user.profile.address3 %},<br>
+                          {{ manager.user.profile.address3 }}{% endif %}
                         </td>
                       </tr>
                       <tr>
-                        <th>No. Telefon</th>
-                        <td>{{ quarry.phone_number }}</td>
+                        <th>Negeri</th>
+                        <td>
+                          {{ manager.user.profile.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pajakan</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama</th>
+                        <td>
+                          {{ lease_holder.name }}
+                        </td>
                       </tr>
                       <tr>
-                        <th>No. Fax</th>
-                        <td>{{ quarry.fax_number }}</td>
+                        <th>No Pajakan</th>
+                        <td>
+                          {{ lease_holder.lease_number }}
+                        </td>
                       </tr>
                       <tr>
-                        <th>Emel</th>
-                        <td>{{ quarry.email }}</td>
+                        <th>Tarikh Luput Pajakan</th>
+                        <td>
+                          {{ lease_holder.lease_expired }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ lease_holder.address1 }}{% if lease_holder.address2 %},<br>
+                          {{ lease_holder.address2 }}{% endif %}{% if lease_holder.address3 %},<br>
+                          {{ lease_holder.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>
+                          {{ lease_holder.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pengusaha</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama Syarikat</th>
+                        <td>
+                          {{ operator.name }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ operator.address1 }}{% if operator.address2 %},<br>
+                          {{ operator.address2 }}{% endif %}{% if operator.address3 %},<br>
+                          {{ operator.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No Phone</th>
+                        <td>
+                          {{ operator.phone }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No Fax</th>
+                        <td>
+                          {{ operator.fax }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Email</th>
+                        <td>
+                          {{ operator.email }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>
+                          {{ operator.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Lombong</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama Lombong</th>
+                        <td>{{ quarry.name }}</td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ quarry.address1 }}{% if quarry.address2 %},<br>
+                          {{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>
+                          {{ quarry.address3 }}{% endif %}
+                        </td>
                       </tr>
                       <tr>
                         <th>Lokasi</th>
@@ -109,28 +196,12 @@
                         <td>{{ quarry.get_state_display }}</td>
                       </tr>
                       <tr>
-                        <th>Status Tanah</th>
-                        <td>{{ quarry.land_status }}</td>
+                        <th>Negeri</th>
+                        <td>{{ quarry.longitude }}</td>
                       </tr>
                       <tr>
-                        <th>Rujukan Grid</th>
-                        <td>{{ quarry.grid_reference }}</td>
-                      </tr>
-                      <tr>
-                        <th>Keupayaan Maksima</th>
-                        <td>{{ quarry.max_capacity }}</td>
-                      </tr>
-                      <tr>
-                        <th>Kategori Syarikat</th>
-                        <td>{{ quarry.company_category }}</td>
-                      </tr>
-                      <tr>
-                        <th>Jenis Batuan Utama</th>
-                        <td>{{ quarry.get_main_rock_type_display }}</td>
-                      </tr>
-                      <tr>
-                        <th>Jenis Batuan Sampingan</th>
-                        <td>{{ quarry.get_side_rock_type_display }}</td>
+                        <th>Negeri</th>
+                        <td>{{ quarry.latitude }}</td>
                       </tr>
                       <tr>
                         <th>Aktif</th>
@@ -167,39 +238,35 @@
               <div class="row">
                 <div class="col-lg-12">
                   <table class="table table-bordered table-sm">
-                    <thead class="thead-light">
+                    <thead class="thead-dark">
                       <tr>
-                        <th scope="col"></th>
-                        <th scope="col" style="text-align: center;">BATUAN UTAMA (TAN MATRIK)</th>
-                        <th scope="col" style="text-align: center;">BATUAN SAMPINGAN (TAN MATRIK)</th>
+                        <th scope="col">No</th>
+                        <th scope="col">Jenis Batuan</th>
+                        <th scope="col">Kategori</th>
+                        <th scope="col">Action</th>
                       </tr>
                     </thead>
                     <tbody>
+                      {% for main_rock in data.main_rocks.all %}
                       <tr>
-                        <th>STOK AWAL BULAN</th>
-                        <td style="text-align: right;">{{ production_statistic.initial_main_rock_stock }}</td>
-                        <td style="text-align: right;">{{ production_statistic.initial_side_rock_stock }}</td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ main_rock.get_rock_type_display }}</td>
+                        <td>Batuan Utama</td>
+                        <td>
+                          <a href="{{ main_rock.get_absolute_url }}" class="badge badge-sm badge-info">Lihat</a>
+                        </td>
                       </tr>
+                      {% endfor %}
+                      {% for side_rock in data.side_rocks.all %}
                       <tr>
-                        <th>PENGELUARAN</th>
-                        <td style="text-align: right;">{{ production_statistic.main_rock_production }}</td>
-                        <td style="text-align: right;">{{ production_statistic.side_rock_production }}</td>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ side_rock.get_rock_type_display }}</td>
+                        <td>Batuan Sampingan</td>
+                        <td>
+                          <a href="{{ side_rock.get_absolute_url }}" class="badge badge-sm badge-info">Lihat</a>
+                        </td>
                       </tr>
-                      <tr>
-                        <th>JUMLAH</th>
-                        <td style="text-align: right;">{{ production_statistic.total_main_rock }}</td>
-                        <td style="text-align: right;">{{ production_statistic.total_side_rock }}</td>
-                      </tr>
-                      <tr>
-                        <th>PENYERAHAN</th>
-                        <td style="text-align: right;">{{ production_statistic.main_rock_submission }}</td>
-                        <td style="text-align: right;">{{ production_statistic.side_rock_submission }}</td>
-                      </tr>
-                      <tr>
-                        <th>STOCK AKHIR</th>
-                        <td style="text-align: right;">{{ production_statistic.final_main_rock_stock }}</td>
-                        <td style="text-align: right;">{{ production_statistic.final_side_rock_stock }}</td>
-                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -231,71 +298,13 @@
                       </tr>
                     </thead>
                     <tbody>
+                      {% for sales_submission in data.sales_submissions.all %}
                       <tr>
-                        <th>CRUSHER RUN</th>
-                        <td style="text-align: right;">{{ sales_submission.crusher_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.crusher_worth }}</td>
+                        <th>{{ sales_submission.submission_size }}</th>
+                        <td style="text-align: right;">{{ sales_submission.amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.worth }}</td>
                       </tr>
-                      <tr>
-                        <th>QUARRY DUST</th>
-                        <td style="text-align: right;">{{ sales_submission.dust_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.dust_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>QUARRY WASTE</th>
-                        <td style="text-align: right;">{{ sales_submission.waste_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.waste_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>1/8"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_1_8_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_1_8_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>3/8"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_3_8_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_3_8_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>5/8"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_5_8_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_5_8_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>3/4"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_3_4_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_3_4_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>1"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_1_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_1_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>1 1/2"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_1_1_2_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_1_1_2_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>2"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_2_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_2_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>3" x 5"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_3x5_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_3x5_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>6" x 9"</th>
-                        <td style="text-align: right;">{{ sales_submission.inch_6x9_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.inch_6x9_worth }}</td>
-                      </tr>
-                      <tr>
-                        <th>BLOCK</th>
-                        <td style="text-align: right;">{{ sales_submission.block_amount }}</td>
-                        <td style="text-align: right;">{{ sales_submission.block_worth }}</td>
-                      </tr>
+                      {% endfor %}
                     </tbody>
                   </table>
                 </div>
@@ -965,13 +974,18 @@
   </div>
 
   <div class="row">
+    {% block page_nav %}
     <div class="col-4 col-lg-3 mt-3">
       <a href="{% url 'quarry:data_list' %}" class="btn btn-info btn-user btn-block">
         Kembali ke senarai
       </a>
     </div>
+    {% endblock page_nav %}
   </div>
 
 </div>
 <!-- /.container-fluid -->
+
+{% block modal_content %}
+{% endblock modal_content %}
 {% endblock content %}

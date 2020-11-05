@@ -475,8 +475,6 @@ def lot_delete(request, pk):
     lot.delete()
     return redirect('quarry:state_admin:lot_list', pk=lot.quarry.pk)
 
-# ###
-
 
 # rock views
 def rock_list(request, pk):
@@ -574,6 +572,160 @@ def side_rock_delete(request, pk):
     side_rock = get_object_or_404(SideRock, pk=pk)
     side_rock.delete()
     return redirect('quarry:state_admin:rock_list', pk=side_rock.quarry.pk)
+
+
+# data views
+class DataListView(ListView):
+    template_name = 'quarry/state_admin/data/list.html'
+    model = Data
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            state=self.request.user.profile.state,
+        )
+
+        id_list = []
+        for data in queryset:
+            approval = data.get_last_approval()
+            if approval:
+                if approval.state_approved == True and approval.admin_approved == None:
+                    id_list.append(data.id)
+        queryset = queryset.filter(id__in=id_list)
+
+        try:
+            name = self.request.GET['q']
+        except:
+            name = ''
+        if (name != ''):
+            # object_list = queryset.filter(location__icontains=name)
+            object_list = queryset
+        else:
+            object_list = queryset
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai PKB'
+        return context
+
+
+class DataSuccessListView(ListView):
+    template_name = 'quarry/state_admin/data/list.html'
+    model = Data
+    paginate_by = 10
+    ordering = ['-created_at']
+
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(
+            state=self.request.user.profile.state,
+        )
+
+        id_list = []
+        for data in queryset:
+            approval = data.get_last_approval()
+            if approval:
+                if approval.state_approved == True and approval.admin_approved == True:
+                    id_list.append(data.id)
+        queryset = queryset.filter(id__in=id_list)
+
+        try:
+            name = self.request.GET['q']
+        except:
+            name = ''
+        if (name != ''):
+            # object_list = queryset.filter(location__icontains=name)
+            object_list = queryset
+        else:
+            object_list = queryset
+        return object_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Senarai PKB'
+        return context
+
+
+def data_detail(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    local_final_uses = get_object_or_404(LocalFinalUses, data=data)
+    export_final_uses = get_object_or_404(
+        ExportFinalUses, data=data)
+    local_operator = get_object_or_404(LocalOperator, data=data)
+    local_contractor = get_object_or_404(
+        LocalContractor, data=data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, data=data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, data=data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, data=data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, data=data)
+    daily_explosive = get_object_or_404(DailyExplosive, data=data)
+    energy_supply = get_object_or_404(EnergySupply, data=data)
+    operating_record = get_object_or_404(
+        OperatingRecord, data=data)
+    royalties = get_object_or_404(Royalties, data=data)
+    other = get_object_or_404(Other, data=data)
+
+    if request.method == 'POST':
+        approved = False
+        if request.POST.get('choice') == 'yes':
+            approved = True
+
+        data_approval = data.get_last_approval()
+        data_approval.admin_inspector = request.user
+        data_approval.admin_comment = request.POST.get('comment', '')
+        data_approval.admin_approved = approved
+        data_approval.save()
+
+        # if approved:
+        #     jmg_hqs = User.objects.filter(
+        #         groups__name='JMG HQ')
+
+        #     notify = Notify()
+        #     notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{data.quarry}"'
+        #     # hq/data_list belum ada
+        #     notify_link = reverse('quarry:hq:data_list')
+
+        #     for jmg_hq in jmg_hqs:
+        #         notify.make_notify(jmg_hq, notify_message, notify_link)
+
+        # else:
+        #     miner = data_approval.requestor
+        #     state_inspector = data_approval.state_inspector
+
+        #     notify = Notify()
+        #     notify_message = f'Data untuk kuari "{data.quarry}" telah ditolak'
+        #     notify_link = reverse('quarry:data_list')
+        #     state_notify_message = f'Data untuk kuari "{data.quarry}"({miner}) telah ditolak'
+
+        #     notify.make_notify(miner, notify_message, notify_link)
+        #     notify.make_notify(state_inspector, state_notify_message)
+
+        return redirect('quarry:state_admin:data_list')
+
+    context = {
+        'title': 'Data Kuari',
+        'data': data,
+        'local_final_uses': local_final_uses,
+        'export_final_uses': export_final_uses,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'daily_explosive': daily_explosive,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
+        'royalties': royalties,
+        'other': other,
+    }
+
+    return render(request, 'quarry/state_admin/data/detail.html', context)
 
 
 # def quarry_detail(request, pk):
@@ -686,187 +838,28 @@ def side_rock_delete(request, pk):
 #     return render(request, 'quarry/state_admin/list_user.html', context)
 
 
-# class QuarryMinerDataListView(ListView):
-#     template_name = 'quarry/state_admin/miner_data/list.html'
-#     model = QuarryMinerData
-#     paginate_by = 10
-#     ordering = ['-created_at']
-
-#     def get_queryset(self):
-#         queryset = super().get_queryset().filter(
-#             state=self.request.user.profile.state,
-#         )
-
-#         id_list = []
-#         for data in queryset:
-#             approval = data.get_last_approval()
-#             if approval:
-#                 if approval.state_approved == True and approval.admin_approved == None:
-#                     id_list.append(data.id)
-#         queryset = queryset.filter(id__in=id_list)
-
-#         try:
-#             name = self.request.GET['q']
-#         except:
-#             name = ''
-#         if (name != ''):
-#             # object_list = queryset.filter(location__icontains=name)
-#             object_list = queryset
-#         else:
-#             object_list = queryset
-#         return object_list
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["title"] = 'Senarai Data Kuari'
-#         return context
-
-
-# class QuarryMinerDataSuccessListView(ListView):
-#     template_name = 'quarry/state_admin/miner_data/list.html'
-#     model = QuarryMinerData
-#     paginate_by = 10
-#     ordering = ['-created_at']
-
-#     def get_queryset(self):
-#         queryset = super().get_queryset().filter(
-#             state=self.request.user.profile.state,
-#         )
-
-#         id_list = []
-#         for data in queryset:
-#             approval = data.get_last_approval()
-#             if approval:
-#                 if approval.state_approved == True and approval.admin_approved == True:
-#                     id_list.append(data.id)
-#         queryset = queryset.filter(id__in=id_list)
-
-#         try:
-#             name = self.request.GET['q']
-#         except:
-#             name = ''
-#         if (name != ''):
-#             # object_list = queryset.filter(location__icontains=name)
-#             object_list = queryset
-#         else:
-#             object_list = queryset
-#         return object_list
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context["title"] = 'Senarai Data Kuari'
-#         return context
-
-
-# def miner_data_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
-#     production_statistic = get_object_or_404(
-#         ProductionStatistic, miner_data=miner_data)
-#     sales_submission = get_object_or_404(
-#         SalesSubmission, miner_data=miner_data)
-#     local_final_uses = get_object_or_404(LocalFinalUses, miner_data=miner_data)
-#     export_final_uses = get_object_or_404(
-#         ExportFinalUses, miner_data=miner_data)
-#     local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
-#     local_contractor = get_object_or_404(
-#         LocalContractor, miner_data=miner_data)
-#     foreign_operator = get_object_or_404(
-#         ForeignOperator, miner_data=miner_data)
-#     foreign_contractor = get_object_or_404(
-#         ForeignContractor, miner_data=miner_data)
-#     combustion_machinery = get_object_or_404(
-#         InternalCombustionMachinery, miner_data=miner_data)
-#     electric_machinery = get_object_or_404(
-#         ElectricMachinery, miner_data=miner_data)
-#     daily_explosive = get_object_or_404(DailyExplosive, miner_data=miner_data)
-#     energy_supply = get_object_or_404(EnergySupply, miner_data=miner_data)
-#     operating_record = get_object_or_404(
-#         OperatingRecord, miner_data=miner_data)
-#     royalties = get_object_or_404(Royalties, miner_data=miner_data)
-#     other = get_object_or_404(Other, miner_data=miner_data)
-
-#     if request.method == 'POST':
-#         approved = False
-#         if request.POST.get('choice') == 'yes':
-#             approved = True
-
-#         data_approval = miner_data.get_last_approval()
-#         data_approval.admin_inspector = request.user
-#         data_approval.admin_comment = request.POST.get('comment', '')
-#         data_approval.admin_approved = approved
-#         data_approval.save()
-
-#         if approved:
-#             jmg_hqs = User.objects.filter(
-#                 groups__name='JMG HQ')
-
-#             notify = Notify()
-#             notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{miner_data.quarry}"'
-#             # hq/data_list belum ada
-#             notify_link = reverse('quarry:hq:data_list')
-
-#             for jmg_hq in jmg_hqs:
-#                 notify.make_notify(jmg_hq, notify_message, notify_link)
-
-#         else:
-#             miner = data_approval.requestor
-#             state_inspector = data_approval.state_inspector
-
-#             notify = Notify()
-#             notify_message = f'Data untuk kuari "{miner_data.quarry}" telah ditolak'
-#             notify_link = reverse('quarry:data_list')
-#             state_notify_message = f'Data untuk kuari "{miner_data.quarry}"({miner}) telah ditolak'
-
-#             notify.make_notify(miner, notify_message, notify_link)
-#             notify.make_notify(state_inspector, state_notify_message)
-
-#         return redirect('quarry:state_admin:data_list')
-
-#     context = {
-#         'title': 'Data Kuari',
-#         'miner_data': miner_data,
-#         'production_statistic': production_statistic,
-#         'sales_submission': sales_submission,
-#         'local_final_uses': local_final_uses,
-#         'export_final_uses': export_final_uses,
-#         'local_operator': local_operator,
-#         'local_contractor': local_contractor,
-#         'foreign_operator': foreign_operator,
-#         'foreign_contractor': foreign_contractor,
-#         'combustion_machinery': combustion_machinery,
-#         'electric_machinery': electric_machinery,
-#         'daily_explosive': daily_explosive,
-#         'energy_supply': energy_supply,
-#         'operating_record': operating_record,
-#         'royalties': royalties,
-#         'other': other,
-#     }
-
-#     return render(request, 'quarry/state_admin/miner_data/detail.html', context)
-
-
-# def miner_data_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+# def data_detail(request, pk):
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     next_link = reverse('quarry:state_admin:production_statistic',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 
 #     context = {
 #         'title': 'Data Kuari',
-#         'miner_data': miner_data,
+#         'data': data,
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/detail.html', context=context)
 
 
 # def production_statistic_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
-#     prev_link = reverse('quarry:state_admin:miner_data',
-#                         kwargs={"pk": miner_data.pk})
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     prev_link = reverse('quarry:state_admin:data',
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:sales_submission',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     production_statistic = get_object_or_404(
-#         ProductionStatistic, miner_data=miner_data)
+#         ProductionStatistic, data=data)
 
 #     context = {
 #         'title': 'Perangkaan Pengeluaran',
@@ -875,17 +868,17 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/production_statistic/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/production_statistic/detail.html', context=context)
 
 
 # def sales_submission_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:production_statistic',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:final_uses',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     sales_submission = get_object_or_404(
-#         SalesSubmission, miner_data=miner_data)
+#         SalesSubmission, data=data)
 
 #     context = {
 #         'title': 'Penyerahan Jualan',
@@ -894,18 +887,18 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/sales_submission/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/sales_submission/detail.html', context=context)
 
 
 # def final_uses_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:sales_submission',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:local_worker',
-#                         kwargs={"pk": miner_data.pk})
-#     local_final_uses = get_object_or_404(LocalFinalUses, miner_data=miner_data)
+#                         kwargs={"pk": data.pk})
+#     local_final_uses = get_object_or_404(LocalFinalUses, data=data)
 #     export_final_uses = get_object_or_404(
-#         ExportFinalUses, miner_data=miner_data)
+#         ExportFinalUses, data=data)
 
 #     context = {
 #         'title': 'Kegunaan Akhir',
@@ -915,18 +908,18 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/final_uses/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/final_uses/detail.html', context=context)
 
 
 # def local_worker_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:final_uses',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:foreign_worker',
-#                         kwargs={"pk": miner_data.pk})
-#     local_operator = get_object_or_404(LocalOperator, miner_data=miner_data)
+#                         kwargs={"pk": data.pk})
+#     local_operator = get_object_or_404(LocalOperator, data=data)
 #     local_contractor = get_object_or_404(
-#         LocalContractor, miner_data=miner_data)
+#         LocalContractor, data=data)
 
 #     context = {
 #         'title': 'Pekerjaan (Tempatan)',
@@ -936,19 +929,19 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/worker/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/worker/detail.html', context=context)
 
 
 # def foreign_worker_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:local_worker',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:machinery',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     foreign_operator = get_object_or_404(
-#         ForeignOperator, miner_data=miner_data)
+#         ForeignOperator, data=data)
 #     foreign_contractor = get_object_or_404(
-#         ForeignContractor, miner_data=miner_data)
+#         ForeignContractor, data=data)
 
 #     context = {
 #         'title': 'Pekerjaan (Asing)',
@@ -958,19 +951,19 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/worker/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/worker/detail.html', context=context)
 
 
 # def machinery_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:foreign_worker',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:daily_explosive',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     combustion_machinery = get_object_or_404(
-#         InternalCombustionMachinery, miner_data=miner_data)
+#         InternalCombustionMachinery, data=data)
 #     electric_machinery = get_object_or_404(
-#         ElectricMachinery, miner_data=miner_data)
+#         ElectricMachinery, data=data)
 
 #     context = {
 #         'title': 'Jentera',
@@ -980,16 +973,16 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/machinery/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/machinery/detail.html', context=context)
 
 
 # def daily_explosive_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:machinery',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:energy_supply',
-#                         kwargs={"pk": miner_data.pk})
-#     daily_explosive = get_object_or_404(DailyExplosive, miner_data=miner_data)
+#                         kwargs={"pk": data.pk})
+#     daily_explosive = get_object_or_404(DailyExplosive, data=data)
 
 #     context = {
 #         'title': 'Bahan Letupan Harian',
@@ -998,16 +991,16 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/daily_explosive/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/daily_explosive/detail.html', context=context)
 
 
 # def energy_supply_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:daily_explosive',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:operating_record',
-#                         kwargs={"pk": miner_data.pk})
-#     energy_supply = get_object_or_404(EnergySupply, miner_data=miner_data)
+#                         kwargs={"pk": data.pk})
+#     energy_supply = get_object_or_404(EnergySupply, data=data)
 
 #     context = {
 #         'title': 'Bahan Tenaga',
@@ -1016,17 +1009,17 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/energy_supply/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/energy_supply/detail.html', context=context)
 
 
 # def operating_record_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:energy_supply',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:royalties',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     operating_record = get_object_or_404(
-#         OperatingRecord, miner_data=miner_data)
+#         OperatingRecord, data=data)
 
 #     context = {
 #         'title': 'Rekod Operasi',
@@ -1035,16 +1028,16 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/operating_record/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/operating_record/detail.html', context=context)
 
 
 # def royalties_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:operating_record',
-#                         kwargs={"pk": miner_data.pk})
+#                         kwargs={"pk": data.pk})
 #     next_link = reverse('quarry:state_admin:other',
-#                         kwargs={"pk": miner_data.pk})
-#     royalties = get_object_or_404(Royalties, miner_data=miner_data)
+#                         kwargs={"pk": data.pk})
+#     royalties = get_object_or_404(Royalties, data=data)
 
 #     context = {
 #         'title': 'Royalti',
@@ -1053,21 +1046,21 @@ def side_rock_delete(request, pk):
 #         'next_link': next_link,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/royalties/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/royalties/detail.html', context=context)
 
 
 # def other_detail(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
 #     prev_link = reverse('quarry:state_admin:royalties',
-#                         kwargs={"pk": miner_data.pk})
-#     other = get_object_or_404(Other, miner_data=miner_data)
+#                         kwargs={"pk": data.pk})
+#     other = get_object_or_404(Other, data=data)
 
 #     if request.method == 'POST':
 #         approved = False
 #         if request.POST.get('choice') == 'yes':
 #             approved = True
 
-#         data_approval = miner_data.get_last_approval()
+#         data_approval = data.get_last_approval()
 #         data_approval.admin_inspector = request.user
 #         data_approval.admin_comment = request.POST.get('comment', '')
 #         data_approval.admin_approved = approved
@@ -1078,7 +1071,7 @@ def side_rock_delete(request, pk):
 #                 groups__name='JMG HQ')
 
 #             notify = Notify()
-#             notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{miner_data.quarry}"'
+#             notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{data.quarry}"'
 #             # hq/data_list belum ada
 #             notify_link = reverse('quarry:hq:data_list')
 
@@ -1090,9 +1083,9 @@ def side_rock_delete(request, pk):
 #             state_inspector = data_approval.state_inspector
 
 #             notify = Notify()
-#             notify_message = f'Data untuk kuari "{miner_data.quarry}" telah ditolak'
+#             notify_message = f'Data untuk kuari "{data.quarry}" telah ditolak'
 #             notify_link = reverse('quarry:data_list')
-#             state_notify_message = f'Data untuk kuari "{miner_data.quarry}"({miner}) telah ditolak'
+#             state_notify_message = f'Data untuk kuari "{data.quarry}"({miner}) telah ditolak'
 
 #             notify.make_notify(miner, notify_message, notify_link)
 #             notify.make_notify(state_inspector, state_notify_message)
@@ -1103,113 +1096,113 @@ def side_rock_delete(request, pk):
 #         'title': 'Lain-lain',
 #         'other': other,
 #         'prev_link': prev_link,
-#         'miner_data_id': miner_data.id,
+#         'data_id': data.id,
 #     }
 
-#     return render(request, 'quarry/state_admin/miner_data/other/detail.html', context=context)
+#     return render(request, 'quarry/state_admin/data/other/detail.html', context=context)
 
 
 # def quarry_graph(request, pk):
-#     miner_data = get_object_or_404(QuarryMinerData, pk=pk)
-#     rock_type = miner_data.quarry.main_rock_type
-#     rock_list = QuarryDataApproval.objects.filter(miner_data=miner_data)
+#     data = get_object_or_404(QuarryMinerData, pk=pk)
+#     rock_type = data.quarry.main_rock_type
+#     rock_list = QuarryDataApproval.objects.filter(data=data)
 
 #     def get_rock_list(rock_list):
 #         rock_jan_list = rock_list.filter(
-#             miner_data__month=1)
+#             data__month=1)
 #         rock_jan_production = 0
 #         rock_jan_royalties = 0
 #         for rock in rock_jan_list:
-#             rock_jan_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_jan_royalties += rock.miner_data.royalties.royalties
+#             rock_jan_production += rock.data.productionstatistic.main_rock_production
+#             rock_jan_royalties += rock.data.royalties.royalties
 
 #         rock_feb_list = rock_list.filter(
-#             miner_data__month=2)
+#             data__month=2)
 #         rock_feb_production = 0
 #         rock_feb_royalties = 0
 #         for rock in rock_feb_list:
-#             rock_feb_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_feb_royalties += rock.miner_data.royalties.royalties
+#             rock_feb_production += rock.data.productionstatistic.main_rock_production
+#             rock_feb_royalties += rock.data.royalties.royalties
 
 #         rock_mac_list = rock_list.filter(
-#             miner_data__month=3)
+#             data__month=3)
 #         rock_mac_production = 0
 #         rock_mac_royalties = 0
 #         for rock in rock_mac_list:
-#             rock_mac_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_mac_royalties += rock.miner_data.royalties.royalties
+#             rock_mac_production += rock.data.productionstatistic.main_rock_production
+#             rock_mac_royalties += rock.data.royalties.royalties
 
 #         rock_apr_list = rock_list.filter(
-#             miner_data__month=4)
+#             data__month=4)
 #         rock_apr_production = 0
 #         rock_apr_royalties = 0
 #         for rock in rock_apr_list:
-#             rock_apr_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_apr_royalties += rock.miner_data.royalties.royalties
+#             rock_apr_production += rock.data.productionstatistic.main_rock_production
+#             rock_apr_royalties += rock.data.royalties.royalties
 
 #         rock_mei_list = rock_list.filter(
-#             miner_data__month=5)
+#             data__month=5)
 #         rock_mei_production = 0
 #         rock_mei_royalties = 0
 #         for rock in rock_mei_list:
-#             rock_mei_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_mei_royalties += rock.miner_data.royalties.royalties
+#             rock_mei_production += rock.data.productionstatistic.main_rock_production
+#             rock_mei_royalties += rock.data.royalties.royalties
 
 #         rock_jun_list = rock_list.filter(
-#             miner_data__month=6)
+#             data__month=6)
 #         rock_jun_production = 0
 #         rock_jun_royalties = 0
 #         for rock in rock_jun_list:
-#             rock_jun_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_jun_royalties += rock.miner_data.royalties.royalties
+#             rock_jun_production += rock.data.productionstatistic.main_rock_production
+#             rock_jun_royalties += rock.data.royalties.royalties
 
 #         rock_jul_list = rock_list.filter(
-#             miner_data__month=7)
+#             data__month=7)
 #         rock_jul_production = 0
 #         rock_jul_royalties = 0
 #         for rock in rock_jul_list:
-#             rock_jul_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_jul_royalties += rock.miner_data.royalties.royalties
+#             rock_jul_production += rock.data.productionstatistic.main_rock_production
+#             rock_jul_royalties += rock.data.royalties.royalties
 
 #         rock_ogos_list = rock_list.filter(
-#             miner_data__month=8)
+#             data__month=8)
 #         rock_ogos_production = 0
 #         rock_ogos_royalties = 0
 #         for rock in rock_ogos_list:
-#             rock_ogos_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_ogos_royalties += rock.miner_data.royalties.royalties
+#             rock_ogos_production += rock.data.productionstatistic.main_rock_production
+#             rock_ogos_royalties += rock.data.royalties.royalties
 
 #         rock_sep_list = rock_list.filter(
-#             miner_data__month=9)
+#             data__month=9)
 #         rock_sep_production = 0
 #         rock_sep_royalties = 0
 #         for rock in rock_sep_list:
-#             rock_sep_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_sep_royalties += rock.miner_data.royalties.royalties
+#             rock_sep_production += rock.data.productionstatistic.main_rock_production
+#             rock_sep_royalties += rock.data.royalties.royalties
 
 #         rock_okt_list = rock_list.filter(
-#             miner_data__month=10)
+#             data__month=10)
 #         rock_okt_production = 0
 #         rock_okt_royalties = 0
 #         for rock in rock_okt_list:
-#             rock_okt_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_okt_royalties += rock.miner_data.royalties.royalties
+#             rock_okt_production += rock.data.productionstatistic.main_rock_production
+#             rock_okt_royalties += rock.data.royalties.royalties
 
 #         rock_nov_list = rock_list.filter(
-#             miner_data__month=11)
+#             data__month=11)
 #         rock_nov_production = 0
 #         rock_nov_royalties = 0
 #         for rock in rock_nov_list:
-#             rock_nov_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_nov_royalties += rock.miner_data.royalties.royalties
+#             rock_nov_production += rock.data.productionstatistic.main_rock_production
+#             rock_nov_royalties += rock.data.royalties.royalties
 
 #         rock_dis_list = rock_list.filter(
-#             miner_data__month=12)
+#             data__month=12)
 #         rock_dis_production = 0
 #         rock_dis_royalties = 0
 #         for rock in rock_dis_list:
-#             rock_dis_production += rock.miner_data.productionstatistic.main_rock_production
-#             rock_dis_royalties += rock.miner_data.royalties.royalties
+#             rock_dis_production += rock.data.productionstatistic.main_rock_production
+#             rock_dis_royalties += rock.data.royalties.royalties
 
 #         rock = {
 #             'jan': {

@@ -46,6 +46,11 @@ from ..views.state_admin import (
     SideRockUpdateView,
     side_rock_delete,
 
+    # data
+    DataListView,
+    DataSuccessListView,
+    data_detail,
+
     # QuarryListView,
     # QuarryCreateView,
     # QuarryUpdateView,
@@ -175,6 +180,16 @@ urlpatterns = [
         'side-rock/<int:pk>/delete/',
         side_rock_delete,
         name='side_rock_delete'
+    ),
+
+    # data
+    path('data-list/', DataListView.as_view(), name='data_list'),
+    path('data-list/success/', DataSuccessListView.as_view(),
+         name='data_list_success'),
+    path(
+        'miner-data/<int:pk>/',
+        data_detail,
+        name='data_detail',
     ),
 
     # path('', QuarryListView.as_view(), name='list'),
