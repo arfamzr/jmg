@@ -50,6 +50,19 @@ class Choices:
         (GRAPHITE, _('Graphite/Grafit')),
     ]
 
+    KG = 'KG'
+    M3 = 'M3'
+    GRAM = 'GRAM'
+    TAN = 'TAN'
+
+    UNIT_CHOICES = [
+        (KG, _('Kilogram')),
+        (M3, _('Meter Persegi')),
+        (GRAM, _('Gram')),
+        (TAN, _('Tan')),
+
+    ]
+
 
 class Land_Status:
     KERAJAAN = 'TANAH KERAJAAN'
@@ -344,9 +357,9 @@ class MainStatistic(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
         "data"), on_delete=models.CASCADE, related_name="main_minerals")
     mineral_type = models.CharField(
-        _("jenis mineral utama"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
-    minerals_quantity = models.DecimalField(
-        _("kuantiti_mineral"), max_digits=15, decimal_places=2)
+        _("jenis mineral utama"), max_length=255)
+    quantity_unit = models.CharField(
+        _("unit kuantiti"), max_length=255, choices=Choices.UNIT_CHOICES)
     final_stock_last_month = models.DecimalField(
         _("stok akhir bulan lalu"), max_digits=15, decimal_places=2)
     mine_production = models.DecimalField(
@@ -383,8 +396,8 @@ class SideStatistic(models.Model):
         "data"), on_delete=models.CASCADE, related_name="side_minerals")
     mineral_type = models.CharField(
         _("jenis mineral sampingan"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
-    minerals_quantity = models.DecimalField(
-        _("kuantiti_mineral"), max_digits=15, decimal_places=2)
+    quantity_unit = models.CharField(
+        _("unit kuantiti"), max_length=255, choices=Choices.UNIT_CHOICES)
     final_stock_last_month = models.DecimalField(
         _("stok akhir bulan lalu"), max_digits=15, decimal_places=2)
     mine_production = models.DecimalField(
