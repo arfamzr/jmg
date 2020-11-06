@@ -212,8 +212,8 @@ class Quarry(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse("quarry:state_admin:detail", kwargs={"pk": self.pk})
+    def get_absolute_url(self):
+        return reverse("quarry:state_admin:detail", kwargs={"pk": self.pk})
 
     # def get_state_absolute_url(self):
     #     return reverse("quarry:state:detail", kwargs={"pk": self.pk})
@@ -226,6 +226,9 @@ class Quarry(models.Model):
 
     def get_toggle_active_url(self):
         return reverse("quarry:state_admin:toggle_active", kwargs={"pk": self.pk})
+
+    def get_rock_list_url(self):
+        return reverse("quarry:state_admin:rock_list", kwargs={"pk": self.pk})
 
     # def get_add_miner_url(self):
     #     return reverse("quarry:state_admin:add_miner", kwargs={"pk": self.pk})
@@ -246,6 +249,9 @@ class Lot(models.Model):
 
     def __str__(self):
         return self.no_lot
+
+    # def __str__(self):
+    #     return f"{self.get_lot_display()}"
 
     def get_edit_url(self):
         return reverse("quarry:state_admin:lot_update", kwargs={"pk": self.pk})

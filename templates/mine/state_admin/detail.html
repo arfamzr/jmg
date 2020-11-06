@@ -21,6 +21,18 @@
           <table class="table table-bordered table-sm">
             <tbody>
               <tr>
+                <th>Pemajak</th>
+                <td>{{ mine.lease_holder }}</td>
+              </tr>
+              <tr>
+                <th>Pengusaha</th>
+                <td>{{ mine.operator }}</td>
+              </tr>
+              <tr>
+                <th>Pengurus</th>
+                <td>{{ mine.manager }}</td>
+              </tr>
+              <tr>
                 <th>Alamat</th>
                 <td>
                   {{ mine.address1 }}{% if mine.address2 %},<br>

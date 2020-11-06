@@ -19,7 +19,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search Quarry</button>
+                <button type="submit" class="btn btn-primary">Carian Kuari</button>
               </div>
             </div>
           </form>
@@ -44,9 +44,9 @@
               {% for quarry in quarry_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td><a href="{{ quarry.get_absolute_url }}">{{ quarry.location }}</a></td>
+                <td><a href="{{ quarry.get_absolute_url }}">{{ quarry.name }}</a></td>
                 <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td>
-                <td>{{ quarry.main_rock_type }}</td>
+                <td><a href="{{ quarry.get_rock_list_url }}" class="badge badge-primary">Senarai Batuan</a></td>
                 <td>
                   {% if quarry.status %}
                   <i class="fas fa-check-circle text-success ml-2"></i>
@@ -56,7 +56,7 @@
                 </td>
                 <td>
                   <a href="{{ quarry.get_update_url }}" class="badge badge-primary">Update</a>
-                  <a href="{{ quarry.get_graph_url }}" class="badge badge-success">Graph</a>
+                  {% comment %} <a href="{{ quarry.get_graph_url }}" class="badge badge-success">Graph</a> {% endcomment %}
                   <a href="{{ quarry.get_toggle_active_url }}" class="badge badge-info">
                     {% if quarry.status %}
                     Deactivate
