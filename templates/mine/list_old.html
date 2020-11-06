@@ -16,10 +16,10 @@
       <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
+            <th scope="col">No</th>
             <th scope="col">Kod RPLB</th>
             <th scope="col">Status</th>
-            <th scope="col">Action</th>
+            <th scope="col">Tindakan</th>
           </tr>
         </thead>
         <tbody>
@@ -38,10 +38,10 @@
                 <i class=" far fa-eye"></i>
               </button>
               {% else %}
-              <span class="text-warning">In Process</span>
+              <span class="text-warning">Sedang di proses</span>
               {% endif %}
               {% else %}
-              <span class="text-info">Draft</span>
+              <span class="text-info">Draf</span>
               {% endif %}
             </td>
             <td>
@@ -50,11 +50,11 @@
                 <i class="far fa-eye"></i>
               </a>
               {% else %}
-              {% comment %} <a href="{{ mine.get_update_url }}" class="btn btn-sm btn-success">Update</a>
+              {% comment %} <a href="{{ mine.get_update_url }}" class="btn btn-sm btn-success">Kemaskini</a>
               {% endcomment %}
-              <a href="{{ mine.get_edit_url }}" class="btn btn-sm btn-info">Edit</a>
+              <a href="{{ mine.get_edit_url }}" class="btn btn-sm btn-info">Ubah</a>
               <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#submitQuarryModal"
-                data-mine-id="{{ mine.id }}">Submit</button>
+                data-mine-id="{{ mine.id }}">Hantar</button>
               {% endif %}
             </td>
           </tr>
@@ -77,19 +77,19 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="submitQuarryModalLabel">Submit this mine</h4>
+        <h4 class="modal-title" id="submitQuarryModalLabel">Hantar RPLB</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        Are you sure want to submit this mine?
+        Adakah anda pasti mahu menghantar RPLB ini?
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
         <form action="#" method="post">
           {% csrf_token %}
-          <button type="submit" class="btn btn-primary">Yes</button>
+          <button type="submit" class="btn btn-primary">Ya</button>
         </form>
       </div>
     </div>
@@ -102,7 +102,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="rejectCommentModalLabel">Comment</h4>
+        <h4 class="modal-title" id="rejectCommentModalLabel">Komen</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -111,7 +111,7 @@
         <span id="comment"></span>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>

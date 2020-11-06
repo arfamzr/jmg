@@ -16,11 +16,11 @@
       <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
+            <th scope="col">No</th>
             <th scope="col">Pemegang Pajakan</th>
             <th scope="col">Pengusaha Kuari</th>
             <th scope="col">Status</th>
-            <th scope="col">Action</th>
+            <th scope="col">Tindakan</th>
           </tr>
         </thead>
         <tbody>
@@ -32,18 +32,18 @@
             <td>
               {% if quarry.get_last_approval %}
               {% if quarry.get_last_approval.admin_approved == True %}
-              <span class="text-success">Successful</span>
+              <span class="text-success">Berjaya</span>
               {% elif quarry.get_last_approval.state_approved == False or quarry.get_last_approval.admin_approved == False %}
-              <span class="text-danger">Rejected</span>
+              <span class="text-danger">Di Tolak</span>
               <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#rejectCommentModal"
                 data-quarry-id="{{ quarry.id }}">
                 <i class=" far fa-eye"></i>
               </button>
               {% else %}
-              <span class="text-warning">In Process</span>
+              <span class="text-warning">Dalam Proses</span>
               {% endif %}
               {% else %}
-              <span class="text-info">Draft</span>
+              <span class="text-info">Draf</span>
               {% endif %}
             </td>
             <td>
@@ -52,11 +52,11 @@
                 <i class="far fa-eye"></i>
               </a>
               {% else %}
-              {% comment %} <a href="{{ quarry.get_update_url }}" class="btn btn-sm btn-success">Update</a>
+              {% comment %} <a href="{{ quarry.get_update_url }}" class="btn btn-sm btn-success">kemaskini</a>
               {% endcomment %}
-              <a href="{{ quarry.get_edit_url }}" class="btn btn-sm btn-info">Edit</a>
+              <a href="{{ quarry.get_edit_url }}" class="btn btn-sm btn-info">Ubah</a>
               <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#submitQuarryModal"
-                data-quarry-id="{{ quarry.id }}">Submit</button>
+                data-quarry-id="{{ quarry.id }}">Hantar</button>
               {% endif %}
             </td>
           </tr>
@@ -79,19 +79,19 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="submitQuarryModalLabel">Submit this quarry</h4>
+        <h4 class="modal-title" id="submitQuarryModalLabel">Hantar Maklumat Kuari</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        Are you sure want to submit this quarry?
+        Anda pasti untuk menghantar maklumat kuari?
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
         <form action="#" method="post">
           {% csrf_token %}
-          <button type="submit" class="btn btn-primary">Yes</button>
+          <button type="submit" class="btn btn-primary">Ya</button>
         </form>
       </div>
     </div>
@@ -104,7 +104,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="rejectCommentModalLabel">Comment</h4>
+        <h4 class="modal-title" id="rejectCommentModalLabel">Komen</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -113,7 +113,7 @@
         <span id="comment"></span>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>

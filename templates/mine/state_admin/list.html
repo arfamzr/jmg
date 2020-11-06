@@ -37,7 +37,7 @@
                 <th scope="col">Alamat Lombong</th>
                 <th scope="col">Jenis Mineral</th>
                 <th scope="col">Aktif</th>
-                <th scope="col">Action</th>
+                <th scope="col">Tindakan</th>
               </tr>
             </thead>
             <tbody>
@@ -55,7 +55,7 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ mine.get_update_url }}" class="badge badge-primary">Update</a>
+                  <a href="{{ mine.get_update_url }}" class="badge badge-primary">Kemaskini</a>
                   <a href="{{ mine.get_toggle_active_url }}" class="badge badge-info">
                     {% if mine.status %}
                     Deactivate

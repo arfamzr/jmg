@@ -27,7 +27,7 @@
                 <th scope="col">No</th>
                 <th scope="col">Jenis Mineral</th>
                 <th scope="col">Kategori</th>
-                <th scope="col">Action</th>
+                <th scope="col">Tindakan</th>
               </tr>
             </thead>
             <tbody>
@@ -37,8 +37,8 @@
                 <td>{{ main_statistic.mineral_type }}</td>
                 <td>Mineral Utama</td>
                 <td>
-                  <a href="{{ main_statistic.get_edit_url }}" class="badge badge-sm badge-info">Edit</a>
-                  <a href="{{ main_statistic.get_delete_url }}" class="badge badge-sm badge-danger">Delete</a>
+                  <a href="{{ main_statistic.get_edit_url }}" class="badge badge-sm badge-info">Ubah</a>
+                  <a href="{{ main_statistic.get_delete_url }}" class="badge badge-sm badge-danger">Padam</a>
                 </td>
               </tr>
               {% endfor %}
@@ -48,8 +48,8 @@
                 <td>{{ side_statistic.mineral_type }}</td>
                 <td>Mineral Sapingan</td>
                 <td>
-                  <a href="{{ side_statistic.get_edit_url }}" class="badge badge-sm badge-info">Edit</a>
-                  <a href="{{ side_statistic.get_delete_url }}" class="badge badge-sm badge-danger">Delete</a>
+                  <a href="{{ side_statistic.get_edit_url }}" class="badge badge-sm badge-info">Ubah</a>
+                  <a href="{{ side_statistic.get_delete_url }}" class="badge badge-sm badge-danger">Padam</a>
                 </td>
               </tr>
               {% endfor %}

@@ -15,7 +15,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search Quarry</button>
+                <button type="submit" class="btn btn-primary">Carian Lombong</button>
               </div>
             </div>
           </form>
@@ -35,7 +35,7 @@
                   <th scope="col">Lokasi Lombong</th>
                   <th scope="col">Bulan/Tahun</th>
                   <th scope="col">Status</th>
-                  <th scope="col">Action</th>
+                  <th scope="col">Tindakan</th>
                 </tr>
               </thead>
               <tbody>
@@ -48,7 +48,7 @@
                   <td>{{ mine }}</td>
                   <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
                   <td>
-                    <span class="text-success">Successful</span>
+                    <span class="text-success">Berjaya</span>
                   </td>
                   <td>
                     <a href="{{ miner_data.get_hq_absolute_url }}" class="badge badge-sm badge-secondary">
@@ -80,7 +80,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="rejectCommentModalLabel">Comment</h4>
+        <h4 class="modal-title" id="rejectCommentModalLabel">Komen</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -89,7 +89,7 @@
         <span id="comment"></span>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>

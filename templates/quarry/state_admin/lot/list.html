@@ -24,7 +24,7 @@
                 <th scope="col">No</th>
                 <th scope="col">No Lot</th>
                 <th scope="col">Status Tanah</th>
-                <th scope="col">Action</th>
+                <th scope="col">Tindakan</th>
               </tr>
             </thead>
             <tbody>
@@ -34,8 +34,8 @@
                 <td>{{ lot.no_lot }}</td>
                 <td>{{ lot.get_land_status_display }}</td>
                 <td>
-                  <a href="{{ lot.get_edit_url }}" class="badge badge-sm badge-info">Edit</a>
-                  <a href="{{ lot.get_delete_url }}" class="badge badge-sm badge-danger">Delete</a>
+                  <a href="{{ lot.get_edit_url }}" class="badge badge-sm badge-info">Ubah</a>
+                  <a href="{{ lot.get_delete_url }}" class="badge badge-sm badge-danger">Padam</a>
                 </td>
               </tr>
               {% endfor %}

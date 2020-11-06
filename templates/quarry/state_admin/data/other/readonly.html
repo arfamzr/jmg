@@ -60,21 +60,21 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="ApproveModalLabel">Approve this quarry</h4>
+        <h4 class="modal-title" id="ApproveModalLabel">Terima PKB ini</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        Are you sure want to approve this quarry?
+        Adakah anda pasti untuk terima PKB ini?
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
         <form
           action="{% if user.is_jmg_state %}{% url 'quarry:state_approve' quarry_id %}{% elif user.is_jmg_state_admin %}{% url 'quarry:state_admin_approve' quarry_id %}{% endif %}"
           method="post">
           {% csrf_token %}
-          <button type="submit" class="btn btn-primary">Yes</button>
+          <button type="submit" class="btn btn-primary">Ya</button>
         </form>
       </div>
     </div>
@@ -86,7 +86,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="RejectModalLabel">Reject this quarry</h4>
+        <h4 class="modal-title" id="RejectModalLabel">Tolak PKB ini</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -102,8 +102,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-danger">Reject</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-danger">Tolak</button>
         </div>
       </form>
     </div>

@@ -13,16 +13,16 @@
           <form class="user" method="post" action=".">
             <div class="row mb-3">
               <h3 class="col">
-                Are you sure to
+                Anda pasti untuk
                 {% if quarry.status %}deactivate{% else %}activate{% endif %}
-                this quarry({{ quarry }})?
+                kuari ({{ quarry }})?
               </h3>
             </div>
             <div class="row">
               <div class="col">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">
-                  Yes
+                  Ya
                 </button>
               </div>
             </div>

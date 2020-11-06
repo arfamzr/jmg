@@ -37,7 +37,7 @@
                 <th scope="col">Alamat Kuari</th>
                 <th scope="col">Jenis Batuan</th>
                 <th scope="col">Aktif</th>
-                <th scope="col">Action</th>
+                <th scope="col">Tindakan</th>
               </tr>
             </thead>
             <tbody>
@@ -55,8 +55,9 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ quarry.get_update_url }}" class="badge badge-primary">Update</a>
-                  {% comment %} <a href="{{ quarry.get_graph_url }}" class="badge badge-success">Graph</a> {% endcomment %}
+                  <a href="{{ quarry.get_update_url }}" class="badge badge-primary">Kemaskini</a>
+                  {% comment %} <a href="{{ quarry.get_graph_url }}" class="badge badge-success">Graf</a>
+                  {% endcomment %}
                   <a href="{{ quarry.get_toggle_active_url }}" class="badge badge-info">
                     {% if quarry.status %}
                     Deactivate

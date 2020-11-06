@@ -15,7 +15,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search mine</button>
+                <button type="submit" class="btn btn-primary">Carian Lombong</button>
               </div>
             </div>
           </form>
@@ -34,7 +34,7 @@
                 <th scope="col">Nama Lombong</th>
                 <th scope="col">Bulan/Tahun</th>
                 <th scope="col">Status</th>
-                <th scope="col">Action</th>
+                <th scope="col">Tindakan</th>
               </tr>
             </thead>
             <tbody>
@@ -49,18 +49,18 @@
                 <td>
                   {% if last_approval %}
                   {% if last_approval.admin_approved == True %}
-                  <span class="text-success">Successful</span>
+                  <span class="text-success">Berjaya</span>
                   {% elif last_approval.state_approved == False or last_approval.admin_approved == False %}
-                  <span class="text-danger">Rejected</span>
+                  <span class="text-danger">Di Tolak</span>
                   <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#rejectCommentModal"
                     data-id="{{ data.id }}">
                     <i class=" far fa-eye"></i>
                   </button>
                   {% else %}
-                  <span class="text-warning">In Process</span>
+                  <span class="text-warning">Dalam Proses</span>
                   {% endif %}
                   {% else %}
-                  <span class="text-info">Draft</span>
+                  <span class="text-info">Draf</span>
                   {% endif %}
                 </td>
                 <td>
@@ -91,7 +91,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="rejectCommentModalLabel">Comment</h4>
+        <h4 class="modal-title" id="rejectCommentModalLabel">Komen</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -100,7 +100,7 @@
         <span id="comment"></span>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
