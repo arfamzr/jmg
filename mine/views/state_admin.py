@@ -868,7 +868,8 @@ class MainMineralUpdateView(UpdateView):
 
 def main_mineral_delete(request, pk):
     main_mineral = get_object_or_404(MainMineral, pk=pk)
-    main_mineral.delete()
+    if request.method == 'POST':
+        main_mineral.delete()
     return redirect('mine:state_admin:mineral_list', pk=main_mineral.mine.pk)
 
 
@@ -909,5 +910,6 @@ class SideMineralUpdateView(UpdateView):
 
 def side_mineral_delete(request, pk):
     side_mineral = get_object_or_404(SideMineral, pk=pk)
-    side_mineral.delete()
+    if request.method == 'POST':
+        side_mineral.delete()
     return redirect('mine:state_admin:mineral_list', pk=side_mineral.mine.pk)

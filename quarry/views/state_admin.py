@@ -472,7 +472,8 @@ class LotUpdateView(UpdateView):
 
 def lot_delete(request, pk):
     lot = get_object_or_404(Lot, pk=pk)
-    lot.delete()
+    if request.method == 'POST':
+        lot.delete()
     return redirect('quarry:state_admin:lot_list', pk=lot.quarry.pk)
 
 
@@ -529,7 +530,8 @@ class MainRockUpdateView(UpdateView):
 
 def main_rock_delete(request, pk):
     main_rock = get_object_or_404(MainRock, pk=pk)
-    main_rock.delete()
+    if request.method == 'POST':
+        main_rock.delete()
     return redirect('quarry:state_admin:rock_list', pk=main_rock.quarry.pk)
 
 
@@ -570,7 +572,8 @@ class SideRockUpdateView(UpdateView):
 
 def side_rock_delete(request, pk):
     side_rock = get_object_or_404(SideRock, pk=pk)
-    side_rock.delete()
+    if request.method == 'POST':
+        side_rock.delete()
     return redirect('quarry:state_admin:rock_list', pk=side_rock.quarry.pk)
 
 
