@@ -36,7 +36,8 @@
                 <td>Batuan Utama</td>
                 <td>
                   <a href="{{ sales_submission.get_edit_url }}" class="badge badge-sm badge-info">Ubah</a>
-                  <a href="{{ sales_submission.get_delete_url }}" class="badge badge-sm badge-danger">Padam</a>
+                  <a href="" class="badge badge-sm badge-danger" data-toggle="modal" data-target="#deleteModal"
+                    data-href="{{ sales_submission.get_delete_url }}">Padam</a>
                 </td>
               </tr>
               {% endfor %}
@@ -57,4 +58,40 @@
 
 </div>
 <!-- /.container-fluid -->
+
+<!-- delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="deleteModalLabel">Padam Data</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form id="deleteForm" action="#" method="post">
+        <div class="modal-body">
+          {% csrf_token %}
+          Anda yakin mahu padam data ini?
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" type="submit">Padam</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Tutup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+  // delete deta
+  $('#deleteModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget)
+    const href = button.data('href')
+    const modal = $(this)
+    modal.find('#deleteForm').attr('action', href)
+  })
+</script>
+{% endblock extra_js %}

@@ -87,10 +87,11 @@ class DataCreateView(CreateView):
 
 
 def data_delete(request, pk):
-    data = get_object_or_404(Data, pk=pk)
+    if request.method == 'POST':
+        data = get_object_or_404(Data, pk=pk)
 
-    if data.manager.user == request.user:
-        data.delete()
+        if data.manager.user == request.user:
+            data.delete()
 
     return redirect('mine:data_list')
 
@@ -182,7 +183,8 @@ class MainStatisticUpdateView(UpdateView):
 
 def main_statistic_delete(request, pk):
     main_statistic = get_object_or_404(MainStatistic, pk=pk)
-    main_statistic.delete()
+    if request.method == 'POST':
+        main_statistic.delete()
     return redirect('mine:statistic_edit', pk=main_statistic.data.pk)
 
 
@@ -236,7 +238,8 @@ class SideStatisticUpdateView(UpdateView):
 
 def side_statistic_delete(request, pk):
     side_statistic = get_object_or_404(SideStatistic, pk=pk)
-    side_statistic.delete()
+    if request.method == 'POST':
+        side_statistic.delete()
     return redirect('mine:statistic_edit', pk=side_statistic.data.pk)
 
 

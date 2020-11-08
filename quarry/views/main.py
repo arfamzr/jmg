@@ -99,10 +99,11 @@ class DataCreateView(CreateView):
 
 
 def data_delete(request, pk):
-    data = get_object_or_404(Data, pk=pk)
+    if request.method == 'POST':
+        data = get_object_or_404(Data, pk=pk)
 
-    if data.manager.user == request.user:
-        data.delete()
+        if data.manager.user == request.user:
+            data.delete()
 
     return redirect('quarry:data_list')
 
@@ -205,7 +206,8 @@ class MainProductionStatisticUpdateView(UpdateView):
 
 def main_production_statistic_delete(request, pk):
     main_statistic = get_object_or_404(MainProductionStatistic, pk=pk)
-    main_statistic.delete()
+    if request.method == 'POST':
+        main_statistic.delete()
     return redirect('quarry:production_statistic_edit', pk=main_statistic.data.pk)
 
 
@@ -259,7 +261,8 @@ class SideProductionStatisticUpdateView(UpdateView):
 
 def side_production_statistic_delete(request, pk):
     side_statistic = get_object_or_404(SideProductionStatistic, pk=pk)
-    side_statistic.delete()
+    if request.method == 'POST':
+        side_statistic.delete()
     return redirect('quarry:production_statistic_edit', pk=side_statistic.data.pk)
 
 
@@ -329,7 +332,8 @@ class SalesSubmissionUpdateView(UpdateView):
 
 def sales_submission_delete(request, pk):
     sales_submission = get_object_or_404(SalesSubmission, pk=pk)
-    sales_submission.delete()
+    if request.method == 'POST':
+        sales_submission.delete()
     return redirect('quarry:sales_submission_edit', pk=sales_submission.data.pk)
 
 
