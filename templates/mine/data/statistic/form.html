@@ -21,9 +21,9 @@
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-6"><b>Kuantiti Mineral</b></label>
+          <label class="col-6"><b>Unit Kuantiti</b></label>
           <div class="col-6">
-            {{ form.minerals_quantity|as_crispy_field }}
+            {{ form.quantity_unit|as_crispy_field }}
           </div>
         </div>
         <div class="form-group row">
@@ -79,6 +79,22 @@
 {% endblock content %}
 
 {% block extra_js %}
+<script>
+  var mineral_type = $('#id_mineral_type')
+  var quantity_unit = $('#id_quantity_unit')
+
+  mineral_type.change(function () {
+    if (mineral_type.val() == 'TIN ORE') {
+      quantity_unit.val('KG')
+    } else if (mineral_type.val() == 'DIMENSION STONE') {
+      quantity_unit.val('M3')
+    } else if (mineral_type.val() == 'GOLD') {
+      quantity_unit.val('GRAM')
+    } else {
+      quantity_unit.val('TAN')
+    }
+  })
+</script>
 <script>
   const minerals_quantity = document.getElementById('id_minerals_quantity')
   const final_stock_last_month = document.getElementById('id_final_stock_last_month')

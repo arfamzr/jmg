@@ -357,9 +357,9 @@ class MainStatistic(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
         "data"), on_delete=models.CASCADE, related_name="main_minerals")
     mineral_type = models.CharField(
-        _("jenis mineral utama"), max_length=255)
+        _("jenis mineral utama"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
     quantity_unit = models.CharField(
-        _("unit kuantiti"), max_length=255, choices=Choices.UNIT_CHOICES)
+        _("unit kuantiti"), max_length=255, choices=Choices.UNIT_CHOICES, default=Choices.TAN)
     final_stock_last_month = models.DecimalField(
         _("stok akhir bulan lalu"), max_digits=15, decimal_places=2)
     mine_production = models.DecimalField(
@@ -397,7 +397,7 @@ class SideStatistic(models.Model):
     mineral_type = models.CharField(
         _("jenis mineral sampingan"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
     quantity_unit = models.CharField(
-        _("unit kuantiti"), max_length=255, choices=Choices.UNIT_CHOICES)
+        _("unit kuantiti"), max_length=255, choices=Choices.UNIT_CHOICES, default=Choices.TAN)
     final_stock_last_month = models.DecimalField(
         _("stok akhir bulan lalu"), max_digits=15, decimal_places=2)
     mine_production = models.DecimalField(
