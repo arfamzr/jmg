@@ -507,17 +507,21 @@
     Kemasukan Data
   </div>
 
+  {% if user.quarrymanager %}
   <li class="nav-item ">
     <a class="nav-link" href="{% url 'quarry:data_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>PKB</span></a>
   </li>
+  {% endif %}
 
+  {% if user.minemanager %}
   <li class="nav-item ">
     <a class="nav-link" href="{% url 'mine:data_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>RPLB</span></a>
   </li>
+  {% endif %}
 
   <!-- Divider -->
   <!--<hr class="sidebar-divider">-->
