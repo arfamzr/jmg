@@ -340,6 +340,9 @@ class Data(models.Model):
     def get_state_admin_absolute_url(self):
         return reverse("mine:state_admin:data_detail", kwargs={"pk": self.pk})
 
+    def get_state_admin_success_url(self):
+        return reverse("mine:state_admin:data_success_detail", kwargs={"pk": self.pk})
+
     # def get_hq_absolute_url(self):
     #     return reverse("mine:hq:data", kwargs={"pk": self.pk})
 

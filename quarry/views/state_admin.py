@@ -630,7 +630,7 @@ class DataListView(ListView):
 
 
 class DataSuccessListView(ListView):
-    template_name = 'quarry/state_admin/data/list.html'
+    template_name = 'quarry/state_admin/data/success_list.html'
     model = Data
     paginate_by = 10
     ordering = ['-created_at']
@@ -744,6 +744,50 @@ def data_detail(request, pk):
     }
 
     return render(request, 'quarry/state_admin/data/detail.html', context)
+
+
+def data_success_detail(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    local_final_uses = get_object_or_404(LocalFinalUses, data=data)
+    export_final_uses = get_object_or_404(
+        ExportFinalUses, data=data)
+    local_operator = get_object_or_404(LocalOperator, data=data)
+    local_contractor = get_object_or_404(
+        LocalContractor, data=data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, data=data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, data=data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, data=data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, data=data)
+    daily_explosive = get_object_or_404(DailyExplosive, data=data)
+    energy_supply = get_object_or_404(EnergySupply, data=data)
+    operating_record = get_object_or_404(
+        OperatingRecord, data=data)
+    royalties = get_object_or_404(Royalties, data=data)
+    other = get_object_or_404(Other, data=data)
+
+    context = {
+        'title': 'Data Kuari',
+        'data': data,
+        'local_final_uses': local_final_uses,
+        'export_final_uses': export_final_uses,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'daily_explosive': daily_explosive,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
+        'royalties': royalties,
+        'other': other,
+    }
+
+    return render(request, 'quarry/state_admin/data/success_detail.html', context)
 
 
 # def quarry_detail(request, pk):

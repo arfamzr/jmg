@@ -33,6 +33,7 @@ from ..views.state_admin import (
     DataListView,
     DataSuccessListView,
     data_detail,
+    data_success_detail,
 
     # add_miner,
     # mine_add_miner,
@@ -110,9 +111,14 @@ urlpatterns = [
     path('data-list/success/', DataSuccessListView.as_view(),
          name='data_list_success'),
     path(
-        'miner-data/<int:pk>/',
+        'data/<int:pk>/',
         data_detail,
         name='data_detail',
+    ),
+    path(
+        'data/<int:pk>/success/',
+        data_success_detail,
+        name='data_success_detail',
     ),
 
     # path('<int:pk>/add-miner/', add_miner, name='add_miner'),

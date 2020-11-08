@@ -556,7 +556,7 @@ class DataListView(ListView):
 
 
 class DataSuccessListView(ListView):
-    template_name = 'mine/state_admin/data/list.html'
+    template_name = 'mine/state_admin/data/success_list.html'
     model = Data
     paginate_by = 10
     ordering = ['-created_at']
@@ -659,6 +659,39 @@ def data_detail(request, pk):
     }
 
     return render(request, 'mine/state_admin/data/detail.html', context=context)
+
+
+def data_success_detail(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    local_operator = get_object_or_404(LocalOperator, data=data)
+    local_contractor = get_object_or_404(
+        LocalContractor, data=data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, data=data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, data=data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, data=data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, data=data)
+    energy_supply = get_object_or_404(EnergySupply, data=data)
+    operating_record = get_object_or_404(
+        OperatingRecord, data=data)
+
+    context = {
+        'title': 'Data Lombong',
+        'data': data,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
+    }
+
+    return render(request, 'mine/state_admin/data/success_detail.html', context=context)
 
 
 # def data_detail(request, pk):
