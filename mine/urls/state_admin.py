@@ -17,6 +17,8 @@ from ..views.state_admin import (
     ManagerListView,
     manager_create,
     manager_update,
+    manager_choose_operator,
+    manager_add_operator,
     manager_toggle_active,
     get_manager_data,
 
@@ -75,6 +77,10 @@ urlpatterns = [
          name='manager_create'),
     path('manager/<int:pk>/update/',
          manager_update, name='manager_update'),
+    path('manager/<int:pk>/choose-operator/',
+         manager_choose_operator, name='manager_choose_operator'),
+    path('manager/<int:manager_pk>/add-operator/<int:operator_pk>/',
+         manager_add_operator, name='manager_add_operator'),
     path('manager/<int:pk>/toggle-active/',
          manager_toggle_active, name='manager_toggle_active'),
     path(
@@ -85,7 +91,7 @@ urlpatterns = [
 
     # operator
     path('operator/', OperatorListView.as_view(), name='operator_list'),
-    path('<int:pk>/operator/create/', OperatorCreateView.as_view(),
+    path('operator/create/', OperatorCreateView.as_view(),
          name='operator_create'),
     path('operator/<int:pk>/update/',
          OperatorUpdateView.as_view(), name='operator_update'),
