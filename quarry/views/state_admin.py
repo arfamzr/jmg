@@ -209,6 +209,30 @@ def manager_update(request, pk):
     return render(request, 'quarry/state_admin/manager/form.html', context)
 
 
+def manager_choose_operator(request, pk):
+    manager = get_object_or_404(QuarryManager, pk=pk)
+    operator_list = Operator.objects.filter(state=request.user.profile.state)
+
+    context = {
+        'manager': manager,
+        'operator_list': operator_list,
+    }
+
+    return render(request, 'quarry/state_admin/manager/choose_operator.html', context)
+
+
+def manager_add_operator(request, manager_pk, operator_pk):
+    manager = get_object_or_404(QuarryManager, pk=manager_pk)
+    operator = get_object_or_404(Operator, pk=operator_pk)
+
+    if request.method == 'POST':
+        manager.operator = operator
+        manager.save()
+        return redirect('quarry:state_admin:manager_list')
+
+    return redirect('quarry:state_admin:manager_choose_operator', pk=manager.pk)
+
+
 def manager_toggle_active(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
@@ -269,18 +293,9 @@ class OperatorCreateView(CreateView):
     form_class = OperatorForm
     success_url = reverse_lazy('quarry:state_admin:operator_list')
 
-    def dispatch(self, request, *args, **kwargs):
-        self.manager = get_object_or_404(QuarryManager, pk=self.kwargs['pk'])
-        return super().dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
         form.instance.state = self.request.user.profile.state
         return super().form_valid(form)
-
-    def get_success_url(self):
-        self.manager.operator = self.object
-        self.manager.save()
-        return super().get_success_url()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -349,8 +364,8 @@ class QuarryCreateView(CreateView):
     form_class = QuarryForm
 
     def dispatch(self, request, *args, **kwargs):
-        self.operator = get_object_or_404(Operator, pk=self.kwargs['pk'])
-        self.manager = get_object_or_404(QuarryManager, operator=self.operator)
+        self.manager = get_object_or_404(QuarryManager, pk=self.kwargs['pk'])
+        self.operator = self.manager.operator
         self.lease_holder = self.manager.lease_holder
         return super().dispatch(request, *args, **kwargs)
 

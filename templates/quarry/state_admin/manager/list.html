@@ -69,7 +69,11 @@
                     {% endif %}
                   </a>
                   {% if not manager.operator %}
-                  <a href="{{ manager.get_operator_create_url }}" class="badge badge-primary">Tambah Pengusaha</a>
+                  <a href="{{ manager.get_choose_operator_url }}" class="badge badge-primary">Pilih Pengusaha</a>
+                  {% else %}
+                  {% if not manager.quarry %}
+                  <a href="{{ manager.get_quarry_create_url }}" class="badge badge-primary">Tambah Kuari</a>
+                  {% endif %}
                   {% endif %}
                 </td>
               </tr>

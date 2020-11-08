@@ -132,9 +132,6 @@ class Operator(models.Model):
     def get_toggle_active_url(self):
         return reverse("quarry:state_admin:operator_toggle_active", kwargs={"pk": self.pk})
 
-    def get_quarry_create_url(self):
-        return reverse("quarry:state_admin:create", kwargs={"pk": self.pk})
-
 
 class QuarryManager(models.Model):
     user = models.OneToOneField(User, verbose_name=_(
@@ -159,8 +156,11 @@ class QuarryManager(models.Model):
     def get_toggle_active_url(self):
         return reverse("quarry:state_admin:manager_toggle_active", kwargs={"pk": self.pk})
 
-    def get_operator_create_url(self):
-        return reverse("quarry:state_admin:operator_create", kwargs={"pk": self.pk})
+    def get_choose_operator_url(self):
+        return reverse("quarry:state_admin:manager_choose_operator", kwargs={"pk": self.pk})
+
+    def get_quarry_create_url(self):
+        return reverse("quarry:state_admin:create", kwargs={"pk": self.pk})
 
 
 class Quarry(models.Model):

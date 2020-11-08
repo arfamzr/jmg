@@ -148,9 +148,6 @@ class Operator(models.Model):
     def get_toggle_active_url(self):
         return reverse("mine:state_admin:operator_toggle_active", kwargs={"pk": self.pk})
 
-    def get_mine_create_url(self):
-        return reverse("mine:state_admin:create", kwargs={"pk": self.pk})
-
 
 class MineManager(models.Model):
     user = models.OneToOneField(User, verbose_name=_(
@@ -175,8 +172,11 @@ class MineManager(models.Model):
     def get_toggle_active_url(self):
         return reverse("mine:state_admin:manager_toggle_active", kwargs={"pk": self.pk})
 
-    def get_operator_create_url(self):
-        return reverse("mine:state_admin:operator_create", kwargs={"pk": self.pk})
+    def get_choose_operator_url(self):
+        return reverse("mine:state_admin:manager_choose_operator", kwargs={"pk": self.pk})
+
+    def get_mine_create_url(self):
+        return reverse("mine:state_admin:create", kwargs={"pk": self.pk})
 
 
 class Mine(models.Model):

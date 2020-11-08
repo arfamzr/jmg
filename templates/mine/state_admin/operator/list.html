@@ -10,9 +10,9 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <div class="row">
-        {% comment %} <div class="col">
+        <div class="col">
           <a href="{% url 'mine:state_admin:operator_create' %}" class="btn btn-primary">Tambah Pengusaha</a>
-        </div> {% endcomment %}
+        </div>
 
         <div class="col justify-content-end">
           <form action="." method="GET">
@@ -71,9 +71,6 @@
                     Aktif
                     {% endif %}
                   </a>
-                  {% if not operator.mines.first %}
-                  <a href="{{ operator.get_mine_create_url }}" class="badge badge-primary">Tambah Lombong</a>
-                  {% endif %}
                 </td>
               </tr>
               {% endfor %}
