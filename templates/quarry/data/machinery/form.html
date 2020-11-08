@@ -252,3 +252,279 @@
 </div>
 <!-- /.container-fluid -->
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+  // number combustion
+  const number_lorry = document.getElementById('id_number_lorry')
+  const number_excavator = document.getElementById('id_number_excavator')
+  const number_wheel_loader = document.getElementById('id_number_wheel_loader')
+  const number_bulldozer = document.getElementById('id_number_bulldozer')
+  const number_water_pump = document.getElementById('id_number_water_pump')
+  const number_air_compressor = document.getElementById('id_number_air_compressor')
+  const number_hydraulic_breaker = document.getElementById('id_number_hydraulic_breaker')
+  const number_hydraulic_drill = document.getElementById('id_number_hydraulic_drill')
+  const number_crusher = document.getElementById('id_number_crusher')
+  const number_shovel = document.getElementById('id_number_shovel')
+  const number_tracktor = document.getElementById('id_number_tracktor')
+  const number_other = document.getElementById('id_number_other')
+  const total_number = document.getElementById('id_total_number')
+
+  const set_total_number = () => {
+    let total = (parseFloat(number_lorry.value) || 0) +
+      (parseFloat(number_excavator.value) || 0) +
+      (parseFloat(number_wheel_loader.value) || 0) +
+      (parseFloat(number_bulldozer.value) || 0) +
+      (parseFloat(number_water_pump.value) || 0) +
+      (parseFloat(number_air_compressor.value) || 0) +
+      (parseFloat(number_hydraulic_breaker.value) || 0) +
+      (parseFloat(number_hydraulic_drill.value) || 0) +
+      (parseFloat(number_crusher.value) || 0) +
+      (parseFloat(number_shovel.value) || 0) +
+      (parseFloat(number_tracktor.value) || 0) +
+      (parseFloat(number_other.value) || 0)
+    total_number.value = total
+  }
+
+  number_lorry.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_excavator.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_wheel_loader.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_bulldozer.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_water_pump.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_air_compressor.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_hydraulic_breaker.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_hydraulic_drill.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_crusher.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_shovel.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_tracktor.addEventListener("change", () => {
+    set_total_number()
+  })
+  number_other.addEventListener("change", () => {
+    set_total_number()
+  })
+
+  // power combustion
+  const lorry_power = document.getElementById('id_lorry_power')
+  const excavator_power = document.getElementById('id_excavator_power')
+  const wheel_loader_power = document.getElementById('id_wheel_loader_power')
+  const bulldozer_power = document.getElementById('id_bulldozer_power')
+  const water_pump_power = document.getElementById('id_water_pump_power')
+  const air_compressor_power = document.getElementById('id_air_compressor_power')
+  const hydraulic_breaker_power = document.getElementById('id_hydraulic_breaker_power')
+  const hydraulic_drill_power = document.getElementById('id_hydraulic_drill_power')
+  const crusher_power = document.getElementById('id_crusher_power')
+  const shovel_power = document.getElementById('id_shovel_power')
+  const tracktor_power = document.getElementById('id_tracktor_power')
+  const other_power = document.getElementById('id_other_power')
+  const total_power = document.getElementById('id_total_power')
+
+  const set_total_power = () => {
+    let total = (parseFloat(lorry_power.value) || 0) +
+      (parseFloat(excavator_power.value) || 0) +
+      (parseFloat(wheel_loader_power.value) || 0) +
+      (parseFloat(bulldozer_power.value) || 0) +
+      (parseFloat(water_pump_power.value) || 0) +
+      (parseFloat(air_compressor_power.value) || 0) +
+      (parseFloat(hydraulic_breaker_power.value) || 0) +
+      (parseFloat(hydraulic_drill_power.value) || 0) +
+      (parseFloat(crusher_power.value) || 0) +
+      (parseFloat(shovel_power.value) || 0) +
+      (parseFloat(tracktor_power.value) || 0) +
+      (parseFloat(other_power.value) || 0)
+    total_power.value = total
+  }
+
+  lorry_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  excavator_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  wheel_loader_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  bulldozer_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  water_pump_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  air_compressor_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  hydraulic_breaker_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  hydraulic_drill_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  crusher_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  shovel_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  tracktor_power.addEventListener("change", () => {
+    set_total_power()
+  })
+  other_power.addEventListener("change", () => {
+    set_total_power()
+  })
+
+  // number electric
+  const e_number_lorry = document.getElementById('id_second-number_lorry')
+  const e_number_excavator = document.getElementById('id_second-number_excavator')
+  const e_number_wheel_loader = document.getElementById('id_second-number_wheel_loader')
+  const e_number_bulldozer = document.getElementById('id_second-number_bulldozer')
+  const e_number_water_pump = document.getElementById('id_second-number_water_pump')
+  const e_number_air_compressor = document.getElementById('id_second-number_air_compressor')
+  const e_number_hydraulic_breaker = document.getElementById('id_second-number_hydraulic_breaker')
+  const e_number_hydraulic_drill = document.getElementById('id_second-number_hydraulic_drill')
+  const e_number_crusher = document.getElementById('id_second-number_crusher')
+  const e_number_shovel = document.getElementById('id_second-number_shovel')
+  const e_number_tracktor = document.getElementById('id_second-number_tracktor')
+  const e_number_other = document.getElementById('id_second-number_other')
+  const e_total_number = document.getElementById('id_second-total_number')
+
+  const set_e_total_number = () => {
+    let total = (parseFloat(e_number_lorry.value) || 0) +
+      (parseFloat(e_number_excavator.value) || 0) +
+      (parseFloat(e_number_wheel_loader.value) || 0) +
+      (parseFloat(e_number_bulldozer.value) || 0) +
+      (parseFloat(e_number_water_pump.value) || 0) +
+      (parseFloat(e_number_air_compressor.value) || 0) +
+      (parseFloat(e_number_hydraulic_breaker.value) || 0) +
+      (parseFloat(e_number_hydraulic_drill.value) || 0) +
+      (parseFloat(e_number_crusher.value) || 0) +
+      (parseFloat(e_number_shovel.value) || 0) +
+      (parseFloat(e_number_tracktor.value) || 0) +
+      (parseFloat(e_number_other.value) || 0)
+    e_total_number.value = total
+  }
+
+  e_number_lorry.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_excavator.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_wheel_loader.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_bulldozer.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_water_pump.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_air_compressor.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_hydraulic_breaker.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_hydraulic_drill.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_crusher.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_shovel.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_tracktor.addEventListener("change", () => {
+    set_e_total_number()
+  })
+  e_number_other.addEventListener("change", () => {
+    set_e_total_number()
+  })
+
+  // power electric
+  const e_lorry_power = document.getElementById('id_second-lorry_power')
+  const e_excavator_power = document.getElementById('id_second-excavator_power')
+  const e_wheel_loader_power = document.getElementById('id_second-wheel_loader_power')
+  const e_bulldozer_power = document.getElementById('id_second-bulldozer_power')
+  const e_water_pump_power = document.getElementById('id_second-water_pump_power')
+  const e_air_compressor_power = document.getElementById('id_second-air_compressor_power')
+  const e_hydraulic_breaker_power = document.getElementById('id_second-hydraulic_breaker_power')
+  const e_hydraulic_drill_power = document.getElementById('id_second-hydraulic_drill_power')
+  const e_crusher_power = document.getElementById('id_second-crusher_power')
+  const e_shovel_power = document.getElementById('id_second-shovel_power')
+  const e_tracktor_power = document.getElementById('id_second-tracktor_power')
+  const e_other_power = document.getElementById('id_second-other_power')
+  const e_total_power = document.getElementById('id_second-total_power')
+
+  const set_e_total_power = () => {
+    let total = (parseFloat(e_lorry_power.value) || 0) +
+      (parseFloat(e_excavator_power.value) || 0) +
+      (parseFloat(e_wheel_loader_power.value) || 0) +
+      (parseFloat(e_bulldozer_power.value) || 0) +
+      (parseFloat(e_water_pump_power.value) || 0) +
+      (parseFloat(e_air_compressor_power.value) || 0) +
+      (parseFloat(e_hydraulic_breaker_power.value) || 0) +
+      (parseFloat(e_hydraulic_drill_power.value) || 0) +
+      (parseFloat(e_crusher_power.value) || 0) +
+      (parseFloat(e_shovel_power.value) || 0) +
+      (parseFloat(e_tracktor_power.value) || 0) +
+      (parseFloat(e_other_power.value) || 0)
+    e_total_power.value = total
+  }
+
+  e_lorry_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_excavator_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_wheel_loader_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_bulldozer_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_water_pump_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_air_compressor_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_hydraulic_breaker_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_hydraulic_drill_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_crusher_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_shovel_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_tracktor_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+  e_other_power.addEventListener("change", () => {
+    set_e_total_power()
+  })
+</script>
+{% endblock extra_js %}
