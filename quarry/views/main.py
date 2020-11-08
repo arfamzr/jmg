@@ -83,6 +83,11 @@ class DataCreateView(CreateView):
     form_class = DataForm
     template_name = 'quarry/data/form.html'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['manager'] = self.request.user.quarrymanager
+        return kwargs
+
     def form_valid(self, form):
         form.instance.manager = self.request.user.quarrymanager
         form.instance.quarry = self.request.user.quarrymanager.quarry

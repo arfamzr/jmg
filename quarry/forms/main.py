@@ -29,6 +29,21 @@ class DataForm(forms.ModelForm):
         model = Data
         fields = ['month', 'year']
 
+    def __init__(self, *args, **kwargs):
+        self.manager = kwargs.pop('manager', None)
+        super().__init__(*args, **kwargs)
+
+    def clean(self, added_error=False):
+        cleaned_data = super().clean()
+        month = cleaned_data.get('month')
+        year = cleaned_data.get('year')
+
+        if Data.objects.filter(manager=self.manager, month=month, year=year):
+            raise forms.ValidationError(
+                'Data untuk bulan dan tahun tersebut telah tersedia!')
+
+        return cleaned_data
+
 
 class MainProductionStatisticForm(forms.ModelForm):
 
