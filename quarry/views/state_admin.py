@@ -699,29 +699,29 @@ def data_detail(request, pk):
         data_approval.admin_approved = approved
         data_approval.save()
 
-        # if approved:
-        #     jmg_hqs = User.objects.filter(
-        #         groups__name='JMG HQ')
+        if approved:
+            jmg_hqs = User.objects.filter(
+                groups__name='JMG HQ')
 
-        #     notify = Notify()
-        #     notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{data.quarry}"'
-        #     # hq/data_list belum ada
-        #     notify_link = reverse('quarry:hq:data_list')
+            notify = Notify()
+            notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{data.quarry}"'
+            # hq/data_list belum ada
+            notify_link = reverse('quarry:hq:data_list')
 
-        #     for jmg_hq in jmg_hqs:
-        #         notify.make_notify(jmg_hq, notify_message, notify_link)
+            for jmg_hq in jmg_hqs:
+                notify.make_notify(jmg_hq, notify_message, notify_link)
 
-        # else:
-        #     miner = data_approval.requestor
-        #     state_inspector = data_approval.state_inspector
+        else:
+            miner = data_approval.requestor
+            state_inspector = data_approval.state_inspector
 
-        #     notify = Notify()
-        #     notify_message = f'Data untuk kuari "{data.quarry}" telah ditolak'
-        #     notify_link = reverse('quarry:data_list')
-        #     state_notify_message = f'Data untuk kuari "{data.quarry}"({miner}) telah ditolak'
+            notify = Notify()
+            notify_message = f'Data untuk kuari "{data.quarry}" telah ditolak'
+            notify_link = reverse('quarry:data_list')
+            state_notify_message = f'Data untuk kuari "{data.quarry}"({miner}) telah ditolak'
 
-        #     notify.make_notify(miner, notify_message, notify_link)
-        #     notify.make_notify(state_inspector, state_notify_message)
+            notify.make_notify(miner, notify_message, notify_link)
+            notify.make_notify(state_inspector, state_notify_message)
 
         return redirect('quarry:state_admin:data_list')
 

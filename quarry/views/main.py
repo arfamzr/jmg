@@ -726,15 +726,15 @@ def other_edit(request, pk):
             data_approval = Approval.objects.create(
                 data=data, requestor=request.user)
 
-            # jmg_states = User.objects.filter(
-            #     groups__name='JMG State', profile__state=data.state)
+            jmg_states = User.objects.filter(
+                groups__name='JMG State', profile__state=data.state)
 
-            # notify = Notify()
-            # notify_message = f'{request.user} telah menghantar permohonan data untuk kuari "{data.quarry}"'
-            # notify_link = reverse('quarry:state:data_list')
+            notify = Notify()
+            notify_message = f'{request.user} telah menghantar permohonan data untuk kuari "{data.quarry}"'
+            notify_link = reverse('quarry:state:data_list')
 
-            # for jmg_state in jmg_states:
-            #     notify.make_notify(jmg_state, notify_message, notify_link)
+            for jmg_state in jmg_states:
+                notify.make_notify(jmg_state, notify_message, notify_link)
 
             return redirect('quarry:data_list')
 

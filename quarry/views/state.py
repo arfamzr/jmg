@@ -100,25 +100,25 @@ def data_detail(request, pk):
         data_approval.state_approved = approved
         data_approval.save()
 
-        # if approved:
-        #     jmg_state_admins = User.objects.filter(
-        #         groups__name='JMG State Admin', profile__state=data.state)
+        if approved:
+            jmg_state_admins = User.objects.filter(
+                groups__name='JMG State Admin', profile__state=data.state)
 
-        #     notify = Notify()
-        #     notify_message = f'{data.miner.quarry} telah menghantar permohonan data untuk kuari "{data.quarry}"'
-        #     notify_link = reverse('quarry:state_admin:data_list')
+            notify = Notify()
+            notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{data.quarry}"'
+            notify_link = reverse('quarry:state_admin:data_list')
 
-        #     for jmg_state_admin in jmg_state_admins:
-        #         notify.make_notify(
-        #             jmg_state_admin, notify_message, notify_link)
-        # else:
-        #     miner = data_approval.requestor
+            for jmg_state_admin in jmg_state_admins:
+                notify.make_notify(
+                    jmg_state_admin, notify_message, notify_link)
+        else:
+            miner = data_approval.requestor
 
-        #     notify = Notify()
-        #     notify_message = f'Data untuk kuari "{data.quarry}" telah ditolak'
-        #     notify_link = reverse('quarry:data_list')
+            notify = Notify()
+            notify_message = f'Data untuk kuari "{data.quarry}" telah ditolak'
+            notify_link = reverse('quarry:data_list')
 
-        #     notify.make_notify(miner, notify_message, notify_link)
+            notify.make_notify(miner, notify_message, notify_link)
 
         return redirect('quarry:state:data_list')
 
