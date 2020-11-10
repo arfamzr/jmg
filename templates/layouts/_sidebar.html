@@ -122,28 +122,27 @@
   {% endif %}
 
   {% if user.is_jmg_hq %}
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Senarai Data Lulus
+  </div>
 
-  <li class="nav-item ">
-    <div class="sidebar-heading">
-      Senarai Data
-    </div>
-
-    <!-- Nav Item - Kuari -->
+  <!-- Nav Item - Kuari -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'quarry:hq:data_list' %}">
+    <a class="nav-link" href="{% url 'quarry:hq:data_list_success' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>PKB</span></a>
   </li>
 
   <!-- Nav Item - Lombong -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'mine:hq:data_list' %}">
+    <a class="nav-link" href="{% url 'mine:hq:data_list_success' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>RPLB</span></a>
   </li>
 
   <!-- Nav Item - Mineral -->
-  <!-- <li class="nav-item">
+  <!--<li class="nav-item">
     <a class="nav-link" href="<?= base_url('mineral'); ?>">
       <i class="fas fa-fw fa-gem"></i>
       <span>Mineral</span></a>
@@ -157,15 +156,14 @@
     Laporan
   </div>
 
-
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'report:hq:quarry_input' %}">
+    <a class="nav-link" href="{# {% url 'report:hq:quarry_report' %} #}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Kuari</span></a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'report:hq:mine_input' %}">
+    <a class="nav-link" href="{# {% url 'report:hq:mine_report' %} #}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Lombong</span></a>
   </li>
@@ -174,19 +172,56 @@
   <hr class="sidebar-divider">
 
   <div class="sidebar-heading">
-    Graph
+    Graph Kuari
   </div>
 
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'report:hq:quarry_graph' %}">
+  <!--<li class="nav-item">
+    <a class="nav-link" href="{# {% url 'report:hq:quarry_graph' %} #}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
-      <span>Kuari</span></a>
+      <span>Kuari Aktif</span></a>
+  </li>-->
+
+  <li class="nav-item">
+    <a class="nav-link" href="{# {% url 'report:hq:quarry_production_graph' %} #}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Pengeluaran</span></a>
   </li>
 
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'report:hq:mine_graph' %}">
+    <a class="nav-link" href="{# {% url 'report:hq:quarry_worker_graph' %} #}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
-      <span>Lombong</span></a>
+      <span>Pekerja</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{# {% url 'report:hq:quarry_royalties_graph' %} #}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Royalti</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <div class="sidebar-heading">
+    Graph Lombong
+  </div>
+
+  <!--<li class="nav-item">
+    <a class="nav-link" href="{# {% url 'report:hq:quarry_graph' %} #}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Lombong Aktif</span></a>
+  </li>-->
+
+  <li class="nav-item">
+    <a class="nav-link" href="{# {% url 'report:hq:mine_production_graph' %} #}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Pengeluaran</span></a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" href="{# {% url 'report:hq:mine_worker_graph' %} #}">
+      <i class="fas fa-fw fa-sign-out-alt"></i>
+      <span>Pekerja</span></a>
   </li>
 
   <!-- Divider -->

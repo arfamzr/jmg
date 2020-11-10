@@ -377,7 +377,7 @@ class Data(models.Model):
         verbose_name_plural = "data pengusaha kuari"
 
     def __str__(self):
-        return f'{self.miner} - {self.pk}'
+        return f'{self.quarry} - {self.pk}'
 
     def get_absolute_url(self):
         return reverse("quarry:data_detail", kwargs={"pk": self.pk})
@@ -389,7 +389,10 @@ class Data(models.Model):
         return reverse("quarry:state_admin:data_detail", kwargs={"pk": self.pk})
 
     def get_state_admin_success_url(self):
-        return reverse("mine:state_admin:data_success_detail", kwargs={"pk": self.pk})
+        return reverse("quarry:state_admin:data_success_detail", kwargs={"pk": self.pk})
+
+    def get_hq_success_url(self):
+        return reverse("quarry:hq:data_success_detail", kwargs={"pk": self.pk})
 
     def get_hq_absolute_url(self):
         return reverse("quarry:hq:data_detail", kwargs={"pk": self.pk})

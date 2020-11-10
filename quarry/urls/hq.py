@@ -1,24 +1,37 @@
 from django.urls import path
 
-# from ..views.hq import (
-#     QuarryMinerDataListView,
-#     miner_data_detail,
-#     production_statistic_detail,
-#     sales_submission_detail,
-#     final_uses_detail,
-#     local_worker_detail,
-#     foreign_worker_detail,
-#     machinery_detail,
-#     daily_explosive_detail,
-#     energy_supply_detail,
-#     operating_record_detail,
-#     royalties_detail,
-#     other_detail,
-# )
+from ..views.hq import (
+    # data
+    DataSuccessListView,
+    data_success_detail,
+
+    # QuarryMinerDataListView,
+    # miner_data_detail,
+    # production_statistic_detail,
+    # sales_submission_detail,
+    # final_uses_detail,
+    # local_worker_detail,
+    # foreign_worker_detail,
+    # machinery_detail,
+    # daily_explosive_detail,
+    # energy_supply_detail,
+    # operating_record_detail,
+    # royalties_detail,
+    # other_detail,
+)
 
 app_name = 'hq'
 
 urlpatterns = [
+    # data
+    path('data-list/success/', DataSuccessListView.as_view(),
+         name='data_list_success'),
+    path(
+        'data/<int:pk>/success/',
+        data_success_detail,
+        name='data_success_detail',
+    ),
+
     # path('data-list/', QuarryMinerDataListView.as_view(), name='data_list'),
     # path(
     #     'miner-data/<int:pk>/',

@@ -661,7 +661,7 @@ class DataSuccessListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai PKB'
+        context["title"] = 'Senarai Lulus PKB'
         return context
 
 
