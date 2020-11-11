@@ -1,5 +1,6 @@
 from django import forms
 
+from account.models import Profile
 from quarry.models import YEAR_CHOICES, current_year, Data, Choices as RockChoices
 from mine.models import Choices as MineralChoices
 
@@ -20,6 +21,74 @@ def get_month_choices():
     MONTH_CHOICES = list(Data.MONTH_CHOICES)
     MONTH_CHOICES.insert(0, (None, '------'))
     return MONTH_CHOICES
+
+
+def get_state_choices():
+    STATE_CHOICES = list(Profile.STATE_CHOICES)
+    STATE_CHOICES.insert(0, (None, '------'))
+    return STATE_CHOICES
+
+
+class QuarryReportForm(forms.Form):
+    year = forms.ChoiceField(
+        label='Tahun', choices=YEAR_CHOICES, initial=current_year)
+    month = forms.ChoiceField(
+        label='Bulan', choices=Data.MONTH_CHOICES, required=False)
+    rock_type = forms.ChoiceField(
+        label='Jenis Batuan', choices=RockChoices.TYPES_OF_ROCK, required=False)
+    state1 = forms.ChoiceField(
+        label='Negeri 1', choices=get_state_choices(), required=False)
+    state2 = forms.ChoiceField(
+        label='Negeri 2', choices=get_state_choices(), required=False)
+    state3 = forms.ChoiceField(
+        label='Negeri 3', choices=get_state_choices(), required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        state_list = []
+        state1 = cleaned_data.get('state1')
+        if state1:
+            state_list.append(state1)
+        state2 = cleaned_data.get('state2')
+        if state2:
+            state_list.append(state2)
+        state3 = cleaned_data.get('state3')
+        if state3:
+            state_list.append(state3)
+        if len(state_list) > len(set(state_list)):
+            raise forms.ValidationError('The state must be unique')
+        return cleaned_data
+
+
+class MineReportForm(forms.Form):
+    year = forms.ChoiceField(
+        label='Tahun', choices=YEAR_CHOICES, initial=current_year)
+    month = forms.ChoiceField(
+        label='Bulan', choices=Data.MONTH_CHOICES, required=False)
+    rock_type = forms.ChoiceField(
+        label='Jenis Mineral Utama', choices=MineralChoices.TYPES_OF_MINERAL, required=False)
+    state1 = forms.ChoiceField(
+        label='Negeri 1', choices=get_state_choices(), required=False)
+    state2 = forms.ChoiceField(
+        label='Negeri 2', choices=get_state_choices(), required=False)
+    state3 = forms.ChoiceField(
+        label='Negeri 3', choices=get_state_choices(), required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        state_list = []
+        state1 = cleaned_data.get('state1')
+        if state1:
+            state_list.append(state1)
+        state2 = cleaned_data.get('state2')
+        if state2:
+            state_list.append(state2)
+        state3 = cleaned_data.get('state3')
+        if state3:
+            state_list.append(state3)
+        if len(state_list) > len(set(state_list)):
+            raise forms.ValidationError('The state must be unique')
+        return cleaned_data
 
 
 class GraphForm(forms.Form):

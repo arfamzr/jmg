@@ -2,6 +2,12 @@ from django.urls import path
 
 # from ..views.hq import quarry_report_input, quarry_report, quarry_graph, mine_report_input, mine_report, mine_graph
 from ..views.hq import (
+    # mine report
+    mine_report,
+
+    # quarry report
+    quarry_report,
+
     # mine production graph
     mine_production_graph,
 
@@ -12,6 +18,12 @@ from ..views.hq import (
 app_name = 'hq'
 
 urlpatterns = [
+    # mine report
+    path('mine/', mine_report, name='mine_report'),
+
+    # quarry report
+    path('quarry/', quarry_report, name='quarry_report'),
+
     # mine production graph
     path('mine/graph/production/', mine_production_graph,
          name='mine_production_graph'),
