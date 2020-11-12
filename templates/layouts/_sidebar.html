@@ -181,23 +181,68 @@
       <span>Kuari Aktif</span></a>
   </li>-->
 
-  <li class="nav-item">
+  <li class="nav-item ">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseQuarryProduction" aria-expanded="true"
+      aria-controls="collapseQuarryProduction">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Pengeluaran</span>
+    </a>
+    <div id="collapseQuarryProduction" class="collapse" aria-labelledby="headingQuarryProduction"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'report:hq:quarry_production_graph' %}">Semua Negeri</a>
+        <a class="collapse-item" href="{% url 'report:hq:quarry_production_state_graph' %}">Negeri Pilihan</a>
+      </div>
+    </div>
+  </li>
+
+  {% comment %} <li class="nav-item">
     <a class="nav-link" href="{# {% url 'report:hq:quarry_production_graph' %} #}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Pengeluaran</span></a>
+  </li> {% endcomment %}
+
+  <li class="nav-item ">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseQuarryWorker" aria-expanded="true"
+      aria-controls="collapseQuarryWorker">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Pekerja</span>
+    </a>
+    <div id="collapseQuarryWorker" class="collapse" aria-labelledby="headingQuarryWorker"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'report:hq:quarry_worker_graph' %}">Semua Negeri</a>
+        <a class="collapse-item" href="{% url 'report:hq:quarry_worker_state_graph' %}">Negeri Pilihan</a>
+      </div>
+    </div>
   </li>
 
-  <li class="nav-item">
+  {% comment %} <li class="nav-item">
     <a class="nav-link" href="{# {% url 'report:hq:quarry_worker_graph' %} #}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Pekerja</span></a>
+  </li> {% endcomment %}
+
+  <li class="nav-item ">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseQuarryRoyalties" aria-expanded="true"
+      aria-controls="collapseQuarryRoyalties">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Royalti</span>
+    </a>
+    <div id="collapseQuarryRoyalties" class="collapse" aria-labelledby="headingQuarryRoyalties"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'report:hq:quarry_royalties_graph' %}">Semua Negeri</a>
+        <a class="collapse-item" href="{% url 'report:hq:quarry_royalties_state_graph' %}">Negeri Pilihan</a>
+      </div>
+    </div>
   </li>
 
-  <li class="nav-item">
+  {% comment %} <li class="nav-item">
     <a class="nav-link" href="{# {% url 'report:hq:quarry_royalties_graph' %} #}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Royalti</span></a>
-  </li>
+  </li> {% endcomment %}
 
   <!-- Divider -->
   <hr class="sidebar-divider">
@@ -212,40 +257,65 @@
       <span>Lombong Aktif</span></a>
   </li>-->
 
-  <li class="nav-item">
+  <li class="nav-item ">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMineProduction" aria-expanded="true"
+      aria-controls="collapseMineProduction">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Pengeluaran</span>
+    </a>
+    <div id="collapseMineProduction" class="collapse" aria-labelledby="headingMineProduction"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'report:hq:mine_production_graph' %}">Semua Negeri</a>
+        <a class="collapse-item" href="{% url 'report:hq:mine_production_state_graph' %}">Negeri Pilihan</a>
+      </div>
+    </div>
+  </li>
+
+  {% comment %} <li class="nav-item">
     <a class="nav-link" href="{# {% url 'report:hq:mine_production_graph' %} #}">
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Pengeluaran</span></a>
+  </li> {% endcomment %}
+
+  <li class="nav-item ">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMineWorker" aria-expanded="true"
+      aria-controls="collapseMineWorker">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Pekerja</span>
+    </a>
+    <div id="collapseMineWorker" class="collapse" aria-labelledby="headingMineWorker" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'report:hq:mine_worker_graph' %}">Semua Negeri</a>
+        <a class="collapse-item" href="{% url 'report:hq:mine_worker_state_graph' %}">Negeri Pilihan</a>
+      </div>
+    </div>
   </li>
 
-  <li class="nav-item">
-    <a class="nav-link" href="{# {% url 'report:hq:mine_worker_graph' %} #}">
-      <i class="fas fa-fw fa-sign-out-alt"></i>
-      <span>Pekerja</span></a>
-  </li>
+  {% comment %} <li class="nav-ddddddddd {% endcomment %}
 
   <!-- Divider -->
-  <hr class="sidebar-divider">
-  {% endif %}
+  <hr class=" sidebar-divider">
+    {% endif %}
 
-  {% if user.is_superuser %}
-  <!-- Heading -->
-  <div class="sidebar-heading">
-    <b>JMG State Admin</b>
-  </div>
+    {% if user.is_superuser %}
+    <!-- Heading -->
+    <div class="sidebar-heading">
+      <b>JMG State Admin</b>
+    </div>
 
-  <!-- Divider -->
-  <hr class="sidebar-divider">
-  {% endif %}
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+    {% endif %}
 
-  {% if user.is_jmg_state_admin %}
-  <!-- Heading User -->
-  <div class="sidebar-heading">
-    Lombong
-  </div>
+    {% if user.is_jmg_state_admin %}
+    <!-- Heading User -->
+    <div class="sidebar-heading">
+      Lombong
+    </div>
 
-  <!-- Nav Item - Senarai Pengguna -->
-  <!--<li class="nav-item ">
+    <!-- Nav Item - Senarai Pengguna -->
+    <!--<li class="nav-item ">
     <a class="nav-link" href="{% url 'account:state_admin:state_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai State</span></a>

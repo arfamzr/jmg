@@ -19,7 +19,7 @@
     <div class="card-body">
       <div class="row mb-5">
         <div class="col-12 mb-5">
-          <canvas id="mainProductionChart" width="400" height="150"></canvas>
+          <canvas id="mainRoyaltiesChart" width="400" height="150"></canvas>
         </div>
         <div class="col-lg-12">
           <table class="table table-bordered table-sm">
@@ -46,40 +46,40 @@
               {% for state in main_rock_data.states %}
               <tr>
                 <th>{{ state.name }}</th>
-                <td style="text-align: right;">{{ state.rock1.production }}</td>
+                <td style="text-align: right;">{{ state.rock1.royalties }}</td>
                 {% if main_rock_data.rocks.rock2.name %}
-                <td style="text-align: right;">{{ state.rock2.production }}</td>
+                <td style="text-align: right;">{{ state.rock2.royalties }}</td>
                 {% endif %}
                 {% if main_rock_data.rocks.rock3.name %}
-                <td style="text-align: right;">{{ state.rock3.production }}</td>
+                <td style="text-align: right;">{{ state.rock3.royalties }}</td>
                 {% endif %}
                 {% if main_rock_data.rocks.rock4.name %}
-                <td style="text-align: right;">{{ state.rock4.production }}</td>
+                <td style="text-align: right;">{{ state.rock4.royalties }}</td>
                 {% endif %}
                 {% if main_rock_data.rocks.rock5.name %}
-                <td style="text-align: right;">{{ state.rock5.production }}</td>
+                <td style="text-align: right;">{{ state.rock5.royalties }}</td>
                 {% endif %}
-                <td style="text-align: right;">{{ state.total_by_state.production }}</td>
+                <td style="text-align: right;">{{ state.total_by_state.royalties }}</td>
               </tr>
               {% endfor %}
             </tbody>
             <thead class="thead-light">
               <tr>
                 <th></th>
-                <th style="text-align: right;">{{ main_rock_data.rocks.rock1.production }}</th>
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock1.royalties }}</th>
                 {% if main_rock_data.rocks.rock2.name %}
-                <th style="text-align: right;">{{ main_rock_data.rocks.rock2.production }}</th>
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock2.royalties }}</th>
                 {% endif %}
                 {% if main_rock_data.rocks.rock3.name %}
-                <th style="text-align: right;">{{ main_rock_data.rocks.rock3.production }}</th>
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock3.royalties }}</th>
                 {% endif %}
                 {% if main_rock_data.rocks.rock4.name %}
-                <th style="text-align: right;">{{ main_rock_data.rocks.rock4.production }}</th>
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock4.royalties }}</th>
                 {% endif %}
                 {% if main_rock_data.rocks.rock5.name %}
-                <th style="text-align: right;">{{ main_rock_data.rocks.rock5.production }}</th>
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock5.royalties }}</th>
                 {% endif %}
-                <th style="text-align: right;">{{ main_rock_data.total.production }}</th>
+                <th style="text-align: right;">{{ main_rock_data.total.royalties }}</th>
               </tr>
             </thead>
           </table>
@@ -88,7 +88,7 @@
       {% if side_rock_data.rocks.rock1.name %}
       <div class="row">
         <div class="col-12 mb-5">
-          <canvas id="sideProductionChart" width="400" height="150"></canvas>
+          <canvas id="sideRoyaltiesChart" width="400" height="150"></canvas>
         </div>
         <div class="col-lg-12">
           <table class="table table-bordered table-sm">
@@ -115,40 +115,40 @@
               {% for state in side_rock_data.states %}
               <tr>
                 <th>{{ state.name }}</th>
-                <td style="text-align: right;">{{ state.rock1.production }}</td>
+                <td style="text-align: right;">{{ state.rock1.royalties }}</td>
                 {% if side_rock_data.rocks.rock2.name %}
-                <td style="text-align: right;">{{ state.rock2.production }}</td>
+                <td style="text-align: right;">{{ state.rock2.royalties }}</td>
                 {% endif %}
                 {% if side_rock_data.rocks.rock3.name %}
-                <td style="text-align: right;">{{ state.rock3.production }}</td>
+                <td style="text-align: right;">{{ state.rock3.royalties }}</td>
                 {% endif %}
                 {% if side_rock_data.rocks.rock4.name %}
-                <td style="text-align: right;">{{ state.rock4.production }}</td>
+                <td style="text-align: right;">{{ state.rock4.royalties }}</td>
                 {% endif %}
                 {% if side_rock_data.rocks.rock5.name %}
-                <td style="text-align: right;">{{ state.rock5.production }}</td>
+                <td style="text-align: right;">{{ state.rock5.royalties }}</td>
                 {% endif %}
-                <td style="text-align: right;">{{ state.total_by_state.production }}</td>
+                <td style="text-align: right;">{{ state.total_by_state.royalties }}</td>
               </tr>
               {% endfor %}
             </tbody>
             <thead class="thead-light">
               <tr>
                 <th></th>
-                <th style="text-align: right;">{{ side_rock_data.rocks.rock1.production }}</th>
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock1.royalties }}</th>
                 {% if side_rock_data.rocks.rock2.name %}
-                <th style="text-align: right;">{{ side_rock_data.rocks.rock2.production }}</th>
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock2.royalties }}</th>
                 {% endif %}
                 {% if side_rock_data.rocks.rock3.name %}
-                <th style="text-align: right;">{{ side_rock_data.rocks.rock3.production }}</th>
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock3.royalties }}</th>
                 {% endif %}
                 {% if side_rock_data.rocks.rock4.name %}
-                <th style="text-align: right;">{{ side_rock_data.rocks.rock4.production }}</th>
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock4.royalties }}</th>
                 {% endif %}
                 {% if side_rock_data.rocks.rock5.name %}
-                <th style="text-align: right;">{{ side_rock_data.rocks.rock5.production }}</th>
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock5.royalties }}</th>
                 {% endif %}
-                <th style="text-align: right;">{{ side_rock_data.total.production }}</th>
+                <th style="text-align: right;">{{ side_rock_data.total.royalties }}</th>
               </tr>
             </thead>
           </table>
@@ -167,77 +167,77 @@
   integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA=="
   crossorigin="anonymous"></script>
 <script>
-  var mainProductionData = {
+  var mainRoyaltiesData = {
     labels: [
       // {% for state in main_rock_data.states %}
       '{{ state.name }}',
       // {% endfor %}
     ],
     datasets: [{
-        label: 'PENGELUARAN {{ main_rock_data.rocks.rock1.name }}',
+        label: 'ROYALTI {{ main_rock_data.rocks.rock1.name }}',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         borderColor: 'rgba(255, 99, 132, 1)',
         data: [
           // {% for state in main_rock_data.states %}
-          parseFloat('{{ state.rock1.production }}'),
+          parseFloat('{{ state.rock1.royalties }}'),
           // {% endfor %}
         ],
       },
       // {% if main_rock_data.rocks.rock2.name %}
       {
-        label: 'PENGELUARAN {{ main_rock_data.rocks.rock2.name }}',
+        label: 'ROYALTI {{ main_rock_data.rocks.rock2.name }}',
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
         borderColor: 'rgba(54, 162, 235, 1)',
         data: [
           // {% for state in main_rock_data.states %}
-          parseFloat('{{ state.rock2.production }}'),
+          parseFloat('{{ state.rock2.royalties }}'),
           // {% endfor %}
         ],
       },
       // {% endif %}{% if main_rock_data.rocks.rock3.name %}
       {
-        label: 'PENGELUARAN {{ main_rock_data.rocks.rock3.name }}',
+        label: 'ROYALTI {{ main_rock_data.rocks.rock3.name }}',
         backgroundColor: 'rgba(255, 206, 86, 0.5)',
         borderColor: 'rgba(255, 206, 86, 1)',
         data: [
           // {% for state in main_rock_data.states %}
-          parseFloat('{{ state.rock3.production }}'),
+          parseFloat('{{ state.rock3.royalties }}'),
           // {% endfor %}
         ],
       },
       // {% endif %}{% if main_rock_data.rocks.rock4.name %}
       {
-        label: 'PENGELUARAN {{ main_rock_data.rocks.rock4.name }}',
+        label: 'ROYALTI {{ main_rock_data.rocks.rock4.name }}',
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
         borderColor: 'rgba(75, 192, 192, 1)',
         data: [
           // {% for state in main_rock_data.states %}
-          parseFloat('{{ state.rock4.production }}'),
+          parseFloat('{{ state.rock4.royalties }}'),
           // {% endfor %}
         ],
       },
       // {% endif %}{% if main_rock_data.rocks.rock5.name %}
       {
-        label: 'PENGELUARAN {{ main_rock_data.rocks.rock5.name }}',
+        label: 'ROYALTI {{ main_rock_data.rocks.rock5.name }}',
         backgroundColor: 'rgba(153, 102, 255, 0.5)',
         borderColor: 'rgba(153, 102, 255, 1)',
         data: [
           // {% for state in main_rock_data.states %}
-          parseFloat('{{ state.rock5.production }}'),
+          parseFloat('{{ state.rock5.royalties }}'),
           // {% endfor %}
         ],
       },
       //{% endif %}
     ],
   }
-  var ctx = document.getElementById('mainProductionChart');
-  var mainProductionChart = new Chart(ctx, {
+  var ctx = document.getElementById('mainRoyaltiesChart');
+  var mainRoyaltiesChart = new Chart(ctx, {
     type: 'bar',
-    data: mainProductionData,
+    data: mainRoyaltiesData,
     options: {
       title: {
         display: true,
-        text: "PENGELUARAN LOMBONG - {{ month }} {{ year }} (TAN METRIK)",
+        text: "ROYALTI KUARI - {{ month }} {{ year }} (TAN METRIK)",
       },
       tooltips: {
         mode: 'index',
@@ -247,77 +247,77 @@
     },
   });
   // {% if side_rock_data.rocks.rock1.name %}
-  var sideProductionData = {
+  var sideRoyaltiesData = {
     labels: [
       // {% for state in side_rock_data.states %}
       '{{ state.name }}',
       // {% endfor %}
     ],
     datasets: [{
-        label: 'PENGELUARAN {{ side_rock_data.rocks.rock1.name }}',
+        label: 'ROYALTI {{ side_rock_data.rocks.rock1.name }}',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
         borderColor: 'rgba(255, 99, 132, 1)',
         data: [
           // {% for state in side_rock_data.states %}
-          parseFloat('{{ state.rock1.production }}'),
+          parseFloat('{{ state.rock1.royalties }}'),
           // {% endfor %}
         ],
       },
       // {% if side_rock_data.rocks.rock2.name %}
       {
-        label: 'PENGELUARAN {{ side_rock_data.rocks.rock2.name }}',
+        label: 'ROYALTI {{ side_rock_data.rocks.rock2.name }}',
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
         borderColor: 'rgba(54, 162, 235, 1)',
         data: [
           // {% for state in side_rock_data.states %}
-          parseFloat('{{ state.rock2.production }}'),
+          parseFloat('{{ state.rock2.royalties }}'),
           // {% endfor %}
         ],
       },
       // {% endif %}{% if side_rock_data.rocks.rock3.name %}
       {
-        label: 'PENGELUARAN {{ side_rock_data.rocks.rock3.name }}',
+        label: 'ROYALTI {{ side_rock_data.rocks.rock3.name }}',
         backgroundColor: 'rgba(255, 206, 86, 0.5)',
         borderColor: 'rgba(255, 206, 86, 1)',
         data: [
           // {% for state in side_rock_data.states %}
-          parseFloat('{{ state.rock3.production }}'),
+          parseFloat('{{ state.rock3.royalties }}'),
           // {% endfor %}
         ],
       },
       // {% endif %}{% if side_rock_data.rocks.rock4.name %}
       {
-        label: 'PENGELUARAN {{ side_rock_data.rocks.rock4.name }}',
+        label: 'ROYALTI {{ side_rock_data.rocks.rock4.name }}',
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
         borderColor: 'rgba(75, 192, 192, 1)',
         data: [
           // {% for state in side_rock_data.states %}
-          parseFloat('{{ state.rock4.production }}'),
+          parseFloat('{{ state.rock4.royalties }}'),
           // {% endfor %}
         ],
       },
       // {% endif %}{% if side_rock_data.rocks.rock5.name %}
       {
-        label: 'PENGELUARAN {{ side_rock_data.rocks.rock5.name }}',
+        label: 'ROYALTI {{ side_rock_data.rocks.rock5.name }}',
         backgroundColor: 'rgba(153, 102, 255, 0.5)',
         borderColor: 'rgba(153, 102, 255, 1)',
         data: [
           // {% for state in side_rock_data.states %}
-          parseFloat('{{ state.rock5.production }}'),
+          parseFloat('{{ state.rock5.royalties }}'),
           // {% endfor %}
         ],
       },
       //{% endif %}
     ],
   }
-  var ctx = document.getElementById('sideProductionChart');
-  var sideProductionChart = new Chart(ctx, {
+  var ctx = document.getElementById('sideRoyaltiesChart');
+  var sideRoyaltiesChart = new Chart(ctx, {
     type: 'bar',
-    data: sideProductionData,
+    data: sideRoyaltiesData,
     options: {
       title: {
         display: true,
-        text: "PENGELUARAN LOMBONG - {{ month }} {{ year }} (TAN METRIK)",
+        text: "ROYALTI KUARI - {{ month }} {{ year }} (TAN METRIK)",
       },
       tooltips: {
         mode: 'index',

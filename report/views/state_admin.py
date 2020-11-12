@@ -1223,10 +1223,12 @@ def mine_production_graph(request):
 
             main_rock_list = MainStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             side_rock_list = SideStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             def get_total_rock(rock_list, rock_type):
@@ -1321,10 +1323,12 @@ def mine_worker_graph(request):
 
             main_rock_list = MainStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             side_rock_list = SideStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             def get_total_rock(rock_list, rock_type):
@@ -1426,10 +1430,12 @@ def quarry_production_graph(request):
 
             main_rock_list = MainProductionStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             side_rock_list = SideProductionStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             def get_total_rock(rock_list, rock_type):
@@ -1524,10 +1530,12 @@ def quarry_worker_graph(request):
 
             main_rock_list = MainProductionStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             side_rock_list = SideProductionStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             def get_total_rock(rock_list, rock_type):
@@ -1629,10 +1637,12 @@ def quarry_royalties_graph(request):
 
             main_rock_list = MainProductionStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             side_rock_list = SideProductionStatistic.objects.filter(
                 data__year=year, data__month=month,
+                data__state=request.user.profile.state,
                 data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
 
             def get_total_rock(rock_list, rock_type):

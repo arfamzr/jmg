@@ -1,0 +1,179 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css"
+  integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w=="
+  crossorigin="anonymous" />
+{% endblock extra_styles %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="row mb-5">
+        <div class="col-12 mb-5">
+          <canvas id="mainProductionChart" width="400" height="150"></canvas>
+        </div>
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Jenis Batuan Utama</th>
+                <th scope="col" style="text-align: center;">JUMLAH</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for rock in main_rocks %}
+              <tr>
+                <th>{{ rock.name }}</th>
+                <td style="text-align: right;">{{ rock.production }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% if side_rocks %}
+      <div class="row">
+        <div class="col-12 mb-5">
+          <canvas id="sideProductionChart" width="400" height="150"></canvas>
+        </div>
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Jenis Batuan Sampingan</th>
+                <th scope="col" style="text-align: center;">JUMLAH</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for rock in side_rocks %}
+              <tr>
+                <th>{{ rock.name }}</th>
+                <td style="text-align: right;">{{ rock.production }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"
+  integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA=="
+  crossorigin="anonymous"></script>
+<script>
+  var ctx = document.getElementById('mainProductionChart');
+  var mainProductionChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        // {% for rock in main_rocks %}
+        '{{ rock.name }}',
+        // {% endfor %}
+      ],
+      datasets: [{
+        label: 'Batuan Utama',
+        data: [
+          // {% for rock in main_rocks %}
+          parseFloat('{{ rock.production }}'),
+          // {% endfor %}
+        ],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: "PENGELUARAN KUARI MINERAL UTAMA - {{ month }} {{ year }} (TAN METRIK)",
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  })
+  var ctx = document.getElementById('sideProductionChart');
+  var sideProductionChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        // {% for rock in side_rocks %}
+        '{{ rock.name }}',
+        // {% endfor %}
+      ],
+      datasets: [{
+        label: 'Batuan Sampingan',
+        data: [
+          // {% for rock in side_rocks %}
+          parseFloat('{{ rock.production }}'),
+          // {% endfor %}
+        ],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: "PENGELUARAN KUARI MINERAL SAMPINGAN - {{ month }} {{ year }} (TAN METRIK)",
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  })
+</script>
+{% endblock extra_js %}

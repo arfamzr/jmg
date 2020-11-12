@@ -294,3 +294,137 @@ class MineWorkerGraphForm(forms.Form):
         if len(rock_list) > len(set(rock_list)):
             raise forms.ValidationError('The mineral must be unique')
         return cleaned_data
+
+
+# quarry production state graph
+class QuarryProductionStateGraphForm(forms.Form):
+    year = forms.ChoiceField(
+        label='Tahun', choices=YEAR_CHOICES, initial=current_year)
+    month = forms.ChoiceField(
+        label='Bulan', choices=get_month_choices(), required=False)
+    state = forms.ChoiceField(
+        label='Negeri', choices=Profile.STATE_CHOICES)
+    main_rock_type1 = forms.ChoiceField(
+        label='Jenis Batuan Utama 1', choices=RockChoices.TYPES_OF_ROCK)
+    main_rock_type2 = forms.ChoiceField(
+        label='Jenis Batuan Utama 2', choices=get_type_of_rock(), required=False)
+    main_rock_type3 = forms.ChoiceField(
+        label='Jenis Batuan Utama 3', choices=get_type_of_rock(), required=False)
+    main_rock_type4 = forms.ChoiceField(
+        label='Jenis Batuan Utama 4', choices=get_type_of_rock(), required=False)
+    main_rock_type5 = forms.ChoiceField(
+        label='Jenis Batuan Utama 5', choices=get_type_of_rock(), required=False)
+    side_rock_type1 = forms.ChoiceField(
+        label='Jenis Batuan Sampingan 1', choices=get_type_of_rock(), required=False)
+    side_rock_type2 = forms.ChoiceField(
+        label='Jenis Batuan Sampingan 2', choices=get_type_of_rock(), required=False)
+    side_rock_type3 = forms.ChoiceField(
+        label='Jenis Batuan Sampingan 3', choices=get_type_of_rock(), required=False)
+    side_rock_type4 = forms.ChoiceField(
+        label='Jenis Batuan Sampingan 4', choices=get_type_of_rock(), required=False)
+    side_rock_type5 = forms.ChoiceField(
+        label='Jenis Batuan Sampingan 5', choices=get_type_of_rock(), required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        main_rock1 = cleaned_data.get('main_rock_type1')
+        main_rock_list = [main_rock1]
+        main_rock2 = cleaned_data.get('main_rock_type2')
+        if main_rock2:
+            main_rock_list.append(main_rock2)
+        main_rock3 = cleaned_data.get('main_rock_type3')
+        if main_rock3:
+            main_rock_list.append(main_rock3)
+        main_rock4 = cleaned_data.get('main_rock_type4')
+        if main_rock4:
+            main_rock_list.append(main_rock4)
+        main_rock5 = cleaned_data.get('main_rock_type5')
+        if main_rock5:
+            main_rock_list.append(main_rock5)
+        if len(main_rock_list) > len(set(main_rock_list)):
+            raise forms.ValidationError('The main rock must be unique')
+
+        side_rock1 = cleaned_data.get('side_rock_type1')
+        side_rock_list = [side_rock1]
+        side_rock2 = cleaned_data.get('side_rock_type2')
+        if side_rock2:
+            side_rock_list.append(side_rock2)
+        side_rock3 = cleaned_data.get('side_rock_type3')
+        if side_rock3:
+            side_rock_list.append(side_rock3)
+        side_rock4 = cleaned_data.get('side_rock_type4')
+        if side_rock4:
+            side_rock_list.append(side_rock4)
+        side_rock5 = cleaned_data.get('side_rock_type5')
+        if side_rock5:
+            side_rock_list.append(side_rock5)
+        if len(side_rock_list) > len(set(side_rock_list)):
+            raise forms.ValidationError('The side rock must be unique')
+        return cleaned_data
+
+
+# mine production state graph
+class MineProductionStateGraphForm(forms.Form):
+    year = forms.ChoiceField(
+        label='Tahun', choices=YEAR_CHOICES, initial=current_year)
+    month = forms.ChoiceField(
+        label='Bulan', choices=get_month_choices(), required=False)
+    state = forms.ChoiceField(
+        label='Negeri', choices=Profile.STATE_CHOICES)
+    main_rock_type1 = forms.ChoiceField(
+        label='Jenis Mineral Utama 1', choices=MineralChoices.TYPES_OF_MINERAL)
+    main_rock_type2 = forms.ChoiceField(
+        label='Jenis Mineral Utama 2', choices=get_type_of_mineral(), required=False)
+    main_rock_type3 = forms.ChoiceField(
+        label='Jenis Mineral Utama 3', choices=get_type_of_mineral(), required=False)
+    main_rock_type4 = forms.ChoiceField(
+        label='Jenis Mineral Utama 4', choices=get_type_of_mineral(), required=False)
+    main_rock_type5 = forms.ChoiceField(
+        label='Jenis Mineral Utama 5', choices=get_type_of_mineral(), required=False)
+    side_rock_type1 = forms.ChoiceField(
+        label='Jenis Mineral Sampingan 1', choices=get_type_of_mineral(), required=False)
+    side_rock_type2 = forms.ChoiceField(
+        label='Jenis Mineral Sampingan 2', choices=get_type_of_mineral(), required=False)
+    side_rock_type3 = forms.ChoiceField(
+        label='Jenis Mineral Sampingan 3', choices=get_type_of_mineral(), required=False)
+    side_rock_type4 = forms.ChoiceField(
+        label='Jenis Mineral Sampingan 4', choices=get_type_of_mineral(), required=False)
+    side_rock_type5 = forms.ChoiceField(
+        label='Jenis Mineral Sampingan 5', choices=get_type_of_mineral(), required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        main_rock1 = cleaned_data.get('main_rock_type1')
+        main_rock_list = [main_rock1]
+        main_rock2 = cleaned_data.get('main_rock_type2')
+        if main_rock2:
+            main_rock_list.append(main_rock2)
+        main_rock3 = cleaned_data.get('main_rock_type3')
+        if main_rock3:
+            main_rock_list.append(main_rock3)
+        main_rock4 = cleaned_data.get('main_rock_type4')
+        if main_rock4:
+            main_rock_list.append(main_rock4)
+        main_rock5 = cleaned_data.get('main_rock_type5')
+        if main_rock5:
+            main_rock_list.append(main_rock5)
+        if len(main_rock_list) > len(set(main_rock_list)):
+            raise forms.ValidationError('The main mineral must be unique')
+
+        side_rock1 = cleaned_data.get('side_rock_type1')
+        side_rock_list = [side_rock1]
+        side_rock2 = cleaned_data.get('side_rock_type2')
+        if side_rock2:
+            side_rock_list.append(side_rock2)
+        side_rock3 = cleaned_data.get('side_rock_type3')
+        if side_rock3:
+            side_rock_list.append(side_rock3)
+        side_rock4 = cleaned_data.get('side_rock_type4')
+        if side_rock4:
+            side_rock_list.append(side_rock4)
+        side_rock5 = cleaned_data.get('side_rock_type5')
+        if side_rock5:
+            side_rock_list.append(side_rock5)
+        if len(side_rock_list) > len(set(side_rock_list)):
+            raise forms.ValidationError('The side mineral must be unique')
+        return cleaned_data

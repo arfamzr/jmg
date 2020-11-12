@@ -13,6 +13,30 @@ from ..views.hq import (
 
     # mine worker graph
     mine_worker_graph,
+
+    # quarry production graph
+    quarry_production_graph,
+
+    # quarry worker graph
+    quarry_worker_graph,
+
+    # quarry royalties graph
+    quarry_royalties_graph,
+
+    # mine production state graph
+    mine_production_state_graph,
+
+    # mine worker state graph
+    mine_worker_state_graph,
+
+    # quarry production state graph
+    quarry_production_state_graph,
+
+    # quarry worker state graph
+    quarry_worker_state_graph,
+
+    # quarry royalties state graph
+    quarry_royalties_state_graph,
 )
 
 app_name = 'hq'
@@ -31,6 +55,38 @@ urlpatterns = [
     # mine worker graph
     path('mine/graph/worker/', mine_worker_graph,
          name='mine_worker_graph'),
+
+    # quarry production graph
+    path('quarry/graph/production/', quarry_production_graph,
+         name='quarry_production_graph'),
+
+    # quarry worker graph
+    path('quarry/graph/worker/', quarry_worker_graph,
+         name='quarry_worker_graph'),
+
+    # quarry royalties graph
+    path('quarry/graph/royalties/', quarry_royalties_graph,
+         name='quarry_royalties_graph'),
+
+    # mine production state graph
+    path('mine/graph/state-production/', mine_production_state_graph,
+         name='mine_production_state_graph'),
+
+    # mine worker state graph
+    path('mine/graph/state-worker/', mine_worker_state_graph,
+         name='mine_worker_state_graph'),
+
+    # quarry production state graph
+    path('quarry/graph/state-production/', quarry_production_state_graph,
+         name='quarry_production_state_graph'),
+
+    # quarry worker state graph
+    path('quarry/graph/state-worker/', quarry_worker_state_graph,
+         name='quarry_worker_state_graph'),
+
+    # quarry royalties state graph
+    path('quarry/graph/state-royalties/', quarry_royalties_state_graph,
+         name='quarry_royalties_state_graph'),
 
     # path('quarry/input/', quarry_report_input, name='quarry_input'),
     # path('quarry/', quarry_report, name='quarry'),
