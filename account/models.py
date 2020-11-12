@@ -45,14 +45,11 @@ class User(AbstractUser):
     def get_admin_update_url(self):
         return reverse("account:super_admin:admin_update", kwargs={"pk": self.pk})
 
-    def get_admin_toggle_active_url(self):
-        return reverse("account:super_admin:admin_toggle_active", kwargs={"pk": self.pk})
-
     def get_admin_reset_password_url(self):
         return reverse("account:super_admin:admin_update_password", kwargs={"pk": self.pk})
 
-    def get_absolute_url(self):
-        return reverse("account:state_admin:user_detail", kwargs={"pk": self.pk})
+    # def get_absolute_url(self):
+    #     return reverse("account:state_admin:user_detail", kwargs={"pk": self.pk})
 
     def get_state_absolute_url(self):
         return reverse("account:state:user_detail", kwargs={"pk": self.pk})
@@ -60,14 +57,14 @@ class User(AbstractUser):
     def get_update_url(self):
         return reverse("account:state_admin:user_update", kwargs={"pk": self.pk})
 
-    def get_reset_password_url(self):
-        return reverse("account:state_admin:user_update_password", kwargs={"pk": self.pk})
+    # def get_reset_password_url(self):
+    #     return reverse("account:state_admin:user_update_password", kwargs={"pk": self.pk})
 
     def get_jmg_update_url(self):
         return reverse("account:state_admin:state_update", kwargs={"pk": self.pk})
 
-    def get_toggle_active_url(self):
-        return reverse("account:state_admin:user_toggle_active", kwargs={"pk": self.pk})
+    # def get_toggle_active_url(self):
+    #     return reverse("account:state_admin:user_toggle_active", kwargs={"pk": self.pk})
 
     def get_quarry_list_url(self):
         return reverse("quarry:state_admin:user_quarry_list", kwargs={"pk": self.pk})
@@ -80,6 +77,17 @@ class User(AbstractUser):
 
     def get_state_mine_list_url(self):
         return reverse("mine:state:user_mine_list", kwargs={"pk": self.pk})
+
+    ############################################################
+
+    def state_admin_get_state_update_url(self):
+        return reverse("account:state_admin:state_update", kwargs={"pk": self.pk})
+
+    def state_admin_get_toggle_active_url(self):
+        return reverse("account:state_admin:state_toggle_active", kwargs={"pk": self.pk})
+
+    def state_admin_get_state_update_state_url(self):
+        return reverse("account:state_admin:state_update_state", kwargs={"pk": self.pk})
 
 
 class Profile(models.Model):
