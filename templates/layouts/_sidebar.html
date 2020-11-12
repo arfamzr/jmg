@@ -122,6 +122,36 @@
   {% endif %}
 
   {% if user.is_jmg_hq %}
+  <!-- Heading User -->
+  <div class="sidebar-heading">
+    JMG Admin Negeri
+  </div>
+
+  <!-- Nav Item - Senarai Pengguna -->
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'account:hq:state_admin_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai State Admin</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading User -->
+  <div class="sidebar-heading">
+    JMG Negeri
+  </div>
+
+  <!-- Nav Item - Senarai Pengguna -->
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'account:hq:state_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai State</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
   <!-- Heading -->
   <div class="sidebar-heading">
     Senarai Data Lulus
