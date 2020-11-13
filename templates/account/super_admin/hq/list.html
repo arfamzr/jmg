@@ -10,9 +10,9 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <div class="row">
-        {% comment %} <div class="col">
-          <a href="{% url 'account:state_admin:state_register' %}" class="btn btn-primary">Tambah State</a>
-        </div> {% endcomment %}
+        <div class="col">
+          <a href="{% url 'account:super_admin:hq_register' %}" class="btn btn-primary">Tambah JMG HQ</a>
+        </div>
 
         <div class="col justify-content-end">
           <form action="." method="GET">
@@ -36,8 +36,8 @@
                 <th scope="col">#</th>
                 <th scope="col">Nama</th>
                 <th scope="col">Emel</th>
-                <th scope="col">Negeri</th>
                 <th scope="col">Aktif</th>
+                <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -46,7 +46,6 @@
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href="{{ each_user.get_absolute_url }}">{{ each_user.username }}</a></td>
                 <td>{{ each_user.email }}</td>
-                <td>{{ each_user.profile.get_state_display }}</td>
                 <td>
                   {% if each_user.is_active %}
                   <i class="fas fa-check-circle text-success ml-2"></i>
@@ -54,20 +53,21 @@
                   <i class="fas fa-times-circle text-danger ml-2"></i>
                   {% endif %}
                 </td>
-                {% comment %} <td>
-                  <a href="{{ each_user.state_admin_get_state_update_url }}" class="badge badge-primary">Update</a>
-                  <a href="{{ each_user.state_admin_get_toggle_active_url }}" class="badge badge-info">
+                <td>
+                  <a href="{{ each_user.super_admin_get_hq_update_url }}" class="badge badge-primary">Update</a>
+                  <a href="{{ each_user.super_admin_get_toggle_active_url }}" class="badge badge-info">
                     {% if each_user.is_active %}
                     Deactivate
                     {% else %}
                     Activate
                     {% endif %}
                   </a>
-                  <a href="{{ each_user.state_admin_get_state_update_state_url }}" class="badge badge-primary">Update
-                    State</a>
-                  <a href="{{ each_user.get_reset_password_url }}" class="badge badge-secondary">Reset
-                    Password</a>
-                </td> {% endcomment %}
+                  {% comment %} <a href="{{ each_user.state_admin_get_state_update_state_url }}"
+                    class="badge badge-primary">Update
+                    State</a> {% endcomment %}
+                  {% comment %} <a href="{{ each_user.get_reset_password_url }}" class="badge badge-secondary">Reset
+                    Password</a> {% endcomment %}
+                </td>
               </tr>
               {% empty %}
               <tr>

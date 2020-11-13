@@ -89,9 +89,8 @@
   {% endif %}
 
   {% if user.is_super_admin %}
-  <!-- Heading User -->
   <div class="sidebar-heading">
-    User
+    JMG HQ
   </div>
 
   <!-- Nav Item - Senarai Pengguna -->
@@ -101,14 +100,45 @@
       <span>Senarai JMG HQ</span></a>
   </li>
 
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading User -->
+  <div class="sidebar-heading">
+    JMG Admin Negeri
+  </div>
+
+  <!-- Nav Item - Senarai Pengguna -->
   <li class="nav-item ">
-    <a class="nav-link" href="{% url 'account:super_admin:admin_list' %}">
+    <a class="nav-link" href="{% url 'account:super_admin:state_admin_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>Senarai JMG Admin Negeri</span></a>
   </li>
 
   <!-- Divider -->
   <hr class="sidebar-divider">
+
+  {% comment %}
+  <!-- Heading User -->
+  <div class="sidebar-heading">
+    User
+  </div>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'account:super_admin:hq_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai HQ</span></a>
+  </li>
+
+  <!-- Nav Item - Senarai Pengguna -->
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'account:super_admin:hq_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai JMG HQ</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider"> {% endcomment %}
   {% endif %}
 
   {% if user.is_superuser %}
