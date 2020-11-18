@@ -19,7 +19,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
                             <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Search Username</button>
+                                <button type="submit" class="btn btn-primary">Carian Nama</button>
                             </div>
                         </div>
                     </form>
@@ -34,11 +34,11 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Username</th>
+                                <th scope="col">Nama pengguna</th>
                                 <th scope="col">Nama Penuh</th>
                                 <th scope="col">Emel</th>
                                 <th scope="col">Aktif</th>
-                                <th scope="col">Action</th>
+                                <th scope="col">Tindakan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,17 +58,17 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{{ each_user.get_hq_update_url }}" class="badge badge-primary">Update</a>
+                                    <a href="{{ each_user.get_hq_update_url }}"
+                                        class="badge badge-primary">Kemaskini</a>
                                     <a href="{{ each_user.get_hq_toggle_active_url }}" class="badge badge-info">
                                         {% if each_user.is_active %}
-                                        Deactivate
+                                        Nyahaktifkan
                                         {% else %}
-                                        Activate
+                                        Aktifkan
                                         {% endif %}
                                     </a>
                                     <a href="{{ each_user.get_hq_reset_password_url }}"
-                                        class="badge badge-secondary">Reset
-                                        Password</a>
+                                        class="badge badge-secondary">Menetapkan semula kata laluan</a>
                                 </td>
                             </tr>
                             {% empty %}

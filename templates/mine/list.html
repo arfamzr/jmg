@@ -46,6 +46,11 @@
                   <td>{{ forloop.counter }}</td>
                   <td>{{ mine.location }}</td>
                   <td>{{ mine.address1 }}{{ mine.address2 }}{{ mine.address3 }}</td>
+                  <td>
+                    {{ mine.address1 }}{% if mine.address2 %},<br>
+                    {{ mine.address2 }}{% endif %}{% if mine.address3 %},<br>
+                    {{ mine.address3 }}{% endif %}
+                  </td>
                   <td>{{ mine.main_rock_type }}</td>
                   <td><a href="">{{ mine_miner.lot_number }}</a></td>
                   <td>

@@ -34,7 +34,7 @@ class StateListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai JMG state'
+        context["title"] = 'Senarai JMG Negeri'
         return context
 
 
@@ -55,7 +55,7 @@ class StateRegistrationView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Daftar JMG State'
+        context["title"] = 'Daftar JMG Negeri'
         return context
 
 
@@ -68,7 +68,7 @@ class StateUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update State'
+        context["title"] = 'Kemaskini Negeri'
         return context
 
 
@@ -99,7 +99,7 @@ class StateStateUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update State'
+        context["title"] = 'Kemaskini Negeri'
         return context
 
 

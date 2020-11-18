@@ -23,8 +23,8 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">Jenis Batuan</th>
-                <th scope="col">Kategori</th>
+                <th scope="col">Saiz Batuan/Produk</th>
+                <th scope="col">Jumlah</th>
                 <th scope="col">Tindakan</th>
               </tr>
             </thead>
@@ -32,8 +32,8 @@
               {% for sales_submission in sales_submission_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ sales_submission.mineral_type }}</td>
-                <td>Batuan Utama</td>
+                <td>{{ sales_submission.submission_size }}</td>
+                <td>{{ sales_submission.total }}</td>
                 <td>
                   <a href="{{ sales_submission.get_edit_url }}" class="badge badge-sm badge-info">Ubah</a>
                   <a href="" class="badge badge-sm badge-danger" data-toggle="modal" data-target="#deleteModal"
@@ -48,8 +48,13 @@
 
       <div class="row">
         <div class="col-4 col-lg-3 mt-3 ml-auto">
+          <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+            Sebelumnya
+          </a>
+        </div>
+        <div class="col-4 col-lg-3 mt-3">
           <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
-            Seterusnya
+            Simpan & Seterusnya
           </a>
         </div>
       </div>

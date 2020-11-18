@@ -30,3 +30,24 @@
 </div>
 <!-- /.container-fluid -->
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+  const amount = document.getElementById('id_amount')
+  const worth = document.getElementById('id_worth')
+  const total = document.getElementById('id_total')
+
+  const set_total = () => {
+    let total_submission = (parseFloat(amount.value) || 0) * (parseFloat(worth.value) || 0)
+    total.value = total_submission
+  }
+
+  amount.addEventListener("change", () => {
+    set_total()
+  })
+
+  worth.addEventListener("change", () => {
+    set_total()
+  })
+</script>
+{% endblock extra_js %}

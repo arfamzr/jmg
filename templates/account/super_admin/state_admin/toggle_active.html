@@ -13,16 +13,16 @@
           <form class="user" method="post" action=".">
             <div class="row mb-3">
               <h3 class="col">
-                Are you sure to
-                {% if each_user.is_active %}deactivate{% else %}activate{% endif %}
-                this user({{ each_user.username }})?
+                Adakah anda pasti untuk
+                {% if each_user.is_active %}nyahaktifkan{% else %}aktifkan{% endif %}
+                pengguna ini({{ each_user.username }})?
               </h3>
             </div>
             <div class="row">
               <div class="col">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">
-                  Yes
+                  Ya
                 </button>
               </div>
             </div>

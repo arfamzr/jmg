@@ -19,7 +19,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search Pemajak</button>
+                <button type="submit" class="btn btn-primary">Carian Pemajak</button>
               </div>
             </div>
           </form>
@@ -34,8 +34,8 @@
               <tr>
                 <th scope="col">No</th>
                 <th scope="col">Nama</th>
-                <th scope="col">No Pajakan</th>
-                <th scope="col">Tamat Pajakan</th>
+                <th scope="col">No Hakmilik / No Lot</th>
+                {% comment %} <th scope="col">Tamat Pajakan</th> {% endcomment %}
                 <th scope="col">Alamat</th>
                 <th scope="col">Aktif</th>
                 <th scope="col">Tindakan</th>
@@ -47,7 +47,7 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ lease_holder.name }}</td>
                 <td>{{ lease_holder.lease_number }}</td>
-                <td>{{ lease_holder.lease_expired }}</td>
+                {% comment %} <td>{{ lease_holder.lease_expired }}</td> {% endcomment %}
                 <td>
                   {{ lease_holder.address1 }}{% if lease_holder.address2 %},<br>
                   {{ lease_holder.address2 }}{% endif %}{% if lease_holder.address3 %},<br>

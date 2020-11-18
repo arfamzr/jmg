@@ -38,7 +38,7 @@
                 <th scope="col">Alamat</th>
                 <th scope="col">No. Telefon</th>
                 <th scope="col">Aktif</th>
-                <th scope="col">Action</th>
+                <th scope="col">Tindakan</th>
               </tr>
             </thead>
             <tbody>
@@ -46,7 +46,11 @@
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href="{{ company.get_absolute_url }}">{{ company.name }}</a></td>
-                <td>{{ company.address1 }}{{ company.address2 }}{{ company.address3 }}</td>
+                <td>
+                  {{ company.address1 }}{% if company.address2 %},<br>
+                  {{ company.address2 }}{% endif %}{% if company.address3 %},<br>
+                  {{ company.address3 }}{% endif %}
+                </td>
                 <td>{{ company.phone }}</td>
                 <td>
                   {% if company.status %}
@@ -56,12 +60,12 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ company.get_update_url }}" class="badge badge-primary">Update</a>
+                  <a href="{{ company.get_update_url }}" class="badge badge-primary">Kemaskini</a>
                   <a href="{{ company.get_toggle_active_url }}" class="badge badge-info">
                     {% if company.status %}
-                    Deactivate
+                    Nyahaktifkan
                     {% else %}
-                    Activate
+                    Aktifkan
                     {% endif %}
                   </a>
                 </td>

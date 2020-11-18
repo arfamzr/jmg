@@ -63,16 +63,16 @@
   {% endif %}
 
   <!-- Heading -->
-  <div class="sidebar-heading">
+  {% comment %} <div class="sidebar-heading">
     Administrator
-  </div>
+  </div> {% endcomment %}
 
 
   <!-- Nav Item - Dashboard -->
   <li class="nav-item">
     <a class="nav-link" href="{% url 'dashboard:dashboard' %}">
       <i class="fas fa-fw fa-tachometer-alt"></i>
-      <span>Dashboard</span></a>
+      <span>Papan Pemuka</span></a>
   </li>
 
   <!-- Divider -->
@@ -161,7 +161,7 @@
   <li class="nav-item ">
     <a class="nav-link" href="{% url 'account:hq:state_admin_list' %}">
       <i class="fas fa-fw fa-user"></i>
-      <span>Senarai State Admin</span></a>
+      <span>Senarai Admin Negeri</span></a>
   </li>
 
   <!-- Divider -->
@@ -176,7 +176,7 @@
   <li class="nav-item ">
     <a class="nav-link" href="{% url 'account:hq:state_list' %}">
       <i class="fas fa-fw fa-user"></i>
-      <span>Senarai State</span></a>
+      <span>Senarai JMG Negeri</span></a>
   </li>
 
   <!-- Divider -->
@@ -232,7 +232,7 @@
   <hr class="sidebar-divider">
 
   <div class="sidebar-heading">
-    Graph Kuari
+    Graf Kuari
   </div>
 
   <!--<li class="nav-item">
@@ -308,7 +308,7 @@
   <hr class="sidebar-divider">
 
   <div class="sidebar-heading">
-    Graph Lombong
+    Graf Lombong
   </div>
 
   <!--<li class="nav-item">
@@ -359,7 +359,7 @@
   {% if user.is_superuser %}
   <!-- Heading -->
   <div class="sidebar-heading">
-    <b>JMG State Admin</b>
+    <b>JMG Admin Negeri</b>
   </div>
 
   <!-- Divider -->
@@ -376,7 +376,7 @@
   <li class="nav-item ">
     <a class="nav-link" href="{% url 'account:state_admin:state_list' %}">
       <i class="fas fa-fw fa-user"></i>
-      <span>Senarai State</span></a>
+      <span>Senarai JMG Negeri</span></a>
   </li>
 
   <!-- Divider -->
@@ -538,7 +538,7 @@
   <hr class="sidebar-divider">
 
   <div class="sidebar-heading">
-    Graph Kuari
+    Graf Kuari
   </div>
 
   <!--<li class="nav-item">
@@ -569,7 +569,7 @@
   <hr class="sidebar-divider">
 
   <div class="sidebar-heading">
-    Graph Lombong
+    Graf Lombong
   </div>
 
   <!--<li class="nav-item">
@@ -597,7 +597,7 @@
   {% if user.is_superuser %}
   <!-- Heading -->
   <div class="sidebar-heading">
-    <b>JMG State</b>
+    <b>JMG Negeri</b>
   </div>
 
   <!-- Divider -->
@@ -672,7 +672,7 @@
   {% if user.is_superuser %}
   <!-- Heading -->
   <div class="sidebar-heading">
-    <b>Industry</b>
+    <b>Industri</b>
   </div>
 
   <!-- Divider -->

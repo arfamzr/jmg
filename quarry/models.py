@@ -72,7 +72,8 @@ class Land_Status:
 
 class LeaseHolder(models.Model):
     name = models.CharField(_("nama"), max_length=255)
-    lease_number = models.CharField(_("no pajakan"), max_length=25)
+    lease_number = models.CharField(
+        _("No Pajakan / No Hakmilik / No Lot"), max_length=255)
     address1 = models.CharField(_("alamat"), max_length=255)
     address2 = models.CharField(
         _("alamat (line 2)"), max_length=255, blank=True)
@@ -80,8 +81,8 @@ class LeaseHolder(models.Model):
         _("alamat (line 3)"), max_length=255, blank=True)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
-    area = models.CharField(_("keluasan"), max_length=50, blank=True)
-    lease_expired = models.DateField(_("tarikh tamat pajakan"))
+    area = models.CharField(_("Keluasan (Hektar)"), max_length=50, blank=True)
+    lease_expired = models.DateField(_("tarikh tamat pajakan"), blank=True)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -480,11 +481,13 @@ class SideProductionStatistic(models.Model):
 class SalesSubmission(models.Model):
     data = models.ForeignKey(Data, verbose_name=_(
         "data"), on_delete=models.CASCADE, related_name='sales_submissions')
-    submission_size = models.CharField(_("saiz penyerahan"), max_length=255)
+    submission_size = models.CharField(_("Saiz Batuan/Produk"), max_length=255)
     amount = models.DecimalField(
         _("amaun (Tan Metrik)"), max_digits=15, decimal_places=4)
     worth = models.DecimalField(
-        _("nilai (RM)"), max_digits=15, decimal_places=2)
+        _("Nilai (RM) / Tan Matrik"), max_digits=15, decimal_places=2)
+    total = models.DecimalField(
+        _("Jumlah (RM)"), max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

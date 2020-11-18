@@ -290,12 +290,15 @@ def sales_submission_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     sales_submission_list = SalesSubmission.objects.filter(data=data)
     next_link = reverse('quarry:final_uses_edit', kwargs={'pk': data.pk})
+    prev_link = reverse('quarry:production_statistic_edit',
+                        kwargs={'pk': data.pk})
 
     context = {
-        'title': 'Penyerahan Jualan',
+        'title': 'Penyerahan/Jualan',
         'data': data,
         'sales_submission_list': sales_submission_list,
         'next_link': next_link,
+        'prev_link': prev_link,
     }
 
     return render(request, 'quarry/data/sales_submission/list.html', context=context)
@@ -317,7 +320,7 @@ class SalesSubmissionCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Tambah Penyerahan Jualan'
+        context["title"] = 'Tambah Penyerahan/Jualan'
         return context
 
 
@@ -331,7 +334,7 @@ class SalesSubmissionUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Edit Penyerahan Jualan'
+        context["title"] = 'Edit Penyerahan/Jualan'
         return context
 
 
@@ -348,7 +351,7 @@ def sales_submission_detail(request, pk):
                         "pk": sales_submission.data.pk})
 
     context = {
-        'title': 'Penyerahan Jualan',
+        'title': 'Penyerahan/Jualan',
         'next_link': next_link,
         'sales_submission': sales_submission,
     }

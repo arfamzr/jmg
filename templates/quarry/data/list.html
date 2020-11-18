@@ -35,8 +35,8 @@
                 <th scope="col">Bulan/Tahun</th>
                 <th scope="col">Nama Kuari</th>
                 <th scope="col">Alamat Kuari</th>
-                <th scope="col">No Lot</th>
-                <th scope="col">Jenis Batuan</th>
+                {% comment %} <th scope="col">No Lot</th> {% endcomment %}
+                {% comment %} <th scope="col">Jenis Batuan</th> {% endcomment %}
                 <th scope="col">Status</th>
                 <th scope="col">Tindakan</th>
               </tr>
@@ -47,10 +47,15 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ data.get_month_display }} {{ data.year }}</td>
-                <td>{{ quarry.location }}</td>
-                <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td>
-                <td>{{ quarry_miner.lot_number }}</td>
-                <td>{{ quarry.main_rock_type }}</td>
+                <td>{{ quarry.name }}</td>
+                {% comment %} <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td> {% endcomment %}
+                <td>
+                  {{ quarry.address1 }}{% if quarry.address2 %},<br>
+                  {{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>
+                  {{ quarry.address3 }}{% endif %}
+                </td>
+                {% comment %} <td>{{ quarry_miner.lot_number }}</td> {% endcomment %}
+                {% comment %} <td>{{ quarry.main_rock_type }}</td> {% endcomment %}
                 <td>
                   {% if last_approval %}
                   {% if last_approval.admin_approved == True %}
@@ -65,7 +70,7 @@
                   <span class="text-warning">Dalam Proses</span>
                   {% endif %}
                   {% else %}
-                  <span class="text-info">Draft</span>
+                  <span class="text-info">Draf</span>
                   {% endif %}
                 </td>
                 <td>

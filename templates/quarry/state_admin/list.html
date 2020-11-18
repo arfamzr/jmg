@@ -45,7 +45,11 @@
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td><a href="{{ quarry.get_absolute_url }}">{{ quarry.name }}</a></td>
-                <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td>
+                <td>
+                  {{ quarry.address1 }}{% if quarry.address2 %},<br>
+                  {{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>
+                  {{ quarry.address3 }}{% endif %}
+                </td>
                 <td><a href="{{ quarry.get_rock_list_url }}" class="badge badge-primary">Senarai Batuan</a></td>
                 <td>
                   {% if quarry.status %}

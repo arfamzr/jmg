@@ -11,7 +11,7 @@
     <div class="card-header py-3">
       <div class="row">
         <div class="col my-auto">
-          <h5>Profile Syarikat</h5>
+          <h5>Profil Syarikat</h5>
         </div>
       </div>
     </div>
@@ -21,13 +21,15 @@
           <table class="table table-bordered table-sm">
             <tbody>
               <tr>
-                <th>Name</th>
+                <th>Nama</th>
                 <td>{{ company.name }}</td>
               </tr>
               <tr>
                 <th>Alamat</th>
                 <td>
-                  {{ company.address1 }}{% if company.address2 %},<br>{{ company.address2 }}{% endif %}{% if company.address3 %},<br>{{ company.address3 }}{% endif %}
+                  {{ company.address1 }}{% if company.address2 %},<br>
+                  {{ company.address2 }}{% endif %}{% if company.address3 %},<br>
+                  {{ company.address3 }}{% endif %}
                 </td>
               </tr>
               <tr>
@@ -75,7 +77,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search Username</button>
+                <button type="submit" class="btn btn-primary">Carian Nama</button>
               </div>
             </div>
           </form>

@@ -6,8 +6,10 @@ from account.widgets import XDSoftDatePickerInput
 
 class LeaseHolderForm(forms.ModelForm):
     lease_expired = forms.DateField(
+        label='Tarikh Tamat Pajakan',
         input_formats=['%d/%m/%Y'],
         widget=XDSoftDatePickerInput(format='%d/%m/%Y'),
+        required=False,
     )
 
     class Meta:
