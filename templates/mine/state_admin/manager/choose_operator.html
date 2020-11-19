@@ -19,7 +19,7 @@
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
               <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search Pengusaha</button>
+                <button type="submit" class="btn btn-primary">Carian Pengusaha</button>
               </div>
             </div>
           </form>
@@ -39,7 +39,7 @@
                 <th scope="col">Email</th>
                 <th scope="col">Alamat</th>
                 <th scope="col">Aktif</th>
-                <th scope="col">Action</th>
+                <th scope="col">Tindakan</th>
               </tr>
             </thead>
             <tbody>
@@ -63,7 +63,7 @@
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ operator.get_update_url }}" class="badge badge-primary">Update</a>
+                  <a href="{{ operator.get_update_url }}" class="badge badge-primary">Kemaskini</a>
                   <a href="{{ operator.get_toggle_active_url }}" class="badge badge-info">
                     {% if operator.status %}
                     Deactivate

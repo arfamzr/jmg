@@ -52,12 +52,23 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name']
         required = ['username', 'email', 'first_name', 'last_name']
+        labels = {
+            "username": "Nama Pengguna",
+            "first_name": "Nama Pertama",
+            "last_name": "Nama Akhir",
+        }
 
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         exclude = ['user', 'state', 'image']
+        labels = {
+            "ic_number": "No Kad Pengenalan",
+            "address1": "Alamat (No Rumah, Nama Jalan)",
+            "address2": "Alamat (Daerah)",
+            "address3": "Alamat (Poskod, Negeri)",
+        }
 
 
 class StateForm(forms.ModelForm):

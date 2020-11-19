@@ -91,7 +91,7 @@ class LeaseHolderUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update Pemajak Lombong'
+        context["title"] = 'Kemaskini Pemajak Lombong'
         return context
 
 
@@ -192,7 +192,7 @@ def manager_update(request, pk):
         profile_form = ProfileForm(instance=profile)
 
     context = {
-        'title': 'Update Pengurus Lombong',
+        'title': 'Kemaskini Pengurus Lombong',
         # 'manager_form': manager_form,
         'user_form': user_form,
         'profile_form': profile_form,
@@ -303,7 +303,7 @@ class OperatorUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update Pengusaha Lombong'
+        context["title"] = 'Kemaskini Pengusaha Lombong'
         return context
 
 
@@ -389,7 +389,7 @@ class MineUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update Lombong'
+        context["title"] = 'Kemaskini Lombong'
         context['owner_form'] = MineOwnerForm(initial={
             'lease_holder': self.object.lease_holder,
             'manager': self.object.manager,

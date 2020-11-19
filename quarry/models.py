@@ -74,11 +74,12 @@ class LeaseHolder(models.Model):
     name = models.CharField(_("nama"), max_length=255)
     lease_number = models.CharField(
         _("No Pajakan / No Hakmilik / No Lot"), max_length=255)
-    address1 = models.CharField(_("alamat"), max_length=255)
+    address1 = models.CharField(
+        _("alamat (No Rumah, Nama Jalan)"), max_length=255)
     address2 = models.CharField(
-        _("alamat (line 2)"), max_length=255, blank=True)
+        _("alamat (Daerah)"), max_length=255, blank=True)
     address3 = models.CharField(
-        _("alamat (line 3)"), max_length=255, blank=True)
+        _("alamat (Poskod, Negeri)"), max_length=255, blank=True)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
     area = models.CharField(_("Keluasan (Hektar)"), max_length=50, blank=True)
@@ -106,11 +107,12 @@ class LeaseHolder(models.Model):
 
 class Operator(models.Model):
     name = models.CharField(_("nama syarikat"), max_length=255)
-    address1 = models.CharField(_("alamat"), max_length=255)
+    address1 = models.CharField(
+        _("alamat (No Rumah, Nama Jalan)"), max_length=255)
     address2 = models.CharField(
-        _("alamat (line 2)"), max_length=255, blank=True)
+        _("alamat (Daerah)"), max_length=255, blank=True)
     address3 = models.CharField(
-        _("alamat (line 3)"), max_length=255, blank=True)
+        _("alamat (Poskod, Negeri)"), max_length=255, blank=True)
     phone = models.CharField(_("no phone"), max_length=50)
     fax = models.CharField(_("no fax"), max_length=50)
     email = models.CharField(_("emel"), max_length=255)
@@ -185,11 +187,12 @@ class Quarry(models.Model):
     operator = models.ForeignKey(Operator, verbose_name=_(
         "pengusaha"), on_delete=models.SET_NULL, null=True, related_name="quarries")
     name = models.CharField(_("nama kuari"), max_length=255)
-    address1 = models.CharField(_("alamat"), max_length=255)
+    address1 = models.CharField(
+        _("alamat (No Rumah, Nama Jalan)"), max_length=255)
     address2 = models.CharField(
-        _("alamat (line 2)"), max_length=255, blank=True)
+        _("alamat (Daerah)"), max_length=255, blank=True)
     address3 = models.CharField(
-        _("alamat (line 3)"), max_length=255, blank=True)
+        _("alamat (Poskod, Negeri)"), max_length=255, blank=True)
     location = models.CharField(_("lokasi"), max_length=255)
     mukim = models.CharField(_("mukim"), max_length=255)
     district = models.CharField(_("daerah"), max_length=255)
@@ -914,6 +917,12 @@ class DailyExplosive(models.Model):
 
     def __str__(self):
         return f'{self.data} ({self.pk})'
+
+    def get_edit_url(self):
+        return reverse("quarry:main:lot_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse("quarry:main:lot_delete", kwargs={"pk": self.pk})
 
 
 class EnergySupply(models.Model):

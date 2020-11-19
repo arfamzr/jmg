@@ -88,16 +88,17 @@ class Method_Mining:
 
 class LeaseHolder(models.Model):
     name = models.CharField(_("nama"), max_length=255)
-    lease_number = models.CharField(_("no pajakan"), max_length=25)
-    address1 = models.CharField(_("alamat"), max_length=255)
+    lease_number = models.CharField(_("no pajakan"), max_length=255)
+    address1 = models.CharField(
+        _("alamat (No Rumah, Nama Jalan)"), max_length=255)
     address2 = models.CharField(
-        _("alamat (line 2)"), max_length=255, blank=True)
+        _("alamat (Daerah)"), max_length=255, blank=True)
     address3 = models.CharField(
-        _("alamat (line 3)"), max_length=255, blank=True)
+        _("alamat (Poskod, Negeri)"), max_length=255, blank=True)
     state = models.CharField(_("negeri"), max_length=3,
                              choices=Profile.STATE_CHOICES)
-    area = models.CharField(_("keluasan"), max_length=50, blank=True)
-    lease_expired = models.DateField(_("tarikh tamat pajakan"))
+    area = models.CharField(_("keluasan (Hektar)"), max_length=50, blank=True)
+    lease_expired = models.DateField(_("tarikh tamat pajakan"), blank=True)
     status = models.BooleanField(_("status"), default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -121,11 +122,12 @@ class LeaseHolder(models.Model):
 
 class Operator(models.Model):
     name = models.CharField(_("nama syarikat"), max_length=255)
-    address1 = models.CharField(_("alamat"), max_length=255)
+    address1 = models.CharField(
+        _("alamat (No Rumah, Nama Jalan)"), max_length=255)
     address2 = models.CharField(
-        _("alamat (line 2)"), max_length=255, blank=True)
+        _("alamat (Daerah)"), max_length=255, blank=True)
     address3 = models.CharField(
-        _("alamat (line 3)"), max_length=255, blank=True)
+        _("alamat (Poskod, Negeri)"), max_length=255, blank=True)
     phone = models.CharField(_("no phone"), max_length=50)
     fax = models.CharField(_("no fax"), max_length=50)
     email = models.CharField(_("emel"), max_length=255)
@@ -187,11 +189,12 @@ class Mine(models.Model):
     operator = models.ForeignKey(Operator, verbose_name=_(
         "pengusaha"), on_delete=models.SET_NULL, null=True, related_name="mines")
     name = models.CharField(_("nama lombong"), max_length=255)
-    address1 = models.CharField(_("alamat"), max_length=255)
+    address1 = models.CharField(
+        _("alamat (No Rumah, Nama Jalan)"), max_length=255)
     address2 = models.CharField(
-        _("alamat (line 2)"), max_length=255, blank=True)
+        _("alamat (Daerah)"), max_length=255, blank=True)
     address3 = models.CharField(
-        _("alamat (line 3)"), max_length=255, blank=True)
+        _("alamat (Poskod, Negeri)"), max_length=255, blank=True)
     # phone_number = models.CharField(_("no tel"), max_length=15)
     # fax_number = models.CharField(_("no fax"), max_length=15)
     # email = models.EmailField(_("email"), max_length=254)

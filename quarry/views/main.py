@@ -594,6 +594,55 @@ def daily_explosive_edit(request, pk):
 
     return render(request, 'quarry/data/daily_explosive/form.html', context=context)
 
+# daily explosive views
+
+
+def daily_explosive_list(request, pk):
+    quarry = get_object_or_404(Quarry, pk=pk)
+    daily_explosive_list = DailyExplosive.objects.filter(quarry=quarry)
+
+    context = {
+        'title': 'Batuan',
+        'quarry': quarry,
+        'daily_explosive_list': daily_explosive_list,
+    }
+
+    return render(request, 'quarry/state_admin/daily_explosive/list.html', context)
+
+
+class DailyExplosiveCreateView(CreateView):
+    template_name = 'quarry/state_admin/daily_explosive/form.html'
+    form_class = DailyExplosiveForm
+    model = DailyExplosive
+
+    def form_valid(self, form):
+        self.quarry = get_object_or_404(
+            Quarry, pk=self.kwargs['pk'])
+        form.instance.quarry = self.quarry
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:daily_explosive_list', kwargs={'pk': self.quarry.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Tambah Bahan Letupan Harian'
+        return context
+
+
+class DailyExplosiveUpdateView(UpdateView):
+    template_name = 'quarry/state_admin/daily_explosive/form.html'
+    form_class = DailyExplosiveForm
+    model = DailyExplosive
+
+    def get_success_url(self):
+        return reverse('quarry:state_admin:daily_explosive_list', kwargs={'pk': self.object.quarry.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = 'Edit Bahan Letupan Harian'
+        return context
+
 
 # energy supply views
 def energy_supply_edit(request, pk):
