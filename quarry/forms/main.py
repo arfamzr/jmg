@@ -1,4 +1,9 @@
+from crispy_forms.layout import Div
 from django import forms
+from django.forms import formsets
+from django.forms.models import formset_factory, modelformset_factory
+from crispy_forms.helper import FormHelper, Layout
+from crispy_forms.bootstrap import Div
 
 from account.widgets import XDSoftDatePickerInput
 
@@ -79,6 +84,25 @@ class SalesSubmissionForm(forms.ModelForm):
     #     super().__init__(*args, **kwargs)
     #     for field_name, field in self.fields.items():
     #         field.label = ''
+
+
+class SalesSubmissionFormHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # self.form_method = 'post'
+        self.form_tag = False
+        self.disable_csrf = True
+        self.layout = Layout(
+            Div('submission_size', css_class='col-4'),
+            Div('amount', css_class='col-4'),
+            Div('worth', css_class='col-4'),
+            # Div('total', css_class='col-3'),
+        )
+        # self.render_required_fields = True
+
+
+SalesSubmissionFormSet = modelformset_factory(
+    model=SalesSubmission, form=SalesSubmissionForm, extra=10)
 
 
 class LocalFinalUsesForm(forms.ModelForm):

@@ -2,7 +2,7 @@ from django.db.models import manager
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, FormView
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
@@ -559,70 +559,75 @@ def machinery_edit(request, pk):
 
 
 # daily explosive views
-def daily_explosive_edit(request, pk):
-    data = get_object_or_404(Data, pk=pk)
-    prev_link = reverse('quarry:machinery_edit',
-                        kwargs={"pk": data.pk})
-    try:
-        daily_explosive = DailyExplosive.objects.get(data=data)
-    except DailyExplosive.DoesNotExist:
-        daily_explosive = None
+# def daily_explosive_edit(request, pk):
+#     data = get_object_or_404(Data, pk=pk)
+#     prev_link = reverse('quarry:machinery_edit',
+#                         kwargs={"pk": data.pk})
+#     try:
+#         daily_explosive = DailyExplosive.objects.get(data=data)
+#     except DailyExplosive.DoesNotExist:
+#         daily_explosive = None
 
-    if request.method == 'POST':
-        if daily_explosive == None:
-            form = DailyExplosiveForm(request.POST)
-        else:
-            form = DailyExplosiveForm(
-                request.POST, instance=daily_explosive)
+#     if request.method == 'POST':
+#         if daily_explosive == None:
+#             form = DailyExplosiveForm(request.POST)
+#         else:
+#             form = DailyExplosiveForm(
+#                 request.POST, instance=daily_explosive)
 
-        if form.is_valid():
-            form.instance.data = data
-            form.save()
-            return redirect('quarry:energy_supply_edit', pk=data.pk)
+#         if form.is_valid():
+#             form.instance.data = data
+#             form.save()
+#             return redirect('quarry:energy_supply_edit', pk=data.pk)
 
-    else:
-        if daily_explosive == None:
-            form = DailyExplosiveForm()
-        else:
-            form = DailyExplosiveForm(instance=daily_explosive)
+#     else:
+#         if daily_explosive == None:
+#             form = DailyExplosiveForm()
+#         else:
+#             form = DailyExplosiveForm(instance=daily_explosive)
 
-    context = {
-        'title': 'Edit Bahan Letupan Harian',
-        'form': form,
-        'prev_link': prev_link,
-    }
+#     context = {
+#         'title': 'Edit Bahan Letupan Harian',
+#         'form': form,
+#         'prev_link': prev_link,
+#     }
 
-    return render(request, 'quarry/data/daily_explosive/form.html', context=context)
+#     return render(request, 'quarry/data/daily_explosive/form.html', context=context)
+
 
 # daily explosive views
-
-
-def daily_explosive_list(request, pk):
-    quarry = get_object_or_404(Quarry, pk=pk)
-    daily_explosive_list = DailyExplosive.objects.filter(quarry=quarry)
+def daily_explosive_edit(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    daily_explosive_list = DailyExplosive.objects.filter(data=data)
+    prev_link = reverse('quarry:machinery_edit',
+                        kwargs={"pk": data.pk})
+    next_link = reverse('quarry:energy_supply_edit',
+                        kwargs={"pk": data.pk})
 
     context = {
-        'title': 'Batuan',
-        'quarry': quarry,
+        'title': 'Bahan Letupan Harian',
+        'data': data,
         'daily_explosive_list': daily_explosive_list,
+        'prev_link': prev_link,
+        'next_link': next_link,
     }
 
-    return render(request, 'quarry/state_admin/daily_explosive/list.html', context)
+    return render(request, 'quarry/data/daily_explosive/list.html', context)
 
 
 class DailyExplosiveCreateView(CreateView):
-    template_name = 'quarry/state_admin/daily_explosive/form.html'
+    template_name = 'quarry/data/daily_explosive/form.html'
     form_class = DailyExplosiveForm
     model = DailyExplosive
 
     def form_valid(self, form):
-        self.quarry = get_object_or_404(
-            Quarry, pk=self.kwargs['pk'])
-        form.instance.quarry = self.quarry
+        self.data = get_object_or_404(
+            Data, pk=self.kwargs['pk'])
+        form.instance.data = self.data
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('quarry:state_admin:daily_explosive_list', kwargs={'pk': self.quarry.pk})
+        return reverse('quarry:daily_explosive_edit', kwargs={'pk': self.data.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -631,17 +636,24 @@ class DailyExplosiveCreateView(CreateView):
 
 
 class DailyExplosiveUpdateView(UpdateView):
-    template_name = 'quarry/state_admin/daily_explosive/form.html'
+    template_name = 'quarry/data/daily_explosive/form.html'
     form_class = DailyExplosiveForm
     model = DailyExplosive
 
     def get_success_url(self):
-        return reverse('quarry:state_admin:daily_explosive_list', kwargs={'pk': self.object.quarry.pk})
+        return reverse('quarry:daily_explosive_edit', kwargs={'pk': self.object.data.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Edit Bahan Letupan Harian'
         return context
+
+
+def daily_explosive_delete(request, pk):
+    daily_explosive = get_object_or_404(DailyExplosive, pk=pk)
+    if request.method == 'POST':
+        daily_explosive.delete()
+    return redirect('quarry:daily_explosive_edit', pk=daily_explosive.data.pk)
 
 
 # energy supply views
@@ -775,20 +787,8 @@ def other_edit(request, pk):
         if form.is_valid():
             form.instance.data = data
             form.save()
-            data_approval = Approval.objects.create(
-                data=data, requestor=request.user)
 
-            jmg_states = User.objects.filter(
-                groups__name='JMG State', profile__state=data.state)
-
-            notify = Notify()
-            notify_message = f'{request.user} telah menghantar permohonan data untuk kuari "{data.quarry}"'
-            notify_link = reverse('quarry:state:data_list')
-
-            for jmg_state in jmg_states:
-                notify.make_notify(jmg_state, notify_message, notify_link)
-
-            return redirect('quarry:data_list')
+            return redirect('quarry:data_summary', data.pk)
 
     else:
         if other == None:
@@ -803,6 +803,71 @@ def other_edit(request, pk):
     }
 
     return render(request, 'quarry/data/other/form.html', context=context)
+
+
+# summary views
+def data_summary(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    local_final_uses = get_object_or_404(LocalFinalUses, data=data)
+    export_final_uses = get_object_or_404(
+        ExportFinalUses, data=data)
+    local_operator = get_object_or_404(LocalOperator, data=data)
+    local_contractor = get_object_or_404(
+        LocalContractor, data=data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, data=data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, data=data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, data=data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, data=data)
+    daily_explosive = get_object_or_404(DailyExplosive, data=data)
+    energy_supply = get_object_or_404(EnergySupply, data=data)
+    operating_record = get_object_or_404(
+        OperatingRecord, data=data)
+    royalties = get_object_or_404(Royalties, data=data)
+    other = get_object_or_404(Other, data=data)
+
+    prev_link = reverse('quarry:other_edit',
+                        kwargs={"pk": data.pk})
+
+    if request.method == 'POST':
+        data_approval = Approval.objects.create(
+            data=data, requestor=request.user)
+
+        jmg_states = User.objects.filter(
+            groups__name='JMG State', profile__state=data.state)
+
+        notify = Notify()
+        notify_message = f'{request.user} telah menghantar permohonan data untuk kuari "{data.quarry}"'
+        notify_link = reverse('quarry:state:data_list')
+
+        for jmg_state in jmg_states:
+            notify.make_notify(jmg_state, notify_message, notify_link)
+
+        return redirect('quarry:data_list')
+
+    context = {
+        'title': 'Data Kuari',
+        'data': data,
+        'local_final_uses': local_final_uses,
+        'export_final_uses': export_final_uses,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'daily_explosive': daily_explosive,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
+        'royalties': royalties,
+        'other': other,
+        'prev_link': prev_link,
+    }
+
+    return render(request, 'quarry/data/summary.html', context)
 
 
 # comment views

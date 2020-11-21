@@ -490,7 +490,7 @@ class SalesSubmission(models.Model):
     worth = models.DecimalField(
         _("Nilai (RM) / Tan Matrik"), max_digits=15, decimal_places=2)
     total = models.DecimalField(
-        _("Jumlah (RM)"), max_digits=15, decimal_places=2)
+        _("Jumlah (RM)"), max_digits=15, decimal_places=2, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -919,10 +919,10 @@ class DailyExplosive(models.Model):
         return f'{self.data} ({self.pk})'
 
     def get_edit_url(self):
-        return reverse("quarry:main:lot_update", kwargs={"pk": self.pk})
+        return reverse("quarry:daily_explosive_update", kwargs={"pk": self.pk})
 
     def get_delete_url(self):
-        return reverse("quarry:main:lot_delete", kwargs={"pk": self.pk})
+        return reverse("quarry:daily_explosive_delete", kwargs={"pk": self.pk})
 
 
 class EnergySupply(models.Model):

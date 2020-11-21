@@ -39,6 +39,9 @@ from ..views.main import (
 
     # daily explosive
     daily_explosive_edit,
+    DailyExplosiveCreateView,
+    DailyExplosiveUpdateView,
+    daily_explosive_delete,
 
     # energy supply
     energy_supply_edit,
@@ -51,6 +54,9 @@ from ..views.main import (
 
     # other
     other_edit,
+
+    # summary
+    data_summary,
 
     # QuarryMinerListView,
     # add_report,
@@ -140,22 +146,22 @@ urlpatterns = [
 
     # sales submission
     path(
-        '<int:pk>/sales-submission/',
+        'data/<int:pk>/sales-submission/',
         sales_submission_edit,
         name='sales_submission_edit'
     ),
     path(
-        '<int:pk>/sales-submission/create/',
+        'data/<int:pk>/sales-submission/create/',
         SalesSubmissionCreateView.as_view(),
         name='sales_submission_create'
     ),
     path(
-        'sales-submission/<int:pk>/update/',
+        'data/sales-submission/<int:pk>/update/',
         SalesSubmissionUpdateView.as_view(),
         name='sales_submission_update'
     ),
     path(
-        'sales-submission/<int:pk>/delete/',
+        'data/sales-submission/<int:pk>/delete/',
         sales_submission_delete,
         name='sales_submission_delete'
     ),
@@ -199,6 +205,21 @@ urlpatterns = [
         daily_explosive_edit,
         name='daily_explosive_edit',
     ),
+    path(
+        'data/<int:pk>/daily-explosive/create/',
+        DailyExplosiveCreateView.as_view(),
+        name='daily_explosive_create'
+    ),
+    path(
+        'data/daily-explosive/<int:pk>/update/',
+        DailyExplosiveUpdateView.as_view(),
+        name='daily_explosive_update'
+    ),
+    path(
+        'data/daily-explosive/<int:pk>/delete/',
+        daily_explosive_delete,
+        name='daily_explosive_delete'
+    ),
 
     # energy supply
     path(
@@ -226,6 +247,13 @@ urlpatterns = [
         'data/<int:pk>/other/edit/',
         other_edit,
         name='other_edit',
+    ),
+
+    # summary
+    path(
+        'data/<int:pk>/summary/',
+        data_summary,
+        name='data_summary',
     ),
 
     # user include
