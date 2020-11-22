@@ -36,6 +36,9 @@ from ..views.main import (
     # comment
     get_comment_data,
 
+    # summary
+    data_summary,
+
     # MineMinerListView,
     # add_report,
     # miner_data_delete,
@@ -146,6 +149,13 @@ urlpatterns = [
         '<int:pk>/operating-record/',
         operating_record_edit,
         name='operating_record_edit'
+    ),
+
+    # summary
+    path(
+        'data/<int:pk>/summary/',
+        data_summary,
+        name='data_summary',
     ),
 
     # comment

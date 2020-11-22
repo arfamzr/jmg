@@ -1,0 +1,739 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="h3 text-gray-800">{{ title }}</h1>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col">
+      <div id="accordion">
+        <!-- Mine detail -->
+        <div class="card">
+          <div class="card-header py-2" id="headingMineDetail">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseMineDetail" aria-expanded="true" aria-controls="collapseMineDetail">
+                Maklumat Lombong
+              </button>
+            </h5>
+          </div>
+          <div id="collapseMineDetail" class="collapse" aria-labelledby="headingMineDetail" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Data</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% with mine=data.mine manager=data.mine.manager lease_holder=data.mine.lease_holder operator=data.mine.operator %}
+                      <tr>
+                        <th>Bulan/Tahun</th>
+                        <td>{{ data.get_month_display }} {{ data.year }}</td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pengurus</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama Pengurus</th>
+                        <td>
+                          {{ manager.user.get_full_name }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No K/P</th>
+                        <td>
+                          {{ manager.user.profile.ic_number }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ manager.user.profile.address1 }}{% if manager.user.profile.address2 %},<br>
+                          {{ manager.user.profile.address2 }}{% endif %}{% if manager.user.profile.address3 %},<br>
+                          {{ manager.user.profile.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>
+                          {{ manager.user.profile.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pajakan</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama</th>
+                        <td>
+                          {{ lease_holder.name }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No Pajakan</th>
+                        <td>
+                          {{ lease_holder.lease_number }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Tarikh Luput Pajakan</th>
+                        <td>
+                          {{ lease_holder.lease_expired }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ lease_holder.address1 }}{% if lease_holder.address2 %},<br>
+                          {{ lease_holder.address2 }}{% endif %}{% if lease_holder.address3 %},<br>
+                          {{ lease_holder.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>
+                          {{ lease_holder.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Pengusaha</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama Syarikat</th>
+                        <td>
+                          {{ operator.name }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ operator.address1 }}{% if operator.address2 %},<br>
+                          {{ operator.address2 }}{% endif %}{% if operator.address3 %},<br>
+                          {{ operator.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No Phone</th>
+                        <td>
+                          {{ operator.phone }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No Fax</th>
+                        <td>
+                          {{ operator.fax }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Email</th>
+                        <td>
+                          {{ operator.email }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>
+                          {{ operator.get_state_display }}
+                        </td>
+                      </tr>
+                    </tbody>
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col" colspan="2" style="text-align: center;">Maklumat Lombong</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>Nama Lombong</th>
+                        <td>{{ mine.name }}</td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ mine.address1 }}{% if mine.address2 %},<br>
+                          {{ mine.address2 }}{% endif %}{% if mine.address3 %},<br>
+                          {{ mine.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Lokasi</th>
+                        <td>{{ mine.location }}</td>
+                      </tr>
+                      <tr>
+                        <th>Mukim</th>
+                        <td>{{ mine.mukim }}</td>
+                      </tr>
+                      <tr>
+                        <th>Daerah</th>
+                        <td>{{ mine.district }}</td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>{{ mine.get_state_display }}</td>
+                      </tr>
+                      <tr>
+                        <th>Status Tanah</th>
+                        <td>{{ mine.get_land_status_display }}</td>
+                      </tr>
+                      <tr>
+                        <th>Cara Melombong</th>
+                        <td>{{ mine.get_method_mining_display }}</td>
+                      </tr>
+                      <tr>
+                        <th>Rujukan Grid</th>
+                        <td>{{ mine.grid_reference }}</td>
+                      </tr>
+                      <tr>
+                        <th>Aktif</th>
+                        <td>
+                          {% if mine.status %}
+                          <i class="fas fa-check-circle text-success ml-2"></i>
+                          {% else %}
+                          <i class="fas fa-times-circle text-danger ml-2"></i>
+                          {% endif %}
+                        </td>
+                      </tr>
+                      {% endwith %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Statistic -->
+        <div class="card">
+          <div class="card-header py-2" id="headingStatistic">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseStatistic" aria-expanded="true" aria-controls="collapseStatistic">
+                Perangkaan
+              </button>
+            </h5>
+          </div>
+          <div id="collapseStatistic" class="collapse" aria-labelledby="headingStatistic" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Jenis Mineral</th>
+                        <th scope="col">Kategori</th>
+                        <th scope="col">Tindakan</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for main_mineral in data.main_minerals.all %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ main_mineral.get_mineral_type_display }}</td>
+                        <td>Mineral Utama</td>
+                        <td>
+                          <a href="{{ main_mineral.get_absolute_url }}" class="badge badge-sm badge-info">Lihat</a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      {% for side_mineral in data.side_minerals.all %}
+                      <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ side_mineral.get_mineral_type_display }}</td>
+                        <td>Mineral Sampingan</td>
+                        <td>
+                          <a href="{{ side_mineral.get_absolute_url }}" class="badge badge-sm badge-info">Lihat</a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Local Worker -->
+        <div class="card">
+          <div class="card-header py-2" id="headingLocalWorker">
+            <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+              data-target="#collapseLocalWorker" aria-expanded="true" aria-controls="collapseLocalWorker">
+              Pekerja (Tempatan)
+            </button>
+          </div>
+          <div id="collapseLocalWorker" class="collapse" aria-labelledby="headingLocalWorker" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">OPERATOR</th>
+                        <th scope="col" colspan="2" style="text-align: center;">KONTRAKTOR</th>
+                      </tr>
+                    </thead>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">LELAKI</th>
+                        <th scope="col" style="text-align: center;">PEREMPUAN</th>
+                        <th scope="col" style="text-align: center;">LELAKI</th>
+                        <th scope="col" style="text-align: center;">PEREMPUAN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>PENGURUSAN</th>
+                        <td style="text-align: right;">{{ local_operator.male_manager }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_manager }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_manager }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_manager }}</td>
+                      </tr>
+                      <tr>
+                        <th>PROFESSIONAL</th>
+                        <td style="text-align: right;">{{ local_operator.male_professional }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_professional }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_professional }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_professional }}</td>
+                      </tr>
+                      <tr>
+                        <th>TEKNIKAL</th>
+                        <td style="text-align: right;">{{ local_operator.male_technical }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_technical }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_technical }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_technical }}</td>
+                      </tr>
+                      <tr>
+                        <th>KERANI</th>
+                        <td style="text-align: right;">{{ local_operator.male_clerk }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_clerk }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_clerk }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_clerk }}</td>
+                      </tr>
+                      <tr>
+                        <th>BURUH</th>
+                        <td style="text-align: right;">{{ local_operator.male_labor }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_labor }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_labor }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_labor }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH PEKERJAAN</th>
+                        <td style="text-align: right;">{{ local_operator.total_male }}</td>
+                        <td style="text-align: right;">{{ local_operator.total_female }}</td>
+                        <td style="text-align: right;">{{ local_contractor.total_male }}</td>
+                        <td style="text-align: right;">{{ local_contractor.total_female }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH UPAH GAJI (RM)</th>
+                        <td style="text-align: right;">{{ local_operator.total_male_salary }}</td>
+                        <td style="text-align: right;">{{ local_operator.total_female_salary }}</td>
+                        <td style="text-align: right;">{{ local_contractor.total_male_salary }}</td>
+                        <td style="text-align: right;">{{ local_contractor.total_female_salary }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH JAM MANUSIA</th>
+                        <td style="text-align: right;">{{ local_operator.male_man_hour }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_man_hour }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_man_hour }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_man_hour }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Foreign Worker -->
+        <div class="card">
+          <div class="card-header py-2" id="headingForeignWorker">
+            <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+              data-target="#collapseForeignWorker" aria-expanded="true" aria-controls="collapseForeignWorker">
+              Pekerja (Asing)
+            </button>
+          </div>
+          <div id="collapseForeignWorker" class="collapse" aria-labelledby="headingForeignWorker"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">OPERATOR</th>
+                        <th scope="col" colspan="2" style="text-align: center;">KONTRAKTOR</th>
+                      </tr>
+                    </thead>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">LELAKI</th>
+                        <th scope="col" style="text-align: center;">PEREMPUAN</th>
+                        <th scope="col" style="text-align: center;">LELAKI</th>
+                        <th scope="col" style="text-align: center;">PEREMPUAN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>PENGURUSAN</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_manager }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_manager }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_manager }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_manager }}</td>
+                      </tr>
+                      <tr>
+                        <th>PROFESSIONAL</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_professional }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_professional }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_professional }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_professional }}</td>
+                      </tr>
+                      <tr>
+                        <th>TEKNIKAL</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_technical }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_technical }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_technical }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_technical }}</td>
+                      </tr>
+                      <tr>
+                        <th>KERANI</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_clerk }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_clerk }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_clerk }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_clerk }}</td>
+                      </tr>
+                      <tr>
+                        <th>BURUH</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_labor }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_labor }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_labor }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_labor }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH PEKERJAAN</th>
+                        <td style="text-align: right;">{{ foreign_operator.total_male }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.total_female }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.total_male }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.total_female }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH UPAH GAJI (RM)</th>
+                        <td style="text-align: right;">{{ foreign_operator.total_male_salary }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.total_female_salary }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.total_male_salary }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.total_female_salary }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH JAM MANUSIA</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_man_hour }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_man_hour }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_man_hour }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_man_hour }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Machinery -->
+        <div class="card">
+          <div class="card-header py-2" id="headingMachinery">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseMachinery" aria-expanded="true" aria-controls="collapseMachinery">
+                Jentera
+              </button>
+            </h5>
+          </div>
+          <div id="collapseMachinery" class="collapse" aria-labelledby="headingMachinery" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">BAKAR DALAM</th>
+                        <th scope="col" colspan="2" style="text-align: center;">ELEKTRIK</th>
+                      </tr>
+                    </thead>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">BILANGAN</th>
+                        <th scope="col" style="text-align: center;">KUASA (KW)</th>
+                        <th scope="col" style="text-align: center;">BILANGAN</th>
+                        <th scope="col" style="text-align: center;">KUASA (KW)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>LORI</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_lorry }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.lorry_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_lorry }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.lorry_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>JENKOREK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_excavator }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.excavator_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_excavator }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.excavator_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>JENTERA ANGKUT BERODA</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_wheel_loader }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.wheel_loader_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_wheel_loader }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.wheel_loader_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>JENTOLAK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_bulldozer }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.bulldozer_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_bulldozer }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.bulldozer_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PAM AIR</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_water_pump }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.water_pump_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_water_pump }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.water_pump_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PEMAMPAT UDARA</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_air_compressor }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.air_compressor_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_air_compressor }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.air_compressor_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PEMECAH HIDRAULIK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_hydraulic_breaker }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.hydraulic_breaker_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_hydraulic_breaker }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.hydraulic_breaker_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>GERUDI HIDRAULIK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_hydraulic_drill }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.hydraulic_drill_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_hydraulic_drill }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.hydraulic_drill_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PENGHANCUR</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_crusher }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.crusher_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_crusher }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.crusher_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PENYUDUK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_shovel }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.shovel_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_shovel }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.shovel_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>TRAKTOR</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_tracktor }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.tracktor_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_tracktor }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.tracktor_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>LAIN-LAIN</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_other }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.other_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_other }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.other_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>(NYATAKAN)</th>
+                        <td colspan="2">{{ combustion_machinery.state_other }}</td>
+                        <td colspan="2">{{ electric_machinery.state_other }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH</th>
+                        <td style="text-align: right;">{{ combustion_machinery.total_number }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.total_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.total_number }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.total_power }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Energy Supply -->
+        <div class="card">
+          <div class="card-header py-2" id="headingEnergySupply">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseEnergySupply" aria-expanded="true" aria-controls="collapseEnergySupply">
+                Bahan Tenaga
+              </button>
+            </h5>
+          </div>
+          <div id="collapseEnergySupply" class="collapse" aria-labelledby="headingEnergySupply"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">JUMLAH</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>DIESEL (LITER)</th>
+                        <td style="text-align: right;">{{ energy_supply.total_diesel }}</td>
+                      </tr>
+                      <tr>
+                        <th>ELEKTRIK (KwH)</th>
+                        <td style="text-align: right;">{{ energy_supply.total_electric }}</td>
+                      </tr>
+                      <tr>
+                        <th>BAHAN LETUPAN (KG)</th>
+                        <td style="text-align: right;">{{ energy_supply.total_explosive }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Operating Record -->
+        <div class="card">
+          <div class="card-header py-2" id="headingOperatingRecord">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseOperatingRecord" aria-expanded="true" aria-controls="collapseOperatingRecord">
+                Rekod Operasi
+              </button>
+            </h5>
+          </div>
+          <div id="collapseOperatingRecord" class="collapse" aria-labelledby="headingOperatingRecord"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">JUMLAH</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>DALAM LOMBONG HITUNG PANJANG (METER)</th>
+                        <td style="text-align: right;">{{ operating_record.average_mine_depth }}</td>
+                      </tr>
+                      <tr>
+                        <th>UKURAN LOMBONG TERDALAM (METER)</th>
+                        <td style="text-align: right;">{{ operating_record.deepest_mine }}</td>
+                      </tr>
+                      <tr>
+                        <th>UKURAN LOMBONG TERCETEK (METER)</th>
+                        <td style="text-align: right;">{{ operating_record.shallowest_mine }}</td>
+                      </tr>
+                      <tr>
+                        <th>BAHAN BEBAN DIBUANG (TAN)</th>
+                        <td style="text-align: right;">{{ operating_record.material_discarded }}</td>
+                      </tr>
+                      <tr>
+                        <th>BAHAN BEBIJIH DILOMBONG (TAN)</th>
+                        <td style="text-align: right;">{{ operating_record.ore_mined }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    {% block page_nav %}
+    <div class="col-4 col-lg-3 mt-3 ml-auto">
+      <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+        Sebelumnya
+      </a>
+    </div>
+    <div class="col-4 col-lg-3 mt-3">
+      <button class="btn btn-primary btn-user btn-block" data-toggle="modal" data-target="#ApproveModal">
+        Simpan & Hantar
+      </button>
+    </div>
+    {% endblock page_nav %}
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+{% block modal_content %}
+<!-- Approve Modal-->
+<div class="modal fade" id="ApproveModal" tabindex="-1" role="dialog" aria-labelledby="ApproveModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="ApproveModalLabel">Terima RPLB </h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Adakah anda pasti untuk menghantar RPLB ini?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+        <form action="." method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">Ya</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock modal_content %}
+{% endblock content %}
