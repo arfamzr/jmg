@@ -136,5 +136,5 @@ class PasswordChangeView(DjangoPasswordChangeView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # print(self.request.user.is_industry)
-        context["title"] = 'Update Password'
+        context["title"] = 'Kemaskini Kata Laluan'
         return context

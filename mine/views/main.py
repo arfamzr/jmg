@@ -490,8 +490,63 @@ def operating_record_edit(request, pk):
 
     return render(request, 'mine/data/operating_record/form.html', context=context)
 
+# summary views
+
+
+def data_summary(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    local_operator = get_object_or_404(LocalOperator, data=data)
+    local_contractor = get_object_or_404(
+        LocalContractor, data=data)
+    foreign_operator = get_object_or_404(
+        ForeignOperator, data=data)
+    foreign_contractor = get_object_or_404(
+        ForeignContractor, data=data)
+    combustion_machinery = get_object_or_404(
+        InternalCombustionMachinery, data=data)
+    electric_machinery = get_object_or_404(
+        ElectricMachinery, data=data)
+    energy_supply = get_object_or_404(EnergySupply, data=data)
+    operating_record = get_object_or_404(
+        OperatingRecord, data=data)
+
+    prev_link = reverse('mine:operating_record_edit',
+                        kwargs={"pk": data.pk})
+
+    if request.method == 'POST':
+        data_approval = Approval.objects.create(
+            data=data, requestor=request.user)
+
+        jmg_states = User.objects.filter(
+            groups__name='JMG State', profile__state=data.state)
+
+        notify = Notify()
+        notify_message = f'{request.user} telah menghantar permohonan data untuk lombong "{data.mine}"'
+        notify_link = reverse('mine:state:data_list')
+
+        for jmg_state in jmg_states:
+            notify.make_notify(jmg_state, notify_message, notify_link)
+
+        return redirect('mine:data_list')
+
+    context = {
+        'title': 'Data Lombong',
+        'data': data,
+        'local_operator': local_operator,
+        'local_contractor': local_contractor,
+        'foreign_operator': foreign_operator,
+        'foreign_contractor': foreign_contractor,
+        'combustion_machinery': combustion_machinery,
+        'electric_machinery': electric_machinery,
+        'energy_supply': energy_supply,
+        'operating_record': operating_record,
+    }
+
+    return render(request, 'mine/data/summary.html', context)
 
 # comment views
+
+
 def get_comment_data(request, pk):
     data = get_object_or_404(Data, pk=pk)
     data_approval = data.get_last_approval()

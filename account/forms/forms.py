@@ -5,6 +5,7 @@ from django.contrib.auth.forms import (
     UsernameField,
     AuthenticationForm as DjangoAuthenticationForm,
     UserCreationForm as DjangoUserCreationForm,
+    PasswordChangeForm as DjangoPasswordChangeForm,
 )
 
 from ..models import User
@@ -14,8 +15,8 @@ class AuthenticationForm(DjangoAuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['placeholder'] = 'Enter Username'
-        self.fields['password'].widget.attrs['placeholder'] = 'Password'
+        self.fields['username'].widget.attrs['placeholder'] = 'Masukkan Nama Pengguna'
+        self.fields['password'].widget.attrs['placeholder'] = 'Kata Laluan'
         for field_name, field in self.fields.items():
             field.label = ''
             field.widget.attrs['class'] = 'form-control form-control-user'
@@ -26,15 +27,16 @@ class UserCreationForm(DjangoUserCreationForm):
         label='',
         strip=False,
         widget=forms.PasswordInput(
-            attrs={'autocomplete': 'new-password', 'placeholder': 'Password'}),
+            attrs={'autocomplete': 'new-password', 'placeholder': 'Kata Laluan'}),
         help_text=password_validation.password_validators_help_text_html(),
     )
     password2 = forms.CharField(
         label='',
         widget=forms.PasswordInput(
-            attrs={'autocomplete': 'new-password', 'placeholder': 'Password Confirmation'}),
+            attrs={'autocomplete': 'new-password', 'placeholder': 'Ulang Kata Laluan'}),
         strip=False,
-        help_text=_("Enter the same password as before, for verification."),
+        help_text=_(
+            "Masukkan kata laluan yang sama seperti sebelumnya, untuk pengesahan."),
     )
 
     def __init__(self, *args, **kwargs):
@@ -60,3 +62,12 @@ class UserCreationForm(DjangoUserCreationForm):
             'email': '',
         }
         field_classes = {'username': UsernameField}
+
+
+class PasswordChangeForm(DjangoPasswordChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['old_password'].label = "Kata laluan lama"
+        self.fields['new_password1'].label = "Kata laluan baru"
+        self.fields['new_password2'].label = "Pengesahan kata laluan baru"

@@ -33,6 +33,9 @@ from ..views.main import (
     # operating record
     operating_record_edit,
 
+    # summary
+    data_summary,
+
     # comment
     get_comment_data,
 

@@ -19,13 +19,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LeaseHolder',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, verbose_name='nama')),
                 ('ic_number', models.CharField(max_length=25, verbose_name='no K/P')),
                 ('address1', models.CharField(max_length=255, verbose_name='alamat')),
-                ('address2', models.CharField(blank=True, max_length=255, verbose_name='alamat (line 2)')),
-                ('address3', models.CharField(blank=True, max_length=255, verbose_name='alamat (line 3)')),
-                ('state', models.CharField(choices=[('JHR', 'Johor'), ('KDH', 'Kedah'), ('KTN', 'Kelantan'), ('MLK', 'Melaka'), ('NSN', 'Negeri Sembilan'), ('PHG', 'Pahang'), ('PNG', 'Pulau Pinang'), ('PRK', 'Perak'), ('PLS', 'Perlis'), ('SBH', 'Sabah'), ('SWK', 'Sarawak'), ('SGR', 'Selangor'), ('TRG', 'Terengganu'), ('KUL', 'Kuala Lumpur'), ('LBN', 'Labuan'), ('PJY', 'Putrajaya')], max_length=3, verbose_name='negeri')),
+                ('address2', models.CharField(blank=True,
+                                              max_length=255, verbose_name='alamat (line 2)')),
+                ('address3', models.CharField(blank=True,
+                                              max_length=255, verbose_name='alamat (line 3)')),
+                ('state', models.CharField(choices=[('JHR', 'Johor'), ('KDH', 'Kedah'), ('KTN', 'Kelantan'), ('MLK', 'Melaka'), ('NSN', 'Negeri Sembilan'), ('PHG', 'Pahang'), ('PNG', 'Pulau Pinang'), ('PRK', 'Perak'), (
+                    'PLS', 'Perlis'), ('SBH', 'Sabah'), ('SWK', 'Sarawak'), ('SGR', 'Selangor'), ('TRG', 'Terengganu'), ('KUL', 'Kuala Lumpur'), ('LBN', 'Labuan'), ('PJY', 'Putrajaya')], max_length=3, verbose_name='negeri')),
                 ('status', models.BooleanField(default=True, verbose_name='status')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
@@ -38,14 +42,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MineMiner',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('lot_number', models.CharField(max_length=255, verbose_name='no lot')),
-                ('latitude', models.DecimalField(decimal_places=4, max_digits=15, verbose_name='latitude')),
-                ('longitude', models.DecimalField(decimal_places=4, max_digits=15, verbose_name='longitude')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('lot_number', models.CharField(
+                    max_length=255, verbose_name='no lot')),
+                ('latitude', models.DecimalField(decimal_places=4,
+                                                 max_digits=15, verbose_name='latitude')),
+                ('longitude', models.DecimalField(decimal_places=4,
+                                                  max_digits=15, verbose_name='longitude')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('add_by', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='mine_miners_added', to=settings.AUTH_USER_MODEL, verbose_name='add by')),
-                ('miner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mines_mined', to=settings.AUTH_USER_MODEL, verbose_name='pengusaha')),
+                ('add_by', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                             related_name='mine_miners_added', to=settings.AUTH_USER_MODEL, verbose_name='add by')),
+                ('miner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                            related_name='mines_mined', to=settings.AUTH_USER_MODEL, verbose_name='pengusaha')),
             ],
             options={
                 'verbose_name': 'pengusaha lombong',
@@ -55,13 +65,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MineMinerData',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('state', models.CharField(choices=[('JHR', 'Johor'), ('KDH', 'Kedah'), ('KTN', 'Kelantan'), ('MLK', 'Melaka'), ('NSN', 'Negeri Sembilan'), ('PHG', 'Pahang'), ('PNG', 'Pulau Pinang'), ('PRK', 'Perak'), ('PLS', 'Perlis'), ('SBH', 'Sabah'), ('SWK', 'Sarawak'), ('SGR', 'Selangor'), ('TRG', 'Terengganu'), ('KUL', 'Kuala Lumpur'), ('LBN', 'Labuan'), ('PJY', 'Putrajaya')], max_length=3, verbose_name='negeri')),
-                ('month', models.PositiveIntegerField(choices=[(1, 'Januari'), (2, 'Februari'), (3, 'Mac'), (4, 'April'), (5, 'Mei'), (6, 'Jun'), (7, 'Julai'), (8, 'Ogos'), (9, 'September'), (10, 'Oktober'), (11, 'November'), (12, 'Disember')], verbose_name='bulan')),
-                ('year', models.PositiveIntegerField(choices=[(2015, 2015), (2016, 2016), (2017, 2017), (2018, 2018), (2019, 2019), (2020, 2020)], default=quarry.models.current_year, verbose_name='tahun')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('state', models.CharField(choices=[('JHR', 'Johor'), ('KDH', 'Kedah'), ('KTN', 'Kelantan'), ('MLK', 'Melaka'), ('NSN', 'Negeri Sembilan'), ('PHG', 'Pahang'), ('PNG', 'Pulau Pinang'), ('PRK', 'Perak'), (
+                    'PLS', 'Perlis'), ('SBH', 'Sabah'), ('SWK', 'Sarawak'), ('SGR', 'Selangor'), ('TRG', 'Terengganu'), ('KUL', 'Kuala Lumpur'), ('LBN', 'Labuan'), ('PJY', 'Putrajaya')], max_length=3, verbose_name='negeri')),
+                ('month', models.PositiveIntegerField(choices=[(1, 'Januari'), (2, 'Februari'), (3, 'Mac'), (4, 'April'), (5, 'Mei'), (6, 'Jun'), (
+                    7, 'Julai'), (8, 'Ogos'), (9, 'September'), (10, 'Oktober'), (11, 'November'), (12, 'Disember')], verbose_name='bulan')),
+                ('year', models.PositiveIntegerField(choices=[(2015, 2015), (2016, 2016), (2017, 2017), (
+                    2018, 2018), (2019, 2019), (2020, 2020)], default=quarry.models.current_year, verbose_name='tahun')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('miner', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='data', to='mine.mineminer', verbose_name='pengusaha')),
+                ('miner', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                            related_name='data', to='mine.mineminer', verbose_name='pengusaha')),
             ],
             options={
                 'verbose_name': 'data pengusaha kuari',
@@ -71,16 +86,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Operator',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255, verbose_name='nama syarikat')),
                 ('address1', models.CharField(max_length=255, verbose_name='alamat')),
-                ('address2', models.CharField(blank=True, max_length=255, verbose_name='alamat (line 2)')),
-                ('address3', models.CharField(blank=True, max_length=255, verbose_name='alamat (line 3)')),
+                ('address2', models.CharField(blank=True,
+                                              max_length=255, verbose_name='alamat (line 2)')),
+                ('address3', models.CharField(blank=True,
+                                              max_length=255, verbose_name='alamat (line 3)')),
                 ('phone', models.CharField(max_length=50, verbose_name='no phone')),
                 ('fax', models.CharField(max_length=50, verbose_name='no fax')),
                 ('email', models.CharField(max_length=255, verbose_name='emel')),
                 ('status', models.BooleanField(default=True, verbose_name='status')),
-                ('state', models.CharField(choices=[('JHR', 'Johor'), ('KDH', 'Kedah'), ('KTN', 'Kelantan'), ('MLK', 'Melaka'), ('NSN', 'Negeri Sembilan'), ('PHG', 'Pahang'), ('PNG', 'Pulau Pinang'), ('PRK', 'Perak'), ('PLS', 'Perlis'), ('SBH', 'Sabah'), ('SWK', 'Sarawak'), ('SGR', 'Selangor'), ('TRG', 'Terengganu'), ('KUL', 'Kuala Lumpur'), ('LBN', 'Labuan'), ('PJY', 'Putrajaya')], max_length=3, verbose_name='negeri')),
+                ('state', models.CharField(choices=[('JHR', 'Johor'), ('KDH', 'Kedah'), ('KTN', 'Kelantan'), ('MLK', 'Melaka'), ('NSN', 'Negeri Sembilan'), ('PHG', 'Pahang'), ('PNG', 'Pulau Pinang'), ('PRK', 'Perak'), (
+                    'PLS', 'Perlis'), ('SBH', 'Sabah'), ('SWK', 'Sarawak'), ('SGR', 'Selangor'), ('TRG', 'Terengganu'), ('KUL', 'Kuala Lumpur'), ('LBN', 'Labuan'), ('PJY', 'Putrajaya')], max_length=3, verbose_name='negeri')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -92,34 +111,62 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ElectricMachinery',
             fields=[
-                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
-                ('number_lorry', models.IntegerField(verbose_name='bilangan lori')),
-                ('lorry_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa lori')),
-                ('number_excavator', models.IntegerField(verbose_name='bilangan jenkorek')),
-                ('excavator_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa jenkorek')),
-                ('number_wheel_loader', models.IntegerField(verbose_name='bilangan jentera angkut beroda')),
-                ('wheel_loader_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa jentera angkut beroda')),
-                ('number_bulldozer', models.IntegerField(verbose_name='bilangan jentolak')),
-                ('bulldozer_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa jentolak')),
-                ('number_water_pump', models.IntegerField(verbose_name='bilangan pam air')),
-                ('water_pump_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa pam air')),
-                ('number_air_compressor', models.IntegerField(verbose_name='bilangan pemampat udara')),
-                ('air_compressor_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa pemampat udara')),
-                ('number_hydraulic_breaker', models.IntegerField(verbose_name='bilangan pemecah hidraulik')),
-                ('hydraulic_breaker_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa pemecah hidraulik')),
-                ('number_hydraulic_drill', models.IntegerField(verbose_name='bilangan gerudi hidraulik')),
-                ('hydraulic_drill_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa gerudi hidraulik')),
-                ('number_crusher', models.IntegerField(verbose_name='bilangan penghancur')),
-                ('crusher_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa penghancur')),
-                ('number_shovel', models.IntegerField(verbose_name='bilangan penyuduk')),
-                ('shovel_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa penyuduk')),
-                ('number_tracktor', models.IntegerField(verbose_name='bilangan traktor')),
-                ('tracktor_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa traktor')),
-                ('number_other', models.IntegerField(verbose_name='bilangan lain')),
-                ('other_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa lain')),
-                ('state_other', models.TextField(blank=True, verbose_name='nyatakan lain')),
-                ('total_number', models.IntegerField(verbose_name='jumlah bilangan')),
-                ('total_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah_kuasa')),
+                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                    primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
+                ('number_lorry', models.IntegerField(
+                    verbose_name='bilangan lori')),
+                ('lorry_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa lori')),
+                ('number_excavator', models.IntegerField(
+                    verbose_name='bilangan jenkorek')),
+                ('excavator_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa jenkorek')),
+                ('number_wheel_loader', models.IntegerField(
+                    verbose_name='bilangan jentera angkut beroda')),
+                ('wheel_loader_power', models.DecimalField(decimal_places=2,
+                                                           max_digits=15, verbose_name='kuasa jentera angkut beroda')),
+                ('number_bulldozer', models.IntegerField(
+                    verbose_name='bilangan jentolak')),
+                ('bulldozer_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa jentolak')),
+                ('number_water_pump', models.IntegerField(
+                    verbose_name='bilangan pam air')),
+                ('water_pump_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa pam air')),
+                ('number_air_compressor', models.IntegerField(
+                    verbose_name='bilangan pemampat udara')),
+                ('air_compressor_power', models.DecimalField(decimal_places=2,
+                                                             max_digits=15, verbose_name='kuasa pemampat udara')),
+                ('number_hydraulic_breaker', models.IntegerField(
+                    verbose_name='bilangan pemecah hidraulik')),
+                ('hydraulic_breaker_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa pemecah hidraulik')),
+                ('number_hydraulic_drill', models.IntegerField(
+                    verbose_name='bilangan gerudi hidraulik')),
+                ('hydraulic_drill_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa gerudi hidraulik')),
+                ('number_crusher', models.IntegerField(
+                    verbose_name='bilangan penghancur')),
+                ('crusher_power', models.DecimalField(decimal_places=2,
+                                                      max_digits=15, verbose_name='kuasa penghancur')),
+                ('number_shovel', models.IntegerField(
+                    verbose_name='bilangan penyuduk')),
+                ('shovel_power', models.DecimalField(decimal_places=2,
+                                                     max_digits=15, verbose_name='kuasa penyuduk')),
+                ('number_tracktor', models.IntegerField(
+                    verbose_name='bilangan traktor')),
+                ('tracktor_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa traktor')),
+                ('number_other', models.IntegerField(
+                    verbose_name='bilangan lain')),
+                ('other_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa lain')),
+                ('state_other', models.TextField(
+                    blank=True, verbose_name='nyatakan lain')),
+                ('total_number', models.IntegerField(
+                    verbose_name='jumlah bilangan')),
+                ('total_power', models.DecimalField(decimal_places=2,
+                                                    max_digits=15, verbose_name='jumlah_kuasa')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -131,10 +178,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EnergySupply',
             fields=[
-                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
-                ('total_diesel', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah diesel')),
-                ('total_electric', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah elektrik')),
-                ('total_explosive', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah bahan letupan')),
+                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                    primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
+                ('total_diesel', models.DecimalField(decimal_places=2,
+                                                     max_digits=15, verbose_name='jumlah diesel')),
+                ('total_electric', models.DecimalField(decimal_places=2,
+                                                       max_digits=15, verbose_name='jumlah elektrik')),
+                ('total_explosive', models.DecimalField(decimal_places=2,
+                                                        max_digits=15, verbose_name='jumlah bahan letupan')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -146,23 +197,37 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ForeignContractor',
             fields=[
-                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
-                ('male_manager', models.IntegerField(verbose_name='pengurus lelaki')),
-                ('female_manager', models.IntegerField(verbose_name='pengurus perempuan')),
-                ('male_professional', models.IntegerField(verbose_name='profesional lelaki')),
-                ('female_professional', models.IntegerField(verbose_name='profesional perempuan')),
-                ('male_technical', models.IntegerField(verbose_name='teknikal lelaki')),
-                ('female_technical', models.IntegerField(verbose_name='teknikal perempuan')),
+                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                    primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
+                ('male_manager', models.IntegerField(
+                    verbose_name='pengurus lelaki')),
+                ('female_manager', models.IntegerField(
+                    verbose_name='pengurus perempuan')),
+                ('male_professional', models.IntegerField(
+                    verbose_name='profesional lelaki')),
+                ('female_professional', models.IntegerField(
+                    verbose_name='profesional perempuan')),
+                ('male_technical', models.IntegerField(
+                    verbose_name='teknikal lelaki')),
+                ('female_technical', models.IntegerField(
+                    verbose_name='teknikal perempuan')),
                 ('male_clerk', models.IntegerField(verbose_name='kerani lelaki')),
-                ('female_clerk', models.IntegerField(verbose_name='kerani perempuan')),
+                ('female_clerk', models.IntegerField(
+                    verbose_name='kerani perempuan')),
                 ('male_labor', models.IntegerField(verbose_name='buruh lelaki')),
-                ('female_labor', models.IntegerField(verbose_name='buruh perempuan')),
-                ('total_female', models.IntegerField(verbose_name='jumlah perempuan')),
+                ('female_labor', models.IntegerField(
+                    verbose_name='buruh perempuan')),
+                ('total_female', models.IntegerField(
+                    verbose_name='jumlah perempuan')),
                 ('total_male', models.IntegerField(verbose_name='jumlah lelaki')),
-                ('total_male_salary', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah upah gaji lelaki')),
-                ('total_female_salary', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah upah gaji perempuan')),
-                ('male_man_hour', models.IntegerField(verbose_name='jam manusia lelaki')),
-                ('female_man_hour', models.IntegerField(verbose_name='jam manusia perempuan')),
+                ('total_male_salary', models.DecimalField(decimal_places=2,
+                                                          max_digits=15, verbose_name='jumlah upah gaji lelaki')),
+                ('total_female_salary', models.DecimalField(decimal_places=2,
+                                                            max_digits=15, verbose_name='jumlah upah gaji perempuan')),
+                ('male_man_hour', models.IntegerField(
+                    verbose_name='jam manusia lelaki')),
+                ('female_man_hour', models.IntegerField(
+                    verbose_name='jam manusia perempuan')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -174,23 +239,37 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ForeignOperator',
             fields=[
-                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
-                ('male_manager', models.IntegerField(verbose_name='pengurus lelaki')),
-                ('female_manager', models.IntegerField(verbose_name='pengurus perempuan')),
-                ('male_professional', models.IntegerField(verbose_name='profesional lelaki')),
-                ('female_professional', models.IntegerField(verbose_name='profesional perempuan')),
-                ('male_technical', models.IntegerField(verbose_name='teknikal lelaki')),
-                ('female_technical', models.IntegerField(verbose_name='teknikal perempuan')),
+                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                    primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
+                ('male_manager', models.IntegerField(
+                    verbose_name='pengurus lelaki')),
+                ('female_manager', models.IntegerField(
+                    verbose_name='pengurus perempuan')),
+                ('male_professional', models.IntegerField(
+                    verbose_name='profesional lelaki')),
+                ('female_professional', models.IntegerField(
+                    verbose_name='profesional perempuan')),
+                ('male_technical', models.IntegerField(
+                    verbose_name='teknikal lelaki')),
+                ('female_technical', models.IntegerField(
+                    verbose_name='teknikal perempuan')),
                 ('male_clerk', models.IntegerField(verbose_name='kerani lelaki')),
-                ('female_clerk', models.IntegerField(verbose_name='kerani perempuan')),
+                ('female_clerk', models.IntegerField(
+                    verbose_name='kerani perempuan')),
                 ('male_labor', models.IntegerField(verbose_name='buruh lelaki')),
-                ('female_labor', models.IntegerField(verbose_name='buruh perempuan')),
-                ('total_female', models.IntegerField(verbose_name='jumlah perempuan')),
+                ('female_labor', models.IntegerField(
+                    verbose_name='buruh perempuan')),
+                ('total_female', models.IntegerField(
+                    verbose_name='jumlah perempuan')),
                 ('total_male', models.IntegerField(verbose_name='jumlah lelaki')),
-                ('total_male_salary', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah upah gaji lelaki')),
-                ('total_female_salary', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah upah gaji perempuan')),
-                ('male_man_hour', models.IntegerField(verbose_name='jam manusia lelaki')),
-                ('female_man_hour', models.IntegerField(verbose_name='jam manusia perempuan')),
+                ('total_male_salary', models.DecimalField(decimal_places=2,
+                                                          max_digits=15, verbose_name='jumlah upah gaji lelaki')),
+                ('total_female_salary', models.DecimalField(decimal_places=2,
+                                                            max_digits=15, verbose_name='jumlah upah gaji perempuan')),
+                ('male_man_hour', models.IntegerField(
+                    verbose_name='jam manusia lelaki')),
+                ('female_man_hour', models.IntegerField(
+                    verbose_name='jam manusia perempuan')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -202,34 +281,62 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='InternalCombustionMachinery',
             fields=[
-                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
-                ('number_lorry', models.IntegerField(verbose_name='bilangan lori')),
-                ('lorry_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa lori')),
-                ('number_excavator', models.IntegerField(verbose_name='bilangan jenkorek')),
-                ('excavator_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa jenkorek')),
-                ('number_wheel_loader', models.IntegerField(verbose_name='bilangan jentera angkut beroda')),
-                ('wheel_loader_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa jentera angkut beroda')),
-                ('number_bulldozer', models.IntegerField(verbose_name='bilangan jentolak')),
-                ('bulldozer_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa jentolak')),
-                ('number_water_pump', models.IntegerField(verbose_name='bilangan pam air')),
-                ('water_pump_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa pam air')),
-                ('number_air_compressor', models.IntegerField(verbose_name='bilangan pemampat udara')),
-                ('air_compressor_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa pemampat udara')),
-                ('number_hydraulic_breaker', models.IntegerField(verbose_name='bilangan pemecah hidraulik')),
-                ('hydraulic_breaker_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa pemecah hidraulik')),
-                ('number_hydraulic_drill', models.IntegerField(verbose_name='bilangan gerudi hidraulik')),
-                ('hydraulic_drill_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa gerudi hidraulik')),
-                ('number_crusher', models.IntegerField(verbose_name='bilangan penghancur')),
-                ('crusher_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa penghancur')),
-                ('number_shovel', models.IntegerField(verbose_name='bilangan penyuduk')),
-                ('shovel_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa penyuduk')),
-                ('number_tracktor', models.IntegerField(verbose_name='bilangan traktor')),
-                ('tracktor_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa traktor')),
-                ('number_other', models.IntegerField(verbose_name='bilangan lain')),
-                ('other_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuasa lain')),
-                ('state_other', models.TextField(blank=True, verbose_name='nyatakan lain')),
-                ('total_number', models.IntegerField(verbose_name='jumlah bilangan')),
-                ('total_power', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah_kuasa')),
+                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                    primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
+                ('number_lorry', models.IntegerField(
+                    verbose_name='bilangan lori')),
+                ('lorry_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa lori')),
+                ('number_excavator', models.IntegerField(
+                    verbose_name='bilangan jenkorek')),
+                ('excavator_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa jenkorek')),
+                ('number_wheel_loader', models.IntegerField(
+                    verbose_name='bilangan jentera angkut beroda')),
+                ('wheel_loader_power', models.DecimalField(decimal_places=2,
+                                                           max_digits=15, verbose_name='kuasa jentera angkut beroda')),
+                ('number_bulldozer', models.IntegerField(
+                    verbose_name='bilangan jentolak')),
+                ('bulldozer_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa jentolak')),
+                ('number_water_pump', models.IntegerField(
+                    verbose_name='bilangan pam air')),
+                ('water_pump_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa pam air')),
+                ('number_air_compressor', models.IntegerField(
+                    verbose_name='bilangan pemampat udara')),
+                ('air_compressor_power', models.DecimalField(decimal_places=2,
+                                                             max_digits=15, verbose_name='kuasa pemampat udara')),
+                ('number_hydraulic_breaker', models.IntegerField(
+                    verbose_name='bilangan pemecah hidraulik')),
+                ('hydraulic_breaker_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa pemecah hidraulik')),
+                ('number_hydraulic_drill', models.IntegerField(
+                    verbose_name='bilangan gerudi hidraulik')),
+                ('hydraulic_drill_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa gerudi hidraulik')),
+                ('number_crusher', models.IntegerField(
+                    verbose_name='bilangan penghancur')),
+                ('crusher_power', models.DecimalField(decimal_places=2,
+                                                      max_digits=15, verbose_name='kuasa penghancur')),
+                ('number_shovel', models.IntegerField(
+                    verbose_name='bilangan penyuduk')),
+                ('shovel_power', models.DecimalField(decimal_places=2,
+                                                     max_digits=15, verbose_name='kuasa penyuduk')),
+                ('number_tracktor', models.IntegerField(
+                    verbose_name='bilangan traktor')),
+                ('tracktor_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa traktor')),
+                ('number_other', models.IntegerField(
+                    verbose_name='bilangan lain')),
+                ('other_power', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuasa lain')),
+                ('state_other', models.TextField(
+                    blank=True, verbose_name='nyatakan lain')),
+                ('total_number', models.IntegerField(
+                    verbose_name='jumlah bilangan')),
+                ('total_power', models.DecimalField(decimal_places=2,
+                                                    max_digits=15, verbose_name='jumlah_kuasa')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -241,23 +348,37 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LocalContractor',
             fields=[
-                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
-                ('male_manager', models.IntegerField(verbose_name='pengurus lelaki')),
-                ('female_manager', models.IntegerField(verbose_name='pengurus perempuan')),
-                ('male_professional', models.IntegerField(verbose_name='profesional lelaki')),
-                ('female_professional', models.IntegerField(verbose_name='profesional perempuan')),
-                ('male_technical', models.IntegerField(verbose_name='teknikal lelaki')),
-                ('female_technical', models.IntegerField(verbose_name='teknikal perempuan')),
+                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                    primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
+                ('male_manager', models.IntegerField(
+                    verbose_name='pengurus lelaki')),
+                ('female_manager', models.IntegerField(
+                    verbose_name='pengurus perempuan')),
+                ('male_professional', models.IntegerField(
+                    verbose_name='profesional lelaki')),
+                ('female_professional', models.IntegerField(
+                    verbose_name='profesional perempuan')),
+                ('male_technical', models.IntegerField(
+                    verbose_name='teknikal lelaki')),
+                ('female_technical', models.IntegerField(
+                    verbose_name='teknikal perempuan')),
                 ('male_clerk', models.IntegerField(verbose_name='kerani lelaki')),
-                ('female_clerk', models.IntegerField(verbose_name='kerani perempuan')),
+                ('female_clerk', models.IntegerField(
+                    verbose_name='kerani perempuan')),
                 ('male_labor', models.IntegerField(verbose_name='buruh lelaki')),
-                ('female_labor', models.IntegerField(verbose_name='buruh perempuan')),
-                ('total_female', models.IntegerField(verbose_name='jumlah perempuan')),
+                ('female_labor', models.IntegerField(
+                    verbose_name='buruh perempuan')),
+                ('total_female', models.IntegerField(
+                    verbose_name='jumlah perempuan')),
                 ('total_male', models.IntegerField(verbose_name='jumlah lelaki')),
-                ('total_male_salary', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah upah gaji lelaki')),
-                ('total_female_salary', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah upah gaji perempuan')),
-                ('male_man_hour', models.IntegerField(verbose_name='jam manusia lelaki')),
-                ('female_man_hour', models.IntegerField(verbose_name='jam manusia perempuan')),
+                ('total_male_salary', models.DecimalField(decimal_places=2,
+                                                          max_digits=15, verbose_name='jumlah upah gaji lelaki')),
+                ('total_female_salary', models.DecimalField(decimal_places=2,
+                                                            max_digits=15, verbose_name='jumlah upah gaji perempuan')),
+                ('male_man_hour', models.IntegerField(
+                    verbose_name='jam manusia lelaki')),
+                ('female_man_hour', models.IntegerField(
+                    verbose_name='jam manusia perempuan')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -269,23 +390,37 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LocalOperator',
             fields=[
-                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
-                ('male_manager', models.IntegerField(verbose_name='pengurus lelaki')),
-                ('female_manager', models.IntegerField(verbose_name='pengurus perempuan')),
-                ('male_professional', models.IntegerField(verbose_name='profesional lelaki')),
-                ('female_professional', models.IntegerField(verbose_name='profesional perempuan')),
-                ('male_technical', models.IntegerField(verbose_name='teknikal lelaki')),
-                ('female_technical', models.IntegerField(verbose_name='teknikal perempuan')),
+                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                    primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
+                ('male_manager', models.IntegerField(
+                    verbose_name='pengurus lelaki')),
+                ('female_manager', models.IntegerField(
+                    verbose_name='pengurus perempuan')),
+                ('male_professional', models.IntegerField(
+                    verbose_name='profesional lelaki')),
+                ('female_professional', models.IntegerField(
+                    verbose_name='profesional perempuan')),
+                ('male_technical', models.IntegerField(
+                    verbose_name='teknikal lelaki')),
+                ('female_technical', models.IntegerField(
+                    verbose_name='teknikal perempuan')),
                 ('male_clerk', models.IntegerField(verbose_name='kerani lelaki')),
-                ('female_clerk', models.IntegerField(verbose_name='kerani perempuan')),
+                ('female_clerk', models.IntegerField(
+                    verbose_name='kerani perempuan')),
                 ('male_labor', models.IntegerField(verbose_name='buruh lelaki')),
-                ('female_labor', models.IntegerField(verbose_name='buruh perempuan')),
+                ('female_labor', models.IntegerField(
+                    verbose_name='buruh perempuan')),
                 ('total_male', models.IntegerField(verbose_name='jumlah lelaki')),
-                ('total_female', models.IntegerField(verbose_name='jumlah perempuan')),
-                ('total_male_salary', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah upah gaji lelaki')),
-                ('total_female_salary', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah upah gaji perempuan')),
-                ('male_man_hour', models.IntegerField(verbose_name='jam manusia lelaki')),
-                ('female_man_hour', models.IntegerField(verbose_name='jam manusia perempuan')),
+                ('total_female', models.IntegerField(
+                    verbose_name='jumlah perempuan')),
+                ('total_male_salary', models.DecimalField(decimal_places=2,
+                                                          max_digits=15, verbose_name='jumlah upah gaji lelaki')),
+                ('total_female_salary', models.DecimalField(decimal_places=2,
+                                                            max_digits=15, verbose_name='jumlah upah gaji perempuan')),
+                ('male_man_hour', models.IntegerField(
+                    verbose_name='jam manusia lelaki')),
+                ('female_man_hour', models.IntegerField(
+                    verbose_name='jam manusia perempuan')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -297,21 +432,31 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Mine',
             fields=[
-                ('lease_holder', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.leaseholder', verbose_name='pemajak')),
+                ('lease_holder', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                      primary_key=True, serialize=False, to='mine.leaseholder', verbose_name='pemajak')),
                 ('address1', models.CharField(max_length=255, verbose_name='alamat')),
-                ('address2', models.CharField(blank=True, max_length=255, verbose_name='alamat (line 2)')),
-                ('address3', models.CharField(blank=True, max_length=255, verbose_name='alamat (line 3)')),
-                ('phone_number', models.CharField(max_length=15, verbose_name='no tel')),
-                ('fax_number', models.CharField(max_length=15, verbose_name='no fax')),
+                ('address2', models.CharField(blank=True,
+                                              max_length=255, verbose_name='alamat (line 2)')),
+                ('address3', models.CharField(blank=True,
+                                              max_length=255, verbose_name='alamat (line 3)')),
+                ('phone_number', models.CharField(
+                    max_length=15, verbose_name='no tel')),
+                ('fax_number', models.CharField(
+                    max_length=15, verbose_name='no fax')),
                 ('email', models.EmailField(max_length=254, verbose_name='email')),
                 ('location', models.CharField(max_length=255, verbose_name='lokasi')),
                 ('mukim', models.CharField(max_length=255, verbose_name='mukim')),
                 ('district', models.CharField(max_length=255, verbose_name='daerah')),
-                ('state', models.CharField(choices=[('JHR', 'Johor'), ('KDH', 'Kedah'), ('KTN', 'Kelantan'), ('MLK', 'Melaka'), ('NSN', 'Negeri Sembilan'), ('PHG', 'Pahang'), ('PNG', 'Pulau Pinang'), ('PRK', 'Perak'), ('PLS', 'Perlis'), ('SBH', 'Sabah'), ('SWK', 'Sarawak'), ('SGR', 'Selangor'), ('TRG', 'Terengganu'), ('KUL', 'Kuala Lumpur'), ('LBN', 'Labuan'), ('PJY', 'Putrajaya')], max_length=3, verbose_name='negeri')),
-                ('land_status', models.CharField(choices=[('TANAH KERAJAAN', 'Tanah Kerajaan'), ('TANAH TUAN PUNYA', 'Tanah Tuan Punya')], max_length=255, verbose_name='status tanah')),
-                ('grid_reference', models.CharField(max_length=255, verbose_name='rujukan grid')),
-                ('max_capacity', models.CharField(max_length=255, verbose_name='keupayaan maksima')),
-                ('company_category', models.CharField(max_length=255, verbose_name='kategori syarikat')),
+                ('state', models.CharField(choices=[('JHR', 'Johor'), ('KDH', 'Kedah'), ('KTN', 'Kelantan'), ('MLK', 'Melaka'), ('NSN', 'Negeri Sembilan'), ('PHG', 'Pahang'), ('PNG', 'Pulau Pinang'), ('PRK', 'Perak'), (
+                    'PLS', 'Perlis'), ('SBH', 'Sabah'), ('SWK', 'Sarawak'), ('SGR', 'Selangor'), ('TRG', 'Terengganu'), ('KUL', 'Kuala Lumpur'), ('LBN', 'Labuan'), ('PJY', 'Putrajaya')], max_length=3, verbose_name='negeri')),
+                ('land_status', models.CharField(choices=[('TANAH KERAJAAN', 'Tanah Kerajaan'), (
+                    'TANAH TUAN PUNYA', 'Tanah Tuan Punya')], max_length=255, verbose_name='status tanah')),
+                ('grid_reference', models.CharField(
+                    max_length=255, verbose_name='rujukan grid')),
+                ('max_capacity', models.CharField(
+                    max_length=255, verbose_name='keupayaan maksima')),
+                ('company_category', models.CharField(
+                    max_length=255, verbose_name='kategori syarikat')),
                 ('status', models.BooleanField(default=True, verbose_name='status')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
@@ -324,12 +469,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OperatingRecord',
             fields=[
-                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
-                ('average_mine_depth', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='dalam lombong hitung panjang')),
-                ('deepest_mine', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='ukuran lombong terdalam')),
-                ('shallowest_mine', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='ukuran lombong tercetek')),
-                ('material_discarded', models.DecimalField(decimal_places=4, max_digits=15, verbose_name='bahan beban dibuang')),
-                ('ore_mined', models.DecimalField(decimal_places=4, max_digits=15, verbose_name='bahan berbijih dilombong')),
+                ('miner_data', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                                    primary_key=True, serialize=False, to='mine.mineminerdata', verbose_name='miner data')),
+                ('average_mine_depth', models.DecimalField(decimal_places=2,
+                                                           max_digits=15, verbose_name='dalam lombong hitung panjang')),
+                ('deepest_mine', models.DecimalField(decimal_places=2,
+                                                     max_digits=15, verbose_name='ukuran lombong terdalam')),
+                ('shallowest_mine', models.DecimalField(decimal_places=2,
+                                                        max_digits=15, verbose_name='ukuran lombong tercetek')),
+                ('material_discarded', models.DecimalField(decimal_places=4,
+                                                           max_digits=15, verbose_name='bahan beban dibuang')),
+                ('ore_mined', models.DecimalField(decimal_places=4,
+                                                  max_digits=15, verbose_name='bahan berbijih dilombong')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -341,18 +492,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SideStatistic',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('mineral_type', models.CharField(choices=[('BAUXITE', 'Bauksite/Bauksit'), ('TIN ORE', 'Tin Ore/Bijih Timah'), ('IRON ORE', 'Iron Ore/Bijih Besi'), ('ANTIMONY', 'Antimony/Antimoni'), ('COAL', 'Coal/Arang Batu'), ('DIMENSION STONE', 'Dimension Stone/Batu Dimensi'), ('FELDSPAR', 'Feldspar/Felspar'), ('GALENA', 'Galena/Galena'), ('KALSIUM KARBONAT', 'Kalsium Karbonat'), ('KAOLIN', 'Kaolin'), ('CUPRUM', 'Kuprum'), ('BALL CLAY', 'Ball Clay/Lempung Bebola'), ('MANGANESE', 'Manganese/Mangan'), ('MICA', 'Mica/Mika'), ('SILVER', 'Silver/Perak'), ('SILICA SAND', 'Silica Sand/Pasir Silika'), ('TUNGSTEN', 'Tungsten'), ('GOLD', 'Gold/Emas'), ('GRAPHITE', 'Graphite/Grafit')], max_length=255, verbose_name='jenis mineral sampingan')),
-                ('minerals_quantity', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuantiti_mineral')),
-                ('final_stock_last_month', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='stok akhir bulan lalu')),
-                ('mine_production', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='pengeluaran lombong')),
-                ('total_minerals', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah mineral')),
-                ('submission_buyers', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='penyerahan kepada pembeli')),
-                ('final_stock_this_month', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='stok akhir bulan ini')),
-                ('average_grade', models.CharField(max_length=255, verbose_name='gred hitung panjang')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('mineral_type', models.CharField(choices=[('BAUXITE', 'Bauksite/Bauksit'), ('TIN ORE', 'Tin Ore/Bijih Timah'), ('IRON ORE', 'Iron Ore/Bijih Besi'), ('ANTIMONY', 'Antimony/Antimoni'), ('COAL', 'Coal/Arang Batu'), ('DIMENSION STONE', 'Dimension Stone/Batu Dimensi'), ('FELDSPAR', 'Feldspar/Felspar'), ('GALENA', 'Galena/Galena'), ('KALSIUM KARBONAT', 'Kalsium Karbonat'), (
+                    'KAOLIN', 'Kaolin'), ('CUPRUM', 'Kuprum'), ('BALL CLAY', 'Ball Clay/Lempung Bebola'), ('MANGANESE', 'Manganese/Mangan'), ('MICA', 'Mica/Mika'), ('SILVER', 'Silver/Perak'), ('SILICA SAND', 'Silica Sand/Pasir Silika'), ('TUNGSTEN', 'Tungsten'), ('GOLD', 'Gold/Emas'), ('GRAPHITE', 'Graphite/Grafit')], max_length=255, verbose_name='jenis mineral sampingan')),
+                ('minerals_quantity', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuantiti_mineral')),
+                ('final_stock_last_month', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='stok akhir bulan lalu')),
+                ('mine_production', models.DecimalField(decimal_places=2,
+                                                        max_digits=15, verbose_name='pengeluaran lombong')),
+                ('total_minerals', models.DecimalField(decimal_places=2,
+                                                       max_digits=15, verbose_name='jumlah mineral')),
+                ('submission_buyers', models.DecimalField(decimal_places=2,
+                                                          max_digits=15, verbose_name='penyerahan kepada pembeli')),
+                ('final_stock_this_month', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='stok akhir bulan ini')),
+                ('average_grade', models.CharField(
+                    max_length=255, verbose_name='gred hitung panjang')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('miner_data', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='side_minerals', to='mine.mineminerdata', verbose_name='miner data')),
+                ('miner_data', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                                 related_name='side_minerals', to='mine.mineminerdata', verbose_name='miner data')),
             ],
             options={
                 'verbose_name': 'perangkaan batuan sampingan',
@@ -362,28 +523,43 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MineDataApproval',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('state_comment', models.TextField(blank=True, verbose_name='state comment')),
-                ('state_approved', models.BooleanField(blank=True, null=True, verbose_name='state approved')),
-                ('admin_comment', models.TextField(blank=True, verbose_name='admin comment')),
-                ('admin_approved', models.BooleanField(blank=True, null=True, verbose_name='admin approved')),
-                ('hq_comment', models.TextField(blank=True, verbose_name='hq comment')),
-                ('hq_approved', models.BooleanField(blank=True, null=True, verbose_name='hq approved')),
-                ('admin_inspector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='mine_admin_inspected', to=settings.AUTH_USER_MODEL, verbose_name='admin inspector')),
-                ('hq_inspector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='mine_hq_inspected', to=settings.AUTH_USER_MODEL, verbose_name='hq inspector')),
-                ('miner_data', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='approvals', to='mine.mineminerdata', verbose_name='miner data')),
-                ('requestor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='mine_requested', to=settings.AUTH_USER_MODEL, verbose_name='requestor')),
-                ('state_inspector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='mine_state_inspected', to=settings.AUTH_USER_MODEL, verbose_name='state inspector')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('state_comment', models.TextField(
+                    blank=True, verbose_name='state comment')),
+                ('state_approved', models.BooleanField(
+                    blank=True, null=True, verbose_name='state approved')),
+                ('admin_comment', models.TextField(
+                    blank=True, verbose_name='admin comment')),
+                ('admin_approved', models.BooleanField(
+                    blank=True, null=True, verbose_name='admin approved')),
+                ('hq_comment', models.TextField(
+                    blank=True, verbose_name='hq comment')),
+                ('hq_approved', models.BooleanField(
+                    blank=True, null=True, verbose_name='hq approved')),
+                ('admin_inspector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                                      related_name='mine_admin_inspected', to=settings.AUTH_USER_MODEL, verbose_name='admin inspector')),
+                ('hq_inspector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                                   related_name='mine_hq_inspected', to=settings.AUTH_USER_MODEL, verbose_name='hq inspector')),
+                ('miner_data', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                                 related_name='approvals', to='mine.mineminerdata', verbose_name='miner data')),
+                ('requestor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                                related_name='mine_requested', to=settings.AUTH_USER_MODEL, verbose_name='requestor')),
+                ('state_inspector', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                                      related_name='mine_state_inspected', to=settings.AUTH_USER_MODEL, verbose_name='state inspector')),
             ],
         ),
         migrations.CreateModel(
             name='Manager',
             fields=[
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='account.user', verbose_name='user')),
+                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                              primary_key=True, serialize=False, to='account.user', verbose_name='user')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('lease_holder', models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, to='mine.leaseholder', verbose_name='pemajak')),
-                ('operator', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='managers', to='mine.operator', verbose_name='pengusaha')),
+                ('lease_holder', models.OneToOneField(
+                    null=True, on_delete=django.db.models.deletion.SET_NULL, to='mine.leaseholder', verbose_name='pemajak')),
+                ('operator', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                               related_name='managers', to='mine.operator', verbose_name='pengusaha')),
             ],
             options={
                 'verbose_name': 'pengurus lombong',
@@ -393,18 +569,28 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MainStatistic',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('mineral_type', models.CharField(choices=[('BAUXITE', 'Bauksite/Bauksit'), ('TIN ORE', 'Tin Ore/Bijih Timah'), ('IRON ORE', 'Iron Ore/Bijih Besi'), ('ANTIMONY', 'Antimony/Antimoni'), ('COAL', 'Coal/Arang Batu'), ('DIMENSION STONE', 'Dimension Stone/Batu Dimensi'), ('FELDSPAR', 'Feldspar/Felspar'), ('GALENA', 'Galena/Galena'), ('KALSIUM KARBONAT', 'Kalsium Karbonat'), ('KAOLIN', 'Kaolin'), ('CUPRUM', 'Kuprum'), ('BALL CLAY', 'Ball Clay/Lempung Bebola'), ('MANGANESE', 'Manganese/Mangan'), ('MICA', 'Mica/Mika'), ('SILVER', 'Silver/Perak'), ('SILICA SAND', 'Silica Sand/Pasir Silika'), ('TUNGSTEN', 'Tungsten'), ('GOLD', 'Gold/Emas'), ('GRAPHITE', 'Graphite/Grafit')], max_length=255, verbose_name='jenis mineral utama')),
-                ('minerals_quantity', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='kuantiti_mineral')),
-                ('final_stock_last_month', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='stok akhir bulan lalu')),
-                ('mine_production', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='pengeluaran lombong')),
-                ('total_minerals', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='jumlah mineral')),
-                ('submission_buyers', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='penyerahan kepada pembeli')),
-                ('final_stock_this_month', models.DecimalField(decimal_places=2, max_digits=15, verbose_name='stok akhir bulan ini')),
-                ('average_grade', models.CharField(max_length=255, verbose_name='gred hitung panjang')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('mineral_type', models.CharField(choices=[('BAUXITE', 'Bauksite/Bauksit'), ('TIN ORE', 'Tin Ore/Bijih Timah'), ('IRON ORE', 'Iron Ore/Bijih Besi'), ('ANTIMONY', 'Antimony/Antimoni'), ('COAL', 'Coal/Arang Batu'), ('DIMENSION STONE', 'Dimension Stone/Batu Dimensi'), ('FELDSPAR', 'Feldspar/Felspar'), ('GALENA', 'Galena/Galena'), ('KALSIUM KARBONAT', 'Kalsium Karbonat'), (
+                    'KAOLIN', 'Kaolin'), ('CUPRUM', 'Kuprum'), ('BALL CLAY', 'Ball Clay/Lempung Bebola'), ('MANGANESE', 'Manganese/Mangan'), ('MICA', 'Mica/Mika'), ('SILVER', 'Silver/Perak'), ('SILICA SAND', 'Silica Sand/Pasir Silika'), ('TUNGSTEN', 'Tungsten'), ('GOLD', 'Gold/Emas'), ('GRAPHITE', 'Graphite/Grafit')], max_length=255, verbose_name='jenis mineral utama')),
+                ('minerals_quantity', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='kuantiti_mineral')),
+                ('final_stock_last_month', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='stok akhir bulan lalu')),
+                ('mine_production', models.DecimalField(decimal_places=2,
+                                                        max_digits=15, verbose_name='pengeluaran lombong')),
+                ('total_minerals', models.DecimalField(decimal_places=2,
+                                                       max_digits=15, verbose_name='jumlah mineral')),
+                ('submission_buyers', models.DecimalField(decimal_places=2,
+                                                          max_digits=15, verbose_name='penyerahan kepada pembeli')),
+                ('final_stock_this_month', models.DecimalField(
+                    decimal_places=2, max_digits=15, verbose_name='stok akhir bulan ini')),
+                ('average_grade', models.CharField(
+                    max_length=255, verbose_name='gred hitung panjang')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('miner_data', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='main_minerals', to='mine.mineminerdata', verbose_name='miner data')),
+                ('miner_data', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                                 related_name='main_minerals', to='mine.mineminerdata', verbose_name='miner data')),
             ],
             options={
                 'verbose_name': 'perangkaan batuan utama',
@@ -414,11 +600,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SideMineral',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('mineral_type', models.CharField(choices=[('BAUXITE', 'Bauksite/Bauksit'), ('TIN ORE', 'Tin Ore/Bijih Timah'), ('IRON ORE', 'Iron Ore/Bijih Besi'), ('ANTIMONY', 'Antimony/Antimoni'), ('COAL', 'Coal/Arang Batu'), ('DIMENSION STONE', 'Dimension Stone/Batu Dimensi'), ('FELDSPAR', 'Feldspar/Felspar'), ('GALENA', 'Galena/Galena'), ('KALSIUM KARBONAT', 'Kalsium Karbonat'), ('KAOLIN', 'Kaolin'), ('CUPRUM', 'Kuprum'), ('BALL CLAY', 'Ball Clay/Lempung Bebola'), ('MANGANESE', 'Manganese/Mangan'), ('MICA', 'Mica/Mika'), ('SILVER', 'Silver/Perak'), ('SILICA SAND', 'Silica Sand/Pasir Silika'), ('TUNGSTEN', 'Tungsten'), ('GOLD', 'Gold/Emas'), ('GRAPHITE', 'Graphite/Grafit')], max_length=255, verbose_name='jenis mineral')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('mineral_type', models.CharField(choices=[('BAUXITE', 'Bauksite/Bauksit'), ('TIN ORE', 'Tin Ore/Bijih Timah'), ('IRON ORE', 'Iron Ore/Bijih Besi'), ('ANTIMONY', 'Antimony/Antimoni'), ('COAL', 'Coal/Arang Batu'), ('DIMENSION STONE', 'Dimension Stone/Batu Dimensi'), ('FELDSPAR', 'Feldspar/Felspar'), ('GALENA', 'Galena/Galena'), ('KALSIUM KARBONAT', 'Kalsium Karbonat'), (
+                    'KAOLIN', 'Kaolin'), ('CUPRUM', 'Kuprum'), ('BALL CLAY', 'Ball Clay/Lempung Bebola'), ('MANGANESE', 'Manganese/Mangan'), ('MICA', 'Mica/Mika'), ('SILVER', 'Silver/Perak'), ('SILICA SAND', 'Silica Sand/Pasir Silika'), ('TUNGSTEN', 'Tungsten'), ('GOLD', 'Gold/Emas'), ('GRAPHITE', 'Graphite/Grafit')], max_length=255, verbose_name='jenis mineral')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('mine', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='side_minerals', to='mine.mine', verbose_name='mine')),
+                ('mine', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                           related_name='side_minerals', to='mine.mine', verbose_name='mine')),
             ],
             options={
                 'verbose_name': 'batuan sampingan',
@@ -428,31 +617,38 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='mineminerdata',
             name='mine',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='miner_data', to='mine.mine', verbose_name='lombong'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    related_name='miner_data', to='mine.mine', verbose_name='lombong'),
         ),
         migrations.AddField(
             model_name='mineminer',
             name='mine',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='miners', to='mine.mine', verbose_name='kuari'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='miners', to='mine.mine', verbose_name='kuari'),
         ),
         migrations.AddField(
             model_name='mine',
             name='manager',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.SET_NULL, to='mine.manager', verbose_name='pengurus'),
+            field=models.OneToOneField(
+                null=True, on_delete=django.db.models.deletion.SET_NULL, to='mine.manager', verbose_name='pengurus'),
         ),
         migrations.AddField(
             model_name='mine',
             name='operator',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='mines', to='mine.operator', verbose_name='pengurus'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL,
+                                    related_name='mines', to='mine.operator', verbose_name='pengurus'),
         ),
         migrations.CreateModel(
             name='MainMineral',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('mineral_type', models.CharField(choices=[('BAUXITE', 'Bauksite/Bauksit'), ('TIN ORE', 'Tin Ore/Bijih Timah'), ('IRON ORE', 'Iron Ore/Bijih Besi'), ('ANTIMONY', 'Antimony/Antimoni'), ('COAL', 'Coal/Arang Batu'), ('DIMENSION STONE', 'Dimension Stone/Batu Dimensi'), ('FELDSPAR', 'Feldspar/Felspar'), ('GALENA', 'Galena/Galena'), ('KALSIUM KARBONAT', 'Kalsium Karbonat'), ('KAOLIN', 'Kaolin'), ('CUPRUM', 'Kuprum'), ('BALL CLAY', 'Ball Clay/Lempung Bebola'), ('MANGANESE', 'Manganese/Mangan'), ('MICA', 'Mica/Mika'), ('SILVER', 'Silver/Perak'), ('SILICA SAND', 'Silica Sand/Pasir Silika'), ('TUNGSTEN', 'Tungsten'), ('GOLD', 'Gold/Emas'), ('GRAPHITE', 'Graphite/Grafit')], max_length=255, verbose_name='jenis mineral')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('mineral_type', models.CharField(choices=[('BAUXITE', 'Bauksite/Bauksit'), ('TIN ORE', 'Tin Ore/Bijih Timah'), ('IRON ORE', 'Iron Ore/Bijih Besi'), ('ANTIMONY', 'Antimony/Antimoni'), ('COAL', 'Coal/Arang Batu'), ('DIMENSION STONE', 'Dimension Stone/Batu Dimensi'), ('FELDSPAR', 'Feldspar/Felspar'), ('GALENA', 'Galena/Galena'), ('KALSIUM KARBONAT', 'Kalsium Karbonat'), (
+                    'KAOLIN', 'Kaolin'), ('CUPRUM', 'Kuprum'), ('BALL CLAY', 'Ball Clay/Lempung Bebola'), ('MANGANESE', 'Manganese/Mangan'), ('MICA', 'Mica/Mika'), ('SILVER', 'Silver/Perak'), ('SILICA SAND', 'Silica Sand/Pasir Silika'), ('TUNGSTEN', 'Tungsten'), ('GOLD', 'Gold/Emas'), ('GRAPHITE', 'Graphite/Grafit')], max_length=255, verbose_name='jenis mineral')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('mine', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='main_minerals', to='mine.mine', verbose_name='mine')),
+                ('mine', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                           related_name='main_minerals', to='mine.mine', verbose_name='mine')),
             ],
             options={
                 'verbose_name': 'batuan utama',

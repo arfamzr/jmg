@@ -146,12 +146,13 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, verbose_name=_(
         "user"), on_delete=models.CASCADE, primary_key=True)
-    ic_number = models.CharField(_("no K/P"), max_length=25)
-    address1 = models.CharField(_("alamat"), max_length=255)
+    ic_number = models.CharField(_("No Kad Pengenalan"), max_length=25)
+    address1 = models.CharField(
+        _("alamat (No Rumah, Nama Jalan)"), max_length=255)
     address2 = models.CharField(
-        _("alamat (line 2)"), max_length=255, blank=True)
+        _("alamat (Daerah)"), max_length=255, blank=True)
     address3 = models.CharField(
-        _("alamat (line 3)"), max_length=255, blank=True)
+        _("alamat (Poskod, Negeri)"), max_length=255, blank=True)
     image = models.ImageField(
         _("image"), upload_to='uploads/profile_images/%Y/%m/%d/', blank=True)
     state = models.CharField(_("state"), max_length=3, choices=STATE_CHOICES)

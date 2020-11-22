@@ -65,7 +65,7 @@ class HQUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update JMG HQ'
+        context["title"] = 'Kemaskini JMG HQ'
         return context
 
 
@@ -144,7 +144,7 @@ class AdminUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update Admin Negeri'
+        context["title"] = 'Kemaskini Admin Negeri'
         return context
 
 
@@ -175,7 +175,7 @@ class AdminStateUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Update JMG Admin Negeri'
+        context["title"] = 'Kemaskini JMG Admin Negeri'
         return context
 
 
