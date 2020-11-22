@@ -13,18 +13,19 @@ from ..models import User, Profile
 
 class UserCreationForm(DjangoUserCreationForm):
     password1 = forms.CharField(
-        label=_("Password"),
+        label=_("Kata Laluan"),
         strip=False,
         widget=forms.PasswordInput(
-            attrs={'autocomplete': 'new-password', 'placeholder': 'Password'}),
+            attrs={'autocomplete': 'new-password', 'placeholder': 'Kata Laluan'}),
         help_text=password_validation.password_validators_help_text_html(),
     )
     password2 = forms.CharField(
-        label=_("Password confirmation"),
+        label=_("Ulang Kata Laluan"),
         widget=forms.PasswordInput(
-            attrs={'autocomplete': 'new-password', 'placeholder': 'Password Confirmation'}),
+            attrs={'autocomplete': 'new-password', 'placeholder': 'Ulang Kata Laluan'}),
         strip=False,
-        help_text=_("Enter the same password as before, for verification."),
+        help_text=_(
+            "Masukkan kata laluan yang sama seperti sebelumnya, untuk pengesahan."),
     )
 
     def __init__(self, *args, **kwargs):
@@ -38,6 +39,11 @@ class UserCreationForm(DjangoUserCreationForm):
         fields = ['username', 'email', 'first_name', 'last_name']
         required = ['username', 'email', 'first_name', 'last_name']
         field_classes = {'username': UsernameField}
+        labels = {
+            "username": "Nama Pengguna",
+            "first_name": "Nama Pertama",
+            "last_name": "Nama Akhir",
+        }
 
 
 class UserForm(forms.ModelForm):
@@ -79,18 +85,19 @@ class StateForm(forms.ModelForm):
 
 class PasswordResetForm(forms.Form):
     password1 = forms.CharField(
-        label=_("Password"),
+        label=_("Kata Laluan"),
         strip=False,
         widget=forms.PasswordInput(
-            attrs={'autocomplete': 'new-password', 'placeholder': 'Password'}),
+            attrs={'autocomplete': 'new-password', 'placeholder': 'Kata Laluan'}),
         help_text=password_validation.password_validators_help_text_html(),
     )
     password2 = forms.CharField(
-        label=_("Password confirmation"),
+        label=_("Ulang Kata Laluan"),
         widget=forms.PasswordInput(
-            attrs={'autocomplete': 'new-password', 'placeholder': 'Password Confirmation'}),
+            attrs={'autocomplete': 'new-password', 'placeholder': 'Ulang Kata Laluan'}),
         strip=False,
-        help_text=_("Enter the same password as before, for verification."),
+        help_text=_(
+            "Masukkan kata laluan yang sama seperti sebelumnya, untuk pengesahan."),
     )
 
     def clean_password2(self):

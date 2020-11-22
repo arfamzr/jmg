@@ -33,6 +33,9 @@ from ..views.main import (
     # operating record
     operating_record_edit,
 
+    # summary
+    data_summary,
+
     # comment
     get_comment_data,
 
@@ -146,6 +149,13 @@ urlpatterns = [
         '<int:pk>/operating-record/',
         operating_record_edit,
         name='operating_record_edit'
+    ),
+
+    # summary
+    path(
+        'data/<int:pk>/summary/',
+        data_summary,
+        name='data_summary',
     ),
 
     # comment

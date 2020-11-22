@@ -52,6 +52,8 @@ def dashboard(request):
         quarry_count = get_counted_data(quarry_data)
         mine_data = MineData.objects.filter(manager__user=request.user)
         mine_count = get_counted_data(mine_data)
+    elif request.user.is_super_admin:
+        return redirect('account:super_admin:hq_list')
     else:
         quarry_count = None
         mine_count = None

@@ -299,7 +299,7 @@ def mine_report(request):
                     f'{mine.name} ({mine.mukim})',
                     mine.district,
                     statistic.get_mineral_type_display(),
-                    statistic.minerals_quantity,
+                    statistic.quantity_unit,
                     statistic.final_stock_last_month,
                     statistic.mine_production,
                     statistic.total_minerals,
