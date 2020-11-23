@@ -94,14 +94,14 @@ class User(AbstractUser):
     def super_admin_get_hq_update_url(self):
         return reverse("account:super_admin:hq_update", kwargs={"pk": self.pk})
 
-    def super_admin_get_toggle_active_url(self):
+    def super_admin_get_hq_toggle_active_url(self):
         return reverse("account:super_admin:hq_toggle_active", kwargs={"pk": self.pk})
 
     # super admin - state admin
     def super_admin_get_state_admin_update_url(self):
         return reverse("account:super_admin:state_admin_update", kwargs={"pk": self.pk})
 
-    def super_admin_get_toggle_active_url(self):
+    def super_admin_get_state_admin_toggle_active_url(self):
         return reverse("account:super_admin:state_admin_toggle_active", kwargs={"pk": self.pk})
 
     def super_admin_get_state_admin_update_state_url(self):
