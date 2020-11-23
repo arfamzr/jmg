@@ -706,7 +706,7 @@ def data_detail(request, pk):
             notify = Notify()
             notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk kuari "{data.quarry}"'
             # hq/data_list belum ada
-            notify_link = reverse('quarry:hq:data_list')
+            notify_link = reverse('quarry:hq:data_list_success')
 
             for jmg_hq in jmg_hqs:
                 notify.make_notify(jmg_hq, notify_message, notify_link)

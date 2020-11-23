@@ -637,7 +637,7 @@ def data_detail(request, pk):
 
             notify = Notify()
             notify_message = f'Data untuk lombong "{data.mine}" telah ditolak'
-            notify_link = reverse('mine:data_list')
+            notify_link = reverse('mine:data_list_success')
             state_notify_message = f'Data untuk lombong "{data.mine}"({miner}) telah ditolak'
 
             notify.make_notify(miner, notify_message, notify_link)
