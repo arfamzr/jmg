@@ -62,6 +62,7 @@ class HQUpdateView(UpdateView):
     form_class = UserForm
     template_name = 'account/super_admin/hq/update.html'
     success_url = reverse_lazy('account:super_admin:hq_list')
+    context_object_name = 'each_user'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -141,6 +142,7 @@ class AdminUpdateView(UpdateView):
     form_class = UserForm
     template_name = 'account/super_admin/state_admin/update.html'
     success_url = reverse_lazy('account:super_admin:state_admin_list')
+    context_object_name = 'each_user'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
