@@ -626,7 +626,7 @@ def data_detail(request, pk):
             notify = Notify()
             notify_message = f'{data_approval.requestor} telah menghantar permohonan data untuk lombong "{data.mine}"'
             # hq/data_list belum ada
-            notify_link = reverse('mine:hq:data_list')
+            notify_link = reverse('mine:hq:data_list_success')
 
             for jmg_hq in jmg_hqs:
                 notify.make_notify(jmg_hq, notify_message, notify_link)
@@ -637,7 +637,7 @@ def data_detail(request, pk):
 
             notify = Notify()
             notify_message = f'Data untuk lombong "{data.mine}" telah ditolak'
-            notify_link = reverse('mine:data_list_success')
+            notify_link = reverse('mine:data_list')
             state_notify_message = f'Data untuk lombong "{data.mine}"({miner}) telah ditolak'
 
             notify.make_notify(miner, notify_message, notify_link)
