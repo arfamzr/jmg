@@ -65,6 +65,7 @@ class StateUpdateView(UpdateView):
     form_class = UserForm
     template_name = 'account/state_admin/state/update.html'
     success_url = reverse_lazy('account:state_admin:state_list')
+    context_object_name = 'each_user'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
