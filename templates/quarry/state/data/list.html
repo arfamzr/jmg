@@ -29,23 +29,28 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">Nama Syarikat</th>
-                <th scope="col">Alamat Syarikat</th>
-                <th scope="col">Lokasi Kuari</th>
                 <th scope="col">Bulan/Tahun</th>
+                <th scope="col">Nama Kuari</th>
+                <th scope="col">Alamat Kuari</th>
+                {% comment %} <th scope="col">No Lot</th> {% endcomment %}
+                {% comment %} <th scope="col">Jenis Batuan</th> {% endcomment %}
                 <th scope="col">Status</th>
                 <th scope="col">Tindakan</th>
               </tr>
             </thead>
             <tbody>
-              {% for miner_data in object_list %}
-              {% with company=miner_data.miner.miner.employee.company quarry_miner=miner_data.miner quarry=miner_data.quarry last_approval=miner_data.get_last_approval %}
+              {% for data in object_list %}
+              {% with quarry_miner=data.miner quarry=data.quarry last_approval=data.get_last_approval %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ company.name }}</td>
-                <td>{{ company.address1 }}</td>
-                <td>{{ quarry }}</td>
-                <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                <td>{{ data.get_month_display }} {{ data.year }}</td>
+                <td>{{ quarry.name }}</td>
+                {% comment %} <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td> {% endcomment %}
+                <td>
+                  {{ quarry.address1 }}{% if quarry.address2 %},<br>
+                  {{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>
+                  {{ quarry.address3 }}{% endif %}
+                </td>
                 <td>
                   {% if last_approval %}
                   {% if last_approval.admin_approved == True %}
