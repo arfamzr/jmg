@@ -81,6 +81,9 @@ class StateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['state']
+        labels = {
+            "state": "Negeri",
+        }
 
 
 class PasswordResetForm(forms.Form):
