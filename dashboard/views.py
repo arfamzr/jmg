@@ -59,7 +59,7 @@ def dashboard(request):
         mine_count = None
 
     context = {
-        'title': 'Dashboard',
+        'title': 'Papan Pemuka',
         'quarry_count': quarry_count,
         'mine_count': mine_count,
     }
