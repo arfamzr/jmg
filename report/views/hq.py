@@ -3765,6 +3765,7 @@ def quarry_royalties_graph(request):
     return render(request, 'report/hq/quarry/graph/royalties/form.html', context)
 
 
+# mine production state graph
 def mine_production_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
@@ -3866,6 +3867,7 @@ def mine_production_state_graph(request):
     return render(request, 'report/hq/mine/graph/production/form.html', context)
 
 
+# mine worker state graph
 def mine_worker_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionStateGraphForm(request.GET)
@@ -3974,6 +3976,7 @@ def mine_worker_state_graph(request):
     return render(request, 'report/hq/mine/graph/worker/form.html', context)
 
 
+# quarry production state graph
 def quarry_production_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionStateGraphForm(request.GET)
@@ -4075,6 +4078,7 @@ def quarry_production_state_graph(request):
     return render(request, 'report/hq/quarry/graph/production/form.html', context)
 
 
+# quarry worker state graph
 def quarry_worker_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionStateGraphForm(request.GET)
@@ -4183,6 +4187,7 @@ def quarry_worker_state_graph(request):
     return render(request, 'report/hq/quarry/graph/worker/form.html', context)
 
 
+# quarry royalties state graph
 def quarry_royalties_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionStateGraphForm(request.GET)
@@ -4283,6 +4288,947 @@ def quarry_royalties_state_graph(request):
 
     return render(request, 'report/hq/quarry/graph/royalties/form.html', context)
 
+
+# mine active graph
+def mine_active_graph(request):
+    if request.GET.get('main_rock_type1'):
+        form = MineProductionGraphForm(request.GET)
+
+        if form.is_valid():
+            year = form.cleaned_data.get('year')
+            month = form.cleaned_data.get('month')
+            main_rock_type1 = form.cleaned_data.get('main_rock_type1')
+            main_rock_type2 = form.cleaned_data.get('main_rock_type2')
+            main_rock_type3 = form.cleaned_data.get('main_rock_type3')
+            main_rock_type4 = form.cleaned_data.get('main_rock_type4')
+            main_rock_type5 = form.cleaned_data.get('main_rock_type5')
+            side_rock_type1 = form.cleaned_data.get('side_rock_type1')
+            side_rock_type2 = form.cleaned_data.get('side_rock_type2')
+            side_rock_type3 = form.cleaned_data.get('side_rock_type3')
+            side_rock_type4 = form.cleaned_data.get('side_rock_type4')
+            side_rock_type5 = form.cleaned_data.get('side_rock_type5')
+
+            if not month:
+                month = 12
+
+            main_rock_list = MainStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            side_rock_list = SideStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in MineApproval.objects.filter(admin_approved=True)])
+
+            def get_rock_data(rock_list, rock_type1, rock_type2, rock_type3, rock_type4, rock_type5):
+                rock1_list = rock_list.filter(
+                    mineral_type=rock_type1)
+                rock2_list = rock_list.filter(
+                    mineral_type=rock_type2)
+                rock3_list = rock_list.filter(
+                    mineral_type=rock_type3)
+                rock4_list = rock_list.filter(
+                    mineral_type=rock_type4)
+                rock5_list = rock_list.filter(
+                    mineral_type=rock_type5)
+
+                def get_rock_list(rock_list):
+                    rock_perlis_list = rock_list.filter(
+                        data__state='PLS')
+                    rock_perlis_active = 0
+                    for rock in rock_perlis_list:
+                        rock_perlis_active += 1
+
+                    rock_kedah_list = rock_list.filter(data__state='KDH')
+                    rock_kedah_active = 0
+                    for rock in rock_kedah_list:
+                        rock_kedah_active += 1
+
+                    rock_penang_list = rock_list.filter(
+                        data__state='PNG')
+                    rock_penang_active = 0
+                    for rock in rock_penang_list:
+                        rock_penang_active += 1
+
+                    rock_perak_list = rock_list.filter(data__state='PRK')
+                    rock_perak_active = 0
+                    for rock in rock_perak_list:
+                        rock_perak_active += 1
+
+                    rock_selangor_list = rock_list.filter(
+                        data__state='SGR')
+                    rock_selangor_active = 0
+                    for rock in rock_selangor_list:
+                        rock_selangor_active += 1
+
+                    rock_nsembilan_list = rock_list.filter(
+                        data__state='PLS')
+                    rock_nsembilan_active = 0
+                    for rock in rock_nsembilan_list:
+                        rock_nsembilan_active += 1
+
+                    rock_melaka_list = rock_list.filter(
+                        data__state='MLK')
+                    rock_melaka_active = 0
+                    for rock in rock_melaka_list:
+                        rock_melaka_active += 1
+
+                    rock_johor_list = rock_list.filter(data__state='JHR')
+                    rock_johor_active = 0
+                    for rock in rock_johor_list:
+                        rock_johor_active += 1
+
+                    rock_pahang_list = rock_list.filter(
+                        data__state='PHG')
+                    rock_pahang_active = 0
+                    for rock in rock_pahang_list:
+                        rock_pahang_active += 1
+
+                    rock_terengganu_list = rock_list.filter(
+                        data__state='TRG')
+                    rock_terengganu_active = 0
+                    for rock in rock_terengganu_list:
+                        rock_terengganu_active += 1
+
+                    rock_kelantan_list = rock_list.filter(
+                        data__state='KTN')
+                    rock_kelantan_active = 0
+                    for rock in rock_kelantan_list:
+                        rock_kelantan_active += 1
+
+                    rock_sarawak_list = rock_list.filter(
+                        data__state='SWK')
+                    rock_sarawak_active = 0
+                    for rock in rock_sarawak_list:
+                        rock_sarawak_active += 1
+
+                    rock_sabah_list = rock_list.filter(data__state='SBH')
+                    rock_sabah_active = 0
+                    for rock in rock_sabah_list:
+                        rock_sabah_active += 1
+
+                    rock = {
+                        'perlis': {
+                            'active': rock_perlis_active,
+                        },
+                        'kedah': {
+                            'active': rock_kedah_active,
+                        },
+                        'penang': {
+                            'active': rock_penang_active,
+                        },
+                        'perak': {
+                            'active': rock_perak_active,
+                        },
+                        'selangor': {
+                            'active': rock_selangor_active,
+                        },
+                        'nsembilan': {
+                            'active': rock_nsembilan_active,
+                        },
+                        'melaka': {
+                            'active': rock_melaka_active,
+                        },
+                        'johor': {
+                            'active': rock_johor_active,
+                        },
+                        'pahang': {
+                            'active': rock_pahang_active,
+                        },
+                        'terengganu': {
+                            'active': rock_terengganu_active,
+                        },
+                        'kelantan': {
+                            'active': rock_kelantan_active,
+                        },
+                        'sarawak': {
+                            'active': rock_sarawak_active,
+                        },
+                        'sabah': {
+                            'active': rock_sabah_active,
+                        },
+                    }
+
+                    return rock
+
+                rock1 = get_rock_list(rock1_list)
+                rock2 = get_rock_list(rock2_list)
+                rock3 = get_rock_list(rock3_list)
+                rock4 = get_rock_list(rock4_list)
+                rock5 = get_rock_list(rock5_list)
+
+                total_by_state = {
+                    'perlis': {
+                        'active': sum([
+                            rock1['perlis']["active"],
+                            rock2['perlis']["active"],
+                            rock3['perlis']["active"],
+                            rock4['perlis']["active"],
+                            rock5['perlis']["active"],
+                        ]),
+                    },
+                    'kedah': {
+                        'active': sum([
+                            rock1['kedah']["active"],
+                            rock2['kedah']["active"],
+                            rock3['kedah']["active"],
+                            rock4['kedah']["active"],
+                            rock5['kedah']["active"],
+                        ]),
+                    },
+                    'penang': {
+                        'active': sum([
+                            rock1['penang']["active"],
+                            rock2['penang']["active"],
+                            rock3['penang']["active"],
+                            rock4['penang']["active"],
+                            rock5['penang']["active"],
+                        ]),
+                    },
+                    'perak': {
+                        'active': sum([
+                            rock1['perak']["active"],
+                            rock2['perak']["active"],
+                            rock3['perak']["active"],
+                            rock4['perak']["active"],
+                            rock5['perak']["active"],
+                        ]),
+                    },
+                    'selangor': {
+                        'active': sum([
+                            rock1['selangor']["active"],
+                            rock2['selangor']["active"],
+                            rock3['selangor']["active"],
+                            rock4['selangor']["active"],
+                            rock5['selangor']["active"],
+                        ]),
+                    },
+                    'nsembilan': {
+                        'active': sum([
+                            rock1['nsembilan']["active"],
+                            rock2['nsembilan']["active"],
+                            rock3['nsembilan']["active"],
+                            rock4['nsembilan']["active"],
+                            rock5['nsembilan']["active"],
+                        ]),
+                    },
+                    'melaka': {
+                        'active': sum([
+                            rock1['melaka']["active"],
+                            rock2['melaka']["active"],
+                            rock3['melaka']["active"],
+                            rock4['melaka']["active"],
+                            rock5['melaka']["active"],
+                        ]),
+                    },
+                    'johor': {
+                        'active': sum([
+                            rock1['johor']["active"],
+                            rock2['johor']["active"],
+                            rock3['johor']["active"],
+                            rock4['johor']["active"],
+                            rock5['johor']["active"],
+                        ]),
+                    },
+                    'pahang': {
+                        'active': sum([
+                            rock1['pahang']["active"],
+                            rock2['pahang']["active"],
+                            rock3['pahang']["active"],
+                            rock4['pahang']["active"],
+                            rock5['pahang']["active"],
+                        ]),
+                    },
+                    'terengganu': {
+                        'active': sum([
+                            rock1['terengganu']["active"],
+                            rock2['terengganu']["active"],
+                            rock3['terengganu']["active"],
+                            rock4['terengganu']["active"],
+                            rock5['terengganu']["active"],
+                        ]),
+                    },
+                    'kelantan': {
+                        'active': sum([
+                            rock1['kelantan']["active"],
+                            rock2['kelantan']["active"],
+                            rock3['kelantan']["active"],
+                            rock4['kelantan']["active"],
+                            rock5['kelantan']["active"],
+                        ]),
+                    },
+                    'sarawak': {
+                        'active': sum([
+                            rock1['sarawak']["active"],
+                            rock2['sarawak']["active"],
+                            rock3['sarawak']["active"],
+                            rock4['sarawak']["active"],
+                            rock5['sarawak']["active"],
+                        ]),
+                    },
+                    'sabah': {
+                        'active': sum([
+                            rock1['sabah']["active"],
+                            rock2['sabah']["active"],
+                            rock3['sabah']["active"],
+                            rock4['sabah']["active"],
+                            rock5['sabah']["active"],
+                        ]),
+                    },
+                }
+
+                states = [
+                    {
+                        'name': 'PERLIS',
+                        'rock1': rock1['perlis'],
+                        'rock2': rock2['perlis'],
+                        'rock3': rock3['perlis'],
+                        'rock4': rock4['perlis'],
+                        'rock5': rock5['perlis'],
+                        'total_by_state': total_by_state['perlis'],
+                    },
+                    {
+                        'name': 'KEDAH',
+                        'rock1': rock1['kedah'],
+                        'rock2': rock2['kedah'],
+                        'rock3': rock3['kedah'],
+                        'rock4': rock4['kedah'],
+                        'rock5': rock5['kedah'],
+                        'total_by_state': total_by_state['kedah'],
+                    },
+                    {
+                        'name': 'PULAU PINANG',
+                        'rock1': rock1['penang'],
+                        'rock2': rock2['penang'],
+                        'rock3': rock3['penang'],
+                        'rock4': rock4['penang'],
+                        'rock5': rock5['penang'],
+                        'total_by_state': total_by_state['penang'],
+                    },
+                    {
+                        'name': 'PERAK',
+                        'rock1': rock1['perak'],
+                        'rock2': rock2['perak'],
+                        'rock3': rock3['perak'],
+                        'rock4': rock4['perak'],
+                        'rock5': rock5['perak'],
+                        'total_by_state': total_by_state['perak'],
+                    },
+                    {
+                        'name': 'SELANGOR',
+                        'rock1': rock1['selangor'],
+                        'rock2': rock2['selangor'],
+                        'rock3': rock3['selangor'],
+                        'rock4': rock4['selangor'],
+                        'rock5': rock5['selangor'],
+                        'total_by_state': total_by_state['selangor'],
+                    },
+                    {
+                        'name': 'NEGERI SEMBILAN',
+                        'rock1': rock1['nsembilan'],
+                        'rock2': rock2['nsembilan'],
+                        'rock3': rock3['nsembilan'],
+                        'rock4': rock4['nsembilan'],
+                        'rock5': rock5['nsembilan'],
+                        'total_by_state': total_by_state['nsembilan'],
+                    },
+                    {
+                        'name': 'MELAKA',
+                        'rock1': rock1['melaka'],
+                        'rock2': rock2['melaka'],
+                        'rock3': rock3['melaka'],
+                        'rock4': rock4['melaka'],
+                        'rock5': rock5['melaka'],
+                        'total_by_state': total_by_state['melaka'],
+                    },
+                    {
+                        'name': 'JOHOR',
+                        'rock1': rock1['johor'],
+                        'rock2': rock2['johor'],
+                        'rock3': rock3['johor'],
+                        'rock4': rock4['johor'],
+                        'rock5': rock5['johor'],
+                        'total_by_state': total_by_state['johor'],
+                    },
+                    {
+                        'name': 'PAHANG',
+                        'rock1': rock1['pahang'],
+                        'rock2': rock2['pahang'],
+                        'rock3': rock3['pahang'],
+                        'rock4': rock4['pahang'],
+                        'rock5': rock5['pahang'],
+                        'total_by_state': total_by_state['pahang'],
+                    },
+                    {
+                        'name': 'PERLIS',
+                        'rock1': rock1['terengganu'],
+                        'rock2': rock2['terengganu'],
+                        'rock3': rock3['terengganu'],
+                        'rock4': rock4['terengganu'],
+                        'rock5': rock5['terengganu'],
+                        'total_by_state': total_by_state['terengganu'],
+                    },
+                    {
+                        'name': 'KELANTAN',
+                        'rock1': rock1['kelantan'],
+                        'rock2': rock2['kelantan'],
+                        'rock3': rock3['kelantan'],
+                        'rock4': rock4['kelantan'],
+                        'rock5': rock5['kelantan'],
+                        'total_by_state': total_by_state['kelantan'],
+                    },
+                    {
+                        'name': 'SARAWAK',
+                        'rock1': rock1['sarawak'],
+                        'rock2': rock2['sarawak'],
+                        'rock3': rock3['sarawak'],
+                        'rock4': rock4['sarawak'],
+                        'rock5': rock5['sarawak'],
+                        'total_by_state': total_by_state['sarawak'],
+                    },
+                    {
+                        'name': 'SABAH',
+                        'rock1': rock1['sabah'],
+                        'rock2': rock2['sabah'],
+                        'rock3': rock3['sabah'],
+                        'rock4': rock4['sabah'],
+                        'rock5': rock5['sabah'],
+                        'total_by_state': total_by_state['sabah'],
+                    },
+                ]
+
+                rocks = {
+                    'rock1': {
+                        'name': rock_type1,
+                        'active': sum([state['rock1']['active'] for state in states]),
+                    },
+                    'rock2': {
+                        'name': rock_type2,
+                        'active': sum([state['rock2']['active'] for state in states]),
+                    },
+                    'rock3': {
+                        'name': rock_type3,
+                        'active': sum([state['rock3']['active'] for state in states]),
+                    },
+                    'rock4': {
+                        'name': rock_type4,
+                        'active': sum([state['rock4']['active'] for state in states]),
+                    },
+                    'rock5': {
+                        'name': rock_type5,
+                        'active': sum([state['rock5']['active'] for state in states]),
+                    },
+                }
+
+                total = {
+                    'active': sum([state['total_by_state']['active'] for state in states]),
+                }
+
+                rock_data = {
+                    'rocks': rocks,
+                    'states': states,
+                    'total': total,
+                }
+
+                return rock_data
+
+            main_rock_data = get_rock_data(
+                main_rock_list, main_rock_type1, main_rock_type2, main_rock_type3, main_rock_type4, main_rock_type5)
+
+            side_rock_data = get_rock_data(
+                side_rock_list, side_rock_type1, side_rock_type2, side_rock_type3, side_rock_type4, side_rock_type5)
+
+            month = dict(form.fields['month'].choices)[int(month)]
+
+            context = {
+                'title': f'Laporan/Graph Lombong Aktif ({month} {year})',
+                'year': year,
+                'month': month,
+                'main_rock_data': main_rock_data,
+                'side_rock_data': side_rock_data,
+            }
+
+            return render(request, 'report/hq/mine/graph/active/report.html', context)
+
+    else:
+        form = MineProductionGraphForm()
+
+    context = {
+        'form': form,
+        'title': 'Laporan/Graph Lombong Aktif',
+    }
+
+    return render(request, 'report/hq/mine/graph/active/form.html', context)
+
+
+# quarry active graph
+def quarry_active_graph(request):
+    if request.GET.get('main_rock_type1'):
+        form = QuarryProductionGraphForm(request.GET)
+
+        if form.is_valid():
+            year = form.cleaned_data.get('year')
+            month = form.cleaned_data.get('month')
+            main_rock_type1 = form.cleaned_data.get('main_rock_type1')
+            main_rock_type2 = form.cleaned_data.get('main_rock_type2')
+            main_rock_type3 = form.cleaned_data.get('main_rock_type3')
+            main_rock_type4 = form.cleaned_data.get('main_rock_type4')
+            main_rock_type5 = form.cleaned_data.get('main_rock_type5')
+            side_rock_type1 = form.cleaned_data.get('side_rock_type1')
+            side_rock_type2 = form.cleaned_data.get('side_rock_type2')
+            side_rock_type3 = form.cleaned_data.get('side_rock_type3')
+            side_rock_type4 = form.cleaned_data.get('side_rock_type4')
+            side_rock_type5 = form.cleaned_data.get('side_rock_type5')
+
+            if not month:
+                month = 12
+
+            main_rock_list = MainProductionStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in QuarryApproval.objects.filter(admin_approved=True)])
+
+            side_rock_list = SideProductionStatistic.objects.filter(
+                data__year=year, data__month=month,
+                data__id__in=[approved_data.data.id for approved_data in QuarryApproval.objects.filter(admin_approved=True)])
+
+            def get_rock_data(rock_list, rock_type1, rock_type2, rock_type3, rock_type4, rock_type5):
+                rock1_list = rock_list.filter(
+                    rock_type=rock_type1)
+                rock2_list = rock_list.filter(
+                    rock_type=rock_type2)
+                rock3_list = rock_list.filter(
+                    rock_type=rock_type3)
+                rock4_list = rock_list.filter(
+                    rock_type=rock_type4)
+                rock5_list = rock_list.filter(
+                    rock_type=rock_type5)
+
+                def get_rock_list(rock_list):
+                    rock_perlis_list = rock_list.filter(
+                        data__state='PLS')
+                    rock_perlis_active = 0
+                    for rock in rock_perlis_list:
+                        rock_perlis_active += 1
+
+                    rock_kedah_list = rock_list.filter(data__state='KDH')
+                    rock_kedah_active = 0
+                    for rock in rock_kedah_list:
+                        rock_kedah_active += 1
+
+                    rock_penang_list = rock_list.filter(
+                        data__state='PNG')
+                    rock_penang_active = 0
+                    for rock in rock_penang_list:
+                        rock_penang_active += 1
+
+                    rock_perak_list = rock_list.filter(data__state='PRK')
+                    rock_perak_active = 0
+                    for rock in rock_perak_list:
+                        rock_perak_active += 1
+
+                    rock_selangor_list = rock_list.filter(
+                        data__state='SGR')
+                    rock_selangor_active = 0
+                    for rock in rock_selangor_list:
+                        rock_selangor_active += 1
+
+                    rock_nsembilan_list = rock_list.filter(
+                        data__state='PLS')
+                    rock_nsembilan_active = 0
+                    for rock in rock_nsembilan_list:
+                        rock_nsembilan_active += 1
+
+                    rock_melaka_list = rock_list.filter(
+                        data__state='MLK')
+                    rock_melaka_active = 0
+                    for rock in rock_melaka_list:
+                        rock_melaka_active += 1
+
+                    rock_johor_list = rock_list.filter(data__state='JHR')
+                    rock_johor_active = 0
+                    for rock in rock_johor_list:
+                        rock_johor_active += 1
+
+                    rock_pahang_list = rock_list.filter(
+                        data__state='PHG')
+                    rock_pahang_active = 0
+                    for rock in rock_pahang_list:
+                        rock_pahang_active += 1
+
+                    rock_terengganu_list = rock_list.filter(
+                        data__state='TRG')
+                    rock_terengganu_active = 0
+                    for rock in rock_terengganu_list:
+                        rock_terengganu_active += 1
+
+                    rock_kelantan_list = rock_list.filter(
+                        data__state='KTN')
+                    rock_kelantan_active = 0
+                    for rock in rock_kelantan_list:
+                        rock_kelantan_active += 1
+
+                    rock_sarawak_list = rock_list.filter(
+                        data__state='SWK')
+                    rock_sarawak_active = 0
+                    for rock in rock_sarawak_list:
+                        rock_sarawak_active += 1
+
+                    rock_sabah_list = rock_list.filter(data__state='SBH')
+                    rock_sabah_active = 0
+                    for rock in rock_sabah_list:
+                        rock_sabah_active += 1
+
+                    rock = {
+                        'perlis': {
+                            'active': rock_perlis_active,
+                        },
+                        'kedah': {
+                            'active': rock_kedah_active,
+                        },
+                        'penang': {
+                            'active': rock_penang_active,
+                        },
+                        'perak': {
+                            'active': rock_perak_active,
+                        },
+                        'selangor': {
+                            'active': rock_selangor_active,
+                        },
+                        'nsembilan': {
+                            'active': rock_nsembilan_active,
+                        },
+                        'melaka': {
+                            'active': rock_melaka_active,
+                        },
+                        'johor': {
+                            'active': rock_johor_active,
+                        },
+                        'pahang': {
+                            'active': rock_pahang_active,
+                        },
+                        'terengganu': {
+                            'active': rock_terengganu_active,
+                        },
+                        'kelantan': {
+                            'active': rock_kelantan_active,
+                        },
+                        'sarawak': {
+                            'active': rock_sarawak_active,
+                        },
+                        'sabah': {
+                            'active': rock_sabah_active,
+                        },
+                    }
+
+                    return rock
+
+                rock1 = get_rock_list(rock1_list)
+                rock2 = get_rock_list(rock2_list)
+                rock3 = get_rock_list(rock3_list)
+                rock4 = get_rock_list(rock4_list)
+                rock5 = get_rock_list(rock5_list)
+
+                total_by_state = {
+                    'perlis': {
+                        'active': sum([
+                            rock1['perlis']["active"],
+                            rock2['perlis']["active"],
+                            rock3['perlis']["active"],
+                            rock4['perlis']["active"],
+                            rock5['perlis']["active"],
+                        ]),
+                    },
+                    'kedah': {
+                        'active': sum([
+                            rock1['kedah']["active"],
+                            rock2['kedah']["active"],
+                            rock3['kedah']["active"],
+                            rock4['kedah']["active"],
+                            rock5['kedah']["active"],
+                        ]),
+                    },
+                    'penang': {
+                        'active': sum([
+                            rock1['penang']["active"],
+                            rock2['penang']["active"],
+                            rock3['penang']["active"],
+                            rock4['penang']["active"],
+                            rock5['penang']["active"],
+                        ]),
+                    },
+                    'perak': {
+                        'active': sum([
+                            rock1['perak']["active"],
+                            rock2['perak']["active"],
+                            rock3['perak']["active"],
+                            rock4['perak']["active"],
+                            rock5['perak']["active"],
+                        ]),
+                    },
+                    'selangor': {
+                        'active': sum([
+                            rock1['selangor']["active"],
+                            rock2['selangor']["active"],
+                            rock3['selangor']["active"],
+                            rock4['selangor']["active"],
+                            rock5['selangor']["active"],
+                        ]),
+                    },
+                    'nsembilan': {
+                        'active': sum([
+                            rock1['nsembilan']["active"],
+                            rock2['nsembilan']["active"],
+                            rock3['nsembilan']["active"],
+                            rock4['nsembilan']["active"],
+                            rock5['nsembilan']["active"],
+                        ]),
+                    },
+                    'melaka': {
+                        'active': sum([
+                            rock1['melaka']["active"],
+                            rock2['melaka']["active"],
+                            rock3['melaka']["active"],
+                            rock4['melaka']["active"],
+                            rock5['melaka']["active"],
+                        ]),
+                    },
+                    'johor': {
+                        'active': sum([
+                            rock1['johor']["active"],
+                            rock2['johor']["active"],
+                            rock3['johor']["active"],
+                            rock4['johor']["active"],
+                            rock5['johor']["active"],
+                        ]),
+                    },
+                    'pahang': {
+                        'active': sum([
+                            rock1['pahang']["active"],
+                            rock2['pahang']["active"],
+                            rock3['pahang']["active"],
+                            rock4['pahang']["active"],
+                            rock5['pahang']["active"],
+                        ]),
+                    },
+                    'terengganu': {
+                        'active': sum([
+                            rock1['terengganu']["active"],
+                            rock2['terengganu']["active"],
+                            rock3['terengganu']["active"],
+                            rock4['terengganu']["active"],
+                            rock5['terengganu']["active"],
+                        ]),
+                    },
+                    'kelantan': {
+                        'active': sum([
+                            rock1['kelantan']["active"],
+                            rock2['kelantan']["active"],
+                            rock3['kelantan']["active"],
+                            rock4['kelantan']["active"],
+                            rock5['kelantan']["active"],
+                        ]),
+                    },
+                    'sarawak': {
+                        'active': sum([
+                            rock1['sarawak']["active"],
+                            rock2['sarawak']["active"],
+                            rock3['sarawak']["active"],
+                            rock4['sarawak']["active"],
+                            rock5['sarawak']["active"],
+                        ]),
+                    },
+                    'sabah': {
+                        'active': sum([
+                            rock1['sabah']["active"],
+                            rock2['sabah']["active"],
+                            rock3['sabah']["active"],
+                            rock4['sabah']["active"],
+                            rock5['sabah']["active"],
+                        ]),
+                    },
+                }
+
+                states = [
+                    {
+                        'name': 'PERLIS',
+                        'rock1': rock1['perlis'],
+                        'rock2': rock2['perlis'],
+                        'rock3': rock3['perlis'],
+                        'rock4': rock4['perlis'],
+                        'rock5': rock5['perlis'],
+                        'total_by_state': total_by_state['perlis'],
+                    },
+                    {
+                        'name': 'KEDAH',
+                        'rock1': rock1['kedah'],
+                        'rock2': rock2['kedah'],
+                        'rock3': rock3['kedah'],
+                        'rock4': rock4['kedah'],
+                        'rock5': rock5['kedah'],
+                        'total_by_state': total_by_state['kedah'],
+                    },
+                    {
+                        'name': 'PULAU PINANG',
+                        'rock1': rock1['penang'],
+                        'rock2': rock2['penang'],
+                        'rock3': rock3['penang'],
+                        'rock4': rock4['penang'],
+                        'rock5': rock5['penang'],
+                        'total_by_state': total_by_state['penang'],
+                    },
+                    {
+                        'name': 'PERAK',
+                        'rock1': rock1['perak'],
+                        'rock2': rock2['perak'],
+                        'rock3': rock3['perak'],
+                        'rock4': rock4['perak'],
+                        'rock5': rock5['perak'],
+                        'total_by_state': total_by_state['perak'],
+                    },
+                    {
+                        'name': 'SELANGOR',
+                        'rock1': rock1['selangor'],
+                        'rock2': rock2['selangor'],
+                        'rock3': rock3['selangor'],
+                        'rock4': rock4['selangor'],
+                        'rock5': rock5['selangor'],
+                        'total_by_state': total_by_state['selangor'],
+                    },
+                    {
+                        'name': 'NEGERI SEMBILAN',
+                        'rock1': rock1['nsembilan'],
+                        'rock2': rock2['nsembilan'],
+                        'rock3': rock3['nsembilan'],
+                        'rock4': rock4['nsembilan'],
+                        'rock5': rock5['nsembilan'],
+                        'total_by_state': total_by_state['nsembilan'],
+                    },
+                    {
+                        'name': 'MELAKA',
+                        'rock1': rock1['melaka'],
+                        'rock2': rock2['melaka'],
+                        'rock3': rock3['melaka'],
+                        'rock4': rock4['melaka'],
+                        'rock5': rock5['melaka'],
+                        'total_by_state': total_by_state['melaka'],
+                    },
+                    {
+                        'name': 'JOHOR',
+                        'rock1': rock1['johor'],
+                        'rock2': rock2['johor'],
+                        'rock3': rock3['johor'],
+                        'rock4': rock4['johor'],
+                        'rock5': rock5['johor'],
+                        'total_by_state': total_by_state['johor'],
+                    },
+                    {
+                        'name': 'PAHANG',
+                        'rock1': rock1['pahang'],
+                        'rock2': rock2['pahang'],
+                        'rock3': rock3['pahang'],
+                        'rock4': rock4['pahang'],
+                        'rock5': rock5['pahang'],
+                        'total_by_state': total_by_state['pahang'],
+                    },
+                    {
+                        'name': 'PERLIS',
+                        'rock1': rock1['terengganu'],
+                        'rock2': rock2['terengganu'],
+                        'rock3': rock3['terengganu'],
+                        'rock4': rock4['terengganu'],
+                        'rock5': rock5['terengganu'],
+                        'total_by_state': total_by_state['terengganu'],
+                    },
+                    {
+                        'name': 'KELANTAN',
+                        'rock1': rock1['kelantan'],
+                        'rock2': rock2['kelantan'],
+                        'rock3': rock3['kelantan'],
+                        'rock4': rock4['kelantan'],
+                        'rock5': rock5['kelantan'],
+                        'total_by_state': total_by_state['kelantan'],
+                    },
+                    {
+                        'name': 'SARAWAK',
+                        'rock1': rock1['sarawak'],
+                        'rock2': rock2['sarawak'],
+                        'rock3': rock3['sarawak'],
+                        'rock4': rock4['sarawak'],
+                        'rock5': rock5['sarawak'],
+                        'total_by_state': total_by_state['sarawak'],
+                    },
+                    {
+                        'name': 'SABAH',
+                        'rock1': rock1['sabah'],
+                        'rock2': rock2['sabah'],
+                        'rock3': rock3['sabah'],
+                        'rock4': rock4['sabah'],
+                        'rock5': rock5['sabah'],
+                        'total_by_state': total_by_state['sabah'],
+                    },
+                ]
+
+                rocks = {
+                    'rock1': {
+                        'name': rock_type1,
+                        'active': sum([state['rock1']['active'] for state in states]),
+                    },
+                    'rock2': {
+                        'name': rock_type2,
+                        'active': sum([state['rock2']['active'] for state in states]),
+                    },
+                    'rock3': {
+                        'name': rock_type3,
+                        'active': sum([state['rock3']['active'] for state in states]),
+                    },
+                    'rock4': {
+                        'name': rock_type4,
+                        'active': sum([state['rock4']['active'] for state in states]),
+                    },
+                    'rock5': {
+                        'name': rock_type5,
+                        'active': sum([state['rock5']['active'] for state in states]),
+                    },
+                }
+
+                total = {
+                    'active': sum([state['total_by_state']['active'] for state in states]),
+                }
+
+                rock_data = {
+                    'rocks': rocks,
+                    'states': states,
+                    'total': total,
+                }
+
+                return rock_data
+
+            main_rock_data = get_rock_data(
+                main_rock_list, main_rock_type1, main_rock_type2, main_rock_type3, main_rock_type4, main_rock_type5)
+
+            side_rock_data = get_rock_data(
+                side_rock_list, side_rock_type1, side_rock_type2, side_rock_type3, side_rock_type4, side_rock_type5)
+
+            month = dict(form.fields['month'].choices)[int(month)]
+
+            context = {
+                'title': f'Laporan/Graph Kuari Aktif ({month} {year})',
+                'year': year,
+                'month': month,
+                'main_rock_data': main_rock_data,
+                'side_rock_data': side_rock_data,
+            }
+
+            return render(request, 'report/hq/quarry/graph/active/report.html', context)
+
+    else:
+        form = QuarryProductionGraphForm()
+
+    context = {
+        'form': form,
+        'title': 'Laporan/Graph Kuari Aktif',
+    }
+
+    return render(request, 'report/hq/quarry/graph/active/form.html', context)
 
 # def quarry_report_input(request):
 #     form = ReportForm()

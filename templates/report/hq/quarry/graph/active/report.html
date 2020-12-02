@@ -1,0 +1,331 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css"
+  integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w=="
+  crossorigin="anonymous" />
+{% endblock extra_styles %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+      <div class="row mb-5">
+        <div class="col-12 mb-5">
+          <canvas id="mainActiveChart" width="400" height="150"></canvas>
+        </div>
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">NEGERI</th>
+                <th scope="col" style="text-align: center;">{{ main_rock_data.rocks.rock1.name }}</th>
+                {% if main_rock_data.rocks.rock2.name %}
+                <th scope="col" style="text-align: center;">{{ main_rock_data.rocks.rock2.name }}</th>
+                {% endif %}
+                {% if main_rock_data.rocks.rock3.name %}
+                <th scope="col" style="text-align: center;">{{ main_rock_data.rocks.rock3.name }}</th>
+                {% endif %}
+                {% if main_rock_data.rocks.rock4.name %}
+                <th scope="col" style="text-align: center;">{{ main_rock_data.rocks.rock4.name }}</th>
+                {% endif %}
+                {% if main_rock_data.rocks.rock5.name %}
+                <th scope="col" style="text-align: center;">{{ main_rock_data.rocks.rock5.name }}</th>
+                {% endif %}
+                <th scope="col" style="text-align: center;">JUMLAH</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for state in main_rock_data.states %}
+              <tr>
+                <th>{{ state.name }}</th>
+                <td style="text-align: right;">{{ state.rock1.active }}</td>
+                {% if main_rock_data.rocks.rock2.name %}
+                <td style="text-align: right;">{{ state.rock2.active }}</td>
+                {% endif %}
+                {% if main_rock_data.rocks.rock3.name %}
+                <td style="text-align: right;">{{ state.rock3.active }}</td>
+                {% endif %}
+                {% if main_rock_data.rocks.rock4.name %}
+                <td style="text-align: right;">{{ state.rock4.active }}</td>
+                {% endif %}
+                {% if main_rock_data.rocks.rock5.name %}
+                <td style="text-align: right;">{{ state.rock5.active }}</td>
+                {% endif %}
+                <td style="text-align: right;">{{ state.total_by_state.active }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <thead class="thead-light">
+              <tr>
+                <th></th>
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock1.active }}</th>
+                {% if main_rock_data.rocks.rock2.name %}
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock2.active }}</th>
+                {% endif %}
+                {% if main_rock_data.rocks.rock3.name %}
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock3.active }}</th>
+                {% endif %}
+                {% if main_rock_data.rocks.rock4.name %}
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock4.active }}</th>
+                {% endif %}
+                {% if main_rock_data.rocks.rock5.name %}
+                <th style="text-align: right;">{{ main_rock_data.rocks.rock5.active }}</th>
+                {% endif %}
+                <th style="text-align: right;">{{ main_rock_data.total.active }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      {% if side_rock_data.rocks.rock1.name %}
+      <div class="row">
+        <div class="col-12 mb-5">
+          <canvas id="sideActiveChart" width="400" height="150"></canvas>
+        </div>
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">NEGERI</th>
+                <th scope="col" style="text-align: center;">{{ side_rock_data.rocks.rock1.name }}</th>
+                {% if side_rock_data.rocks.rock2.name %}
+                <th scope="col" style="text-align: center;">{{ side_rock_data.rocks.rock2.name }}</th>
+                {% endif %}
+                {% if side_rock_data.rocks.rock3.name %}
+                <th scope="col" style="text-align: center;">{{ side_rock_data.rocks.rock3.name }}</th>
+                {% endif %}
+                {% if side_rock_data.rocks.rock4.name %}
+                <th scope="col" style="text-align: center;">{{ side_rock_data.rocks.rock4.name }}</th>
+                {% endif %}
+                {% if side_rock_data.rocks.rock5.name %}
+                <th scope="col" style="text-align: center;">{{ side_rock_data.rocks.rock5.name }}</th>
+                {% endif %}
+                <th scope="col" style="text-align: center;">JUMLAH</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for state in side_rock_data.states %}
+              <tr>
+                <th>{{ state.name }}</th>
+                <td style="text-align: right;">{{ state.rock1.active }}</td>
+                {% if side_rock_data.rocks.rock2.name %}
+                <td style="text-align: right;">{{ state.rock2.active }}</td>
+                {% endif %}
+                {% if side_rock_data.rocks.rock3.name %}
+                <td style="text-align: right;">{{ state.rock3.active }}</td>
+                {% endif %}
+                {% if side_rock_data.rocks.rock4.name %}
+                <td style="text-align: right;">{{ state.rock4.active }}</td>
+                {% endif %}
+                {% if side_rock_data.rocks.rock5.name %}
+                <td style="text-align: right;">{{ state.rock5.active }}</td>
+                {% endif %}
+                <td style="text-align: right;">{{ state.total_by_state.active }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <thead class="thead-light">
+              <tr>
+                <th></th>
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock1.active }}</th>
+                {% if side_rock_data.rocks.rock2.name %}
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock2.active }}</th>
+                {% endif %}
+                {% if side_rock_data.rocks.rock3.name %}
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock3.active }}</th>
+                {% endif %}
+                {% if side_rock_data.rocks.rock4.name %}
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock4.active }}</th>
+                {% endif %}
+                {% if side_rock_data.rocks.rock5.name %}
+                <th style="text-align: right;">{{ side_rock_data.rocks.rock5.active }}</th>
+                {% endif %}
+                <th style="text-align: right;">{{ side_rock_data.total.active }}</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js"
+  integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA=="
+  crossorigin="anonymous"></script>
+<script>
+  var mainActiveData = {
+    labels: [
+      // {% for state in main_rock_data.states %}
+      '{{ state.name }}',
+      // {% endfor %}
+    ],
+    datasets: [{
+        label: 'PENGELUARAN {{ main_rock_data.rocks.rock1.name }}',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        data: [
+          // {% for state in main_rock_data.states %}
+          parseFloat('{{ state.rock1.active }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% if main_rock_data.rocks.rock2.name %}
+      {
+        label: 'PENGELUARAN {{ main_rock_data.rocks.rock2.name }}',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        data: [
+          // {% for state in main_rock_data.states %}
+          parseFloat('{{ state.rock2.active }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if main_rock_data.rocks.rock3.name %}
+      {
+        label: 'PENGELUARAN {{ main_rock_data.rocks.rock3.name }}',
+        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        data: [
+          // {% for state in main_rock_data.states %}
+          parseFloat('{{ state.rock3.active }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if main_rock_data.rocks.rock4.name %}
+      {
+        label: 'PENGELUARAN {{ main_rock_data.rocks.rock4.name }}',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        data: [
+          // {% for state in main_rock_data.states %}
+          parseFloat('{{ state.rock4.active }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if main_rock_data.rocks.rock5.name %}
+      {
+        label: 'PENGELUARAN {{ main_rock_data.rocks.rock5.name }}',
+        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        data: [
+          // {% for state in main_rock_data.states %}
+          parseFloat('{{ state.rock5.active }}'),
+          // {% endfor %}
+        ],
+      },
+      //{% endif %}
+    ],
+  }
+  var ctx = document.getElementById('mainActiveChart');
+  var mainActiveChart = new Chart(ctx, {
+    type: 'bar',
+    data: mainActiveData,
+    options: {
+      title: {
+        display: true,
+        text: "PENGELUARAN KUARI - {{ month }} {{ year }} (TAN METRIK)",
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      responsive: true,
+    },
+  });
+  // {% if side_rock_data.rocks.rock1.name %}
+  var sideActiveData = {
+    labels: [
+      // {% for state in side_rock_data.states %}
+      '{{ state.name }}',
+      // {% endfor %}
+    ],
+    datasets: [{
+        label: 'PENGELUARAN {{ side_rock_data.rocks.rock1.name }}',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        data: [
+          // {% for state in side_rock_data.states %}
+          parseFloat('{{ state.rock1.active }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% if side_rock_data.rocks.rock2.name %}
+      {
+        label: 'PENGELUARAN {{ side_rock_data.rocks.rock2.name }}',
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        data: [
+          // {% for state in side_rock_data.states %}
+          parseFloat('{{ state.rock2.active }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if side_rock_data.rocks.rock3.name %}
+      {
+        label: 'PENGELUARAN {{ side_rock_data.rocks.rock3.name }}',
+        backgroundColor: 'rgba(255, 206, 86, 0.5)',
+        borderColor: 'rgba(255, 206, 86, 1)',
+        data: [
+          // {% for state in side_rock_data.states %}
+          parseFloat('{{ state.rock3.active }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if side_rock_data.rocks.rock4.name %}
+      {
+        label: 'PENGELUARAN {{ side_rock_data.rocks.rock4.name }}',
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        data: [
+          // {% for state in side_rock_data.states %}
+          parseFloat('{{ state.rock4.active }}'),
+          // {% endfor %}
+        ],
+      },
+      // {% endif %}{% if side_rock_data.rocks.rock5.name %}
+      {
+        label: 'PENGELUARAN {{ side_rock_data.rocks.rock5.name }}',
+        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        data: [
+          // {% for state in side_rock_data.states %}
+          parseFloat('{{ state.rock5.active }}'),
+          // {% endfor %}
+        ],
+      },
+      //{% endif %}
+    ],
+  }
+  var ctx = document.getElementById('sideActiveChart');
+  var sideActiveChart = new Chart(ctx, {
+    type: 'bar',
+    data: sideActiveData,
+    options: {
+      title: {
+        display: true,
+        text: "PENGELUARAN KUARI - {{ month }} {{ year }} (TAN METRIK)",
+      },
+      tooltips: {
+        mode: 'index',
+        intersect: false,
+      },
+      responsive: true,
+    },
+  });
+  // {% endif %}
+</script>
+{% endblock extra_js %}

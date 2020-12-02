@@ -243,6 +243,20 @@
   </li>-->
 
   <li class="nav-item ">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseQuarryActive" aria-expanded="true"
+      aria-controls="collapseQuarryActive">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Aktif</span>
+    </a>
+    <div id="collapseQuarryActive" class="collapse" aria-labelledby="headingQuarryActive"
+      data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'report:hq:quarry_active_graph' %}">Semua Negeri</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item ">
     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseQuarryProduction" aria-expanded="true"
       aria-controls="collapseQuarryProduction">
       <i class="fas fa-fw fa-folder"></i>
@@ -317,6 +331,19 @@
       <i class="fas fa-fw fa-sign-out-alt"></i>
       <span>Lombong Aktif</span></a>
   </li>-->
+
+  <li class="nav-item ">
+    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMineActive" aria-expanded="true"
+      aria-controls="collapseMineActive">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Aktif</span>
+    </a>
+    <div id="collapseMineActive" class="collapse" aria-labelledby="headingMineActive" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'report:hq:mine_active_graph' %}">Semua Negeri</a>
+      </div>
+    </div>
+  </li>
 
   <li class="nav-item ">
     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseMineProduction" aria-expanded="true"

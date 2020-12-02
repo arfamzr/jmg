@@ -37,6 +37,12 @@ from ..views.hq import (
 
     # quarry royalties state graph
     quarry_royalties_state_graph,
+
+    # mine active graph
+    mine_active_graph,
+
+    # quarry active graph
+    quarry_active_graph,
 )
 
 app_name = 'hq'
@@ -87,6 +93,14 @@ urlpatterns = [
     # quarry royalties state graph
     path('quarry/graph/state-royalties/', quarry_royalties_state_graph,
          name='quarry_royalties_state_graph'),
+
+    # mine active graph
+    path('mine/graph/active/', mine_active_graph,
+         name='mine_active_graph'),
+
+    # quarry active graph
+    path('quarry/graph/active/', quarry_active_graph,
+         name='quarry_active_graph'),
 
     # path('quarry/input/', quarry_report_input, name='quarry_input'),
     # path('quarry/', quarry_report, name='quarry'),
