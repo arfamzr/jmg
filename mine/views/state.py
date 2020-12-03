@@ -7,6 +7,7 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User
+from account.user_check import user_is_jmg_state, UserIsJMGStateMixin
 from notification.notify import Notify
 
 from ..models import (
@@ -25,7 +26,7 @@ from ..models import (
 
 
 # data views
-class DataListView(ListView):
+class DataListView(UserIsJMGStateMixin, ListView):
     template_name = 'mine/state/data/list.html'
     model = Data
     paginate_by = 10
@@ -61,6 +62,7 @@ class DataListView(ListView):
         return context
 
 
+@user_is_jmg_state()
 def data_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     local_operator = get_object_or_404(LocalOperator, data=data)
@@ -128,7 +130,7 @@ def data_detail(request, pk):
 
 
 # mine view
-class MineListView(ListView):
+class MineListView(UserIsJMGStateMixin, ListView):
     template_name = 'mine/state/list.html'
     model = Mine
     paginate_by = 10

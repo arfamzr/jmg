@@ -6,6 +6,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.db.models import Sum
 
+from account.user_check import user_is_jmg_state_admin, UserIsJMGStateAdminMixin
 from quarry.models import Approval as QuarryApproval, MainProductionStatistic, SideProductionStatistic
 from mine.models import Approval as MineApproval, MainStatistic, SideStatistic
 
@@ -14,6 +15,7 @@ from ..forms.hq import GraphForm, MineProductionGraphForm, QuarryProductionGraph
 
 
 # mine report (export excel)
+@user_is_jmg_state_admin()
 def mine_report(request):
     if request.method == 'POST':
         form = MineReportForm(request.POST)
@@ -576,6 +578,7 @@ def mine_report(request):
 
 
 # quarry report (export excel)
+@user_is_jmg_state_admin()
 def quarry_report(request):
     if request.method == 'POST':
         form = QuarryReportForm(request.POST)
@@ -1200,6 +1203,7 @@ def quarry_report(request):
     return render(request, 'report/state_admin/quarry/form.html', context)
 
 
+@user_is_jmg_state_admin()
 def mine_production_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
@@ -1300,6 +1304,7 @@ def mine_production_graph(request):
     return render(request, 'report/state_admin/mine/graph/production/form.html', context)
 
 
+@user_is_jmg_state_admin()
 def mine_worker_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
@@ -1407,6 +1412,7 @@ def mine_worker_graph(request):
     return render(request, 'report/state_admin/mine/graph/worker/form.html', context)
 
 
+@user_is_jmg_state_admin()
 def quarry_production_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionGraphForm(request.GET)
@@ -1507,6 +1513,7 @@ def quarry_production_graph(request):
     return render(request, 'report/state_admin/quarry/graph/production/form.html', context)
 
 
+@user_is_jmg_state_admin()
 def quarry_worker_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionGraphForm(request.GET)
@@ -1614,6 +1621,7 @@ def quarry_worker_graph(request):
     return render(request, 'report/state_admin/quarry/graph/worker/form.html', context)
 
 
+@user_is_jmg_state_admin()
 def quarry_royalties_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionGraphForm(request.GET)

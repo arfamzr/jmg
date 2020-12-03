@@ -7,6 +7,7 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User
+from account.user_check import user_is_manager, UserIsManagerMixin
 from notification.notify import Notify
 
 from ..models import (
@@ -52,7 +53,7 @@ from ..forms.main import (
 
 
 # data views
-class DataListView(ListView):
+class DataListView(UserIsManagerMixin, ListView):
     template_name = 'quarry/data/list.html'
     model = Data
     paginate_by = 10
@@ -78,7 +79,7 @@ class DataListView(ListView):
         return context
 
 
-class DataCreateView(CreateView):
+class DataCreateView(UserIsManagerMixin, CreateView):
     model = Data
     form_class = DataForm
     template_name = 'quarry/data/form.html'
@@ -103,6 +104,7 @@ class DataCreateView(CreateView):
         return context
 
 
+@user_is_manager()
 def data_delete(request, pk):
     if request.method == 'POST':
         data = get_object_or_404(Data, pk=pk)
@@ -113,6 +115,7 @@ def data_delete(request, pk):
     return redirect('quarry:data_list')
 
 
+@user_is_manager()
 def data_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     local_final_uses = get_object_or_404(LocalFinalUses, data=data)
@@ -158,6 +161,7 @@ def data_detail(request, pk):
 
 
 # production statistic views
+@user_is_manager()
 def production_statistic_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     main_statistic_list = MainProductionStatistic.objects.filter(data=data)
@@ -175,7 +179,7 @@ def production_statistic_edit(request, pk):
     return render(request, 'quarry/data/production_statistic/list.html', context=context)
 
 
-class MainProductionStatisticCreateView(CreateView):
+class MainProductionStatisticCreateView(UserIsManagerMixin, CreateView):
     template_name = 'quarry/data/production_statistic/form.html'
     form_class = MainProductionStatisticForm
     model = MainProductionStatistic
@@ -195,7 +199,7 @@ class MainProductionStatisticCreateView(CreateView):
         return context
 
 
-class MainProductionStatisticUpdateView(UpdateView):
+class MainProductionStatisticUpdateView(UserIsManagerMixin, UpdateView):
     template_name = 'quarry/data/production_statistic/form.html'
     form_class = MainProductionStatisticForm
     model = MainProductionStatistic
@@ -209,6 +213,7 @@ class MainProductionStatisticUpdateView(UpdateView):
         return context
 
 
+@user_is_manager()
 def main_production_statistic_delete(request, pk):
     main_statistic = get_object_or_404(MainProductionStatistic, pk=pk)
     if request.method == 'POST':
@@ -230,7 +235,7 @@ def main_production_statistic_detail(request, pk):
     return render(request, 'quarry/data/production_statistic/detail.html', context)
 
 
-class SideProductionStatisticCreateView(CreateView):
+class SideProductionStatisticCreateView(UserIsManagerMixin, CreateView):
     template_name = 'quarry/data/production_statistic/form.html'
     form_class = SideProductionStatisticForm
     model = SideProductionStatistic
@@ -250,7 +255,7 @@ class SideProductionStatisticCreateView(CreateView):
         return context
 
 
-class SideProductionStatisticUpdateView(UpdateView):
+class SideProductionStatisticUpdateView(UserIsManagerMixin, UpdateView):
     template_name = 'quarry/data/production_statistic/form.html'
     form_class = SideProductionStatisticForm
     model = SideProductionStatistic
@@ -264,6 +269,7 @@ class SideProductionStatisticUpdateView(UpdateView):
         return context
 
 
+@user_is_manager()
 def side_production_statistic_delete(request, pk):
     side_statistic = get_object_or_404(SideProductionStatistic, pk=pk)
     if request.method == 'POST':
@@ -286,6 +292,7 @@ def side_production_statistic_detail(request, pk):
 
 
 # sales submission views
+@user_is_manager()
 def sales_submission_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     sales_submission_list = SalesSubmission.objects.filter(data=data)
@@ -304,7 +311,7 @@ def sales_submission_edit(request, pk):
     return render(request, 'quarry/data/sales_submission/list.html', context=context)
 
 
-class SalesSubmissionCreateView(CreateView):
+class SalesSubmissionCreateView(UserIsManagerMixin, CreateView):
     template_name = 'quarry/data/sales_submission/form.html'
     form_class = SalesSubmissionForm
     model = SalesSubmission
@@ -324,7 +331,7 @@ class SalesSubmissionCreateView(CreateView):
         return context
 
 
-class SalesSubmissionUpdateView(UpdateView):
+class SalesSubmissionUpdateView(UserIsManagerMixin, UpdateView):
     template_name = 'quarry/data/sales_submission/form.html'
     form_class = SalesSubmissionForm
     model = SalesSubmission
@@ -338,6 +345,7 @@ class SalesSubmissionUpdateView(UpdateView):
         return context
 
 
+@user_is_manager()
 def sales_submission_delete(request, pk):
     sales_submission = get_object_or_404(SalesSubmission, pk=pk)
     if request.method == 'POST':
@@ -360,6 +368,7 @@ def sales_submission_detail(request, pk):
 
 
 # final uses views
+@user_is_manager()
 def final_uses_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('quarry:sales_submission_edit',
@@ -408,6 +417,7 @@ def final_uses_edit(request, pk):
 
 
 # local worker views
+@user_is_manager()
 def local_worker_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('quarry:final_uses_edit',
@@ -457,6 +467,7 @@ def local_worker_edit(request, pk):
 
 
 # foreign worker views
+@user_is_manager()
 def foreign_worker_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('quarry:local_worker_edit',
@@ -507,6 +518,7 @@ def foreign_worker_edit(request, pk):
 
 
 # machinery views
+@user_is_manager()
 def machinery_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('quarry:foreign_worker_edit',
@@ -596,6 +608,7 @@ def machinery_edit(request, pk):
 
 
 # daily explosive views
+@user_is_manager()
 def daily_explosive_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     daily_explosive_list = DailyExplosive.objects.filter(data=data)
@@ -615,7 +628,7 @@ def daily_explosive_edit(request, pk):
     return render(request, 'quarry/data/daily_explosive/list.html', context)
 
 
-class DailyExplosiveCreateView(CreateView):
+class DailyExplosiveCreateView(UserIsManagerMixin, CreateView):
     template_name = 'quarry/data/daily_explosive/form.html'
     form_class = DailyExplosiveForm
     model = DailyExplosive
@@ -635,7 +648,7 @@ class DailyExplosiveCreateView(CreateView):
         return context
 
 
-class DailyExplosiveUpdateView(UpdateView):
+class DailyExplosiveUpdateView(UserIsManagerMixin, UpdateView):
     template_name = 'quarry/data/daily_explosive/form.html'
     form_class = DailyExplosiveForm
     model = DailyExplosive
@@ -649,6 +662,7 @@ class DailyExplosiveUpdateView(UpdateView):
         return context
 
 
+@user_is_manager()
 def daily_explosive_delete(request, pk):
     daily_explosive = get_object_or_404(DailyExplosive, pk=pk)
     if request.method == 'POST':
@@ -657,6 +671,7 @@ def daily_explosive_delete(request, pk):
 
 
 # energy supply views
+@user_is_manager()
 def energy_supply_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('quarry:daily_explosive_edit',
@@ -694,6 +709,7 @@ def energy_supply_edit(request, pk):
 
 
 # operating record views
+@user_is_manager()
 def operating_record_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('quarry:energy_supply_edit',
@@ -731,6 +747,7 @@ def operating_record_edit(request, pk):
 
 
 # royalties views
+@user_is_manager()
 def royalties_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('quarry:operating_record_edit',
@@ -768,6 +785,7 @@ def royalties_edit(request, pk):
 
 
 # other views
+@user_is_manager()
 def other_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('quarry:royalties_edit',
@@ -806,6 +824,7 @@ def other_edit(request, pk):
 
 
 # summary views
+@user_is_manager()
 def data_summary(request, pk):
     data = get_object_or_404(Data, pk=pk)
     local_final_uses = get_object_or_404(LocalFinalUses, data=data)

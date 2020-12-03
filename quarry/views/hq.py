@@ -6,6 +6,7 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User
+from account.user_check import user_is_jmg_hq, UserIsJMGHQMixin
 
 from ..models import (
     Data,
@@ -27,7 +28,7 @@ from ..models import (
 
 
 # data views
-class DataSuccessListView(ListView):
+class DataSuccessListView(UserIsJMGHQMixin, ListView):
     template_name = 'quarry/hq/data/success_list.html'
     model = Data
     paginate_by = 10
@@ -61,6 +62,7 @@ class DataSuccessListView(ListView):
         return context
 
 
+@user_is_jmg_hq()
 def data_success_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     local_final_uses = get_object_or_404(LocalFinalUses, data=data)

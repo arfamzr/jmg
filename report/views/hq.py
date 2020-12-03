@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, HttpResponse, Http404, get_list_o
 import xlwt
 from datetime import datetime
 
+from account.user_check import user_is_jmg_hq, UserIsJMGHQMixin
 from quarry.models import Approval as QuarryApproval, MainProductionStatistic, SideProductionStatistic
 from mine.models import Approval as MineApproval, MainStatistic, SideStatistic
 
@@ -11,6 +12,7 @@ from ..forms.hq import GraphForm, MineProductionGraphForm, MineReportForm, Quarr
 
 
 # mine report (export excel)
+@user_is_jmg_hq()
 def mine_report(request):
     if request.method == 'POST':
         form = MineReportForm(request.POST)
@@ -588,6 +590,7 @@ def mine_report(request):
 
 
 # quarry report (export excel)
+@user_is_jmg_hq()
 def quarry_report(request):
     if request.method == 'POST':
         form = QuarryReportForm(request.POST)
@@ -1228,6 +1231,7 @@ def quarry_report(request):
 
 
 # mine production graph
+@user_is_jmg_hq()
 def mine_production_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
@@ -1699,6 +1703,7 @@ def mine_production_graph(request):
 
 
 # mine worker graph
+@user_is_jmg_hq()
 def mine_worker_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
@@ -2261,6 +2266,7 @@ def mine_worker_graph(request):
 
 
 # quarry production graph
+@user_is_jmg_hq()
 def quarry_production_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionGraphForm(request.GET)
@@ -2732,6 +2738,7 @@ def quarry_production_graph(request):
 
 
 # quarry worker graph
+@user_is_jmg_hq()
 def quarry_worker_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionGraphForm(request.GET)
@@ -3295,6 +3302,7 @@ def quarry_worker_graph(request):
 
 
 # quarry royalties graph
+@user_is_jmg_hq()
 def quarry_royalties_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionGraphForm(request.GET)
@@ -3766,6 +3774,7 @@ def quarry_royalties_graph(request):
 
 
 # mine production state graph
+@user_is_jmg_hq()
 def mine_production_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
@@ -3868,6 +3877,7 @@ def mine_production_state_graph(request):
 
 
 # mine worker state graph
+@user_is_jmg_hq()
 def mine_worker_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionStateGraphForm(request.GET)
@@ -3977,6 +3987,7 @@ def mine_worker_state_graph(request):
 
 
 # quarry production state graph
+@user_is_jmg_hq()
 def quarry_production_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionStateGraphForm(request.GET)
@@ -4079,6 +4090,7 @@ def quarry_production_state_graph(request):
 
 
 # quarry worker state graph
+@user_is_jmg_hq()
 def quarry_worker_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionStateGraphForm(request.GET)
@@ -4188,6 +4200,7 @@ def quarry_worker_state_graph(request):
 
 
 # quarry royalties state graph
+@user_is_jmg_hq()
 def quarry_royalties_state_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionStateGraphForm(request.GET)
@@ -4290,6 +4303,7 @@ def quarry_royalties_state_graph(request):
 
 
 # mine active graph
+@user_is_jmg_hq()
 def mine_active_graph(request):
     if request.GET.get('main_rock_type1'):
         form = MineProductionGraphForm(request.GET)
@@ -4761,6 +4775,7 @@ def mine_active_graph(request):
 
 
 # quarry active graph
+@user_is_jmg_hq()
 def quarry_active_graph(request):
     if request.GET.get('main_rock_type1'):
         form = QuarryProductionGraphForm(request.GET)

@@ -10,6 +10,7 @@ from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User, Profile
 from account.forms.state_admin import UserCreationForm, UserForm, ProfileForm
+from account.user_check import user_is_jmg_state_admin, UserIsJMGStateAdminMixin
 from notification.notify import Notify
 
 from ..models import (
@@ -42,7 +43,7 @@ from ..forms.state_admin import (
 
 
 # lease holder views
-class LeaseHolderListView(ListView):
+class LeaseHolderListView(UserIsJMGStateAdminMixin, ListView):
     template_name = 'mine/state_admin/lease_holder/list.html'
     model = LeaseHolder
     paginate_by = 10
@@ -67,7 +68,7 @@ class LeaseHolderListView(ListView):
         return context
 
 
-class LeaseHolderCreateView(CreateView):
+class LeaseHolderCreateView(UserIsJMGStateAdminMixin, CreateView):
     template_name = 'mine/state_admin/lease_holder/form.html'
     model = LeaseHolder
     form_class = LeaseHolderForm
@@ -83,7 +84,7 @@ class LeaseHolderCreateView(CreateView):
         return context
 
 
-class LeaseHolderUpdateView(UpdateView):
+class LeaseHolderUpdateView(UserIsJMGStateAdminMixin, UpdateView):
     template_name = 'mine/state_admin/lease_holder/form.html'
     model = LeaseHolder
     form_class = LeaseHolderForm
@@ -95,6 +96,7 @@ class LeaseHolderUpdateView(UpdateView):
         return context
 
 
+@user_is_jmg_state_admin()
 def lease_holder_toggle_active(request, pk):
     lease_holder = get_object_or_404(LeaseHolder, pk=pk)
     if request.method == 'POST':
@@ -113,7 +115,7 @@ def lease_holder_toggle_active(request, pk):
 
 
 # manager views
-class ManagerListView(ListView):
+class ManagerListView(UserIsJMGStateAdminMixin, ListView):
     template_name = 'mine/state_admin/manager/list.html'
     model = MineManager
     paginate_by = 10
@@ -138,6 +140,7 @@ class ManagerListView(ListView):
         return context
 
 
+@user_is_jmg_state_admin()
 def manager_create(request, pk):
     lease_holder = get_object_or_404(LeaseHolder, pk=pk)
     if request.method == 'POST':
@@ -172,6 +175,7 @@ def manager_create(request, pk):
     return render(request, 'mine/state_admin/manager/form.html', context)
 
 
+@user_is_jmg_state_admin()
 def manager_update(request, pk):
     user = get_object_or_404(User, pk=pk)
     # manager = get_object_or_404(MineManager, user=user)
@@ -201,6 +205,7 @@ def manager_update(request, pk):
     return render(request, 'mine/state_admin/manager/form.html', context)
 
 
+@user_is_jmg_state_admin()
 def manager_choose_operator(request, pk):
     manager = get_object_or_404(MineManager, pk=pk)
     operator_list = Operator.objects.filter(state=request.user.profile.state)
@@ -213,6 +218,7 @@ def manager_choose_operator(request, pk):
     return render(request, 'mine/state_admin/manager/choose_operator.html', context)
 
 
+@user_is_jmg_state_admin()
 def manager_add_operator(request, manager_pk, operator_pk):
     manager = get_object_or_404(MineManager, pk=manager_pk)
     operator = get_object_or_404(Operator, pk=operator_pk)
@@ -225,6 +231,7 @@ def manager_add_operator(request, manager_pk, operator_pk):
     return redirect('mine:state_admin:manager_choose_operator', pk=manager.pk)
 
 
+@user_is_jmg_state_admin()
 def manager_toggle_active(request, pk):
     user = get_object_or_404(User, pk=pk)
     if request.method == 'POST':
@@ -254,7 +261,7 @@ def get_manager_data(request, pk):
 
 
 # operator views
-class OperatorListView(ListView):
+class OperatorListView(UserIsJMGStateAdminMixin, ListView):
     template_name = 'mine/state_admin/operator/list.html'
     model = Operator
     paginate_by = 10
@@ -279,7 +286,7 @@ class OperatorListView(ListView):
         return context
 
 
-class OperatorCreateView(CreateView):
+class OperatorCreateView(UserIsJMGStateAdminMixin, CreateView):
     template_name = 'mine/state_admin/operator/form.html'
     model = Operator
     form_class = OperatorForm
@@ -295,7 +302,7 @@ class OperatorCreateView(CreateView):
         return context
 
 
-class OperatorUpdateView(UpdateView):
+class OperatorUpdateView(UserIsJMGStateAdminMixin, UpdateView):
     template_name = 'mine/state_admin/operator/form.html'
     model = Operator
     form_class = OperatorForm
@@ -307,6 +314,7 @@ class OperatorUpdateView(UpdateView):
         return context
 
 
+@user_is_jmg_state_admin()
 def operator_toggle_active(request, pk):
     operator = get_object_or_404(Operator, pk=pk)
     if request.method == 'POST':
@@ -325,7 +333,7 @@ def operator_toggle_active(request, pk):
 
 
 # mine views
-class MineListView(ListView):
+class MineListView(UserIsJMGStateAdminMixin, ListView):
     template_name = 'mine/state_admin/list.html'
     model = Mine
     paginate_by = 10
@@ -350,7 +358,7 @@ class MineListView(ListView):
         return context
 
 
-class MineCreateView(CreateView):
+class MineCreateView(UserIsJMGStateAdminMixin, CreateView):
     template_name = 'mine/state_admin/form.html'
     model = Mine
     form_class = MineForm
@@ -382,7 +390,7 @@ class MineCreateView(CreateView):
         return context
 
 
-class MineUpdateView(UpdateView):
+class MineUpdateView(UserIsJMGStateAdminMixin, UpdateView):
     template_name = 'mine/state_admin/form.html'
     model = Mine
     form_class = MineForm
@@ -401,6 +409,7 @@ class MineUpdateView(UpdateView):
         return reverse('mine:state_admin:mineral_list', kwargs={'pk': self.object.pk})
 
 
+@user_is_jmg_state_admin()
 def toggle_active(request, pk):
     mine = get_object_or_404(Mine, pk=pk)
     if request.method == 'POST':
@@ -418,6 +427,7 @@ def toggle_active(request, pk):
     return render(request, 'mine/state_admin/toggle_active.html', context)
 
 
+@user_is_jmg_state_admin()
 def mine_detail(request, pk):
     mine = get_object_or_404(Mine, pk=pk)
 
@@ -519,7 +529,7 @@ def mine_detail(request, pk):
 
 
 # data views
-class DataListView(ListView):
+class DataListView(UserIsJMGStateAdminMixin, ListView):
     template_name = 'mine/state_admin/data/list.html'
     model = Data
     paginate_by = 10
@@ -555,7 +565,7 @@ class DataListView(ListView):
         return context
 
 
-class DataSuccessListView(ListView):
+class DataSuccessListView(UserIsJMGStateAdminMixin, ListView):
     template_name = 'mine/state_admin/data/success_list.html'
     model = Data
     paginate_by = 10
@@ -591,6 +601,7 @@ class DataSuccessListView(ListView):
         return context
 
 
+@user_is_jmg_state_admin()
 def data_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     local_operator = get_object_or_404(LocalOperator, data=data)
@@ -661,6 +672,7 @@ def data_detail(request, pk):
     return render(request, 'mine/state_admin/data/detail.html', context=context)
 
 
+@user_is_jmg_state_admin()
 def data_success_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     local_operator = get_object_or_404(LocalOperator, data=data)
@@ -708,6 +720,7 @@ def data_success_detail(request, pk):
 #     return render(request, 'mine/state_admin/data/detail.html', context=context)
 
 
+@user_is_jmg_state_admin()
 def statistic_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:state_admin:data',
@@ -726,6 +739,7 @@ def statistic_detail(request, pk):
     return render(request, 'mine/state_admin/data/statistic/detail.html', context=context)
 
 
+@user_is_jmg_state_admin()
 def local_worker_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:state_admin:statistic',
@@ -747,6 +761,7 @@ def local_worker_detail(request, pk):
     return render(request, 'mine/state_admin/data/worker/detail.html', context=context)
 
 
+@user_is_jmg_state_admin()
 def foreign_worker_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:state_admin:local_worker',
@@ -769,6 +784,7 @@ def foreign_worker_detail(request, pk):
     return render(request, 'mine/state_admin/data/worker/detail.html', context=context)
 
 
+@user_is_jmg_state_admin()
 def machinery_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:state_admin:foreign_worker',
@@ -791,6 +807,7 @@ def machinery_detail(request, pk):
     return render(request, 'mine/state_admin/data/machinery/detail.html', context=context)
 
 
+@user_is_jmg_state_admin()
 def energy_supply_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:state_admin:machinery',
@@ -809,6 +826,7 @@ def energy_supply_detail(request, pk):
     return render(request, 'mine/state_admin/data/energy_supply/detail.html', context=context)
 
 
+@user_is_jmg_state_admin()
 def operating_record_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:state_admin:energy_supply',
@@ -864,6 +882,7 @@ def operating_record_detail(request, pk):
 
 
 # mineral views
+@user_is_jmg_state_admin()
 def mineral_list(request, pk):
     mine = get_object_or_404(Mine, pk=pk)
     main_mineral_list = MainMineral.objects.filter(mine=mine)
@@ -880,7 +899,7 @@ def mineral_list(request, pk):
 
 
 # main mineral views
-class MainMineralCreateView(CreateView):
+class MainMineralCreateView(UserIsJMGStateAdminMixin, CreateView):
     template_name = 'mine/state_admin/mineral/form.html'
     form_class = MainMineralForm
     model = MainMineral
@@ -900,7 +919,7 @@ class MainMineralCreateView(CreateView):
         return context
 
 
-class MainMineralUpdateView(UpdateView):
+class MainMineralUpdateView(UserIsJMGStateAdminMixin, UpdateView):
     template_name = 'mine/state_admin/mineral/form.html'
     form_class = MainMineralForm
     model = MainMineral
@@ -914,6 +933,7 @@ class MainMineralUpdateView(UpdateView):
         return context
 
 
+@user_is_jmg_state_admin()
 def main_mineral_delete(request, pk):
     main_mineral = get_object_or_404(MainMineral, pk=pk)
     if request.method == 'POST':
@@ -922,7 +942,7 @@ def main_mineral_delete(request, pk):
 
 
 # side mineral views
-class SideMineralCreateView(CreateView):
+class SideMineralCreateView(UserIsJMGStateAdminMixin, CreateView):
     template_name = 'mine/state_admin/mineral/form.html'
     form_class = SideMineralForm
     model = SideMineral
@@ -942,7 +962,7 @@ class SideMineralCreateView(CreateView):
         return context
 
 
-class SideMineralUpdateView(UpdateView):
+class SideMineralUpdateView(UserIsJMGStateAdminMixin, UpdateView):
     template_name = 'mine/state_admin/mineral/form.html'
     form_class = SideMineralForm
     model = SideMineral
@@ -956,6 +976,7 @@ class SideMineralUpdateView(UpdateView):
         return context
 
 
+@user_is_jmg_state_admin()
 def side_mineral_delete(request, pk):
     side_mineral = get_object_or_404(SideMineral, pk=pk)
     if request.method == 'POST':

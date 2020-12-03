@@ -7,6 +7,7 @@ from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
 from account.models import User
+from account.user_check import user_is_manager, UserIsManagerMixin
 from notification.notify import Notify
 
 from ..models import (
@@ -40,7 +41,7 @@ from ..forms.main import (
 
 
 # data views
-class DataListView(ListView):
+class DataListView(UserIsManagerMixin, ListView):
     template_name = 'mine/data/list.html'
     model = Data
     paginate_by = 10
@@ -66,7 +67,7 @@ class DataListView(ListView):
         return context
 
 
-class DataCreateView(CreateView):
+class DataCreateView(UserIsManagerMixin, CreateView):
     model = Data
     form_class = DataForm
     template_name = 'mine/data/form.html'
@@ -91,6 +92,7 @@ class DataCreateView(CreateView):
         return context
 
 
+@user_is_manager()
 def data_delete(request, pk):
     if request.method == 'POST':
         data = get_object_or_404(Data, pk=pk)
@@ -101,6 +103,7 @@ def data_delete(request, pk):
     return redirect('mine:data_list')
 
 
+@user_is_manager()
 def data_detail(request, pk):
     data = get_object_or_404(Data, pk=pk)
     local_operator = get_object_or_404(LocalOperator, data=data)
@@ -135,6 +138,7 @@ def data_detail(request, pk):
 
 
 # statistic views
+@user_is_manager()
 def statistic_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     main_statistic_list = MainStatistic.objects.filter(data=data)
@@ -152,7 +156,7 @@ def statistic_edit(request, pk):
     return render(request, 'mine/data/statistic/list.html', context)
 
 
-class MainStatisticCreateView(CreateView):
+class MainStatisticCreateView(UserIsManagerMixin, CreateView):
     template_name = 'mine/data/statistic/form.html'
     form_class = MainStatisticForm
     model = MainStatistic
@@ -172,7 +176,7 @@ class MainStatisticCreateView(CreateView):
         return context
 
 
-class MainStatisticUpdateView(UpdateView):
+class MainStatisticUpdateView(UserIsManagerMixin, UpdateView):
     template_name = 'mine/data/statistic/form.html'
     form_class = MainStatisticForm
     model = MainStatistic
@@ -186,6 +190,7 @@ class MainStatisticUpdateView(UpdateView):
         return context
 
 
+@user_is_manager()
 def main_statistic_delete(request, pk):
     main_statistic = get_object_or_404(MainStatistic, pk=pk)
     if request.method == 'POST':
@@ -207,7 +212,7 @@ def main_statistic_detail(request, pk):
     return render(request, 'mine/data/statistic/detail.html', context)
 
 
-class SideStatisticCreateView(CreateView):
+class SideStatisticCreateView(UserIsManagerMixin, CreateView):
     template_name = 'mine/data/statistic/form.html'
     form_class = SideStatisticForm
     model = SideStatistic
@@ -227,7 +232,7 @@ class SideStatisticCreateView(CreateView):
         return context
 
 
-class SideStatisticUpdateView(UpdateView):
+class SideStatisticUpdateView(UserIsManagerMixin, UpdateView):
     template_name = 'mine/data/statistic/form.html'
     form_class = SideStatisticForm
     model = SideStatistic
@@ -241,6 +246,7 @@ class SideStatisticUpdateView(UpdateView):
         return context
 
 
+@user_is_manager()
 def side_statistic_delete(request, pk):
     side_statistic = get_object_or_404(SideStatistic, pk=pk)
     if request.method == 'POST':
@@ -263,6 +269,7 @@ def side_statistic_detail(request, pk):
 
 
 # local worker views
+@user_is_manager()
 def local_worker_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:statistic_edit',
@@ -315,6 +322,7 @@ def local_worker_edit(request, pk):
 
 
 # foreign worker views
+@user_is_manager()
 def foreign_worker_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:local_worker_edit',
@@ -365,6 +373,7 @@ def foreign_worker_edit(request, pk):
 
 
 # machinery views
+@user_is_manager()
 def machinery_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:foreign_worker_edit',
@@ -417,6 +426,7 @@ def machinery_edit(request, pk):
 
 
 # energy supply views
+@user_is_manager()
 def energy_supply_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:machinery_edit',
@@ -454,6 +464,7 @@ def energy_supply_edit(request, pk):
 
 
 # operating record views
+@user_is_manager()
 def operating_record_edit(request, pk):
     data = get_object_or_404(Data, pk=pk)
     prev_link = reverse('mine:energy_supply_edit',
@@ -490,75 +501,9 @@ def operating_record_edit(request, pk):
 
     return render(request, 'mine/data/operating_record/form.html', context=context)
 
-# summary views
-
-
-def data_summary(request, pk):
-    data = get_object_or_404(Data, pk=pk)
-    local_operator = get_object_or_404(LocalOperator, data=data)
-    local_contractor = get_object_or_404(
-        LocalContractor, data=data)
-    foreign_operator = get_object_or_404(
-        ForeignOperator, data=data)
-    foreign_contractor = get_object_or_404(
-        ForeignContractor, data=data)
-    combustion_machinery = get_object_or_404(
-        InternalCombustionMachinery, data=data)
-    electric_machinery = get_object_or_404(
-        ElectricMachinery, data=data)
-    energy_supply = get_object_or_404(EnergySupply, data=data)
-    operating_record = get_object_or_404(
-        OperatingRecord, data=data)
-
-    prev_link = reverse('mine:operating_record_edit',
-                        kwargs={"pk": data.pk})
-
-    if request.method == 'POST':
-        data_approval = Approval.objects.create(
-            data=data, requestor=request.user)
-
-        jmg_states = User.objects.filter(
-            groups__name='JMG State', profile__state=data.state)
-
-        notify = Notify()
-        notify_message = f'{request.user} telah menghantar permohonan data untuk lombong "{data.mine}"'
-        notify_link = reverse('mine:state:data_list')
-
-        for jmg_state in jmg_states:
-            notify.make_notify(jmg_state, notify_message, notify_link)
-
-        return redirect('mine:data_list')
-
-    context = {
-        'title': 'Data Lombong',
-        'data': data,
-        'local_operator': local_operator,
-        'local_contractor': local_contractor,
-        'foreign_operator': foreign_operator,
-        'foreign_contractor': foreign_contractor,
-        'combustion_machinery': combustion_machinery,
-        'electric_machinery': electric_machinery,
-        'energy_supply': energy_supply,
-        'operating_record': operating_record,
-    }
-
-    return render(request, 'mine/data/summary.html', context)
-
-# comment views
-
-
-def get_comment_data(request, pk):
-    data = get_object_or_404(Data, pk=pk)
-    data_approval = data.get_last_approval()
-    if data_approval.admin_comment:
-        return HttpResponse(data_approval.admin_comment)
-    elif data_approval.state_comment:
-        return HttpResponse(data_approval.state_comment)
-    else:
-        return HttpResponse('')
-
 
 # summary views
+@user_is_manager()
 def data_summary(request, pk):
     data = get_object_or_404(Data, pk=pk)
     local_operator = get_object_or_404(LocalOperator, data=data)
@@ -609,7 +554,75 @@ def data_summary(request, pk):
         'prev_link': prev_link,
     }
 
-    return render(request, 'mine/data/summary.html', context=context)
+    return render(request, 'mine/data/summary.html', context)
+
+# comment views
+
+
+def get_comment_data(request, pk):
+    data = get_object_or_404(Data, pk=pk)
+    data_approval = data.get_last_approval()
+    if data_approval.admin_comment:
+        return HttpResponse(data_approval.admin_comment)
+    elif data_approval.state_comment:
+        return HttpResponse(data_approval.state_comment)
+    else:
+        return HttpResponse('')
+
+
+# summary views
+# @user_is_manager()
+# def data_summary(request, pk):
+#     data = get_object_or_404(Data, pk=pk)
+#     local_operator = get_object_or_404(LocalOperator, data=data)
+#     local_contractor = get_object_or_404(
+#         LocalContractor, data=data)
+#     foreign_operator = get_object_or_404(
+#         ForeignOperator, data=data)
+#     foreign_contractor = get_object_or_404(
+#         ForeignContractor, data=data)
+#     combustion_machinery = get_object_or_404(
+#         InternalCombustionMachinery, data=data)
+#     electric_machinery = get_object_or_404(
+#         ElectricMachinery, data=data)
+#     energy_supply = get_object_or_404(EnergySupply, data=data)
+#     operating_record = get_object_or_404(
+#         OperatingRecord, data=data)
+
+#     prev_link = reverse('mine:operating_record_edit',
+#                         kwargs={"pk": data.pk})
+
+#     if request.method == 'POST':
+#         data_approval = Approval.objects.create(
+#             data=data, requestor=request.user)
+
+#         jmg_states = User.objects.filter(
+#             groups__name='JMG State', profile__state=data.state)
+
+#         notify = Notify()
+#         notify_message = f'{request.user} telah menghantar permohonan data untuk lombong "{data.mine}"'
+#         notify_link = reverse('mine:state:data_list')
+
+#         for jmg_state in jmg_states:
+#             notify.make_notify(jmg_state, notify_message, notify_link)
+
+#         return redirect('mine:data_list')
+
+#     context = {
+#         'title': 'Data Lombong',
+#         'data': data,
+#         'local_operator': local_operator,
+#         'local_contractor': local_contractor,
+#         'foreign_operator': foreign_operator,
+#         'foreign_contractor': foreign_contractor,
+#         'combustion_machinery': combustion_machinery,
+#         'electric_machinery': electric_machinery,
+#         'energy_supply': energy_supply,
+#         'operating_record': operating_record,
+#         'prev_link': prev_link,
+#     }
+
+#     return render(request, 'mine/data/summary.html', context=context)
 
 
 # class MineMinerListView(ListView):

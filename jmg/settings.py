@@ -161,3 +161,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # forms template renderer
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
+
+
+# login url
+
+LOGIN_URL = '/account/login/'
