@@ -1,0 +1,148 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-8">
+          <table class="table table-bordered table-sm">
+            <tbody>
+              {% with quarry=miner_data.quarry quarry_miner=miner_data.miner miner=miner_data.miner.miner %}
+              <tr>
+                <th>Bulan/Tahun</th>
+                <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+              </tr>
+              <tr>
+                <th>-</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Nama Syarikat</th>
+                <td>
+                  <a href="{{ miner.employee.company.get_absolute_url }}">
+                    {{ miner.employee.company.name }}
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th>Pengusaha</th>
+                <td>
+                  <a href="{{ miner.get_absolute_url }}">
+                    {{ miner.username }}
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th>No. Lot</th>
+                <td>{{ quarry_miner.lot_number }}</td>
+              </tr>
+              <tr>
+                <th>Latitude</th>
+                <td>{{ quarry_miner.latitude }}</td>
+              </tr>
+              <tr>
+                <th>Longitude</th>
+                <td>{{ quarry_miner.longitude }}</td>
+              </tr>
+              <tr>
+                <th>-</th>
+                <td>-</td>
+              </tr>
+              <tr>
+                <th>Alamat</th>
+                <td>
+                  {{ quarry.address1 }}{% if quarry.address2 %},<br>
+                  {{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>
+                  {{ quarry.address3 }}{% endif %}
+                </td>
+              </tr>
+              <tr>
+                <th>No. Telefon</th>
+                <td>{{ quarry.phone_number }}</td>
+              </tr>
+              <tr>
+                <th>No. Fax</th>
+                <td>{{ quarry.fax_number }}</td>
+              </tr>
+              <tr>
+                <th>Emel</th>
+                <td>{{ quarry.email }}</td>
+              </tr>
+              <tr>
+                <th>Lokasi</th>
+                <td>{{ quarry.location }}</td>
+              </tr>
+              <tr>
+                <th>Mukim</th>
+                <td>{{ quarry.mukim }}</td>
+              </tr>
+              <tr>
+                <th>Daerah</th>
+                <td>{{ quarry.district }}</td>
+              </tr>
+              <tr>
+                <th>Negeri</th>
+                <td>{{ quarry.get_state_display }}</td>
+              </tr>
+              <tr>
+                <th>Status Tanah</th>
+                <td>{{ quarry.land_status }}</td>
+              </tr>
+              <tr>
+                <th>Rujukan Grid</th>
+                <td>{{ quarry.grid_reference }}</td>
+              </tr>
+              <tr>
+                <th>Keupayaan Maksima</th>
+                <td>{{ quarry.max_capacity }}</td>
+              </tr>
+              <tr>
+                <th>Kategori Syarikat</th>
+                <td>{{ quarry.company_category }}</td>
+              </tr>
+              <tr>
+                <th>Jenis Batuan Utama</th>
+                <td>{{ quarry.get_main_rock_type_display }}</td>
+              </tr>
+              <tr>
+                <th>Jenis Batuan Sampingan</th>
+                <td>{{ quarry.get_side_rock_type_display }}</td>
+              </tr>
+              <tr>
+                <th>Aktif</th>
+                <td>
+                  {% if quarry.status %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endwith %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 col-lg-3 ml-auto mt-3">
+          <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+            Seterusnya
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

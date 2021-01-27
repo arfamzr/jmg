@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'company.apps.CompanyConfig',
     'quarry.apps.QuarryConfig',
     'mine.apps.MineConfig',
+    'mineral.apps.MineralConfig',
     'dashboard.apps.DashboardConfig',
     'report.apps.ReportConfig',
     'notification.apps.NotificationConfig',

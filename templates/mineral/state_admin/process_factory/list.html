@@ -1,0 +1,91 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col">
+          <a href="{% url 'mineral:state_admin:process_factory_create' %}" class="btn btn-primary">Tambah Kilang</a>
+        </div>
+
+        <div class="col justify-content-end">
+          <form action="." method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Carian Kilang</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Nama</th>
+                <th scope="col">No Hakmilik / No Lot</th>
+                {% comment %} <th scope="col">Tamat Pajakan</th> {% endcomment %}
+                <th scope="col">Alamat</th>
+                <th scope="col">Aktif</th>
+                <th scope="col">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for factory in object_list %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ factory.name }}</td>
+                <td>{{ factory.lease_number }}</td>
+                {% comment %} <td>{{ factory.lease_expired }}</td> {% endcomment %}
+                <td>
+                  {{ factory.address1 }}{% if factory.address2 %},<br>
+                  {{ factory.address2 }}{% endif %}{% if factory.address3 %},<br>
+                  {{ factory.address3 }}{% endif %}
+                </td>
+                <td>
+                  {% if factory.status %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ factory.get_update_url }}" class="badge badge-primary">Kemaskini</a>
+                  <a href="{{ factory.get_toggle_active_url }}" class="badge badge-info">
+                    {% if factory.status %}
+                    Nyahaktifkan
+                    {% else %}
+                    Aktifkan
+                    {% endif %}
+                  </a>
+                  {% if not factory.processmanager %}
+                  <a href="{{ factory.get_manager_create_url }}" class="badge badge-primary">Tambah Pengurus</a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          {% with pagin=page_obj %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

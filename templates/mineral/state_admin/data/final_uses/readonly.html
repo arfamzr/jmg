@@ -1,0 +1,250 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row mb-3">
+        <div class="offset-4 col-4">
+          <button type="button" class="btn btn-info btn-user btn-block"><b>TEMPATAN</b></button>
+        </div>
+        <div class="col-4">
+          <button type="button" class="btn btn-secondary btn-user btn-block"><b>EKSPORT</b></button>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="offset-4 col-2"><b>AMAUN (MT)</b></div>
+        <div class="col-2"><b>NILAI (RM)</b></div>
+        <div class="col-2"><b>AMAUN (MT)</b></div>
+        <div class="col-2"><b>NILAI (RM)</b></div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Pembinaan</b></label>
+        <div class="col-2">
+          {{ local_form.construction_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.construction_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.construction_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.construction_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Batu Dimensi</b></label>
+        <div class="col-2">
+          {{ local_form.dimension_stone_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.dimension_stone_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.dimension_stone_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.dimension_stone_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Pembuatan Simen</b></label>
+        <div class="col-2">
+          {{ local_form.cement_making_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.cement_making_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.cement_making_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.cement_making_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Kapur Tohor</b></label>
+        <div class="col-2">
+          {{ local_form.quicklime_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.quicklime_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.quicklime_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.quicklime_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Serbuk Kalsium Karbonat</b></label>
+        <div class="col-2">
+          {{ local_form.calcium_carbonate_powder_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.calcium_carbonate_powder_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.calcium_carbonate_powder_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.calcium_carbonate_powder_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Premix</b></label>
+        <div class="col-2">
+          {{ local_form.premix_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.premix_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.premix_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.premix_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Konkrit Readymix</b></label>
+        <div class="col-2">
+          {{ local_form.ready_mix_concrete_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.ready_mix_concrete_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.ready_mix_concrete_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.ready_mix_concrete_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Baja</b></label>
+        <div class="col-2">
+          {{ local_form.fertilizer_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.fertilizer_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.fertilizer_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.fertilizer_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Industri Keluli</b></label>
+        <div class="col-2">
+          {{ local_form.steel_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.steel_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.steel_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.steel_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Kapur Hidrat</b></label>
+        <div class="col-2">
+          {{ local_form.hydrated_lime_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.hydrated_lime_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.hydrated_lime_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.hydrated_lime_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Serbuk Dolomit</b></label>
+        <div class="col-2">
+          {{ local_form.dolomite_powder_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.dolomite_powder_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.dolomite_powder_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.dolomite_powder_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Terazo</b></label>
+        <div class="col-2">
+          {{ local_form.terrazo_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.terrazo_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.terrazo_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.terrazo_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Lain-lain</b></label>
+        <div class="col-2">
+          {{ local_form.other_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ local_form.other_worth|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.other_amount|as_crispy_field }}
+        </div>
+        <div class="col-2">
+          {{ export_form.other_worth|as_crispy_field }}
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-4"><b>Nyatakan Lain-lain</b></label>
+        <div class="col-4">
+          {{ local_form.state_other|as_crispy_field }}
+        </div>
+        <div class="col-4">
+          {{ export_form.state_other|as_crispy_field }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4 col-lg-3 mt-3 ml-auto">
+      <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+        Sebelumnya
+      </a>
+    </div>
+    <div class="col-4 col-lg-3 mt-3">
+      <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+        Seterusnya
+      </a>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

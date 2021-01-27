@@ -1,0 +1,74 @@
+{% extends 'mineral\data\detail.html' %}
+
+{% block page_nav %}
+<div class="col-4 col-lg-3 mt-3">
+  <a href="{% url 'mineral:state:data_list' %}" class="btn btn-info btn-user btn-block">
+    Kembali ke senarai
+  </a>
+</div>
+<div class="col-4 col-lg-3 mt-3">
+  <button class="btn btn-danger btn-user btn-block" data-toggle="modal" data-target="#RejectModal">
+    Tolak
+  </button>
+</div>
+<div class="col-4 col-lg-3 mt-3">
+  <button class="btn btn-success btn-user btn-block" data-toggle="modal" data-target="#ApproveModal">
+    Terima
+  </button>
+</div>
+{% endblock page_nav %}
+
+{% block modal_content %}
+<!-- Approve Modal-->
+<div class="modal fade" id="ApproveModal" tabindex="-1" role="dialog" aria-labelledby="ApproveModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="ApproveModalLabel">Terima PKB </h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Adakah anda pasti untuk terima PKB ini?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+        <form action="." method="post">
+          {% csrf_token %}
+          <input type="hidden" name="choice" value="yes">
+          <button type="submit" class="btn btn-primary">Ya</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal-->
+<div class="modal fade" id="RejectModal" tabindex="-1" role="dialog" aria-labelledby="RejectModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="RejectModalLabel">Tolak PKB</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form action="." method="post">
+        <div class="modal-body">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="comment" class="col-form-label">Komen:</label>
+            <textarea name="comment" class="form-control" id="comment"></textarea>
+          </div>
+          <input type="hidden" name="choice" value="no">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-danger">Tolak</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock modal_content %}

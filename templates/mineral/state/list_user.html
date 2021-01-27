@@ -1,0 +1,120 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col my-auto">
+          <h5>Profil Pengguna</h5>
+        </div>
+
+        <div class="col text-right">
+          <a href="{{ each_user.get_state_quarry_list_url }}" class="btn btn-sm btn-secondary">Senarai Kuari</a>
+          <a href="{{ each_user.get_state_mine_list_url }}" class="btn btn-sm btn-secondary">Senarai Lombong</a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-8">
+          <table class="table table-bordered table-sm">
+            <tbody>
+              <tr>
+                <th>Nama Pengguna</th>
+                <td>{{ each_user.username }}</td>
+              </tr>
+              <tr>
+                <th>Emel</th>
+                <td>{{ each_user.email }}</td>
+              </tr>
+              <tr>
+                <th>Nama Penuh</th>
+                <td>{{ each_user.get_full_name }}</td>
+              </tr>
+              <tr>
+                <th>Negeri</th>
+                <td>{{ each_user.profile.get_state_display }}</td>
+              </tr>
+              <tr>
+                <th>Syarikat</th>
+                <td>
+                  {% if each_user.employee and each_user.employee.company %}
+                  <a
+                    href="{{ each_user.employee.company.get_state_absolute_url }}">{{ each_user.employee.company.name }}</a>
+                  {% else %}
+                  Tiada Syarikat
+                  {% endif %}
+                </td>
+              </tr>
+              <tr>
+                <th>Aktif</th>
+                <td>
+                  {% if each_user.is_active %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col my-auto">
+          <h5>Senarai Kuari</h5>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Lokasi</th>
+                <th scope="col">Aktif</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for quarry_miner in quarry_miner_list %}
+              {% with quarry=quarry_miner.quarry %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{{ quarry.get_state_absolute_url }}">{{ quarry }}</a></td>
+                <td>
+                  {% if quarry.status %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endwith %}
+              {% endfor %}
+            </tbody>
+          </table>
+
+          {% with pagin=quarry_miner_list %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,153 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" colspan="2" style="text-align: center;">BAKAR DALAM</th>
+                <th scope="col" colspan="2" style="text-align: center;">ELEKTRIK</th>
+              </tr>
+            </thead>
+            <thead class="thead-light">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col" style="text-align: center;">BILANGAN</th>
+                <th scope="col" style="text-align: center;">KUASA (KW)</th>
+                <th scope="col" style="text-align: center;">BILANGAN</th>
+                <th scope="col" style="text-align: center;">KUASA (KW)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>LORI</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_lorry }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.lorry_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_lorry }}</td>
+                <td style="text-align: right;">{{ electric_machinery.lorry_power }}</td>
+              </tr>
+              <tr>
+                <th>JENKOREK</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_excavator }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.excavator_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_excavator }}</td>
+                <td style="text-align: right;">{{ electric_machinery.excavator_power }}</td>
+              </tr>
+              <tr>
+                <th>JENTERA ANGKUT BERODA</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_wheel_loader }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.wheel_loader_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_wheel_loader }}</td>
+                <td style="text-align: right;">{{ electric_machinery.wheel_loader_power }}</td>
+              </tr>
+              <tr>
+                <th>JENTOLAK</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_bulldozer }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.bulldozer_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_bulldozer }}</td>
+                <td style="text-align: right;">{{ electric_machinery.bulldozer_power }}</td>
+              </tr>
+              <tr>
+                <th>PAM AIR</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_water_pump }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.water_pump_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_water_pump }}</td>
+                <td style="text-align: right;">{{ electric_machinery.water_pump_power }}</td>
+              </tr>
+              <tr>
+                <th>PEMAMPAT UDARA</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_air_compressor }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.air_compressor_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_air_compressor }}</td>
+                <td style="text-align: right;">{{ electric_machinery.air_compressor_power }}</td>
+              </tr>
+              <tr>
+                <th>PEMECAH HIDRAULIK</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_hydraulic_breaker }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.hydraulic_breaker_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_hydraulic_breaker }}</td>
+                <td style="text-align: right;">{{ electric_machinery.hydraulic_breaker_power }}</td>
+              </tr>
+              <tr>
+                <th>GERUDI HIDRAULIK</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_hydraulic_drill }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.hydraulic_drill_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_hydraulic_drill }}</td>
+                <td style="text-align: right;">{{ electric_machinery.hydraulic_drill_power }}</td>
+              </tr>
+              <tr>
+                <th>PENGHANCUR</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_crusher }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.crusher_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_crusher }}</td>
+                <td style="text-align: right;">{{ electric_machinery.crusher_power }}</td>
+              </tr>
+              <tr>
+                <th>PENYUDUK</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_shovel }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.shovel_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_shovel }}</td>
+                <td style="text-align: right;">{{ electric_machinery.shovel_power }}</td>
+              </tr>
+              <tr>
+                <th>TRAKTOR</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_tracktor }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.tracktor_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_tracktor }}</td>
+                <td style="text-align: right;">{{ electric_machinery.tracktor_power }}</td>
+              </tr>
+              <tr>
+                <th>LAIN-LAIN</th>
+                <td style="text-align: right;">{{ combustion_machinery.number_other }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.other_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.number_other }}</td>
+                <td style="text-align: right;">{{ electric_machinery.other_power }}</td>
+              </tr>
+              <tr>
+                <th>(NYATAKAN)</th>
+                <td colspan="2">{{ combustion_machinery.state_other }}</td>
+                <td colspan="2">{{ electric_machinery.state_other }}</td>
+              </tr>
+              <tr>
+                <th>JUMLAH</th>
+                <td style="text-align: right;">{{ combustion_machinery.total_number }}</td>
+                <td style="text-align: right;">{{ combustion_machinery.total_power }}</td>
+                <td style="text-align: right;">{{ electric_machinery.total_number }}</td>
+                <td style="text-align: right;">{{ electric_machinery.total_power }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 col-lg-3 mt-3 ml-auto">
+          <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+            Sebelumnya
+          </a>
+        </div>
+        <div class="col-4 col-lg-3 mt-3">
+          <a href="{{ next_link }}" class="btn btn-info btn-user btn-block">
+            Seterusnya
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

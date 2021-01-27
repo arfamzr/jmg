@@ -1,0 +1,306 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <form action="." method="post">
+    {% csrf_token %}
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row mb-3">
+          <div class="offset-4 col-4">
+            <button type="button" class="btn btn-info btn-user btn-block"><b>OPERATOR</b></button>
+          </div>
+          <div class="col-4">
+            <button type="button" class="btn btn-secondary btn-user btn-block"><b>KONTRAKTOR</b></button>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="offset-4 col-2"><b>LELAKI</b></div>
+          <div class="col-2"><b>PEREMPUAN</b></div>
+          <div class="col-2"><b>LELAKI</b></div>
+          <div class="col-2"><b>PEREMPUAN</b></div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4"><b>Pengurusan</b></label>
+          <div class="col-2">
+            {{ operator_form.male_manager|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ operator_form.female_manager|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.male_manager|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.female_manager|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4"><b>Profesional</b></label>
+          <div class="col-2">
+            {{ operator_form.male_professional|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ operator_form.female_professional|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.male_professional|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.female_professional|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4"><b>Teknikal</b></label>
+          <div class="col-2">
+            {{ operator_form.male_technical|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ operator_form.female_technical|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.male_technical|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.female_technical|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4"><b>Kerani</b></label>
+          <div class="col-2">
+            {{ operator_form.male_clerk|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ operator_form.female_clerk|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.male_clerk|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.female_clerk|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4"><b>Buruh</b></label>
+          <div class="col-2">
+            {{ operator_form.male_labor|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ operator_form.female_labor|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.male_labor|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.female_labor|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4"><b>Jumlah Pekerjaan</b></label>
+          <div class="col-2">
+            {{ operator_form.total_male|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ operator_form.total_female|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.total_male|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.total_female|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4"><b>Jumlah Upah Gaji</b></label>
+          <div class="col-2">
+            {{ operator_form.total_male_salary|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ operator_form.total_female_salary|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.total_male_salary|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.total_female_salary|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-4"><b>Jumlah Jam Manusia</b></label>
+          <div class="col-2">
+            {{ operator_form.male_man_hour|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ operator_form.female_man_hour|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.male_man_hour|as_crispy_field }}
+          </div>
+          <div class="col-2">
+            {{ contractor_form.female_man_hour|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4 col-lg-3 mt-3 ml-auto">
+        <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+          Sebelumnya
+        </a>
+      </div>
+      <div class="col-4 col-lg-3 mt-3">
+        <button type="submit" class="btn btn-info btn-user btn-block">
+          Simpan & Seterusnya
+        </button>
+      </div>
+    </div>
+  </form>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+  // male operator
+  const operator_male_manager = document.getElementById('id_male_manager')
+  const operator_male_professional = document.getElementById('id_male_professional')
+  const operator_male_technical = document.getElementById('id_male_technical')
+  const operator_male_clerk = document.getElementById('id_male_clerk')
+  const operator_male_labor = document.getElementById('id_male_labor')
+  const operator_total_male = document.getElementById('id_total_male')
+
+  const set_operator_total_male = () => {
+    let total = (parseFloat(operator_male_manager.value) || 0) +
+      (parseFloat(operator_male_professional.value) || 0) +
+      (parseFloat(operator_male_technical.value) || 0) +
+      (parseFloat(operator_male_clerk.value) || 0) +
+      (parseFloat(operator_male_labor.value) || 0)
+    operator_total_male.value = total
+  }
+
+  operator_male_manager.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+  operator_male_professional.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+  operator_male_technical.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+  operator_male_clerk.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+  operator_male_labor.addEventListener("change", () => {
+    set_operator_total_male()
+  })
+
+  // female operator
+  const operator_female_manager = document.getElementById('id_female_manager')
+  const operator_female_professional = document.getElementById('id_female_professional')
+  const operator_female_technical = document.getElementById('id_female_technical')
+  const operator_female_clerk = document.getElementById('id_female_clerk')
+  const operator_female_labor = document.getElementById('id_female_labor')
+  const operator_total_female = document.getElementById('id_total_female')
+
+  const set_operator_total_female = () => {
+    let total = (parseFloat(operator_female_manager.value) || 0) +
+      (parseFloat(operator_female_professional.value) || 0) +
+      (parseFloat(operator_female_technical.value) || 0) +
+      (parseFloat(operator_female_clerk.value) || 0) +
+      (parseFloat(operator_female_labor.value) || 0)
+    operator_total_female.value = total
+  }
+
+  operator_female_manager.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+  operator_female_professional.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+  operator_female_technical.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+  operator_female_clerk.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+  operator_female_labor.addEventListener("change", () => {
+    set_operator_total_female()
+  })
+
+  // male contractor
+  const contractor_male_manager = document.getElementById('id_second-male_manager')
+  const contractor_male_professional = document.getElementById('id_second-male_professional')
+  const contractor_male_technical = document.getElementById('id_second-male_technical')
+  const contractor_male_clerk = document.getElementById('id_second-male_clerk')
+  const contractor_male_labor = document.getElementById('id_second-male_labor')
+  const contractor_total_male = document.getElementById('id_second-total_male')
+
+  const set_contractor_total_male = () => {
+    let total = (parseFloat(contractor_male_manager.value) || 0) +
+      (parseFloat(contractor_male_professional.value) || 0) +
+      (parseFloat(contractor_male_technical.value) || 0) +
+      (parseFloat(contractor_male_clerk.value) || 0) +
+      (parseFloat(contractor_male_labor.value) || 0)
+    contractor_total_male.value = total
+  }
+
+  contractor_male_manager.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+  contractor_male_professional.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+  contractor_male_technical.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+  contractor_male_clerk.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+  contractor_male_labor.addEventListener("change", () => {
+    set_contractor_total_male()
+  })
+
+  // female contractor
+  const contractor_female_manager = document.getElementById('id_second-female_manager')
+  const contractor_female_professional = document.getElementById('id_second-female_professional')
+  const contractor_female_technical = document.getElementById('id_second-female_technical')
+  const contractor_female_clerk = document.getElementById('id_second-female_clerk')
+  const contractor_female_labor = document.getElementById('id_second-female_labor')
+  const contractor_total_female = document.getElementById('id_second-total_female')
+
+  const set_contractor_total_female = () => {
+    let total = (parseFloat(contractor_female_manager.value) || 0) +
+      (parseFloat(contractor_female_professional.value) || 0) +
+      (parseFloat(contractor_female_technical.value) || 0) +
+      (parseFloat(contractor_female_clerk.value) || 0) +
+      (parseFloat(contractor_female_labor.value) || 0)
+    contractor_total_female.value = total
+  }
+
+  contractor_female_manager.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+  contractor_female_professional.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+  contractor_female_technical.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+  contractor_female_clerk.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+  contractor_female_labor.addEventListener("change", () => {
+    set_contractor_total_female()
+  })
+</script>
+{% endblock extra_js %}

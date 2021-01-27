@@ -1,0 +1,108 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <form action="." method="post">
+    {% csrf_token %}
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="form-group row">
+          <label class="col-6"><b>Tarikh</b></label>
+          <div class="col-6">
+            {{ form.date|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Bahan Letupan Bes Emulsi (KG)</b></label>
+          <div class="col-6">
+            {{ form.emulsion_explosive|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Bahan Letupan Bes NG (KG)</b></label>
+          <div class="col-6">
+            {{ form.ng_explosive|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Bahan Letupan Lain (KG)</b></label>
+          <div class="col-6">
+            {{ form.other_explosive|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Peledak Biasa (Biji)</b></label>
+          <div class="col-6">
+            {{ form.detonator|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Peledak Elektrik (Biji)</b></label>
+          <div class="col-6">
+            {{ form.electric_detonator|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Peledak Non Elektrik (Biji)</b></label>
+          <div class="col-6">
+            {{ form.non_electric_detonator|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Safety Fuse (M)</b></label>
+          <div class="col-6">
+            {{ form.safety_fuse|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Kord Peledak (M)</b></label>
+          <div class="col-6">
+            {{ form.detonating_cord|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>ANFO (KG)</b></label>
+          <div class="col-6">
+            {{ form.anfo|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Bulk Emulsion (KG)</b></label>
+          <div class="col-6">
+            {{ form.bulk_emulsion|as_crispy_field }}
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-6"><b>Relay TLD (Biji)</b></label>
+          <div class="col-6">
+            {{ form.relay_tld|as_crispy_field }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-4 col-lg-3 mt-3 ml-auto">
+        <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+          Sebelumnya
+        </a>
+      </div>
+      <div class="col-4 col-lg-3 mt-3">
+        <button type="submit" class="btn btn-info btn-user btn-block">
+          Simpan & Seterusnya
+        </button>
+      </div>
+    </div>
+  </form>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

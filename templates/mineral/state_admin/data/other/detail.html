@@ -1,0 +1,107 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-8">
+          <table class="table table-bordered table-sm">
+            <tbody>
+              <tr>
+                <th>TAJUK</th>
+                <td>{{ other.title|default:"Tiada tajuk" }}</td>
+              </tr>
+              <tr>
+                <th>KOMEN</th>
+                <td>{{ other.comment|default:"Tiada komen" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 col-lg-3 mt-3 ml-auto">
+          <a href="{{ prev_link }}" class="btn btn-secondary btn-user btn-block">
+            Sebelumnya
+          </a>
+        </div>
+        <div class="col-4 col-lg-3 mt-3">
+          <button class="btn btn-danger btn-user btn-block" data-toggle="modal" data-target="#RejectModal">
+            Tolak
+          </button>
+        </div>
+        <div class="col-4 col-lg-3 mt-3">
+          <button class="btn btn-success btn-user btn-block" data-toggle="modal" data-target="#ApproveModal">
+            Terima
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+<!-- Approve Modal-->
+<div class="modal fade" id="ApproveModal" tabindex="-1" role="dialog" aria-labelledby="ApproveModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="ApproveModalLabel">Terima PKB ini</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Adakah anda pasti untuk terima PKB ini?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+        <form action="." method="post">
+          {% csrf_token %}
+          <input type="hidden" name="choice" value="yes">
+          <button type="submit" class="btn btn-primary">Ya</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal-->
+<div class="modal fade" id="RejectModal" tabindex="-1" role="dialog" aria-labelledby="RejectModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="RejectModalLabel">Tolak PKB ini</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form action="." method="post">
+        <div class="modal-body">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="comment" class="col-form-label">Komen:</label>
+            <textarea name="comment" class="form-control" id="comment"></textarea>
+          </div>
+          <input type="hidden" name="choice" value="no">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-danger">Tolak</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

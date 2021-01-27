@@ -486,6 +486,25 @@
   <!-- Divider -->
   <hr class="sidebar-divider">
 
+  <div class="sidebar-heading">
+    Mineral
+  </div>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'mineral:state_admin:process_factory_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Kilang Proses</span></a>
+  </li>
+
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'mineral:state_admin:manager_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Senarai Pengurus</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
   <!-- Heading -->
   <div class="sidebar-heading">
     Senarai Data
@@ -503,6 +522,13 @@
     <a class="nav-link" href="{% url 'mine:state_admin:data_list' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>RPLB</span></a>
+  </li>
+
+  <!-- Nav Item - Lombong -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'mineral:state_admin:data_list' %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Process Mineral</span></a>
   </li>
 
   <!-- Nav Item - Mineral -->
@@ -533,6 +559,13 @@
     <a class="nav-link" href="{% url 'mine:state_admin:data_list_success' %}">
       <i class="fas fa-fw fa-gem"></i>
       <span>RPLB</span></a>
+  </li>
+
+  <!-- Nav Item - Lombong -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'mineral:state_admin:data_list_success' %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Proses Mineral</span></a>
   </li>
 
   <!-- Nav Item - Mineral -->
@@ -686,6 +719,13 @@
       <span>RPLB</span></a>
   </li>
 
+  <!-- Nav Item - Lombong -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'mineral:state:data_list' %}">
+      <i class="fas fa-fw fa-gem"></i>
+      <span>Proses Mineral</span></a>
+  </li>
+
   <!-- Nav Item - Mineral -->
   <!-- <li class="nav-item">
     <a class="nav-link" href="<?= base_url('mineral'); ?>">
@@ -726,6 +766,14 @@
     <a class="nav-link" href="{% url 'mine:data_list' %}">
       <i class="fas fa-fw fa-user"></i>
       <span>RPLB</span></a>
+  </li>
+  {% endif %}
+
+  {% if user.processmanager %}
+  <li class="nav-item ">
+    <a class="nav-link" href="{% url 'mineral:data_list' %}">
+      <i class="fas fa-fw fa-user"></i>
+      <span>Lesen Proses</span></a>
   </li>
   {% endif %}
 

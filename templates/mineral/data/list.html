@@ -1,0 +1,173 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col">
+          <a href="{% url 'mineral:data_create' %}" class="btn btn-primary">Tambah Data</a>
+        </div>
+        {% comment %} <div class="col justify-content-end">
+          <form action="." method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Carian Kuari</button>
+              </div>
+            </div>
+          </form>
+        </div> {% endcomment %}
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Bulan/Tahun</th>
+                <th scope="col">Nama Kuari</th>
+                <th scope="col">Alamat Kuari</th>
+                {% comment %} <th scope="col">No Lot</th> {% endcomment %}
+                {% comment %} <th scope="col">Jenis Batuan</th> {% endcomment %}
+                <th scope="col">Status</th>
+                <th scope="col">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in object_list %}
+              {% with mineral_miner=data.miner mineral=data.mineral last_approval=data.get_last_approval %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ data.get_month_display }} {{ data.year }}</td>
+                <td>{{ mineral.name }}</td>
+                {% comment %} <td>{{ mineral.address1 }}{{ mineral.address2 }}{{ mineral.address3 }}</td>
+                {% endcomment %}
+                <td>
+                  {{ mineral.address1 }}{% if mineral.address2 %},<br>
+                  {{ mineral.address2 }}{% endif %}{% if mineral.address3 %},<br>
+                  {{ mineral.address3 }}{% endif %}
+                </td>
+                {% comment %} <td>{{ mineral_miner.lot_number }}</td> {% endcomment %}
+                {% comment %} <td>{{ mineral.main_rock_type }}</td> {% endcomment %}
+                <td>
+                  {% if last_approval %}
+                  {% if last_approval.admin_approved == True %}
+                  <span class="text-success">Berjaya</span>
+                  {% elif last_approval.state_approved == False or last_approval.admin_approved == False %}
+                  <span class="text-danger">Di Tolak</span>
+                  <button class="badge badge-sm badge-secondary" data-toggle="modal" data-target="#rejectCommentModal"
+                    data-id="{{ data.id }}">
+                    <i class=" far fa-eye"></i>
+                  </button>
+                  {% else %}
+                  <span class="text-warning">Dalam Proses</span>
+                  {% endif %}
+                  {% else %}
+                  <span class="text-info">Draf</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if last_approval and last_approval.state_approved != False and last_approval.admin_approved != False %}
+                  <a href="{{ data.get_absolute_url }}" class="badge badge-sm badge-secondary">
+                    <i class="far fa-eye"></i>
+                  </a>
+                  {% else %}
+                  <a href="{{ data.get_edit_url }}" class="badge badge-sm badge-info">Ubah</a>
+                  <a href="" class="badge badge-sm badge-danger" data-toggle="modal" data-target="#deleteModal"
+                    data-href="{{ data.get_delete_url }}">Padam</a>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endwith %}
+              {% endfor %}
+            </tbody>
+          </table>
+
+          {% with pagin=page_obj %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+<!-- Reject Comment Modal-->
+<div class="modal fade" id="rejectCommentModal" tabindex="-1" role="dialog" aria-labelledby="rejectCommentModal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="rejectCommentModalLabel">Komen</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <span id="comment"></span>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="deleteModalLabel">Padam Data</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form id="deleteForm" action="#" method="post">
+        <div class="modal-body">
+          {% csrf_token %}
+          Anda yakin mahu padam data ini?
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" type="submit">Padam</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Tutup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+  $('#rejectCommentModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget)
+    const id = button.data('id')
+    const modal = $(this)
+    $.ajax({
+      url: `/mineral/miner-data/${id}/get-comment/`,
+      success: function (result) {
+        modal.find('#comment').text(result)
+      }
+    });
+  })
+
+  // delete data
+  $('#deleteModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget)
+    const href = button.data('href')
+    const modal = $(this)
+    modal.find('#deleteForm').attr('action', href)
+  })
+</script>
+{% endblock extra_js %}

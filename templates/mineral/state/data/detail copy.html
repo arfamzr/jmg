@@ -1,0 +1,1040 @@
+{% extends 'layouts/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="h3 text-gray-800">{{ title }}</h1>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col">
+      <div id="accordion">
+        <!-- Quarry detail -->
+        <div class="card">
+          <div class="card-header py-2" id="headingQuarryDetail">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseQuarryDetail" aria-expanded="true" aria-controls="collapseQuarryDetail">
+                Maklumat Kuari
+              </button>
+            </h5>
+          </div>
+          <div id="collapseQuarryDetail" class="collapse" aria-labelledby="headingQuarryDetail"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <tbody>
+                      {% with quarry=miner_data.quarry quarry_miner=miner_data.miner miner=miner_data.miner.miner %}
+                      <tr>
+                        <th>Bulan/Tahun</th>
+                        <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
+                      </tr>
+                      <tr>
+                        <th>-</th>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <th>Nama Syarikat</th>
+                        <td>
+                          <a href="{{ miner.employee.company.get_absolute_url }}">
+                            {{ miner.employee.company.name }}
+                          </a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Pengusaha</th>
+                        <td>
+                          <a href="{{ miner.get_absolute_url }}">
+                            {{ miner.username }}
+                          </a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No. Lot</th>
+                        <td>{{ quarry_miner.lot_number }}</td>
+                      </tr>
+                      <tr>
+                        <th>Latitude</th>
+                        <td>{{ quarry_miner.latitude }}</td>
+                      </tr>
+                      <tr>
+                        <th>Longitude</th>
+                        <td>{{ quarry_miner.longitude }}</td>
+                      </tr>
+                      <tr>
+                        <th>-</th>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <th>Alamat</th>
+                        <td>
+                          {{ quarry.address1 }}{% if quarry.address2 %},<br>{{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>{{ quarry.address3 }}{% endif %}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>No. Telefon</th>
+                        <td>{{ quarry.phone_number }}</td>
+                      </tr>
+                      <tr>
+                        <th>No. Fax</th>
+                        <td>{{ quarry.fax_number }}</td>
+                      </tr>
+                      <tr>
+                        <th>Emel</th>
+                        <td>{{ quarry.email }}</td>
+                      </tr>
+                      <tr>
+                        <th>Lokasi</th>
+                        <td>{{ quarry.location }}</td>
+                      </tr>
+                      <tr>
+                        <th>Mukim</th>
+                        <td>{{ quarry.mukim }}</td>
+                      </tr>
+                      <tr>
+                        <th>Daerah</th>
+                        <td>{{ quarry.district }}</td>
+                      </tr>
+                      <tr>
+                        <th>Negeri</th>
+                        <td>{{ quarry.get_state_display }}</td>
+                      </tr>
+                      <tr>
+                        <th>Status Tanah</th>
+                        <td>{{ quarry.land_status }}</td>
+                      </tr>
+                      <tr>
+                        <th>Rujukan Grid</th>
+                        <td>{{ quarry.grid_reference }}</td>
+                      </tr>
+                      <tr>
+                        <th>Keupayaan Maksima</th>
+                        <td>{{ quarry.max_capacity }}</td>
+                      </tr>
+                      <tr>
+                        <th>Kategori Syarikat</th>
+                        <td>{{ quarry.company_category }}</td>
+                      </tr>
+                      <tr>
+                        <th>Jenis Batuan Utama</th>
+                        <td>{{ quarry.get_main_rock_type_display }}</td>
+                      </tr>
+                      <tr>
+                        <th>Jenis Batuan Sampingan</th>
+                        <td>{{ quarry.get_side_rock_type_display }}</td>
+                      </tr>
+                      <tr>
+                        <th>Aktif</th>
+                        <td>
+                          {% if quarry.status %}
+                          <i class="fas fa-check-circle text-success ml-2"></i>
+                          {% else %}
+                          <i class="fas fa-times-circle text-danger ml-2"></i>
+                          {% endif %}
+                        </td>
+                      </tr>
+                      {% endwith %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Production Statistic -->
+        <div class="card">
+          <div class="card-header py-2" id="headingProductionStatistic">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseProductionStatistic" aria-expanded="true"
+                aria-controls="collapseProductionStatistic">
+                Perangkaan Pengeluaran
+              </button>
+            </h5>
+          </div>
+          <div id="collapseProductionStatistic" class="collapse" aria-labelledby="headingProductionStatistic"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">BATUAN UTAMA (TAN MATRIK)</th>
+                        <th scope="col" style="text-align: center;">BATUAN SAMPINGAN (TAN MATRIK)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>STOK AWAL BULAN</th>
+                        <td style="text-align: right;">{{ production_statistic.initial_main_rock_stock }}</td>
+                        <td style="text-align: right;">{{ production_statistic.initial_side_rock_stock }}</td>
+                      </tr>
+                      <tr>
+                        <th>PENGELUARAN</th>
+                        <td style="text-align: right;">{{ production_statistic.main_rock_production }}</td>
+                        <td style="text-align: right;">{{ production_statistic.side_rock_production }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH</th>
+                        <td style="text-align: right;">{{ production_statistic.total_main_rock }}</td>
+                        <td style="text-align: right;">{{ production_statistic.total_side_rock }}</td>
+                      </tr>
+                      <tr>
+                        <th>PENYERAHAN</th>
+                        <td style="text-align: right;">{{ production_statistic.main_rock_submission }}</td>
+                        <td style="text-align: right;">{{ production_statistic.side_rock_submission }}</td>
+                      </tr>
+                      <tr>
+                        <th>STOCK AKHIR</th>
+                        <td style="text-align: right;">{{ production_statistic.final_main_rock_stock }}</td>
+                        <td style="text-align: right;">{{ production_statistic.final_side_rock_stock }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Sales Submission -->
+        <div class="card">
+          <div class="card-header py-2" id="headingSalesSubmission">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseSalesSubmission" aria-expanded="true" aria-controls="collapseSalesSubmission">
+                Penyerahan Jualan
+              </button>
+            </h5>
+          </div>
+          <div id="collapseSalesSubmission" class="collapse" aria-labelledby="headingSalesSubmission"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">AMAUN (MT)</th>
+                        <th scope="col" style="text-align: center;">NILAI/TAN (RM)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>CRUSHER RUN</th>
+                        <td style="text-align: right;">{{ sales_submission.crusher_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.crusher_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>QUARRY DUST</th>
+                        <td style="text-align: right;">{{ sales_submission.dust_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.dust_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>QUARRY WASTE</th>
+                        <td style="text-align: right;">{{ sales_submission.waste_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.waste_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>1/8"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_1_8_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_1_8_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>3/8"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_3_8_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_3_8_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>5/8"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_5_8_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_5_8_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>3/4"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_3_4_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_3_4_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>1"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_1_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_1_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>1 1/2"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_1_1_2_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_1_1_2_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>2"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_2_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_2_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>3" x 5"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_3x5_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_3x5_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>6" x 9"</th>
+                        <td style="text-align: right;">{{ sales_submission.inch_6x9_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.inch_6x9_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>BLOCK</th>
+                        <td style="text-align: right;">{{ sales_submission.block_amount }}</td>
+                        <td style="text-align: right;">{{ sales_submission.block_worth }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Final Uses -->
+        <div class="card">
+          <div class="card-header py-2" id="headingFinalUses">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseFinalUses" aria-expanded="true" aria-controls="collapseFinalUses">
+                Kegunaan Akhir
+              </button>
+            </h5>
+          </div>
+          <div id="collapseFinalUses" class="collapse" aria-labelledby="headingFinalUses" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">TEMPATAN</th>
+                        <th scope="col" colspan="2" style="text-align: center;">EKSPORT</th>
+                      </tr>
+                    </thead>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">AMAUN (MT)</th>
+                        <th scope="col" style="text-align: center;">NILAI (RM)</th>
+                        <th scope="col" style="text-align: center;">AMAUN (MT)</th>
+                        <th scope="col" style="text-align: center;">NILAI (RM)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>PEMBINAAN</th>
+                        <td style="text-align: right;">{{ local_final_uses.construction_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.construction_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.construction_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.construction_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>BATU DIMENSI</th>
+                        <td style="text-align: right;">{{ local_final_uses.dimension_stone_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.dimension_stone_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.dimension_stone_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.dimension_stone_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>PEMBUATAN SIMEN</th>
+                        <td style="text-align: right;">{{ local_final_uses.cement_making_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.cement_making_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.cement_making_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.cement_making_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>KAPUR TOHOR</th>
+                        <td style="text-align: right;">{{ local_final_uses.quicklime_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.quicklime_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.quicklime_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.quicklime_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>SERBUK KALSIUM KARBONAT</th>
+                        <td style="text-align: right;">{{ local_final_uses.calcium_carbonate_powder_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.calcium_carbonate_powder_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.calcium_carbonate_powder_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.calcium_carbonate_powder_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>PREMIX</th>
+                        <td style="text-align: right;">{{ local_final_uses.premix_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.premix_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.premix_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.premix_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>KONKRIT READYMIX</th>
+                        <td style="text-align: right;">{{ local_final_uses.ready_mix_concrete_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.ready_mix_concrete_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.ready_mix_concrete_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.ready_mix_concrete_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>BAJA</th>
+                        <td style="text-align: right;">{{ local_final_uses.fertilizer_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.fertilizer_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.fertilizer_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.fertilizer_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>INDUSTRI KELULI</th>
+                        <td style="text-align: right;">{{ local_final_uses.steel_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.steel_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.steel_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.steel_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>KAPUR HIDRAT</th>
+                        <td style="text-align: right;">{{ local_final_uses.hydrated_lime_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.hydrated_lime_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.hydrated_lime_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.hydrated_lime_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>SERBUK DOLOMIT</th>
+                        <td style="text-align: right;">{{ local_final_uses.dolomite_powder_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.dolomite_powder_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.dolomite_powder_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.dolomite_powder_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>TERAZO</th>
+                        <td style="text-align: right;">{{ local_final_uses.terrazo_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.terrazo_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.terrazo_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.terrazo_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>LAIN-LAIN</th>
+                        <td style="text-align: right;">{{ local_final_uses.other_amount }}</td>
+                        <td style="text-align: right;">{{ local_final_uses.other_worth }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.other_amount }}</td>
+                        <td style="text-align: right;">{{ export_final_uses.other_worth }}</td>
+                      </tr>
+                      <tr>
+                        <th>(NYATAKAN)</th>
+                        <td colspan="2">{{ local_final_uses.state_other }}</td>
+                        <td colspan="2">{{ export_final_uses.state_other }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Local Worker -->
+        <div class="card">
+          <div class="card-header py-2" id="headingLocalWorker">
+            <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+              data-target="#collapseLocalWorker" aria-expanded="true" aria-controls="collapseLocalWorker">
+              Pekerja (Tempatan)
+            </button>
+          </div>
+          <div id="collapseLocalWorker" class="collapse" aria-labelledby="headingLocalWorker" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">OPERATOR</th>
+                        <th scope="col" colspan="2" style="text-align: center;">KONTRAKTOR</th>
+                      </tr>
+                    </thead>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">LELAKI</th>
+                        <th scope="col" style="text-align: center;">PEREMPUAN</th>
+                        <th scope="col" style="text-align: center;">LELAKI</th>
+                        <th scope="col" style="text-align: center;">PEREMPUAN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>PENGURUSAN</th>
+                        <td style="text-align: right;">{{ local_operator.male_manager }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_manager }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_manager }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_manager }}</td>
+                      </tr>
+                      <tr>
+                        <th>PROFESSIONAL</th>
+                        <td style="text-align: right;">{{ local_operator.male_professional }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_professional }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_professional }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_professional }}</td>
+                      </tr>
+                      <tr>
+                        <th>TEKNIKAL</th>
+                        <td style="text-align: right;">{{ local_operator.male_technical }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_technical }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_technical }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_technical }}</td>
+                      </tr>
+                      <tr>
+                        <th>KERANI</th>
+                        <td style="text-align: right;">{{ local_operator.male_clerk }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_clerk }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_clerk }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_clerk }}</td>
+                      </tr>
+                      <tr>
+                        <th>BURUH</th>
+                        <td style="text-align: right;">{{ local_operator.male_labor }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_labor }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_labor }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_labor }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH PEKERJAAN</th>
+                        <td style="text-align: right;">{{ local_operator.total_male }}</td>
+                        <td style="text-align: right;">{{ local_operator.total_female }}</td>
+                        <td style="text-align: right;">{{ local_contractor.total_male }}</td>
+                        <td style="text-align: right;">{{ local_contractor.total_female }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH UPAH GAJI (RM)</th>
+                        <td style="text-align: right;">{{ local_operator.total_male_salary }}</td>
+                        <td style="text-align: right;">{{ local_operator.total_female_salary }}</td>
+                        <td style="text-align: right;">{{ local_contractor.total_male_salary }}</td>
+                        <td style="text-align: right;">{{ local_contractor.total_female_salary }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH JAM MANUSIA</th>
+                        <td style="text-align: right;">{{ local_operator.male_man_hour }}</td>
+                        <td style="text-align: right;">{{ local_operator.female_man_hour }}</td>
+                        <td style="text-align: right;">{{ local_contractor.male_man_hour }}</td>
+                        <td style="text-align: right;">{{ local_contractor.female_man_hour }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Foreign Worker -->
+        <div class="card">
+          <div class="card-header py-2" id="headingForeignWorker">
+            <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+              data-target="#collapseForeignWorker" aria-expanded="true" aria-controls="collapseForeignWorker">
+              Pekerja (Asing)
+            </button>
+          </div>
+          <div id="collapseForeignWorker" class="collapse" aria-labelledby="headingForeignWorker"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">OPERATOR</th>
+                        <th scope="col" colspan="2" style="text-align: center;">KONTRAKTOR</th>
+                      </tr>
+                    </thead>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">LELAKI</th>
+                        <th scope="col" style="text-align: center;">PEREMPUAN</th>
+                        <th scope="col" style="text-align: center;">LELAKI</th>
+                        <th scope="col" style="text-align: center;">PEREMPUAN</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>PENGURUSAN</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_manager }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_manager }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_manager }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_manager }}</td>
+                      </tr>
+                      <tr>
+                        <th>PROFESSIONAL</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_professional }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_professional }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_professional }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_professional }}</td>
+                      </tr>
+                      <tr>
+                        <th>TEKNIKAL</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_technical }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_technical }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_technical }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_technical }}</td>
+                      </tr>
+                      <tr>
+                        <th>KERANI</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_clerk }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_clerk }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_clerk }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_clerk }}</td>
+                      </tr>
+                      <tr>
+                        <th>BURUH</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_labor }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_labor }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_labor }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_labor }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH PEKERJAAN</th>
+                        <td style="text-align: right;">{{ foreign_operator.total_male }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.total_female }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.total_male }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.total_female }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH UPAH GAJI (RM)</th>
+                        <td style="text-align: right;">{{ foreign_operator.total_male_salary }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.total_female_salary }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.total_male_salary }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.total_female_salary }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH JAM MANUSIA</th>
+                        <td style="text-align: right;">{{ foreign_operator.male_man_hour }}</td>
+                        <td style="text-align: right;">{{ foreign_operator.female_man_hour }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.male_man_hour }}</td>
+                        <td style="text-align: right;">{{ foreign_contractor.female_man_hour }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Machinery -->
+        <div class="card">
+          <div class="card-header py-2" id="headingMachinery">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseMachinery" aria-expanded="true" aria-controls="collapseMachinery">
+                Jentera
+              </button>
+            </h5>
+          </div>
+          <div id="collapseMachinery" class="collapse" aria-labelledby="headingMachinery" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">BAKAR DALAM</th>
+                        <th scope="col" colspan="2" style="text-align: center;">ELEKTRIK</th>
+                      </tr>
+                    </thead>
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" style="text-align: center;">BILANGAN</th>
+                        <th scope="col" style="text-align: center;">KUASA (KW)</th>
+                        <th scope="col" style="text-align: center;">BILANGAN</th>
+                        <th scope="col" style="text-align: center;">KUASA (KW)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>LORI</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_lorry }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.lorry_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_lorry }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.lorry_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>JENKOREK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_excavator }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.excavator_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_excavator }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.excavator_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>JENTERA ANGKUT BERODA</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_wheel_loader }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.wheel_loader_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_wheel_loader }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.wheel_loader_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>JENTOLAK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_bulldozer }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.bulldozer_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_bulldozer }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.bulldozer_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PAM AIR</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_water_pump }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.water_pump_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_water_pump }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.water_pump_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PEMAMPAT UDARA</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_air_compressor }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.air_compressor_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_air_compressor }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.air_compressor_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PEMECAH HIDRAULIK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_hydraulic_breaker }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.hydraulic_breaker_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_hydraulic_breaker }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.hydraulic_breaker_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>GERUDI HIDRAULIK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_hydraulic_drill }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.hydraulic_drill_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_hydraulic_drill }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.hydraulic_drill_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PENGHANCUR</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_crusher }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.crusher_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_crusher }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.crusher_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>PENYUDUK</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_shovel }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.shovel_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_shovel }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.shovel_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>TRAKTOR</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_tracktor }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.tracktor_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_tracktor }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.tracktor_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>LAIN-LAIN</th>
+                        <td style="text-align: right;">{{ combustion_machinery.number_other }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.other_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.number_other }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.other_power }}</td>
+                      </tr>
+                      <tr>
+                        <th>(NYATAKAN)</th>
+                        <td colspan="2">{{ combustion_machinery.state_other }}</td>
+                        <td colspan="2">{{ electric_machinery.state_other }}</td>
+                      </tr>
+                      <tr>
+                        <th>JUMLAH</th>
+                        <td style="text-align: right;">{{ combustion_machinery.total_number }}</td>
+                        <td style="text-align: right;">{{ combustion_machinery.total_power }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.total_number }}</td>
+                        <td style="text-align: right;">{{ electric_machinery.total_power }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Daily Explosive -->
+        <div class="card">
+          <div class="card-header py-2" id="headingDailyExplosive">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseDailyExplosive" aria-expanded="true" aria-controls="collapseDailyExplosive">
+                Bahan Letupan
+              </button>
+            </h5>
+          </div>
+          <div id="collapseDailyExplosive" class="collapse" aria-labelledby="headingDailyExplosive"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <tbody>
+                      <tr>
+                        <th>TARIKH</th>
+                        <td style="text-align: right;">{{ daily_explosive.date|date:"d/m/Y" }}</td>
+                      </tr>
+                      <tr>
+                        <th>BAHAN LETUPAN BES EMULSI (KG)</th>
+                        <td style="text-align: right;">{{ daily_explosive.emulsion_explosive }}</td>
+                      </tr>
+                      <tr>
+                        <th>BAHAN LETUPAN BES NG (KG)</th>
+                        <td style="text-align: right;">{{ daily_explosive.ng_explosive }}</td>
+                      </tr>
+                      <tr>
+                        <th>BAHAN LETUPAN LAIN (KG)</th>
+                        <td style="text-align: right;">{{ daily_explosive.other_explosive }}</td>
+                      </tr>
+                      <tr>
+                        <th>PELEDAK BIASA (BIJI)</th>
+                        <td style="text-align: right;">{{ daily_explosive.detonator }}</td>
+                      </tr>
+                      <tr>
+                        <th>PELEDAK ELEKTRIK (BIJI)</th>
+                        <td style="text-align: right;">{{ daily_explosive.electric_detonator }}</td>
+                      </tr>
+                      <tr>
+                        <th>PELEDAK NON ELEKTRIK (BIJI)</th>
+                        <td style="text-align: right;">{{ daily_explosive.non_electric_detonator }}</td>
+                      </tr>
+                      <tr>
+                        <th>SAFETY FUSE (M)</th>
+                        <td style="text-align: right;">{{ daily_explosive.safety_fuse }}</td>
+                      </tr>
+                      <tr>
+                        <th>KORD PELEDAK (M)</th>
+                        <td style="text-align: right;">{{ daily_explosive.detonating_cord }}</td>
+                      </tr>
+                      <tr>
+                        <th>ANFO (KG)</th>
+                        <td style="text-align: right;">{{ daily_explosive.anfo }}</td>
+                      </tr>
+                      <tr>
+                        <th>BULK EMULSION (KG)</th>
+                        <td style="text-align: right;">{{ daily_explosive.bulk_emulsion }}</td>
+                      </tr>
+                      <tr>
+                        <th>RELAY TLD (BIJI)</th>
+                        <td style="text-align: right;">{{ daily_explosive.relay_tld }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Energy Supply -->
+        <div class="card">
+          <div class="card-header py-2" id="headingEnergySupply">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseEnergySupply" aria-expanded="true" aria-controls="collapseEnergySupply">
+                Bahan Tenaga
+              </button>
+            </h5>
+          </div>
+          <div id="collapseEnergySupply" class="collapse" aria-labelledby="headingEnergySupply"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <thead class="thead-light">
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col" colspan="2" style="text-align: center;">JUMLAH</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>DIESEL (LITER)</th>
+                        <td style="text-align: right;">{{ energy_supply.total_diesel }}</td>
+                      </tr>
+                      <tr>
+                        <th>ELEKTRIK (KwH)</th>
+                        <td style="text-align: right;">{{ energy_supply.total_electric }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Operating Record -->
+        <div class="card">
+          <div class="card-header py-2" id="headingOperatingRecord">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseOperatingRecord" aria-expanded="true" aria-controls="collapseOperatingRecord">
+                Rekod Operasi
+              </button>
+            </h5>
+          </div>
+          <div id="collapseOperatingRecord" class="collapse" aria-labelledby="headingOperatingRecord"
+            data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <tbody>
+                      <tr>
+                        <th>JAM OPERASI SEHARI</th>
+                        <td style="text-align: right;">{{ operating_record.operating_hours }}</td>
+                      </tr>
+                      <tr>
+                        <th>BILANGAN HARI OPERASI</th>
+                        <td style="text-align: right;">{{ operating_record.operating_days }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Royalties -->
+        <div class="card">
+          <div class="card-header py-2" id="headingRoyalties">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseRoyalties" aria-expanded="true" aria-controls="collapseRoyalties">
+                Royalti
+              </button>
+            </h5>
+          </div>
+          <div id="collapseRoyalties" class="collapse" aria-labelledby="headingRoyalties" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <tbody>
+                      <tr>
+                        <th>ROYALTI DIBAYAR (RM)</th>
+                        <td style="text-align: right;">{{ royalties.royalties }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Other -->
+        <div class="card">
+          <div class="card-header py-2" id="headingOther">
+            <h5 class="m-0">
+              <button class="btn btn-link font-weight-bold text-primary" data-toggle="collapse"
+                data-target="#collapseOther" aria-expanded="true" aria-controls="collapseOther">
+                Lain-lain
+              </button>
+            </h5>
+          </div>
+          <div id="collapseOther" class="collapse" aria-labelledby="headingOther" data-parent="#accordion">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <table class="table table-bordered table-sm">
+                    <tbody>
+                      <tr>
+                        <th>TAJUK</th>
+                        <td>{{ other.title|default:"Tiada tajuk" }}</td>
+                      </tr>
+                      <tr>
+                        <th>KOMEN</th>
+                        <td>{{ other.comment|default:"Tiada komen" }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4 col-lg-3 mt-3">
+      <a href="{% url 'quarry:state:data_list' %}" class="btn btn-info btn-user btn-block">
+        Kembali ke senarai
+      </a>
+    </div>
+    <div class="col-4 col-lg-3 mt-3">
+      <button class="btn btn-danger btn-user btn-block" data-toggle="modal" data-target="#RejectModal">
+        Tolak
+      </button>
+    </div>
+    <div class="col-4 col-lg-3 mt-3">
+      <button class="btn btn-success btn-user btn-block" data-toggle="modal" data-target="#ApproveModal">
+        Terima
+      </button>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+<!-- Approve Modal-->
+<div class="modal fade" id="ApproveModal" tabindex="-1" role="dialog" aria-labelledby="ApproveModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="ApproveModalLabel">Terima PKB</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Adakah anda pasti untuk terima PKB ini?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+        <form action="." method="post">
+          {% csrf_token %}
+          <input type="hidden" name="choice" value="yes">
+          <button type="submit" class="btn btn-primary">Ya</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal-->
+<div class="modal fade" id="RejectModal" tabindex="-1" role="dialog" aria-labelledby="RejectModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="RejectModalLabel">Tolak PKB</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form action="." method="post">
+        <div class="modal-body">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="comment" class="col-form-label">Komen:</label>
+            <textarea name="comment" class="form-control" id="comment"></textarea>
+          </div>
+          <input type="hidden" name="choice" value="no">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-danger">Tolak</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

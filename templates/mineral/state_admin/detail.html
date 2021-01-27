@@ -1,0 +1,173 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col my-auto">
+          <h5>Profil Kuari</h5>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-8">
+          <table class="table table-bordered table-sm">
+            <tbody>
+              <tr>
+                <th>Pemajak</th>
+                <td>{{ quarry.lease_holder }}</td>
+              </tr>
+              <tr>
+                <th>Pengusaha</th>
+                <td>{{ quarry.operator }}</td>
+              </tr>
+              <tr>
+                <th>Pengurus</th>
+                <td>{{ quarry.manager }}</td>
+              </tr>
+              <tr>
+                <th>Alamat</th>
+                <td>
+                  {{ quarry.address1 }}{% if quarry.address2 %},<br>
+                  {{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>
+                  {{ quarry.address3 }}{% endif %}
+                </td>
+              </tr>
+              <tr>
+                <th>Lokasi</th>
+                <td>{{ quarry.location }}</td>
+              </tr>
+              <tr>
+                <th>Mukim</th>
+                <td>{{ quarry.mukim }}</td>
+              </tr>
+              <tr>
+                <th>Daerah</th>
+                <td>{{ quarry.district }}</td>
+              </tr>
+              <tr>
+                <th>Negeri</th>
+                <td>{{ quarry.get_state_display }}</td>
+              </tr>
+              <tr>
+                <th>Latitude</th>
+                <td>{{ quarry.latitude }}</td>
+              </tr>
+              <tr>
+                <th>Longitude</th>
+                <td>{{ quarry.longitude }}</td>
+              </tr>
+              <tr>
+                <th>Keupayaan Maksima</th>
+                <td>{{ quarry.max_capacity }}</td>
+              </tr>
+              <tr>
+                <th>Kategori Syarikat</th>
+                <td>{{ quarry.company_category }}</td>
+              </tr>
+              <tr>
+                <th>Aktif</th>
+                <td>
+                  {% if quarry.status %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col my-auto d-flex">
+          <h5 class="my-auto">Senarai Batuan</h5>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Jenis Batuan</th>
+                <th scope="col">Kategori</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for main_rock in quarry.main_rocks.all %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ main_rock.get_rock_type_display }}</td>
+                <td>Batuan Utama</td>
+              </tr>
+              {% endfor %}
+              {% for side_rock in quarry.side_rocks.all %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ side_rock.get_rock_type_display }}</td>
+                <td>Batuan Sampingan</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col my-auto d-flex">
+          <h5 class="my-auto">Senarai Lot</h5>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">No Lot</th>
+                <th scope="col">Status Tanah</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for lot in quarry.lots.all %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ lot.no_lot }}</td>
+                <td>{{ lot.land_status }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock content %}

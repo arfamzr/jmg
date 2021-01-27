@@ -1,0 +1,128 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <div class="row">
+        <div class="col">
+          <a href="{% url 'quarry:state_admin:operator_create' %}" class="btn btn-primary">Tambah Pengusaha</a>
+        </div>
+
+        <div class="col justify-content-end">
+          <form action="." method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search" name="q" autocomplete="off">
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-primary">Carian Pengusaha</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-12">
+          <table class="table table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Nama</th>
+                <th scope="col">No Phone</th>
+                <th scope="col">No Fax</th>
+                <th scope="col">Email</th>
+                <th scope="col">Alamat</th>
+                <th scope="col">Aktif</th>
+                <th scope="col">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for operator in operator_list %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ operator.name }}</td>
+                <td>{{ operator.phone }}</td>
+                <td>{{ operator.fax }}</td>
+                <td>{{ operator.email }}</td>
+                <td>
+                  {{ operator.address1 }}{% if operator.address2 %},<br>
+                  {{ operator.address2 }}{% endif %}{% if operator.address3 %},<br>
+                  {{ operator.address3 }}{% endif %}
+                </td>
+                <td>
+                  {% if operator.status %}
+                  <i class="fas fa-check-circle text-success ml-2"></i>
+                  {% else %}
+                  <i class="fas fa-times-circle text-danger ml-2"></i>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ operator.get_update_url }}" class="badge badge-primary">Kemaskini</a>
+                  <a href="{{ operator.get_toggle_active_url }}" class="badge badge-info">
+                    {% if operator.status %}
+                    Deactivate
+                    {% else %}
+                    Activate
+                    {% endif %}
+                  </a>
+                  <a href="" class="badge badge-sm badge-primary" data-toggle="modal" data-target="#chooseModal"
+                    data-href="{% url 'quarry:state_admin:manager_add_operator' manager.pk operator.pk %}">Pilih</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          {% with pagin=page_obj %}
+          {% include 'layouts/includes/_pagination.html' %}
+          {% endwith %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+<!-- choose Modal-->
+<div class="modal fade" id="chooseModal" tabindex="-1" role="dialog" aria-labelledby="chooseModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="chooseModalLabel">Pilih Pengusaha</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <form id="chooseForm" action="#" method="post">
+        <div class="modal-body">
+          {% csrf_token %}
+          Anda yakin mahu pilih pengusaha ini?
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" type="submit">Pilih</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Tutup</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+  // choose data
+  $('#chooseModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget)
+    const href = button.data('href')
+    const modal = $(this)
+    modal.find('#chooseForm').attr('action', href)
+  })
+</script>
+{% endblock extra_js %}
