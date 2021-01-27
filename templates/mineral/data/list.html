@@ -33,8 +33,8 @@
               <tr>
                 <th scope="col">No</th>
                 <th scope="col">Bulan/Tahun</th>
-                <th scope="col">Nama Kuari</th>
-                <th scope="col">Alamat Kuari</th>
+                <th scope="col">Nama Kilang</th>
+                <th scope="col">No. Lesen</th>
                 {% comment %} <th scope="col">No Lot</th> {% endcomment %}
                 {% comment %} <th scope="col">Jenis Batuan</th> {% endcomment %}
                 <th scope="col">Status</th>
@@ -43,20 +43,12 @@
             </thead>
             <tbody>
               {% for data in object_list %}
-              {% with mineral_miner=data.miner mineral=data.mineral last_approval=data.get_last_approval %}
+              {% with  factory=data.factory last_approval=data.get_last_approval %}
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ data.get_month_display }} {{ data.year }}</td>
-                <td>{{ mineral.name }}</td>
-                {% comment %} <td>{{ mineral.address1 }}{{ mineral.address2 }}{{ mineral.address3 }}</td>
-                {% endcomment %}
-                <td>
-                  {{ mineral.address1 }}{% if mineral.address2 %},<br>
-                  {{ mineral.address2 }}{% endif %}{% if mineral.address3 %},<br>
-                  {{ mineral.address3 }}{% endif %}
-                </td>
-                {% comment %} <td>{{ mineral_miner.lot_number }}</td> {% endcomment %}
-                {% comment %} <td>{{ mineral.main_rock_type }}</td> {% endcomment %}
+                <td>{{ factory.name }}</td>
+                <td>{{ factory.license_no }}</td>
                 <td>
                   {% if last_approval %}
                   {% if last_approval.admin_approved == True %}

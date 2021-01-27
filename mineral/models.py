@@ -166,7 +166,7 @@ class ProcessStatistic(models.Model):
     data = models.ForeignKey(ProcessData, verbose_name=_(
         "data"), on_delete=models.CASCADE, related_name="statistics")
     mineral_type = models.CharField(
-        _("jenis mineral utama"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
+        _("jenis mineral"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
     quantity_unit = models.CharField(
         _("unit kuantiti"), max_length=255, choices=Choices.UNIT_CHOICES, default=Choices.TAN)
     initial_stock = models.DecimalField(
@@ -206,7 +206,7 @@ class ProcessSubmission(models.Model):
     data = models.ForeignKey(ProcessData, verbose_name=_(
         "data"), on_delete=models.CASCADE, related_name="submission")
     mineral_type = models.CharField(
-        _("jenis mineral utama"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
+        _("jenis mineral"), max_length=255, choices=Choices.TYPES_OF_MINERAL)
     quantity_unit = models.CharField(
         _("unit kuantiti"), max_length=255, choices=Choices.UNIT_CHOICES, default=Choices.TAN)
     quantity = models.DecimalField(

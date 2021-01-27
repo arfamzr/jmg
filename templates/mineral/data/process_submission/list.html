@@ -23,8 +23,10 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">Saiz Batuan/Produk</th>
-                <th scope="col">Jumlah</th>
+                <th scope="col">Jenis Mineral</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Kuantiti</th>
+                <th scope="col">Pembeli</th>
                 <th scope="col">Tindakan</th>
               </tr>
             </thead>
@@ -32,8 +34,10 @@
               {% for process_submission in process_submission_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ process_submission.submission_size }}</td>
-                <td>{{ process_submission.total }}</td>
+                <td>{{ process_submission.mineral_type }}</td>
+                <td>{{ process_submission.get_quantity_unit_display }}</td>
+                <td>{{ process_submission.quantity }}</td>
+                <td>{{ process_submission.buyer }}</td>
                 <td>
                   <a href="{{ process_submission.get_edit_url }}" class="badge badge-sm badge-info">Ubah</a>
                   <a href="" class="badge badge-sm badge-danger" data-toggle="modal" data-target="#deleteModal"

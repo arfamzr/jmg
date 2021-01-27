@@ -22,8 +22,9 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">No</th>
-                <th scope="col">Jenis Batuan</th>
-                <th scope="col">Kategori</th>
+                <th scope="col">Jenis Mineral</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Pengeluaran</th>
                 <th scope="col">Tindakan</th>
               </tr>
             </thead>
@@ -31,8 +32,9 @@
               {% for statistic in statistic_list %}
               <tr>
                 <td>{{ forloop.counter }}</td>
-                <td>{{ statistic.rock_type }}</td>
-                <td>Batuan Utama</td>
+                <td>{{ statistic.mineral_type }}</td>
+                <td>{{ statistic.get_quantity_unit_display }}</td>
+                <td>{{ statistic.production }}</td>
                 <td>
                   <a href="{{ statistic.get_edit_url }}" class="badge badge-sm badge-info">Ubah</a>
                   <a href="" class="badge badge-sm badge-danger" data-toggle="modal" data-target="#deleteModal"
