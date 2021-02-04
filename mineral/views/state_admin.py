@@ -285,7 +285,7 @@ class DataListView(UserIsJMGStateAdminMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai Proses Mineral'
+        context["title"] = 'Senarai PBKPM'
         return context
 
 
@@ -321,7 +321,7 @@ class DataSuccessListView(UserIsJMGStateAdminMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai Lulus Proses Mineral'
+        context["title"] = 'Senarai Lulus PBKPM'
         return context
 
 
@@ -383,7 +383,7 @@ def data_detail(request, pk):
         return redirect('mineral:state_admin:data_list')
 
     context = {
-        'title': 'Data Kuari',
+        'title': 'Data PBKPM',
         'data': data,
         'local_operator': local_operator,
         'local_contractor': local_contractor,
@@ -419,7 +419,7 @@ def data_success_detail(request, pk):
     other = get_object_or_404(Other, data=data)
 
     context = {
-        'title': 'Data Kuari',
+        'title': 'Data PBKPM',
         'data': data,
         'local_operator': local_operator,
         'local_contractor': local_contractor,

@@ -30,8 +30,8 @@
               <tr>
                 <th scope="col">No</th>
                 <th scope="col">Bulan/Tahun</th>
-                <th scope="col">Nama Kuari</th>
-                <th scope="col">Alamat Kuari</th>
+                <th scope="col">Nama Kilang</th>
+                <th scope="col">No. Lesen</th>
                 {% comment %} <th scope="col">No Lot</th> {% endcomment %}
                 {% comment %} <th scope="col">Jenis Batuan</th> {% endcomment %}
                 <th scope="col">Status</th>
@@ -40,17 +40,14 @@
             </thead>
             <tbody>
               {% for data in object_list %}
-              {% with quarry_miner=data.miner quarry=data.quarry last_approval=data.get_last_approval %}
+              {% with factory=data.factory last_approval=data.get_last_approval %}
               <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ data.get_month_display }} {{ data.year }}</td>
-                <td>{{ quarry.name }}</td>
-                {% comment %} <td>{{ quarry.address1 }}{{ quarry.address2 }}{{ quarry.address3 }}</td> {% endcomment %}
-                <td>
-                  {{ quarry.address1 }}{% if quarry.address2 %},<br>
-                  {{ quarry.address2 }}{% endif %}{% if quarry.address3 %},<br>
-                  {{ quarry.address3 }}{% endif %}
-                </td>
+                <td>{{ factory.name }}</td>
+                {% comment %} <td>{{ factory.address1 }}{{ factory.address2 }}{{ factory.address3 }}</td>
+                {% endcomment %}
+                <td>{{ factory.license_no }}</td>
                 <td>
                   {% if last_approval %}
                   {% if last_approval.admin_approved == True %}

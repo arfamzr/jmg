@@ -30,9 +30,8 @@
               <thead class="thead-dark">
                 <tr>
                   <th scope="col">No</th>
-                  <th scope="col">Nama Syarikat</th>
-                  <th scope="col">Alamat Syarikat</th>
-                  <th scope="col">Lokasi Kuari</th>
+                  <th scope="col">Nama Kilang</th>
+                  <th scope="col">No. Lesen</th>
                   <th scope="col">Bulan/Tahun</th>
                   <th scope="col">Status</th>
                   <th scope="col">Tindakan</th>
@@ -40,12 +39,11 @@
               </thead>
               <tbody>
                 {% for miner_data in object_list %}
-                {% with company=miner_data.miner.miner.employee.company quarry_miner=miner_data.miner quarry=miner_data.quarry last_approval=miner_data.get_last_approval %}
+                {% with factory=miner_data.factory last_approval=miner_data.get_last_approval %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td>{{ company.name }}</td>
-                  <td>{{ company.address1 }}</td>
-                  <td>{{ quarry }}</td>
+                  <td>{{ factory.name }}</td>
+                  <td>{{ factory.license_no }}</td>
                   <td>{{ miner_data.get_month_display }} {{ miner_data.year }}</td>
                   <td>
                     <span class="text-success">Berjaya</span>
@@ -102,7 +100,7 @@
     const id = button.data('id')
     const modal = $(this)
     $.ajax({
-      url: `/quarry/miner-data/${id}/get-comment/`,
+      url: `/mineral/data/${id}/get-comment/`,
       success: function (result) {
         modal.find('#comment').text(result)
       }

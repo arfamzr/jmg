@@ -33,36 +33,43 @@
 
 {% block extra_js %}
 <script>
-  const initial_rock_stock = document.getElementById('id_initial_rock_stock')
-  const rock_production = document.getElementById('id_rock_production')
-  const total_rock = document.getElementById('id_total_rock')
-  const rock_submission = document.getElementById('id_rock_submission')
-  const final_rock_stock = document.getElementById('id_final_rock_stock')
+  const initial_stock = document.getElementById('id_initial_stock')
+  const external_sources = document.getElementById('id_external_sources')
+  const production = document.getElementById('id_production')
+  const total = document.getElementById('id_total')
+  const sold = document.getElementById('id_sold')
+  const final_stock = document.getElementById('id_final_stock')
 
-  const set_total_rock = () => {
-    let total = (parseFloat(initial_rock_stock.value) || 0) + (parseFloat(rock_production.value) || 0)
-    total_rock.value = total
+  const set_total = () => {
+    let total_values = (parseFloat(initial_stock.value) || 0) + (parseFloat(external_sources.value) || 0) + (
+      parseFloat(
+        production.value) || 0)
+    total.value = total_values
   }
 
-  const set_final_rock_stock = () => {
-    let total = (parseFloat(total_rock.value) || 0) - (parseFloat(rock_submission.value) || 0)
-    final_rock_stock.value = total
+  const set_final_stock = () => {
+    let total_values = (parseFloat(total.value) || 0) - (parseFloat(sold.value) || 0)
+    final_stock.value = total_values
   }
 
-  initial_rock_stock.addEventListener("change", () => {
-    set_total_rock()
-    set_final_rock_stock()
+  initial_stock.addEventListener("change", () => {
+    set_total()
+    set_final_stock()
   })
-  rock_production.addEventListener("change", () => {
-    set_total_rock()
-    set_final_rock_stock()
+  external_sources.addEventListener("change", () => {
+    set_total()
+    set_final_stock()
+  })
+  production.addEventListener("change", () => {
+    set_total()
+    set_final_stock()
   })
 
-  total_rock.addEventListener("change", () => {
-    set_final_rock_stock()
+  total.addEventListener("change", () => {
+    set_final_stock()
   })
-  rock_submission.addEventListener("change", () => {
-    set_final_rock_stock()
+  sold.addEventListener("change", () => {
+    set_final_stock()
   })
 </script>
 {% endblock extra_js %}

@@ -181,7 +181,6 @@ class ProcessStatistic(models.Model):
         _("penjualan"), max_digits=15, decimal_places=2)
     final_stock = models.DecimalField(
         _("stock akhir bulan"), max_digits=15, decimal_places=2)
-    mineral_gred = models.CharField(_("gred mineral"), max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

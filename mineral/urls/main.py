@@ -41,6 +41,9 @@ from ..views.main import (
 
     # summary
     data_summary,
+
+    # comment
+    get_comment_data
 )
 
 app_name = 'mineral'
@@ -161,6 +164,13 @@ urlpatterns = [
         'data/<int:pk>/summary/',
         data_summary,
         name='data_summary',
+    ),
+
+    # comment
+    path(
+        'data/<int:pk>/get-comment/',
+        get_comment_data,
+        name='get_comment'
     ),
 
     # user include

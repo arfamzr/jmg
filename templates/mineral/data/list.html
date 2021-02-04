@@ -147,7 +147,7 @@
     const id = button.data('id')
     const modal = $(this)
     $.ajax({
-      url: `/mineral/miner-data/${id}/get-comment/`,
+      url: `/mineral/data/${id}/get-comment/`,
       success: function (result) {
         modal.find('#comment').text(result)
       }

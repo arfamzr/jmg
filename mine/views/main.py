@@ -556,9 +556,8 @@ def data_summary(request, pk):
 
     return render(request, 'mine/data/summary.html', context)
 
+
 # comment views
-
-
 def get_comment_data(request, pk):
     data = get_object_or_404(Data, pk=pk)
     data_approval = data.get_last_approval()

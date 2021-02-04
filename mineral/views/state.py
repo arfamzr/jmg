@@ -62,7 +62,7 @@ class DataListView(UserIsJMGStateMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Senarai Data Proses Mineral'
+        context["title"] = 'Senarai Data PBKPM'
         return context
 
 
@@ -120,7 +120,7 @@ def data_detail(request, pk):
         return redirect('mineral:state:data_list')
 
     context = {
-        'title': 'Data Proses Mineral',
+        'title': 'Data PBKPM',
         'data': data,
         'local_operator': local_operator,
         'local_contractor': local_contractor,

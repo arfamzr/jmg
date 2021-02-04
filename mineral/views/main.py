@@ -151,7 +151,7 @@ def process_statistic_edit(request, pk):
                         kwargs={'pk': data.pk})
 
     context = {
-        'title': 'Perangkaan Lesen Proses',
+        'title': 'Perangkaan Bulanan kilang pemprosesan mineral',
         'data': data,
         'statistic_list': statistic_list,
         'next_link': next_link,
@@ -176,7 +176,7 @@ class ProcessStatisticCreateView(UserIsManagerMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Tambah Perangkaan Lesen Proses'
+        context["title"] = 'Tambah Perangkaan Bulanan kilang pemprosesan mineral'
         return context
 
 
@@ -190,7 +190,7 @@ class ProcessStatisticUpdateView(UserIsManagerMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = 'Edit Perangkaan Lesen Proses'
+        context["title"] = 'Edit Perangkaan Bulanan kilang pemprosesan mineral'
         return context
 
 
@@ -208,7 +208,7 @@ def process_statistic_detail(request, pk):
                         "pk": statistic.data.pk})
 
     context = {
-        'title': 'Perangkaan Lesen Proses',
+        'title': 'Perangkaan Bulanan kilang pemprosesan mineral',
         'next_link': next_link,
         'statistic': statistic,
     }
@@ -602,7 +602,7 @@ def data_summary(request, pk):
         return redirect('mineral:data_list')
 
     context = {
-        'title': 'Data Proses Mineral',
+        'title': 'Data PBKPM',
         'data': data,
         'local_operator': local_operator,
         'local_contractor': local_contractor,
@@ -617,6 +617,18 @@ def data_summary(request, pk):
     }
 
     return render(request, 'mineral/data/summary.html', context)
+
+
+# comment
+def get_comment_data(request, pk):
+    data = get_object_or_404(ProcessData, pk=pk)
+    data_approval = data.get_last_approval()
+    if data_approval.admin_comment:
+        return HttpResponse(data_approval.admin_comment)
+    elif data_approval.state_comment:
+        return HttpResponse(data_approval.state_comment)
+    else:
+        return HttpResponse('')
 
 
 # comment views
