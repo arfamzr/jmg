@@ -18,30 +18,34 @@
           <table class="table table-bordered table-sm">
             <thead class="thead-light">
               <tr>
-                <th scope="col"></th>
-                <th scope="col" style="text-align: center;">(TAN MATRIK)</th>
+                <th scope="col">{{ statistic.get_mineral_type_display  }}</th>
+                <th scope="col" style="text-align: center;">({{ statistic.get_quantity_unit_display }})</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th>STOK AWAL BULAN</th>
-                <td style="text-align: right;">{{ statistic.initial_rock_stock }}</td>
+                <td style="text-align: right;">{{ statistic.initial_stock }}</td>
+              </tr>
+              <tr>
+                <th>PEMBELIAN DARI PUNCA LUAR</th>
+                <td style="text-align: right;">{{ statistic.external_sources }}</td>
               </tr>
               <tr>
                 <th>PENGELUARAN</th>
-                <td style="text-align: right;">{{ statistic.rock_production }}</td>
+                <td style="text-align: right;">{{ statistic.production }}</td>
               </tr>
               <tr>
                 <th>JUMLAH</th>
-                <td style="text-align: right;">{{ statistic.total_rock }}</td>
+                <td style="text-align: right;">{{ statistic.total }}</td>
               </tr>
               <tr>
-                <th>PENYERAHAN</th>
-                <td style="text-align: right;">{{ statistic.rock_submission }}</td>
+                <th>PENJUALAN</th>
+                <td style="text-align: right;">{{ statistic.sold }}</td>
               </tr>
               <tr>
                 <th>STOK AKHIR BULAN</th>
-                <td style="text-align: right;">{{ statistic.final_rock_stock }}</td>
+                <td style="text-align: right;">{{ statistic.final_stock }}</td>
               </tr>
             </tbody>
           </table>

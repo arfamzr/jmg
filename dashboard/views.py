@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 
 from quarry.models import Data as QuarryData
 from mine.models import Data as MineData
+from mineral.models import ProcessData
 
 
 def get_counted_data(data_list):
@@ -40,6 +41,8 @@ def dashboard(request):
         quarry_count = get_counted_data(quarry_data)
         mine_data = MineData.objects.all()
         mine_count = get_counted_data(mine_data)
+        mineral_data = ProcessData.objects.all()
+        mineral_count = get_counted_data(mineral_data)
     elif request.user.is_jmg_state_admin or request.user.is_jmg_state:
         quarry_data = QuarryData.objects.filter(
             state=request.user.profile.state)
@@ -47,11 +50,16 @@ def dashboard(request):
         mine_data = MineData.objects.filter(
             state=request.user.profile.state)
         mine_count = get_counted_data(mine_data)
+        mineral_data = ProcessData.objects.filter(
+            state=request.user.profile.state)
+        mineral_count = get_counted_data(mineral_data)
     elif request.user.is_manager:
         quarry_data = QuarryData.objects.filter(manager__user=request.user)
         quarry_count = get_counted_data(quarry_data)
         mine_data = MineData.objects.filter(manager__user=request.user)
         mine_count = get_counted_data(mine_data)
+        mineral_data = ProcessData.objects.filter(manager__user=request.user)
+        mineral_count = get_counted_data(mineral_data)
     elif request.user.is_super_admin:
         return redirect('account:super_admin:hq_list')
     else:
@@ -62,6 +70,7 @@ def dashboard(request):
         'title': 'Papan Pemuka',
         'quarry_count': quarry_count,
         'mine_count': mine_count,
+        'mineral_count': mineral_count,
     }
     return render(request, 'dashboard/index.html', context)
 

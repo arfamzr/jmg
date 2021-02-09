@@ -7,6 +7,7 @@
   <!-- Page Heading -->
   <h1 class="h3 mb-4 text-gray-800">{{ title }}</h1>
 
+  {% if user.quarrymanager or not user.is_manager %}
   <h3 class="h4 mb-2 text-gray-800">Data Kuari</h3>
 
   <!-- Content Row -->
@@ -76,7 +77,9 @@
       </div>
     </div>
   </div>
+  {% endif %}
 
+  {% if user.minemanager or not user.is_manager %}
   <h3 class="h4 mb-2 text-gray-800">Data Lombong</h3>
 
   <!-- Content Row -->
@@ -146,6 +149,79 @@
       </div>
     </div>
   </div>
+  {% endif %}
+
+  {% if user.processmanager or not user.is_manager %}
+  <h3 class="h4 mb-2 text-gray-800">Data Kilang Pemprosesan Mineral</h3>
+
+  <!-- Content Row -->
+  <div class="row">
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Dalam proses</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ mineral_count.in_process }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-spinner fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Diterima</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ mineral_count.approved }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Ditolak</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ mineral_count.rejected }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-times-circle fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card border-left-info shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Draf</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ mineral_count.draft }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-sync fa-2x text-gray-300"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 
 </div>
 <!-- /.container-fluid -->
