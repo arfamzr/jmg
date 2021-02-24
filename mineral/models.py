@@ -28,6 +28,13 @@ class Choices:
     TUNGSTEN = 'TUNGSTEN'
     GOLD = 'GOLD'
     GRAPHITE = 'GRAPHITE'
+    ILMENIT = 'ILMENITE'
+    STRUVERIT = 'STRUVERIT'
+    MONAZITE = 'MONASIT'
+    ZIRCON = 'ZIRKON'
+    RUTILE = 'RUTIL'
+    XENOTIME = 'XENOTIM'
+    AMANG = 'AMANG'
     TYPES_OF_MINERAL = [
         (BAUXITE, _('Bauksite/Bauksit')),
         (TINORE, _('Tin Ore/Bijih Timah')),
@@ -48,6 +55,13 @@ class Choices:
         (TUNGSTEN, _('Tungsten')),
         (GOLD, _('Gold/Emas')),
         (GRAPHITE, _('Graphite/Grafit')),
+        (ILMENITE, _('Ilmenite/Ilmenit')),
+        (STRUVERIT, _('Struverit/Struverit')),
+        (MONAZITE, _('Graphite/Grafit')),
+        (ZIRCON, _('Zircon/Zirkon')),
+        (RUTILE, _('Rutile/Rutil')),
+        (XENOTIME, _('Xenotime/Xenotim')),
+        (AMANG, _('Amang/Amang')),
     ]
 
     KG = 'KG'
