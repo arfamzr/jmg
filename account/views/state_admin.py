@@ -243,24 +243,24 @@ class StateStateUpdateView(UpdateView):
 #     return render(request, 'account/state_admin/state/update.html', context)
 
 
-# def user_update_password(request, pk):
-#     user = get_object_or_404(User, pk=pk)
-#     if request.method == 'POST':
-#         form = PasswordResetForm(request.POST)
-#         if form.is_valid():
-#             raw_password = form.cleaned_data.get('password1')
-#             user.set_password(raw_password)
-#             user.save()
-#             return redirect('dashboard:dashboard')
-#     else:
-#         form = PasswordResetForm()
+def user_update_password(request, pk):
+    user = get_object_or_404(User, pk=pk)
+       if request.method == 'POST':
+            form = PasswordResetForm(request.POST)
+            if form.is_valid():
+                raw_password = form.cleaned_data.get('password1')
+                user.set_password(raw_password)
+                user.save()
+                return redirect('dashboard:dashboard')
+        else:
+            form = PasswordResetForm()
 
-#     context = {
-#         'title': f'Reset Password for {user.username}',
-#         'user': user,
-#         'form': form,
-#     }
-#     return render(request, 'account/state_admin/user/reset_password.html', context)
+        context = {
+            'title': f'Reset Password for {user.username}',
+            'user': user,
+            'form': form,
+        }
+        return render(request, 'account/state_admin/user/reset_password.html', context)
 
 
 # def user_toggle_active(request, pk):
